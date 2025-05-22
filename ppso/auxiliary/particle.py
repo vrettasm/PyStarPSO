@@ -147,4 +147,4 @@ class Particle(object):
                f"(Position, Velocity) = ({self._position, self._velocity})."
     # _end_def_
 
-# _end_if_
+# _end_class_
