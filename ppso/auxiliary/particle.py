@@ -119,12 +119,14 @@ class Particle(object):
         # Don't copy self reference.
         memo[id(self)] = new_object
 
-        # Deep copy the vectors position & velocity.
-        setattr(new_object, "_position", self._position)
-        setattr(new_object, "_velocity", self._velocity)
+        # Deep copy the position vector.
+        setattr(new_object, "_position", deepcopy(self._position, memo))
+
+        # Deep copy the velocity vector.
+        setattr(new_object, "_velocity", deepcopy(self._velocity, memo))
 
         # Deep copy the best position vector.
-        setattr(new_object, "_best_position", self._best_position)
+        setattr(new_object, "_best_position", deepcopy(self._best_position, memo))
 
         # Simply copy the best value (float).
         setattr(new_object, "_best_value", self._best_value)
