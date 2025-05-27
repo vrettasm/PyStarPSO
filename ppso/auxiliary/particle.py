@@ -1,6 +1,7 @@
 import numpy as np
 from copy import deepcopy
 
+
 class Particle(object):
     """
     Description:
@@ -8,7 +9,7 @@ class Particle(object):
     """
 
     # Object variables.
-    __slots__ = ("_position", "_velocity", "_best_position", "_best_value")
+    __slots__ = ("_position", "_velocity", "_value", "_best_position", "_best_value")
 
     def __init__(self,
                  initial_position: np.typing.ArrayLike,
@@ -32,6 +33,9 @@ class Particle(object):
 
         # Initially the best (function) value is set to Inf.
         self._best_value = float("inf")
+
+        # Initially the function value is set to Inf.
+        self._value = float("inf")
     # _end_def_
 
     @property
@@ -102,6 +106,23 @@ class Particle(object):
         self._best_value = new_value
     # _end_def_
 
+    @property
+    def value(self) -> float:
+        return self._value
+    # _end_def_
+
+    @value.setter
+    def value(self, new_value: float) -> float:
+        """
+        Updates the best function value in the particle object.
+
+        :param new_value: (float) New best function value.
+
+        :return: None.
+        """
+        self._value = new_value
+    # _end_def_
+
     def __deepcopy__(self, memo):
         """
         This custom method overrides the default deepcopy method
@@ -127,6 +148,9 @@ class Particle(object):
 
         # Deep copy the best position vector.
         setattr(new_object, "_best_position", deepcopy(self._best_position, memo))
+
+        # Simply copy the value (float).
+        setattr(new_object, "_value", self._value)
 
         # Simply copy the best value (float).
         setattr(new_object, "_best_value", self._best_value)
