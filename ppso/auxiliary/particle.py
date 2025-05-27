@@ -12,10 +12,11 @@ class Particle(object):
     __slots__ = ("_position", "_velocity", "_value", "_best_position", "_best_value")
 
     def __init__(self,
-                 initial_position: np.typing.ArrayLike,
-                 initial_velocity: np.typing.ArrayLike) -> None:
+                 initial_position: np.typing.ArrayLike = None,
+                 initial_velocity: np.typing.ArrayLike = None) -> None:
         """
-        Initialize the Particle object.
+        Initialize the Particle object. Note that calling the initializer without
+        arguments (i.e., Particle()), it will create an empty 'dummy' particle.
 
         :param initial_position: (ArrayLike) Initial position of the particle.
 
@@ -39,7 +40,22 @@ class Particle(object):
     # _end_def_
 
     @property
+    def size(self) -> int:
+        """
+        Returns the size (length) of the particle.
+
+        :return: (int) the length of the particle.
+        """
+        return len(self._position)
+    # _end_def_
+
+    @property
     def position(self) -> np.typing.ArrayLike:
+        """
+        Accessor of the positions in the particle.
+
+        :return: the ArayLike (vector) of the positions.
+        """
         return self._position
     # _end_def_
 
@@ -57,6 +73,11 @@ class Particle(object):
 
     @property
     def velocity(self) -> np.typing.ArrayLike:
+        """
+        Returns the velocity of the particle object.
+
+        :return: (ArrayLike) velocity vector.
+        """
         return self._velocity
     # _end_def_
 
@@ -74,6 +95,11 @@ class Particle(object):
 
     @property
     def best_position(self) -> np.typing.ArrayLike:
+        """
+        Returns the best (so far) position of the particle object.
+
+        :return: (ArrayLike) position vector.
+        """
         return self._best_position
     # _end_def_
 
@@ -91,6 +117,11 @@ class Particle(object):
 
     @property
     def best_value(self) -> float:
+        """
+        Accessor of the best function value recorded.
+
+        :return: (float) best function value.
+        """
         return self._best_value
     # _end_def_
 
@@ -108,6 +139,11 @@ class Particle(object):
 
     @property
     def value(self) -> float:
+        """
+        Accessor of the current function value.
+
+        :return: (float) function value.
+        """
         return self._value
     # _end_def_
 

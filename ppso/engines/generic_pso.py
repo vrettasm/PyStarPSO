@@ -1,5 +1,7 @@
+import time
 from math import isnan
 from os import cpu_count
+from functools import wraps
 from operator import attrgetter
 from collections import defaultdict, deque
 
@@ -11,6 +13,46 @@ from numpy.random import default_rng, Generator
 
 from ppso.auxiliary.particle import Particle
 
+# Public interface.
+__all__ = ["GenericPSO", "time_it"]
+
+def time_it(func):
+    """
+    Timing decorator function.
+
+    :param func: the function we want to time.
+
+    :return: the time wrapper method.
+    """
+
+    @wraps(func)
+    def time_it_wrapper(*args, **kwargs):
+        """
+        Wrapper function that times the execution of the input function.
+
+        :param args: function positional arguments.
+
+        :param kwargs: function keywords arguments.
+
+        :return: the output of the wrapper function.
+        """
+        # Initial time instant.
+        time_t0 = time.perf_counter()
+
+        # Run the function we want to time.
+        result = func(*args, **kwargs)
+
+        # Final time instant.
+        time_tf = time.perf_counter()
+
+        # Print final duration in seconds.
+        print(f"{func.__name__ }: "
+              f"elapsed time = {(time_tf - time_t0):.3f} seconds.")
+
+        return result
+    # _end_def_
+    return time_it_wrapper
+# _end_def_
 
 class GenericPSO(object):
     """
@@ -29,13 +71,14 @@ class GenericPSO(object):
 
     # Object variables.
     __slots__ = ("_swarm", "objective_func", "_velocity_max", "_velocity_min",
-                 "_stats", "_n_cpus")
+                 "_upper_bound", "_lower_bound", "_stats", "_n_cpus")
 
     def __init__(self, initial_swarm: list[Particle], obj_func: Callable,
+                 lower_bound: np.typing.ArrayLike, upper_bound: np.typing.ArrayLike,
                  v_max: np.typing.ArrayLike, v_min: np.typing.ArrayLike,
                  n_cpus: int = None):
         """
-         Default constructor of GenericPSO object.
+        Default constructor of GenericPSO object.
 
         :param initial_swarm: list of the initial population of (randomized) particles.
 
@@ -58,6 +101,10 @@ class GenericPSO(object):
             # Get the objective function.
             self.objective_func = obj_func
         # _end_if_
+
+        # Set the upper/lower bounds of the search space.
+        self._lower_bound = lower_bound
+        self._upper_bound = upper_bound
 
         # Get the number of requested CPUs.
         if n_cpus is None:
@@ -118,8 +165,12 @@ class GenericPSO(object):
                              f"Bounds should be x_min < x_max.")
         # _end_if_
 
+        # Get the size of the particle.
+        p_size = self.swarm[0].size
+
+        # Generate p ~ U(x_min, x_max).
         for p in self.swarm:
-            p.position = GenericPSO.rng_PSO.uniform(x_min, x_max)
+            p.position = GenericPSO.rng_PSO.uniform(x_min, x_max, size=p_size)
         # _end_for_
 
     # _end_def_
@@ -301,15 +352,15 @@ class GenericPSO(object):
 
         # Update all particles with their objective function values and check
         # if a solution has been found.
-        for n, (p, fun_tuple) in enumerate(zip(input_swarm, iteration_i)):
+        for n, (p, output) in enumerate(zip(input_swarm, iteration_i)):
             # Attach the fitness to each chromosome.
-            p.value = fun_tuple[0]
+            p.value = output[0]
 
             # Collect the function values in a separate list.
-            function_values[n] = fun_tuple[0]
+            function_values[n] = output[0]
 
             # Update the "found solution".
-            found_solution |= fun_tuple[1]
+            found_solution |= output[1]
         # _end_for_
 
         # Return the function_values values.
