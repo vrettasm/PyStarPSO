@@ -1,6 +1,6 @@
 from copy import deepcopy
 from numpy.typing import ArrayLike
-from numpy import asarray, array_equal
+from numpy import array, array_equal
 
 # Public interface.
 __all__ = ["Particle"]
@@ -28,13 +28,13 @@ class Particle(object):
         """
 
         # Set the initial particle position to a vector.
-        self._position = asarray(initial_position)
+        self._position = array(initial_position)
 
         # Set the initial particle velocity to a vector.
-        self._velocity = asarray(initial_velocity)
+        self._velocity = array(initial_velocity)
 
         # Initially the best position is the initial vector.
-        self._best_position = asarray(initial_position)
+        self._best_position = array(initial_position)
 
         # Initially the best (function) value is set to Inf.
         self._best_value = float("inf")
