@@ -8,6 +8,7 @@ from joblib import (Parallel, delayed)
 
 import numpy as np
 from numpy.typing import ArrayLike
+from numpy import array as np_array
 from numpy.random import default_rng, Generator
 
 from ppso.auxiliary.swarm import Swarm
@@ -112,8 +113,8 @@ class GenericPSO(object):
 
         # Set the upper/lower bounds of the search space.
         # Ensure the bounds vectors are arrays.
-        self._lower_bound = np.array(lower_bound)
-        self._upper_bound = np.array(upper_bound)
+        self._lower_bound = np_array(lower_bound)
+        self._upper_bound = np_array(upper_bound)
 
         # Get the number of requested CPUs.
         if n_cpus is None:
@@ -144,8 +145,8 @@ class GenericPSO(object):
         # _end_if_
 
         # Ensure the velocity vectors are arrays.
-        self._velocity_max = np.array(v_max)
-        self._velocity_min = np.array(v_min)
+        self._velocity_max = np_array(v_max)
+        self._velocity_min = np_array(v_min)
 
         # Dictionary with statistics.
         self._stats = defaultdict(deque)
@@ -207,9 +208,9 @@ class GenericPSO(object):
     @property
     def swarm(self) -> Swarm:
         """
-        Accessor of the population list of the swarm.
+        Accessor of the swarm.
 
-        :return: the list of particles (the swarm).
+        :return: the reference the swarm.
         """
         return self._swarm
     # _end_def_
@@ -285,18 +286,39 @@ class GenericPSO(object):
         # if a solution has been found.
         for n, (p, result) in enumerate(zip(self._swarm.population,
                                             evaluation_i)):
-            # Attach the fitness to each chromosome.
+            # Attach the function value to each particle.
             p.value = result[0]
 
-            # Collect the function values in a separate list.
+            # Collect the function values.
             function_values[n] = result[0]
 
-            # Update the "found solution".
+            # Update the found solution.
             found_solution |= result[1]
         # _end_for_
 
+        # Update local best for consistent results.
+        self.swarm.update_local_best()
+
         # Return the function values.
         return function_values, found_solution
+    # _end_def_
+
+    def update_positions(self, new_positions: ArrayLike) -> None:
+        """
+        Updates the positions of the particles in the swarm.
+
+        :param new_positions: array-like object with the new
+        positions.
+
+        :return:
+        """
+
+        # Update all particles positions.
+        for particle, x_new in zip(self._swarm.population, new_positions):
+            # Attach the position to the particle.
+            # NOTE: The 'x_new' position is copied (internally)
+            # to the position field of the particle.
+            particle.position = x_new
     # _end_def_
 
     def run(self, *args, **kwargs):
