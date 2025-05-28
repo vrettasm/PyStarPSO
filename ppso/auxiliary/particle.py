@@ -1,5 +1,9 @@
-import numpy as np
 from copy import deepcopy
+from numpy.typing import ArrayLike
+from numpy import asarray, array_equal
+
+# Public interface.
+__all__ = ["Particle"]
 
 
 class Particle(object):
@@ -12,8 +16,8 @@ class Particle(object):
     __slots__ = ("_position", "_velocity", "_value", "_best_position", "_best_value")
 
     def __init__(self,
-                 initial_position: np.typing.ArrayLike = None,
-                 initial_velocity: np.typing.ArrayLike = None) -> None:
+                 initial_position: ArrayLike = None,
+                 initial_velocity: ArrayLike = None) -> None:
         """
         Initialize the Particle object. Note that calling the initializer without
         arguments (i.e., Particle()), it will create an empty 'dummy' particle.
@@ -23,14 +27,14 @@ class Particle(object):
         :param initial_velocity: (ArrayLike) Initial velocity of the particle.
         """
 
-        # Set the particle position to an initial vector.
-        self._position = initial_position
+        # Set the initial particle position to a vector.
+        self._position = asarray(initial_position)
 
-        # Set the particle velocity to an initial vector.
-        self._velocity = initial_velocity
+        # Set the initial particle velocity to a vector.
+        self._velocity = asarray(initial_velocity)
 
         # Initially the best position is the initial vector.
-        self._best_position = initial_position
+        self._best_position = asarray(initial_position)
 
         # Initially the best (function) value is set to Inf.
         self._best_value = float("inf")
@@ -50,7 +54,7 @@ class Particle(object):
     # _end_def_
 
     @property
-    def position(self) -> np.typing.ArrayLike:
+    def position(self) -> ArrayLike:
         """
         Accessor of the positions in the particle.
 
@@ -60,7 +64,7 @@ class Particle(object):
     # _end_def_
 
     @position.setter
-    def position(self, new_vector: np.typing.ArrayLike) -> None:
+    def position(self, new_vector: ArrayLike) -> None:
         """
         Updates the position in the particle object.
 
@@ -72,7 +76,7 @@ class Particle(object):
     # _end_def_
 
     @property
-    def velocity(self) -> np.typing.ArrayLike:
+    def velocity(self) -> ArrayLike:
         """
         Returns the velocity of the particle object.
 
@@ -82,7 +86,7 @@ class Particle(object):
     # _end_def_
 
     @velocity.setter
-    def velocity(self, new_vector: np.typing.ArrayLike) -> None:
+    def velocity(self, new_vector: ArrayLike) -> None:
         """
         Updates the velocity in the particle object.
 
@@ -94,7 +98,7 @@ class Particle(object):
     # _end_def_
 
     @property
-    def best_position(self) -> np.typing.ArrayLike:
+    def best_position(self) -> ArrayLike:
         """
         Returns the best (so far) position of the particle object.
 
@@ -104,7 +108,7 @@ class Particle(object):
     # _end_def_
 
     @best_position.setter
-    def best_position(self, new_vector: np.typing.ArrayLike) -> None:
+    def best_position(self, new_vector: ArrayLike) -> None:
         """
         Updates the best position (so far) in the particle object.
 
@@ -126,7 +130,7 @@ class Particle(object):
     # _end_def_
 
     @best_value.setter
-    def best_value(self, new_value: float) -> float:
+    def best_value(self, new_value: float) -> None:
         """
         Updates the best function value in the particle object.
 
@@ -148,7 +152,7 @@ class Particle(object):
     # _end_def_
 
     @value.setter
-    def value(self, new_value: float) -> float:
+    def value(self, new_value: float) -> None:
         """
         Updates the best function value in the particle object.
 
@@ -204,7 +208,42 @@ class Particle(object):
         return deepcopy(self)
     # _end_def_
 
+    def __len__(self) -> int:
+        """
+        Accessor of the total length of the particle.
+
+        :return: the length (int) of the particle.
+        """
+        return len(self._position)
+    # _end_def_
+
+    def __eq__(self, other) -> bool:
+        """
+        Compares the 'self' particle, with the 'other' particle
+        and returns True if they have the same position otherwise False.
+
+        :param other: particle to compare.
+
+        :return: True if the positions are identical else False.
+        """
+
+        # Make sure both objects are of the same type 'particle'.
+        if isinstance(other, Particle):
+
+            # Compare directly the two positions vectors.
+            return array_equal(self._position, other.position)
+
+        # _end_if_
+        return False
+    # _end_def_
+
     def __str__(self) -> str:
+        """
+        Override to print a readable string presentation
+        of the Particle object.
+
+        :return: a string representation of a Particle.
+        """
         return f"{self.__class__.__name__}: "\
                f"(Position, Velocity) = ({self._position, self._velocity})."
     # _end_def_
