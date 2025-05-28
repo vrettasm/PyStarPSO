@@ -2,6 +2,7 @@ from math import inf
 from copy import deepcopy
 
 from numpy.typing import ArrayLike
+from numpy import copyto as copy_to
 from numpy import array, array_equal
 
 # Public interface.
@@ -67,7 +68,7 @@ class Particle(object):
 
         :return: None.
         """
-        self._position = new_vector
+        copy_to(self._position, new_vector)
     # _end_def_
 
     @property
@@ -89,7 +90,7 @@ class Particle(object):
 
         :return: None.
         """
-        self._best_position = new_vector
+        copy_to(self._best_position, new_vector)
     # _end_def_
 
     @property
