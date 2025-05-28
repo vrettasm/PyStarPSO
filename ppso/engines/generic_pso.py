@@ -247,10 +247,11 @@ class GenericPSO(object):
     def evaluate_function(self, parallel_mode: bool = False,
                           backend: str = "threading") -> (list[float], bool):
         """
-        Evaluate all the particles of the input list with the custom objective function.
-        The parallel_mode is optional.
+        Evaluate all the particles of the input list with the custom objective
+        function. The parallel_mode is optional.
 
-        :param parallel_mode: (bool) Enables parallel computation of the objective function.
+        :param parallel_mode: (bool) Enables parallel computation of the objective
+        function. Default is False (serial execution).
 
         :param backend: Backend for the parallel Joblib framework.
 
@@ -282,8 +283,8 @@ class GenericPSO(object):
         # Flag to indicate if a solution has been found.
         found_solution = False
 
-        # Update all particles with their objective function values and check
-        # if a solution has been found.
+        # Update all particles with their objective function
+        # values and check if a solution has been found.
         for n, (p, result) in enumerate(zip(self._swarm.population,
                                             evaluation_i)):
             # Attach the function value to each particle.
@@ -303,22 +304,21 @@ class GenericPSO(object):
         return function_values, found_solution
     # _end_def_
 
-    def update_positions(self, new_positions: ArrayLike) -> None:
+    def update_positions(self, new_velocities: ArrayLike) -> None:
         """
         Updates the positions of the particles in the swarm.
 
-        :param new_positions: array-like object with the new
-        positions.
+        :param new_velocities: array-like object with the new
+        velocities that will update the particle positions.
 
-        :return:
+        :return: None.
         """
 
         # Update all particles positions.
-        for particle, x_new in zip(self._swarm.population, new_positions):
+        for particle, velocity in zip(self._swarm.population,
+                                      new_velocities):
             # Attach the position to the particle.
-            # NOTE: The 'x_new' position is copied (internally)
-            # to the position field of the particle.
-            particle.position = x_new
+            particle.position += velocity
     # _end_def_
 
     def run(self, *args, **kwargs):
