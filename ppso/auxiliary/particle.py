@@ -1,4 +1,6 @@
+from math import inf
 from copy import deepcopy
+
 from numpy.typing import ArrayLike
 from numpy import array, array_equal
 
@@ -33,14 +35,14 @@ class Particle(object):
         # Set the initial particle velocity to a vector.
         self._velocity = array(initial_velocity)
 
-        # Initially the best position is the initial vector.
+        # Initialize the best (historical) position.
         self._best_position = array(initial_position)
 
-        # Initially the best (function) value is set to Inf.
-        self._best_value = float("inf")
+        # Initialize the best (historical) value to -inf.
+        self._best_value = -inf
 
-        # Initially the function value is set to Inf.
-        self._value = float("inf")
+        # Initially the function value is set to -Inf.
+        self._value = -inf
     # _end_def_
 
     @property
