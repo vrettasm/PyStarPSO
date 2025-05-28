@@ -68,7 +68,7 @@ class Particle(object):
 
         :return: None.
         """
-        copy_to(self._position, new_vector)
+        self._position = new_vector
     # _end_def_
 
     @property
