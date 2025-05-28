@@ -322,6 +322,16 @@ class GenericPSO(object):
                                         self._lower_bound, self._upper_bound)
     # _end_def_
 
+    def update_velocities(self, *args, **kwargs) -> ArrayLike:
+        """
+        Update velocity method of the Generic PSO class. This should
+        be unique according to the different methods that implement
+        the generic class.
+        """
+        raise NotImplementedError(f"{self.__class__.__name__}: "
+                                  f"You should implement this method!")
+    # _end_def_
+
     def run(self, *args, **kwargs):
         """
         Main method of the Generic PSO class,
