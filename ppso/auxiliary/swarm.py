@@ -138,7 +138,7 @@ class Swarm(object):
         for p in self._population:
 
             # If the current best value is
-            # higher then make the updates.
+            # higher than make the updates.
             if p.value > p.best_value:
 
                 # Simple copy of the function value.
