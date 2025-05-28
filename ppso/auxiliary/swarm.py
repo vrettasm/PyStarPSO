@@ -1,6 +1,6 @@
 from math import isnan
-from copy import deepcopy
 from operator import attrgetter
+from dataclasses import dataclass, field
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -10,18 +10,18 @@ from ppso.auxiliary.particle import Particle
 # Public interface.
 __all__ = ["Swarm"]
 
-
+@dataclass(init=True, repr=True)
 class Swarm(object):
     """
     Description:
-        TBD
+
+        Implements a dataclass for the Swarm entity. This class is responsible
+        for holding and organizing the individual solutions (i.e. particles),
+        of the optimization problem during the optimization process.
     """
 
-    def __init__(self, initial_population: list[Particle]):
-
-        # Get the swarm population.
-        self._population = deepcopy(initial_population)
-    # _end_def_
+    # Define the swarm as a list of particles.
+    _population: list = field(default_factory=list[Particle])
 
     @property
     def global_best_index(self) -> int:
@@ -144,5 +144,49 @@ class Swarm(object):
         """
         return np.asarray([p.velocity for p in self._population])
     # _end_def_
+
+    def __len__(self) -> int:
+        """
+        Accessor of the total size of the population.
+
+        :return: the length (int) of the swarm.
+        """
+        return len(self._population)
+    # _end_def_
+
+    def __getitem__(self, index: int) -> Particle:
+        """
+        Get the item at position 'index'.
+
+        :param index: (int) the position that we want to return.
+
+        :return: the reference to a Particle.
+        """
+        return self._population[index]
+    # _end_def_
+
+    def __setitem__(self, index: int, item: Particle) -> None:
+        """
+        Set the 'item' at position 'index'.
+
+        :param index: (int) the position that we want to access.
+
+        :param item: (Particle) the object we want to assign in the genome.
+
+        :return: None.
+        """
+        self._population[index] = item
+    # _end_def_
+
+    def __contains__(self, item: Particle) -> bool:
+        """
+        Check for membership.
+
+        :param item: an input particle that we want to check.
+
+        :return: true if the 'item' belongs in the swarm population.
+        """
+        return item in self._population
+    # _end_if_
 
 # _end_class_
