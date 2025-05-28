@@ -116,17 +116,6 @@ class Swarm(object):
         return self._population[index].position
     # _end_def_
 
-    def velocity_at(self, index: int) -> ArrayLike:
-        """
-        Get the velocity vector of an individual particle of the swarm.
-
-        :param index: Position of the individual in the population.
-
-        :return: The velocity vector (array).
-        """
-        return self._population[index].velocity
-    # _end_def_
-
     def positions(self) -> ArrayLike:
         """
         Get the particle positions of all the swarm.
@@ -134,15 +123,6 @@ class Swarm(object):
         :return: A numpy array with all the positions.
         """
         return np.asarray([p.position for p in self._population])
-    # _end_def_
-
-    def velocities(self) -> ArrayLike:
-        """
-        Get the particle velocities of all the swarm.
-
-        :return: A numpy array with all the velocities.
-        """
-        return np.asarray([p.velocity for p in self._population])
     # _end_def_
 
     def __len__(self) -> int:
