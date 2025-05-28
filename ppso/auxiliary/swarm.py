@@ -10,6 +10,7 @@ from ppso.auxiliary.particle import Particle
 # Public interface.
 __all__ = ["Swarm"]
 
+
 @dataclass(init=True, repr=True)
 class Swarm(object):
     """
@@ -123,6 +124,30 @@ class Swarm(object):
         :return: A numpy array with all the positions.
         """
         return np.asarray([p.position for p in self._population])
+    # _end_def_
+
+    def update_local_best(self) -> None:
+        """
+        Update the particles in the swarm to their local
+        best values and positions.
+
+        :return: None
+        """
+
+        # Go through all particles.
+        for p in self._population:
+
+            # If the current best value is
+            # higher then make the updates.
+            if p.value > p.best_value:
+
+                # Simple copy of the function value.
+                p.best_value = p.value
+
+                # Copy of the current position.
+                # NOTE: best_position() handles
+                # the copy internally.
+                p.best_position = p.position
     # _end_def_
 
     def __len__(self) -> int:
