@@ -1,5 +1,6 @@
 from math import isclose
 
+import numpy as np
 from numpy.typing import ArrayLike
 
 from ppso.engines.generic_pso import GenericPSO, time_it
@@ -25,38 +26,54 @@ class StandardPSO(GenericPSO):
         super().__init__(**kwargs)
 
         # Number of particles.
-        local_N = len(self.swarm.population)
+        self.n_row = len(self.swarm.population)
 
-        # Size of particle.
-        local_D = len(self.swarm.population[0])
+        # Size (length) of particle.
+        self.n_col = len(self.swarm.population[0])
 
         # Generate initial particle velocities.
         self._velocities = GenericPSO.rng_PSO.uniform(-1.0, +1.0,
-                                                      size=(local_N, local_D))
+                                                      size=(self.n_row, self.n_col))
     # _end_def_
 
     def update_velocities(self, w: float = 0.5, c1: float = 1.5, c2: float = 1.5) -> ArrayLike:
 
-        # Get the size of the velocities matrix.
-        size_N, size_D = self._velocities.shape
-
         # Pre-sample the coefficients.
-        R1 = GenericPSO.rng_PSO.uniform(0, 1, size=(size_N, size_D))
-        R2 = GenericPSO.rng_PSO.uniform(0, 1, size=(size_N, size_D))
+        R1 = GenericPSO.rng_PSO.uniform(0, 1, size=(self.n_row, self.n_col))
+        R2 = GenericPSO.rng_PSO.uniform(0, 1, size=(self.n_row, self.n_col))
 
         # Get the Global best particle.
         g_best = self.swarm.best_particle().position
 
         for i, (r1, r2) in enumerate(zip(R1, R2)):
-            # Get the current position of the particle.
-            position_x = self.swarm[i].position
+            # Get the current position of
+            # i-th the particle.
+            x_i = self.swarm[i].position
 
             # Update the new velocity.
             self._velocities[i] = (w * self._velocities[i] +
-                                   c1 * r1 * (self.swarm[i].best_position - position_x) +
-                                   c2 * r2 * (g_best - position_x))
+                                   c1 * r1 * (self.swarm[i].best_position - x_i) +
+                                   c2 * r2 * (g_best - x_i))
         # _end_for_
 
+    # _end_def_
+
+    def update_positions(self, new_velocities: ArrayLike) -> None:
+        """
+        Updates the positions of the particles in the swarm.
+
+        :param new_velocities: array-like object with the new
+        velocities that will update the particle positions.
+
+        :return: None.
+        """
+
+        # Update all particles positions.
+        for particle, velocity in zip(self._swarm.population,
+                                      new_velocities):
+            # Ensure the particle stays within bounds.
+            particle.position = np.clip(particle.position + velocity,
+                                        self._lower_bound, self._upper_bound)
     # _end_def_
 
     @time_it

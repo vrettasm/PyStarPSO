@@ -304,22 +304,14 @@ class GenericPSO(object):
         return function_values, found_solution
     # _end_def_
 
-    def update_positions(self, new_velocities: ArrayLike) -> None:
+    def update_positions(self, *args, **kwargs) -> None:
         """
         Updates the positions of the particles in the swarm.
 
-        :param new_velocities: array-like object with the new
-        velocities that will update the particle positions.
-
         :return: None.
         """
-
-        # Update all particles positions.
-        for particle, velocity in zip(self._swarm.population,
-                                      new_velocities):
-            # Ensure the particle stays within bounds.
-            particle.position = np.clip(particle.position + velocity,
-                                        self._lower_bound, self._upper_bound)
+        raise NotImplementedError(f"{self.__class__.__name__}: "
+                                  f"You should implement this method!")
     # _end_def_
 
     def update_velocities(self, *args, **kwargs) -> ArrayLike:
