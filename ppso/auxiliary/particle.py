@@ -15,25 +15,18 @@ class Particle(object):
     """
 
     # Object variables.
-    __slots__ = ("_position", "_velocity", "_value", "_best_position", "_best_value")
+    __slots__ = ("_position", "_value", "_best_position", "_best_value")
 
-    def __init__(self,
-                 initial_position: ArrayLike = None,
-                 initial_velocity: ArrayLike = None) -> None:
+    def __init__(self, initial_position: ArrayLike = None) -> None:
         """
         Initialize the Particle object. Note that calling the initializer without
         arguments (i.e., Particle()), it will create an empty 'dummy' particle.
 
         :param initial_position: (ArrayLike) Initial position of the particle.
-
-        :param initial_velocity: (ArrayLike) Initial velocity of the particle.
         """
 
         # Set the initial particle position to a vector.
         self._position = array(initial_position)
-
-        # Set the initial particle velocity to a vector.
-        self._velocity = array(initial_velocity)
 
         # Initialize the best (historical) position.
         self._best_position = array(initial_position)
@@ -75,28 +68,6 @@ class Particle(object):
         :return: None.
         """
         self._position = new_vector
-    # _end_def_
-
-    @property
-    def velocity(self) -> ArrayLike:
-        """
-        Returns the velocity of the particle object.
-
-        :return: (ArrayLike) velocity vector.
-        """
-        return self._velocity
-    # _end_def_
-
-    @velocity.setter
-    def velocity(self, new_vector: ArrayLike) -> None:
-        """
-        Updates the velocity in the particle object.
-
-        :param new_vector: (ArrayLike) New position vector.
-
-        :return: None.
-        """
-        self._velocity = new_vector
     # _end_def_
 
     @property
@@ -185,9 +156,6 @@ class Particle(object):
         # Deep copy the position vector.
         setattr(new_object, "_position", deepcopy(self._position, memo))
 
-        # Deep copy the velocity vector.
-        setattr(new_object, "_velocity", deepcopy(self._velocity, memo))
-
         # Deep copy the best position vector.
         setattr(new_object, "_best_position", deepcopy(self._best_position, memo))
 
@@ -247,7 +215,7 @@ class Particle(object):
         :return: a string representation of a Particle.
         """
         return f"{self.__class__.__name__}: "\
-               f"(Position, Velocity) = ({self._position, self._velocity})."
+               f"(Position, Value) = ({self._position, self._value})."
     # _end_def_
 
 # _end_class_
