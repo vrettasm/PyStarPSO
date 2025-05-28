@@ -42,18 +42,17 @@ class StandardPSO(GenericPSO):
         R1 = GenericPSO.rng_PSO.uniform(0, 1, size=(self.n_row, self.n_col))
         R2 = GenericPSO.rng_PSO.uniform(0, 1, size=(self.n_row, self.n_col))
 
-        # Get the Global best particle.
+        # Get the global best particle position.
         g_best = self.swarm.best_particle().position
 
         for i, (r1, r2) in enumerate(zip(R1, R2)):
-            # Get the current position of
-            # i-th the particle.
+            # Get the current position of i-th the particle.
             x_i = self.swarm[i].position
 
             # Update the new velocity.
-            self._velocities[i] = (w * self._velocities[i] +
-                                   c1 * r1 * (self.swarm[i].best_position - x_i) +
-                                   c2 * r2 * (g_best - x_i))
+            self._velocities[i] = w * self._velocities[i] +\
+                                  c1 * r1 * (self.swarm[i].best_position - x_i) +\
+                                  c2 * r2 * (g_best - x_i)
         # _end_for_
 
     # _end_def_
