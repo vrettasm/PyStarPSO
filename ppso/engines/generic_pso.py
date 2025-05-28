@@ -1,17 +1,16 @@
 import time
-from math import isnan
 from os import cpu_count
 from functools import wraps
-from operator import attrgetter
 from collections import defaultdict, deque
 
 from typing import Callable
 from joblib import (Parallel, delayed)
 
 import numpy as np
+from numpy.typing import ArrayLike
 from numpy.random import default_rng, Generator
 
-from ppso.auxiliary.particle import Particle
+from ppso.auxiliary.swarm import Swarm
 
 # Public interface.
 __all__ = ["GenericPSO", "time_it"]
@@ -54,6 +53,7 @@ def time_it(func):
     return time_it_wrapper
 # _end_def_
 
+
 class GenericPSO(object):
     """
     Description:
@@ -73,9 +73,13 @@ class GenericPSO(object):
     __slots__ = ("_swarm", "objective_func", "_velocity_max", "_velocity_min",
                  "_upper_bound", "_lower_bound", "_stats", "_n_cpus")
 
-    def __init__(self, initial_swarm: list[Particle], obj_func: Callable,
-                 lower_bound: np.typing.ArrayLike, upper_bound: np.typing.ArrayLike,
-                 v_max: np.typing.ArrayLike, v_min: np.typing.ArrayLike,
+    def __init__(self,
+                 initial_swarm: Swarm,
+                 obj_func: Callable,
+                 lower_bound: ArrayLike,
+                 upper_bound: ArrayLike,
+                 v_min: ArrayLike,
+                 v_max: ArrayLike,
                  n_cpus: int = None):
         """
         Default constructor of GenericPSO object.
@@ -84,15 +88,19 @@ class GenericPSO(object):
 
         :param obj_func: callable objective function.
 
-        :param v_max: maximum velocity vector.
+        :param lower_bound: lower search space bound.
+
+        :param upper_bound: upper search space bound.
 
         :param v_min: minimum velocity vector.
+
+        :param v_max: maximum velocity vector.
 
         :param n_cpus: number of requested CPUs for the optimization process.
         """
 
-        # Copy the reference of the population.
-        self._swarm = initial_swarm.copy()
+        # Get the swarm population.
+        self._swarm = initial_swarm
 
         # Make sure the fitness function is indeed callable.
         if not callable(obj_func):
@@ -103,8 +111,9 @@ class GenericPSO(object):
         # _end_if_
 
         # Set the upper/lower bounds of the search space.
-        self._lower_bound = lower_bound
-        self._upper_bound = upper_bound
+        # Ensure the bounds vectors are arrays.
+        self._lower_bound = np.array(lower_bound)
+        self._upper_bound = np.array(upper_bound)
 
         # Get the number of requested CPUs.
         if n_cpus is None:
@@ -120,7 +129,7 @@ class GenericPSO(object):
         # _end_if_
 
         # Get the length of the particles' position.
-        particle_size = len(initial_swarm[0].position)
+        particle_size = len(initial_swarm[0])
 
         # Check the lengths of the velocity vectors.
         if any(len(vec) != particle_size for vec in [v_max, v_min]):
@@ -129,50 +138,17 @@ class GenericPSO(object):
         # _end_if_
 
         # Ensure the velocity vectors are consistent.
-        if any(np.array(v_min) > np.array(v_max)):
+        if any(np.asarray(v_min) > np.asarray(v_max)):
             raise ValueError(f"{self.__class__.__name__}: "
                              f"Velocity bounds should be v_min < v_max.")
         # _end_if_
 
-        # Copy the (references) of the velocity vectors.
-        self._velocity_max = v_max
-        self._velocity_min = v_min
+        # Ensure the velocity vectors are arrays.
+        self._velocity_max = np.array(v_max)
+        self._velocity_min = np.array(v_min)
 
         # Dictionary with statistics.
         self._stats = defaultdict(deque)
-    # _end_def_
-
-    def generate_random_positions(self,
-                                  x_min: np.typing.ArrayLike,
-                                  x_max: np.typing.ArrayLike,
-                                  check_bounds: bool = False) -> None:
-        """
-        Generate a uniformly random population of particle positions
-        within the [x_min, x_max] bounds.
-
-        :param x_min: ArrayLike lower bounds.
-
-        :param x_max: ArrayLike higher bounds.
-
-        :param check_bounds: (bool) If true it will check the bounds
-        before random generation.
-
-        :return: None.
-        """
-
-        if check_bounds and any(np.array(x_min) > np.array(x_max)):
-            raise ValueError(f"{self.__class__.__name__}: "
-                             f"Bounds should be x_min < x_max.")
-        # _end_if_
-
-        # Get the size of the particle.
-        p_size = self.swarm[0].size
-
-        # Generate p ~ U(x_min, x_max).
-        for p in self.swarm:
-            p.position = GenericPSO.rng_PSO.uniform(x_min, x_max, size=p_size)
-        # _end_for_
-
     # _end_def_
 
     @classmethod
@@ -189,7 +165,7 @@ class GenericPSO(object):
     # _end_def_
 
     @property
-    def velocity_max(self) -> np.typing.ArrayLike:
+    def velocity_max(self) -> ArrayLike:
         """
         Accessor method that returns the max velocity array.
 
@@ -199,7 +175,7 @@ class GenericPSO(object):
     # _end_def_
 
     @property
-    def velocity_min(self) -> np.typing.ArrayLike:
+    def velocity_min(self) -> ArrayLike:
         """
         Accessor method that returns the min velocity array.
 
@@ -229,94 +205,49 @@ class GenericPSO(object):
     # _end_def_
 
     @property
-    def swarm(self) -> list[Particle]:
+    def swarm(self) -> Swarm:
         """
         Accessor of the population list of the swarm.
 
-        :return: the list (of particles) of the swarm.
+        :return: the list of particles (the swarm).
         """
         return self._swarm
     # _end_def_
 
-    def best_particle(self) -> Particle:
+    def generate_random_positions(self,
+                                  x_min: ArrayLike = None,
+                                  x_max: ArrayLike = None) -> None:
         """
-        Auxiliary method that returns the particle with the
-        highest function value. Safeguard with ignoring NaNs.
+        Generate the population of particles positions by sampling
+        uniformly random numbers within the [x_min, x_max] bounds.
 
-        :return: Return the particle with the highest value.
+        :param x_min: the minimum allowed values for the positions.
+
+        :param x_max: the maximum allowed values for the positions.
+
+        :return: None.
         """
-        return max([p for p in self.swarm if not isnan(p.value)],
-                   key=attrgetter("value"), default=None)
+
+        # If 'x_min' is absent use the default lower_bound.
+        x_min = self._lower_bound if x_min is None else np.asarray(x_min)
+
+        # If 'x_max' is absent use the default upper_bound.
+        x_max = self._upper_bound if x_max is None else np.asarray(x_max)
+
+        # Get the size of the particle.
+        particle_size = self._swarm[0].size
+
+        # Generate p ~ U(x_min, x_max).
+        for p in self._swarm:
+            p.position = GenericPSO.rng_PSO.uniform(x_min, x_max,
+                                                    size=particle_size)
     # _end_def_
 
-    def best_n(self, n: int = 1) -> list[Particle]:
-        """
-        Auxiliary method that returns the best 'n' particles
-        with the highest objective function value.
-
-        :param n: the number of the best chromosomes.
-
-        :return: Return the 'n' chromosomes with the highest fitness.
-        """
-
-        # Make sure 'n' is positive integer.
-        if not isinstance(n, int) or n <= 0:
-            raise ValueError(f"{self.__class__.__name__}: "
-                             f"Input must be a positive integer.")
-        # _end_if_
-
-        # Ensure the number of return particles do not exceed
-        # the size of the swarm.
-        if n > len(self.swarm):
-            raise RuntimeError(f"{self.__class__.__name__}: "
-                               f"Best {n} exceeds swarm size.")
-        # _end_if_
-
-        # Sort the swarm in descending order.
-        sorted_swarm = sorted([p for p in self.swarm if not isnan(p.value)],
-                              key=attrgetter("value"), reverse=True)
-
-        # Return the best 'n' particles.
-        return sorted_swarm[0:n]
-    # _end_def_
-
-    def swarm_function_values(self) -> list[float]:
-        """
-        Get the function values of all the swarm.
-
-        :return: A list with all the objectives values.
-        """
-        return [p.value for p in self.swarm]
-    # _end_def_
-
-    def individual_value(self, index: int) -> float:
-        """
-        Get the fitness value of an individual member of the population.
-
-        :param index: Position of the individual in the population.
-
-        :return: The fitness value (float).
-        """
-        return self.swarm[index].value
-    # _end_def_
-
-    def swarm_positions(self) -> list:
-        """
-        Get the particle positions of all the swarm.
-
-        :return: A list with all the positions.
-        """
-        return [p.position for p in self.swarm]
-    # _end_def_
-
-    def evaluate_function(self, input_swarm: list[Particle], parallel_mode: bool = False,
+    def evaluate_function(self, parallel_mode: bool = False,
                           backend: str = "threading") -> (list[float], bool):
         """
         Evaluate all the particles of the input list with the custom objective function.
         The parallel_mode is optional.
-
-        :param input_swarm: (list) The population of particle that we want to evaluate
-        their function values.
 
         :param parallel_mode: (bool) Enables parallel computation of the objective function.
 
@@ -328,42 +259,43 @@ class GenericPSO(object):
         # Get a local copy of the objective function.
         func = self.objective_func
 
-        # Generator expression that yields the positions.
-        particle_positions = (p.position for p in self.swarm)
+        # Extract the positions of the swarm in numpy array.
+        positions = self._swarm.positions()
 
         # Check the 'parallel_mode' flag.
         if parallel_mode:
 
             # Evaluate the particles in parallel mode.
-            iteration_i = Parallel(n_jobs=self._n_cpus, backend=backend)(
-                delayed(func)(p) for p in particle_positions
+            evaluation_i = Parallel(n_jobs=self._n_cpus, backend=backend)(
+                delayed(func)(x) for x in positions
             )
         else:
 
             # Evaluate all the particles in serial mode.
-            iteration_i = [func(p) for p in particle_positions]
+            evaluation_i = [func(x) for x in positions]
         # _end_if_
 
         # Preallocate the function values list.
-        function_values = len(iteration_i) * [None]
+        function_values = len(evaluation_i) * [None]
 
         # Flag to indicate if a solution has been found.
         found_solution = False
 
         # Update all particles with their objective function values and check
         # if a solution has been found.
-        for n, (p, output) in enumerate(zip(input_swarm, iteration_i)):
+        for n, (p, result) in enumerate(zip(self._swarm.population,
+                                            evaluation_i)):
             # Attach the fitness to each chromosome.
-            p.value = output[0]
+            p.value = result[0]
 
             # Collect the function values in a separate list.
-            function_values[n] = output[0]
+            function_values[n] = result[0]
 
             # Update the "found solution".
-            found_solution |= output[1]
+            found_solution |= result[1]
         # _end_for_
 
-        # Return the function_values values.
+        # Return the function values.
         return function_values, found_solution
     # _end_def_
 
