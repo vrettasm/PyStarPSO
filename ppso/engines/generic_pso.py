@@ -120,7 +120,7 @@ class GenericPSO(object):
     @property
     def items(self) -> list | tuple:
         """
-        Accessor (getter) of the _items place holder container.
+        Accessor (getter) of the _items placeholder container.
 
         :return: _items (if any).
         """
