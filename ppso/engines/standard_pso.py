@@ -1,6 +1,7 @@
 from math import isclose
 
 import numpy as np
+from numpy.typing import ArrayLike
 
 from ppso.auxiliary.utilities import time_it
 from ppso.engines.generic_pso import GenericPSO
@@ -21,13 +22,17 @@ class StandardPSO(GenericPSO):
 
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs):
         """
         Default constructor of StandardPSO object.
+
+        :param x_min: lower search space bound.
+
+        :param x_max: upper search space bound.
         """
 
         # Call the super constructor with the input parameters.
-        super().__init__(**kwargs)
+        super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
         # Number of particles.
         self.n_row = len(self.swarm.population)

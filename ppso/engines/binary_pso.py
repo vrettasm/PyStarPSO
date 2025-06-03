@@ -1,6 +1,7 @@
 from math import isclose
 
 import numpy as np
+from numpy.typing import ArrayLike
 
 from ppso.auxiliary.utilities import time_it
 from ppso.engines.generic_pso import GenericPSO
@@ -23,13 +24,17 @@ class BinaryPSO(GenericPSO):
 
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, v_min: ArrayLike, v_max: ArrayLike, **kwargs):
         """
-        Default constructor of StandardPSO object.
+        Default constructor of BinaryPSO object.
+
+        :param v_min: lower velocity bound.
+
+        :param v_max: upper velocity bound.
         """
 
         # Call the super constructor with the input parameters.
-        super().__init__(**kwargs)
+        super().__init__(lower_bound=v_min, upper_bound=v_max, **kwargs)
 
         # Number of particles.
         self.n_row = len(self.swarm.population)
