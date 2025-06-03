@@ -17,9 +17,9 @@ class AcceleratedPSO(GenericPSO):
     as described in:
 
     Yang, X. S., Deb, S., and Fong, S., (2011), Accelerated Particle Swarm Optimization
-    and Support Vector Machine for Business Optimization and Applications,
-    in: Networked Digital Technologies (NDT2011), Communications in Computer and Information
-    Science, Vol. 136, Springer, pp. 53-66 (2011).
+    and Support Vector Machine for Business Optimization and Applications, in: Networked
+    Digital Technologies (NDT2011), Communications in Computer and Information Science,
+    Vol. 136, Springer, pp. 53-66.
 
     """
 
@@ -57,13 +57,14 @@ class AcceleratedPSO(GenericPSO):
         c_beta = options.get("beta")
 
         # Get the GLOBAL best particle position.
-        g_best = self.swarm.best_particle().position
+        global_best_position = self.swarm.best_particle().position
 
-        # Compute the 'accelerated velocities'.
-        _velocities = c_beta*g_best + GenericPSO.rng_PSO.uniform(0, c_alpha,
-                                                                 size=arr_shape)
-        # Update all particles positions.
-        for particle, velocity in zip(self._swarm.population, _velocities):
+        # Temporary 'velocity-like' parameters.
+        tmp_velocities = (c_beta*global_best_position +
+                          GenericPSO.rng_PSO.normal(0, c_alpha,
+                                                    size=arr_shape))
+        # Update all particle positions.
+        for particle, velocity in zip(self._swarm.population, tmp_velocities):
             # Ensure the particle stays within bounds.
             particle.position = np.clip((1.0 - c_beta)*particle.position + velocity,
                                         self._lower_bound, self._upper_bound)
@@ -83,7 +84,7 @@ class AcceleratedPSO(GenericPSO):
         If this value is None (default) the algorithm will terminate using the max_it value.
 
         :param options: dictionary with the update equations options ('alpha': 0.1xL ~ 0.5xL,
-        'beta': 0.1 ~ 0.7), where L is the scale of each variable.
+        'beta': 0.1 ~ 0.7), where L is the typical length of the problem at hand.
 
         :param parallel:(bool) Flag that enables parallel computation of the objective function.
 
@@ -104,11 +105,11 @@ class AcceleratedPSO(GenericPSO):
         # If options is not given set the
         # parameters of the original paper.
         if options is None:
-            # Default values of the simplified version.
-            options = {"w": 1.0, "c1": 2.0, "c2": 2.0}
+            # Default values of the simpler version.
+            options = {"alpha": 0.5, "beta": 0.5}
         else:
             # Make sure the right keys exist.
-            for key in {"w", "c1", "c2"}:
+            for key in {"alpha", "beta"}:
                 if key not in options:
                     raise ValueError(f"{self.__class__.__name__}: "
                                      f"Option '{key}' is missing. ")
