@@ -50,6 +50,8 @@ class GenericPSO(object):
 
         :param upper_bound: upper search space bound.
 
+        :param copy: if true it will create a separate (deep) copy of the initial swarm.
+
         :param n_cpus: number of requested CPUs for the optimization process.
         """
 
