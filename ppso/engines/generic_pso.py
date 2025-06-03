@@ -181,9 +181,6 @@ class GenericPSO(object):
         Generate the population of particles positions by sampling
         discrete binary random numbers within the {0, 1} set.
 
-        A slightly faster implementation could be the following:
-        >> rng_PSO.uniform(0, 2, size=(N, D)).astype(int)
-
         :return: None.
         """
 
