@@ -65,7 +65,6 @@ class GenericPSO(object):
         # _end_if_
 
         # Set the upper/lower bounds of the search space.
-        # Ensure the bounds vectors are arrays.
         self._lower_bound = np_array(lower_bound)
         self._upper_bound = np_array(upper_bound)
 
