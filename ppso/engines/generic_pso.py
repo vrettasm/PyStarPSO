@@ -193,9 +193,6 @@ class GenericPSO(object):
             evaluation_i = [func(x) for x in positions]
         # _end_if_
 
-        # Preallocate the function values list.
-        function_values = len(evaluation_i) * [None]
-
         # Flag to indicate if a solution has been found.
         found_solution = False
 
