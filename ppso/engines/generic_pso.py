@@ -38,6 +38,7 @@ class GenericPSO(object):
                  obj_func: Callable,
                  lower_bound: ArrayLike,
                  upper_bound: ArrayLike,
+                 copy: bool = False,
                  n_cpus: int = None):
         """
         Default constructor of GenericPSO object.
