@@ -31,16 +31,13 @@ class GenericPSO(object):
     MAX_CPUs: int = 1 if not cpu_count() else cpu_count()
 
     # Object variables.
-    __slots__ = ("_swarm", "objective_func", "_velocity_max", "_velocity_min",
-                 "_upper_bound", "_lower_bound", "_stats", "_n_cpus")
+    __slots__ = ("_swarm", "objective_func", "_upper_bound", "_lower_bound", "_stats", "_n_cpus")
 
     def __init__(self,
                  initial_swarm: Swarm,
                  obj_func: Callable,
                  lower_bound: ArrayLike,
                  upper_bound: ArrayLike,
-                 v_min: ArrayLike,
-                 v_max: ArrayLike,
                  n_cpus: int = None):
         """
         Default constructor of GenericPSO object.
@@ -52,10 +49,6 @@ class GenericPSO(object):
         :param lower_bound: lower search space bound.
 
         :param upper_bound: upper search space bound.
-
-        :param v_min: minimum velocity vector.
-
-        :param v_max: maximum velocity vector.
 
         :param n_cpus: number of requested CPUs for the optimization process.
         """
@@ -89,25 +82,6 @@ class GenericPSO(object):
             self._n_cpus = max(1, min(GenericPSO.MAX_CPUs, int(n_cpus)))
         # _end_if_
 
-        # Get the length of the particles' position.
-        particle_size = len(initial_swarm[0])
-
-        # Check the lengths of the velocity vectors.
-        if any(len(vec) != particle_size for vec in [v_max, v_min]):
-            raise RuntimeError(f"{self.__class__.__name__}: "
-                               f"Velocity vectors should have the same length.")
-        # _end_if_
-
-        # Ensure the velocity vectors are consistent.
-        if any(np.asarray(v_min) > np.asarray(v_max)):
-            raise ValueError(f"{self.__class__.__name__}: "
-                             f"Velocity bounds should be v_min < v_max.")
-        # _end_if_
-
-        # Ensure the velocity vectors are arrays.
-        self._velocity_max = np_array(v_max)
-        self._velocity_min = np_array(v_min)
-
         # Dictionary with statistics.
         self._stats = defaultdict(deque)
     # _end_def_
@@ -123,26 +97,6 @@ class GenericPSO(object):
         """
         # Re-initialize the class variable.
         cls.rng_PSO = default_rng(seed=new_seed)
-    # _end_def_
-
-    @property
-    def velocity_max(self) -> ArrayLike:
-        """
-        Accessor method that returns the max velocity array.
-
-        :return: ArrayLike of maximum velocity.
-        """
-        return self._velocity_max
-    # _end_def_
-
-    @property
-    def velocity_min(self) -> ArrayLike:
-        """
-        Accessor method that returns the min velocity array.
-
-        :return: ArrayLike of minimum velocity.
-        """
-        return self._velocity_min
     # _end_def_
 
     @property
