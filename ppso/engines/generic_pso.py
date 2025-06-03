@@ -56,7 +56,7 @@ class GenericPSO(object):
         """
 
         # Get the swarm population.
-        self._swarm = initial_swarm
+        self._swarm = deepcopy(initial_swarm) if copy else initial_swarm
 
         # Make sure the fitness function is indeed callable.
         if not callable(obj_func):
