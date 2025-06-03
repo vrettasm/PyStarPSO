@@ -27,10 +27,10 @@ class Particle(object):
         """
 
         # Set the initial particle position to a vector.
-        self._position = array(initial_position)
+        self._position = array(initial_position, copy=True)
 
         # Initialize the best (historical) position.
-        self._best_position = array(initial_position)
+        self._best_position = array(initial_position, copy=True)
 
         # Initialize the best (historical) value to -inf.
         self._best_value = -inf
@@ -90,6 +90,10 @@ class Particle(object):
 
         :return: None.
         """
+        # Note: Since the best position is updated by the
+        # current position we need to copy the new vector
+        # into the best_position vector to avoid pointing
+        # to the same memory twice.
         copy_to(self._best_position, new_vector)
     # _end_def_
 
