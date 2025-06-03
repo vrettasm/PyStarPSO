@@ -176,6 +176,26 @@ class GenericPSO(object):
                                                     size=particle_size)
     # _end_def_
 
+    def generate_binary_positions(self) -> None:
+        """
+        Generate the population of particles positions by sampling
+        discrete binary random numbers within the {0, 1} set.
+
+        A slightly faster implementation could be the following:
+        >> rng_PSO.uniform(0, 2, size=(N, D)).astype(int)
+
+        :return: None.
+        """
+
+        # Get the size of the particle.
+        particle_size = self._swarm[0].size
+
+        # Generate p ~ Bin(0, 1).
+        for p in self._swarm:
+            p.position = GenericPSO.rng_PSO.integers(0, 1, endpoint=True,
+                                                     size=particle_size)
+    # _end_def_
+
     def evaluate_function(self, parallel_mode: bool = False,
                           backend: str = "threading") -> (list[float], bool):
         """
