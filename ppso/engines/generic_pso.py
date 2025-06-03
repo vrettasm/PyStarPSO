@@ -33,7 +33,8 @@ class GenericPSO(object):
     MAX_CPUs: int = 1 if not cpu_count() else cpu_count()
 
     # Object variables.
-    __slots__ = ("_swarm", "objective_func", "_upper_bound", "_lower_bound", "_stats", "_n_cpus")
+    __slots__ = ("_swarm", "objective_func", "_upper_bound", "_lower_bound",
+                 "_stats", "_n_cpus", "_items")
 
     def __init__(self,
                  initial_swarm: Swarm,
@@ -88,6 +89,9 @@ class GenericPSO(object):
 
         # Dictionary with statistics.
         self._stats = defaultdict(deque)
+
+        # Place holder.
+        self._items = None
     # _end_def_
 
     @classmethod
@@ -111,6 +115,16 @@ class GenericPSO(object):
         :return: the dictionary with the statistics from the run.
         """
         return self._stats
+    # _end_def_
+
+    @property
+    def items(self) -> list | tuple:
+        """
+        Accessor (getter) of the _items place holder container.
+
+        :return: _items (if any).
+        """
+        return self._items
     # _end_def_
 
     @property
