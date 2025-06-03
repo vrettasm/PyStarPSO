@@ -61,9 +61,12 @@ class StandardPSO(GenericPSO):
         # Social coefficient.
         c2 = options.get("c2")
 
+        # Get the shape of the velocity array.
+        arr_shape = (self.n_row, self.n_col)
+
         # Pre-sample the coefficients.
-        R1 = GenericPSO.rng_PSO.uniform(0, c1, size=(self.n_row, self.n_col))
-        R2 = GenericPSO.rng_PSO.uniform(0, c2, size=(self.n_row, self.n_col))
+        R1 = GenericPSO.rng_PSO.uniform(0, c1, size=arr_shape)
+        R2 = GenericPSO.rng_PSO.uniform(0, c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
         global_best_position = self.swarm.best_particle().position
