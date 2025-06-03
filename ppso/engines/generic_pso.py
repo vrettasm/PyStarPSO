@@ -129,9 +129,9 @@ class GenericPSO(object):
         return self._swarm
     # _end_def_
 
-    def generate_random_positions(self,
-                                  x_min: ArrayLike = None,
-                                  x_max: ArrayLike = None) -> None:
+    def generate_uniform_positions(self,
+                                   x_min: ArrayLike = None,
+                                   x_max: ArrayLike = None) -> None:
         """
         Generate the population of particles positions by sampling
         uniformly random numbers within the [x_min, x_max] bounds.
