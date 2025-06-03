@@ -1,4 +1,6 @@
+from math import inf
 from os import cpu_count
+from copy import deepcopy
 from collections import defaultdict, deque
 
 from typing import Callable
@@ -196,25 +198,30 @@ class GenericPSO(object):
         # Flag to indicate if a solution has been found.
         found_solution = False
 
-        # Update all particles with their objective function
-        # values and check if a solution has been found.
-        for n, (p, result) in enumerate(zip(self._swarm.population,
-                                            evaluation_i)):
-            # Attach the function value to each particle.
-            p.value = result[0]
+        # Initialize f_max.
+        f_max = -inf
 
-            # Collect the function values.
-            function_values[n] = result[0]
+        # Update all particles with their new objective function values.
+        for n, (p, result) in enumerate(zip(self._swarm, evaluation_i)):
+            # Extract the n-th function value.
+            f_value = result[0]
+
+            # Attach the function value to each particle.
+            p.value = f_value
 
             # Update the found solution.
             found_solution |= result[1]
+
+            # Update f_max value.
+            if f_value > f_max:
+                f_max = f_value
         # _end_for_
 
         # Update local best for consistent results.
         self.swarm.update_local_best()
 
-        # Return the function values.
-        return function_values, found_solution
+        # Return the tuple.
+        return f_max, found_solution
     # _end_def_
 
     def update_positions(self, *args, **kwargs) -> None:
@@ -222,16 +229,6 @@ class GenericPSO(object):
         Updates the positions of the particles in the swarm.
 
         :return: None.
-        """
-        raise NotImplementedError(f"{self.__class__.__name__}: "
-                                  f"You should implement this method!")
-    # _end_def_
-
-    def update_velocities(self, *args, **kwargs) -> ArrayLike:
-        """
-        Update velocity method of the Generic PSO class. This should
-        be unique according to the different methods that implement
-        the generic class.
         """
         raise NotImplementedError(f"{self.__class__.__name__}: "
                                   f"You should implement this method!")
