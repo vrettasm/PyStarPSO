@@ -94,7 +94,7 @@ class StandardPSO(GenericPSO):
         # Update the velocity equations.
         self.update_velocities(options)
 
-        # Update all particles positions.
+        # Update all particle positions.
         for particle, velocity in zip(self._swarm.population,
                                       self._velocities):
             # Ensure the particle stays within bounds.
