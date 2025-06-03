@@ -171,7 +171,7 @@ class GenericPSO(object):
 
         :param backend: Backend for the parallel Joblib framework.
 
-        :return: a list with the function values and the found solution flag.
+        :return: the max function value and the found solution flag.
         """
 
         # Get a local copy of the objective function.
