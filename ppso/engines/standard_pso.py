@@ -1,7 +1,6 @@
 from math import isclose
 
 import numpy as np
-from numpy.typing import ArrayLike
 
 from ppso.auxiliary.utilities import time_it
 from ppso.engines.generic_pso import GenericPSO
@@ -14,7 +13,11 @@ class StandardPSO(GenericPSO):
     """
     Description:
 
-        TBD
+    This implements a basic variant of the original PSO algorithm as described in:
+
+    Kennedy, J. and Eberhart, R. (1995). "Particle Swarm Optimization". Proceedings
+    of IEEE International Conference on Neural Networks. Vol. IV. pp. 1942–1948.
+    doi:10.1109/ICNN.1995.488968.
 
     """
 
@@ -37,14 +40,33 @@ class StandardPSO(GenericPSO):
                                                       size=(self.n_row, self.n_col))
     # _end_def_
 
-    def update_velocities(self, w: float = 0.5, c1: float = 1.5, c2: float = 1.5) -> ArrayLike:
+    def update_velocities(self, options: dict) -> None:
+        """
+        Performs the update on the velocity equations according to the
+        original PSO paper "Kennedy, J. and Eberhart, R. (1995)".
+
+        :param options: Dictionary with the basic PSO options:
+              i)  'w': inertia weight
+             ii) 'c1': cognitive coefficient
+            iii) 'c2': social coefficient
+
+        :return: None.
+        """
+        # Inertia weight parameter.
+        w = options.get("w")
+
+        # Cognitive coefficient.
+        c1 = options.get("c1")
+
+        # Social coefficient.
+        c2 = options.get("c2")
 
         # Pre-sample the coefficients.
         R1 = GenericPSO.rng_PSO.uniform(0, c1, size=(self.n_row, self.n_col))
         R2 = GenericPSO.rng_PSO.uniform(0, c2, size=(self.n_row, self.n_col))
 
-        # Get the global best particle position.
-        g_best = self.swarm.best_particle().position
+        # Get the GLOBAL best particle position.
+        global_best_position = self.swarm.best_particle().position
 
         for i, (r1, r2) in enumerate(zip(R1, R2)):
             # Get the current position of i-th the particle.
@@ -52,45 +74,79 @@ class StandardPSO(GenericPSO):
 
             # Update the new velocity.
             self._velocities[i] = w * self._velocities[i] +\
-                                  r1 * (self.swarm[i].best_position - x_i) +\
-                                  r2 * (g_best - x_i)
+                r1 * (self.swarm[i].best_position - x_i) +\
+                r2 * (global_best_position - x_i)
         # _end_for_
-
     # _end_def_
 
-    def update_positions(self, new_velocities: ArrayLike) -> None:
+    def update_positions(self, options: dict) -> None:
         """
         Updates the positions of the particles in the swarm.
 
-        :param new_velocities: array-like object with the new
-        velocities that will update the particle positions.
+        :param options: dictionary with options for the update equations.
 
         :return: None.
         """
 
+        # Update the velocity equations.
+        self.update_velocities(options)
+
         # Update all particles positions.
         for particle, velocity in zip(self._swarm.population,
-                                      new_velocities):
+                                      self._velocities):
             # Ensure the particle stays within bounds.
             particle.position = np.clip(particle.position + velocity,
                                         self._lower_bound, self._upper_bound)
-
+        # _end_for_
     # _end_def_
 
     @time_it
-    def run(self, max_it: int = 1000, f_tol: float = None, parallel: bool = False,
-            reset_swarm: bool = False, verbose: bool = False) -> None:
+    def run(self, max_it: int = 100, f_tol: float = 1.0e-8, options: dict = None,
+            parallel: bool = False, reset_swarm: bool = False, verbose: bool = False) -> None:
+        """
+        Main method of the StandardPSO class, that implements the optimization routine.
+
+        :param max_it: (int) maximum number of iterations in the optimization loop.
+
+        :param f_tol: (float) tolerance in the difference between the optimal function value
+        of two consecutive iterations. It is used to determine the convergence of the swarm.
+        If this value is None (default) the algorithm will terminate using the max_it value.
+
+        :param options: dictionary with the update equations options ('w': inertia weight,
+        'c1': cognitive coefficient, 'c2': social coefficient).
+
+        :param parallel:(bool) Flag that enables parallel computation of the objective function.
+
+        :param reset_swarm: if true it will reset the positions of the swarm to uniformly random
+        respecting the boundaries of each space dimension.
+
+        :param verbose: (bool) if 'True' it will display periodically information about the
+        current optimal function values.
+
+        :return: None.
+        """
 
         # Check if resetting the swarm is required.
         if reset_swarm:
-            self.generate_random_positions()
+            self.generate_uniform_positions()
+        # _end_if_
+
+        # If options is not given set the
+        # parameters of the original paper.
+        if options is None:
+            # Default values of the simplified version.
+            options = {"w": 1.0, "c1": 2.0, "c2": 2.0}
+        else:
+            # Make sure the right keys exist.
+            for key in {"w", "c1", "c2"}:
+                if key not in options:
+                    raise ValueError(f"{self.__class__.__name__}: "
+                                     f"Option '{key}' is missing. ")
+            # _end_for_
         # _end_if_
 
         # Get the function values before optimisation.
-        fun_values_0, _ = self.evaluate_function(parallel)
-
-        # Get the first optimal function value.
-        f_opt = max(fun_values_0)
+        f_opt, _ = self.evaluate_function(parallel)
 
         # Display an information message.
         print(f"Initial f_optimal = {f_opt:.4f}")
@@ -103,17 +159,11 @@ class StandardPSO(GenericPSO):
         # Repeat for 'max_it' times.
         for i in range(max_it):
 
-            # Perform the update of velocity.
-            self.update_velocities()
-
             # Update the positions in the swarm.
-            self.update_positions(self._velocities)
+            self.update_positions(options)
 
             # Calculate the new function values.
-            fun_values_i, found_solution = self.evaluate_function(parallel)
-
-            # Compute the optimal function value.
-            f_new = max(fun_values_i)
+            f_new, found_solution = self.evaluate_function(parallel)
 
             # Check if we want to print output.
             if verbose and (i % its_time_to_print) == 0:
