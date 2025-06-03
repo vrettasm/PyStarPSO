@@ -40,8 +40,8 @@ class StandardPSO(GenericPSO):
     def update_velocities(self, w: float = 0.5, c1: float = 1.5, c2: float = 1.5) -> ArrayLike:
 
         # Pre-sample the coefficients.
-        R1 = GenericPSO.rng_PSO.uniform(0, 1, size=(self.n_row, self.n_col))
-        R2 = GenericPSO.rng_PSO.uniform(0, 1, size=(self.n_row, self.n_col))
+        R1 = GenericPSO.rng_PSO.uniform(0, c1, size=(self.n_row, self.n_col))
+        R2 = GenericPSO.rng_PSO.uniform(0, c2, size=(self.n_row, self.n_col))
 
         # Get the global best particle position.
         g_best = self.swarm.best_particle().position
@@ -52,8 +52,8 @@ class StandardPSO(GenericPSO):
 
             # Update the new velocity.
             self._velocities[i] = w * self._velocities[i] +\
-                                  c1 * r1 * (self.swarm[i].best_position - x_i) +\
-                                  c2 * r2 * (g_best - x_i)
+                                  r1 * (self.swarm[i].best_position - x_i) +\
+                                  r2 * (g_best - x_i)
         # _end_for_
 
     # _end_def_
@@ -74,6 +74,7 @@ class StandardPSO(GenericPSO):
             # Ensure the particle stays within bounds.
             particle.position = np.clip(particle.position + velocity,
                                         self._lower_bound, self._upper_bound)
+
     # _end_def_
 
     @time_it
@@ -116,14 +117,12 @@ class StandardPSO(GenericPSO):
 
             # Check if we want to print output.
             if verbose and (i % its_time_to_print) == 0:
-
                 # Display an information message.
                 print(f"Iteration: {i + 1:>5} -> f_optimal = {f_new:.4f}")
             # _end_if_
 
             # Check for termination.
             if found_solution:
-
                 # Update optimal function.
                 f_opt = f_new
 
@@ -136,7 +135,6 @@ class StandardPSO(GenericPSO):
 
             # Check for convergence.
             if f_tol and isclose(f_new, f_opt, rel_tol=f_tol):
-
                 # Update optimal function.
                 f_opt = f_new
 
