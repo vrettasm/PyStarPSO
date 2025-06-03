@@ -3,7 +3,8 @@ from math import isclose
 import numpy as np
 from numpy.typing import ArrayLike
 
-from ppso.engines.generic_pso import GenericPSO, time_it
+from ppso.auxiliary.utilities import time_it
+from ppso.engines.generic_pso import GenericPSO
 
 # Public interface.
 __all__ = ["StandardPSO"]
