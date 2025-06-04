@@ -84,7 +84,6 @@ class StandardPSO(GenericPSO):
             self._velocities[i] = w * self._velocities[i] +\
                 r1 * (self.swarm[i].best_position - x_i) +\
                 r2 * (global_best_position - x_i)
-        # _end_for_
     # _end_def_
 
     def update_positions(self, options: dict) -> None:
@@ -103,9 +102,9 @@ class StandardPSO(GenericPSO):
         for particle, velocity in zip(self._swarm.population,
                                       self._velocities):
             # Ensure the particle stays within bounds.
-            particle.position = np.clip(particle.position + velocity,
-                                        self._lower_bound, self._upper_bound)
-        # _end_for_
+            np.clip(particle.position + velocity,
+                    self._lower_bound, self._upper_bound,
+                    out=particle.position)
     # _end_def_
 
     @time_it

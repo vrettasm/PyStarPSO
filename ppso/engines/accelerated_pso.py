@@ -71,9 +71,8 @@ class AcceleratedPSO(GenericPSO):
         # Update all particle positions.
         for particle, velocity in zip(self._swarm.population, tmp_velocities):
             # Ensure the particle stays within bounds.
-            particle.position = np.clip((1.0 - c_beta)*particle.position + velocity,
-                                        self._lower_bound, self._upper_bound)
-        # _end_for_
+            np.clip((1.0 - c_beta)*particle.position + velocity,
+                    self._lower_bound, self._upper_bound, out=particle.position)
     # _end_def_
 
     @time_it
