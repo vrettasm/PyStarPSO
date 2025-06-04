@@ -102,11 +102,11 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
 
-        # Get the shape of the velocity array.
-        arr_shape = (self.n_row, self.n_col)
-
         # Update the velocity equations.
         self.update_velocities(options)
+
+        # Get the shape of the velocity array.
+        arr_shape = (self.n_row, self.n_col)
 
         # Generate random vectors in U(0, 1).
         r_uniform = GenericPSO.rng_PSO.uniform(0, 1, size=arr_shape)
@@ -129,14 +129,11 @@ class BinaryPSO(GenericPSO):
 
             # Ensure the particle stays within bounds.
             particle.position = x_tmp
-
-            print(particle.position)
         # _end_for_
-
     # _end_def_
 
     @time_it
-    def run(self, max_it: int = 100, f_tol: float = 1.0e-8, options: dict = None,
+    def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
             parallel: bool = False, reset_swarm: bool = False, verbose: bool = False) -> None:
         """
         Main method of the StandardPSO class, that implements the optimization routine.

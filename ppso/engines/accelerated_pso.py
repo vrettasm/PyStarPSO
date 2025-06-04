@@ -77,7 +77,7 @@ class AcceleratedPSO(GenericPSO):
     # _end_def_
 
     @time_it
-    def run(self, max_it: int = 100, f_tol: float = 1.0e-8, options: dict = None,
+    def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
             parallel: bool = False, reset_swarm: bool = False, verbose: bool = False) -> None:
         """
         Main method of the StandardPSO class, that implements the optimization routine.
