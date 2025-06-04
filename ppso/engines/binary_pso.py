@@ -144,8 +144,8 @@ class BinaryPSO(GenericPSO):
         of two consecutive iterations. It is used to determine the convergence of the swarm.
         If this value is None (default) the algorithm will terminate using the max_it value.
 
-        :param options: dictionary with the update equations options ('alpha': 0.1xL ~ 0.5xL,
-        'beta': 0.1 ~ 0.7), where L is the typical length of the problem at hand.
+        :param options: dictionary with the update equations options ('w': inertia weight,
+        'c1': cognitive coefficient, 'c2': social coefficient).
 
         :param parallel:(bool) Flag that enables parallel computation of the objective function.
 
