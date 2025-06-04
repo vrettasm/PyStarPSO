@@ -117,19 +117,14 @@ class BinaryPSO(GenericPSO):
         # Compute the logistic values.
         s_arr = 1.0 / (1.0 + np.exp(-self._velocities))
 
-        # Compute the mask where the logistic function
-        # values are higher than the random value.
-        f_mask = s_arr > r_uniform
+        # Where the logistic function values are
+        # higher than the random value set to 1.
+        x_arr[s_arr > r_uniform] = 1
 
         # Update all particle positions.
-        for particle, x_tmp, idx, in zip(self._swarm.population,
-                                         x_arr, f_mask):
-            # Change the value only if condition is True.
-            x_tmp[idx] = 1
-
-            # Ensure the particle stays within bounds.
+        for particle, x_tmp, in zip(self._swarm.population,
+                                    x_arr):
             particle.position = x_tmp
-        # _end_for_
     # _end_def_
 
     @time_it
