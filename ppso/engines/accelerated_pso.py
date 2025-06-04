@@ -61,13 +61,20 @@ class AcceleratedPSO(GenericPSO):
         # Get the 'beta' parameter.
         c_beta = options.get("beta")
 
+        # Fully informed PSO option.
+        fipso = options.get("fipso", False)
+
         # Get the GLOBAL best particle position.
-        global_best_position = self.swarm.best_particle().position
+        if fipso:
+            # In the fully informed case we take the average of all the best positions.
+            g_best = np.mean([p.best_position for p in self.swarm.population], axis=0)
+        else:
+            g_best = self.swarm.best_particle().position
+        # _end_if_
 
         # Temporary 'velocity-like' parameters.
-        tmp_velocities = (c_beta*global_best_position +
-                          GenericPSO.rng_PSO.normal(0, c_alpha,
-                                                    size=arr_shape))
+        tmp_velocities = (c_beta*g_best + GenericPSO.rng_PSO.normal(0, c_alpha,
+                                                                    size=arr_shape))
         # Update all particle positions.
         for particle, velocity in zip(self._swarm.population, tmp_velocities):
             # Ensure the particle stays within bounds.

@@ -66,6 +66,9 @@ class StandardPSO(GenericPSO):
         # Social coefficient.
         c2 = options.get("c2")
 
+        # Fully informed PSO option.
+        fipso = options.get("fipso", False)
+
         # Get the shape of the velocity array.
         arr_shape = (self.n_row, self.n_col)
 
@@ -74,7 +77,12 @@ class StandardPSO(GenericPSO):
         R2 = GenericPSO.rng_PSO.uniform(0, c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
-        global_best_position = self.swarm.best_particle().position
+        if fipso:
+            # In the fully informed case we take the average of all the best positions.
+            g_best = np.mean([p.best_position for p in self.swarm.population], axis=0)
+        else:
+            g_best = self.swarm.best_particle().position
+        # _end_if_
 
         for i, (r1, r2) in enumerate(zip(R1, R2)):
             # Get the current position of i-th the particle.
@@ -83,7 +91,7 @@ class StandardPSO(GenericPSO):
             # Update the new velocity.
             self._velocities[i] = w * self._velocities[i] +\
                 r1 * (self.swarm[i].best_position - x_i) +\
-                r2 * (global_best_position - x_i)
+                r2 * (g_best - x_i)
     # _end_def_
 
     def update_positions(self, options: dict) -> None:
