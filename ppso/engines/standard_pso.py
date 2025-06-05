@@ -100,13 +100,17 @@ class StandardPSO(GenericPSO):
         # Update the velocity equations.
         self.update_velocities(options)
 
+        # Add the new velocities to the positions.
+        new_positions = self.swarm.positions() + self._velocities
+
+        # Ensure the particle stays within bounds.
+        np.clip(new_positions, self._lower_bound, self._upper_bound,
+                out=new_positions)
+
         # Update all particle positions.
-        for particle, velocity in zip(self._swarm.population,
-                                      self._velocities):
-            # Ensure the particle stays within bounds.
-            np.clip(particle.position + velocity,
-                    self._lower_bound, self._upper_bound,
-                    out=particle.position)
+        for particle, x_new in zip(self._swarm.population,
+                                   new_positions):
+            particle.position = x_new
     # _end_def_
 
     @time_it
