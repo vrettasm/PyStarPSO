@@ -97,11 +97,9 @@ class IntegerPSO(GenericPSO):
         # Update the velocity equations.
         self.update_velocities(options)
 
-        # Add the new velocities to the positions.
-        new_positions = self.swarm.positions() + self._velocities
-
         # Round the new positions and convert them to type int.
-        new_positions = np.rint(new_positions).astype(int)
+        new_positions = np.rint(self.swarm.positions() +
+                                self._velocities).astype(int)
 
         # Ensure the particle stays within bounds.
         np.clip(new_positions, self._lower_bound, self._upper_bound,
