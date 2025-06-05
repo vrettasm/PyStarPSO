@@ -173,7 +173,7 @@ class GenericPSO(object):
         # Check if we want integer values.
         if round_int:
             # Round the new positions and convert them to type int.
-            np.round(uniform_positions, out=uniform_positions).astype(int)
+            np.rint(uniform_positions, out=uniform_positions)
         # _end_if_
 
         # Assign the new positions in the swarm.
