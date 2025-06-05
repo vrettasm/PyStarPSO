@@ -34,7 +34,7 @@ class GenericPSO(object):
 
     # Object variables.
     __slots__ = ("_swarm", "objective_func", "_upper_bound", "_lower_bound",
-                 "_stats", "_n_cpus", "_items")
+                 "_stats", "_items", "n_cpus", "n_rows", "n_cols")
 
     def __init__(self,
                  initial_swarm: Swarm,
@@ -62,6 +62,12 @@ class GenericPSO(object):
         # Get the swarm population.
         self._swarm = deepcopy(initial_swarm) if copy else initial_swarm
 
+        # Number of particles.
+        self.n_rows = len(self._swarm)
+
+        # Size (length) of particle.
+        self.n_cols = len(self._swarm[0])
+
         # Make sure the fitness function is indeed callable.
         if not callable(obj_func):
             raise TypeError(f"{self.__class__.__name__}: Objective function is not callable.")
@@ -78,13 +84,13 @@ class GenericPSO(object):
         if n_cpus is None:
 
             # This is the default option.
-            self._n_cpus = GenericPSO.MAX_CPUs
+            self.n_cpus = GenericPSO.MAX_CPUs
         else:
 
             # Assign the  requested number, making sure we have
             # enough CPUs and the value entered has the correct
             # type.
-            self._n_cpus = max(1, min(GenericPSO.MAX_CPUs, int(n_cpus)))
+            self.n_cpus = max(1, min(GenericPSO.MAX_CPUs, int(n_cpus)))
         # _end_if_
 
         # Dictionary with statistics.
@@ -128,16 +134,6 @@ class GenericPSO(object):
     # _end_def_
 
     @property
-    def n_cpus(self) -> int:
-        """
-        Accessor method that returns the number of CPUs.
-
-        :return: the n_cpus.
-        """
-        return self._n_cpus
-    # _end_def_
-
-    @property
     def swarm(self) -> Swarm:
         """
         Accessor of the swarm.
@@ -167,15 +163,9 @@ class GenericPSO(object):
         # If 'x_max' is absent use the default upper_bound.
         x_max = self._upper_bound if x_max is None else np.asarray(x_max)
 
-        # Get the swarm size.
-        swarm_size = len(self._swarm)
-
-        # Get the size of the particle.
-        particle_size = self._swarm[0].size
-
         # Generate uniform positions U(x_min, x_max).
         uniform_positions = GenericPSO.rng_PSO.uniform(x_min, x_max,
-                                                       size=(swarm_size, particle_size))
+                                                       size=(self.n_rows, self.n_cols))
         # Assign the new positions in the swarm.
         for p, x_new in zip(self._swarm, uniform_positions):
             p.position = x_new
@@ -188,15 +178,10 @@ class GenericPSO(object):
 
         :return: None.
         """
-        # Get the swarm size.
-        swarm_size = len(self._swarm)
-
-        # Get the size of the particle.
-        particle_size = self._swarm[0].size
 
         # Generate binary positions Bin(0, 1).
         binary_positions = GenericPSO.rng_PSO.integers(0, 1, endpoint=True,
-                                                       size=(swarm_size, particle_size))
+                                                       size=(self.n_rows, self.n_cols))
         # Assign the new positions in the swarm.
         for p, x_new in zip(self._swarm, binary_positions):
             p.position = x_new
@@ -226,7 +211,7 @@ class GenericPSO(object):
         if parallel_mode:
 
             # Evaluate the particles in parallel mode.
-            evaluation_i = Parallel(n_jobs=self._n_cpus, backend=backend)(
+            evaluation_i = Parallel(n_jobs=self.n_cpus, backend=backend)(
                 delayed(func)(x) for x in positions
             )
         else:

@@ -35,12 +35,6 @@ class AcceleratedPSO(GenericPSO):
 
         # Call the super constructor with the input parameters.
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
-
-        # Number of particles.
-        self.n_row = len(self.swarm.population)
-
-        # Size (length) of particle.
-        self.n_col = len(self.swarm.population[0])
     # _end_def_
 
     def update_positions(self, options: dict) -> None:
@@ -53,7 +47,7 @@ class AcceleratedPSO(GenericPSO):
         """
 
         # Get the shape of the velocity array.
-        arr_shape = (self.n_row, self.n_col)
+        arr_shape = (self.n_rows, self.n_cols)
 
         # Get the 'alpha' parameter.
         c_alpha = options.get("alpha")
@@ -75,10 +69,13 @@ class AcceleratedPSO(GenericPSO):
         # Temporary 'velocity-like' parameters.
         tmp_velocities = (c_beta*g_best + GenericPSO.rng_PSO.normal(0, c_alpha,
                                                                     size=arr_shape))
+        # Compute the complement of beta.
+        c_param = (1.0 - c_beta)
+
         # Update all particle positions.
         for particle, velocity in zip(self._swarm.population, tmp_velocities):
             # Ensure the particle stays within bounds.
-            np.clip((1.0 - c_beta)*particle.position + velocity,
+            np.clip(c_param*particle.position + velocity,
                     self._lower_bound, self._upper_bound, out=particle.position)
     # _end_def_
 
@@ -113,7 +110,7 @@ class AcceleratedPSO(GenericPSO):
             self.generate_uniform_positions()
         # _end_if_
 
-        # If options is not given set the
+        # If options is not given, set the
         # parameters of the original paper.
         if options is None:
             # Default values of the simpler version.

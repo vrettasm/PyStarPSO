@@ -36,15 +36,9 @@ class BinaryPSO(GenericPSO):
         # Call the super constructor with the input parameters.
         super().__init__(lower_bound=v_min, upper_bound=v_max, **kwargs)
 
-        # Number of particles.
-        self.n_row = len(self.swarm.population)
-
-        # Size (length) of particle.
-        self.n_col = len(self.swarm.population[0])
-
         # Generate initial particle velocities.
         self._velocities = GenericPSO.rng_PSO.uniform(-1.0, +1.0,
-                                                      size=(self.n_row, self.n_col))
+                                                      size=(self.n_rows, self.n_cols))
     # _end_def_
 
     def update_velocities(self, options: dict) -> None:
@@ -72,7 +66,7 @@ class BinaryPSO(GenericPSO):
         fipso = options.get("fipso", False)
 
         # Get the shape of the velocity array.
-        arr_shape = (self.n_row, self.n_col)
+        arr_shape = (self.n_rows, self.n_cols)
 
         # Pre-sample the coefficients.
         R1 = GenericPSO.rng_PSO.uniform(0, c1, size=arr_shape)
@@ -114,7 +108,7 @@ class BinaryPSO(GenericPSO):
         self.update_velocities(options)
 
         # Get the shape of the velocity array.
-        arr_shape = (self.n_row, self.n_col)
+        arr_shape = (self.n_rows, self.n_cols)
 
         # Generate random vectors in U(0, 1).
         r_uniform = GenericPSO.rng_PSO.uniform(0, 1, size=arr_shape)
@@ -166,7 +160,7 @@ class BinaryPSO(GenericPSO):
             self.generate_binary_positions()
         # _end_if_
 
-        # If options is not given set the
+        # If options is not given, set the
         # parameters of the original paper.
         if options is None:
             # Default values of the simplified version.
