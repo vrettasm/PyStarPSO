@@ -167,13 +167,18 @@ class GenericPSO(object):
         # If 'x_max' is absent use the default upper_bound.
         x_max = self._upper_bound if x_max is None else np.asarray(x_max)
 
+        # Get the swarm size.
+        swarm_size = len(self._swarm)
+
         # Get the size of the particle.
         particle_size = self._swarm[0].size
 
-        # Generate p ~ U(x_min, x_max).
-        for p in self._swarm:
-            p.position = GenericPSO.rng_PSO.uniform(x_min, x_max,
-                                                    size=particle_size)
+        # Generate uniform positions U(x_min, x_max).
+        uniform_positions = GenericPSO.rng_PSO.uniform(x_min, x_max,
+                                                       size=(swarm_size, particle_size))
+        # Assign the new positions in the swarm.
+        for p, x_new in zip(self._swarm, uniform_positions):
+            p.position = x_new
     # _end_def_
 
     def generate_binary_positions(self) -> None:
@@ -183,14 +188,18 @@ class GenericPSO(object):
 
         :return: None.
         """
+        # Get the swarm size.
+        swarm_size = len(self._swarm)
 
         # Get the size of the particle.
         particle_size = self._swarm[0].size
 
-        # Generate p ~ Bin(0, 1).
-        for p in self._swarm:
-            p.position = GenericPSO.rng_PSO.integers(0, 1, endpoint=True,
-                                                     size=particle_size)
+        # Generate binary positions Bin(0, 1).
+        binary_positions = GenericPSO.rng_PSO.integers(0, 1, endpoint=True,
+                                                       size=(swarm_size, particle_size))
+        # Assign the new positions in the swarm.
+        for p, x_new in zip(self._swarm, binary_positions):
+            p.position = x_new
     # _end_def_
 
     def evaluate_function(self, parallel_mode: bool = False,
