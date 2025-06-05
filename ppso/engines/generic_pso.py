@@ -1,7 +1,7 @@
 from math import inf
 from os import cpu_count
 from copy import deepcopy
-from collections import defaultdict, deque
+from collections import defaultdict
 
 from typing import Callable
 from joblib import (Parallel, delayed)
@@ -94,7 +94,7 @@ class GenericPSO(object):
         # _end_if_
 
         # Dictionary with statistics.
-        self._stats = defaultdict(deque)
+        self._stats = defaultdict(list)
 
         # Place holder.
         self._items = None
@@ -236,6 +236,9 @@ class GenericPSO(object):
         # Initialize f_max.
         f_max = -inf
 
+        # Stores the function values.
+        fx_array = np.empty(self.n_rows)
+
         # Update all particles with their new objective function values.
         for n, (p, result) in enumerate(zip(self._swarm, evaluation_i)):
             # Extract the n-th function value.
@@ -247,10 +250,16 @@ class GenericPSO(object):
             # Update the found solution.
             found_solution |= result[1]
 
+            # Update the statistics.
+            fx_array[n] = f_value
+
             # Update f_max value.
             if f_value > f_max:
                 f_max = f_value
         # _end_for_
+
+        # Store the function values as ndarray.
+        self.stats["f_values"].append(fx_array)
 
         # Update local best for consistent results.
         self.swarm.update_local_best()
