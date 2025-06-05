@@ -145,7 +145,8 @@ class GenericPSO(object):
 
     def generate_uniform_positions(self,
                                    x_min: ArrayLike = None,
-                                   x_max: ArrayLike = None) -> None:
+                                   x_max: ArrayLike = None,
+                                   round_int: bool = False) -> None:
         """
         Generate the population of particles positions by sampling
         uniformly random numbers within the [x_min, x_max] bounds.
@@ -153,6 +154,9 @@ class GenericPSO(object):
         :param x_min: the minimum allowed values for the positions.
 
         :param x_max: the maximum allowed values for the positions.
+
+        :param round_int: if 'True' it will produce integer random
+        values, by rounding the positions into the nearest integer.
 
         :return: None.
         """
@@ -166,6 +170,12 @@ class GenericPSO(object):
         # Generate uniform positions U(x_min, x_max).
         uniform_positions = GenericPSO.rng_PSO.uniform(x_min, x_max,
                                                        size=(self.n_rows, self.n_cols))
+        # Check if we want integer values.
+        if round_int:
+            # Round the new positions and convert them to type int.
+            np.round(uniform_positions, out=uniform_positions).astype(int)
+        # _end_if_
+
         # Assign the new positions in the swarm.
         for p, x_new in zip(self._swarm, uniform_positions):
             p.position = x_new
