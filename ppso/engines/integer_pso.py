@@ -144,6 +144,9 @@ class IntegerPSO(GenericPSO):
                                                           size=(self.n_rows, self.n_cols))
             # Generate random integer positions.
             self.generate_uniform_positions(round_int=True)
+
+            # Clear the statistics.
+            self.stats.clear()
         # _end_if_
 
         # If options is not given, set the

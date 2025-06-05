@@ -103,7 +103,11 @@ class AcceleratedPSO(GenericPSO):
 
         # Check if resetting the swarm is required.
         if reset_swarm:
+            # Generate random positions.
             self.generate_uniform_positions()
+
+            # Clear the statistics.
+            self.stats.clear()
         # _end_if_
 
         # If options is not given, set the

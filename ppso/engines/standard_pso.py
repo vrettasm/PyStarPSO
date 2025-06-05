@@ -146,6 +146,9 @@ class StandardPSO(GenericPSO):
                                                           size=(self.n_rows, self.n_cols))
             # Generate random positions.
             self.generate_uniform_positions()
+
+            # Clear the statistics.
+            self.stats.clear()
         # _end_if_
 
         # If options is not given, set the
