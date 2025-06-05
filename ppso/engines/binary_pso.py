@@ -111,19 +111,19 @@ class BinaryPSO(GenericPSO):
         r_uniform = GenericPSO.rng_PSO.uniform(0, 1,
                                                size=(self.n_rows, self.n_cols))
         # Create a matrix with zeros.
-        x_arr = np.zeros_like(r_uniform, dtype=int)
+        new_positions = np.zeros_like(r_uniform, dtype=int)
 
         # Compute the logistic values.
         s_arr = 1.0 / (1.0 + np.exp(-self._velocities))
 
         # Where the logistic function values are
         # higher than the random value set to 1.
-        x_arr[s_arr > r_uniform] = 1
+        new_positions[s_arr > r_uniform] = 1
 
         # Update all particle positions.
-        for particle, x_tmp, in zip(self._swarm.population,
-                                    x_arr):
-            particle.position = x_tmp
+        for particle, x_new, in zip(self._swarm.population,
+                                    new_positions):
+            particle.position = x_new
     # _end_def_
 
     @time_it
