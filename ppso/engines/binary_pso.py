@@ -154,6 +154,10 @@ class BinaryPSO(GenericPSO):
 
         # Check if resetting the swarm is required.
         if reset_swarm:
+            # Reset particle velocities.
+            self._velocities = GenericPSO.rng_PSO.uniform(-1.0, +1.0,
+                                                          size=(self.n_rows, self.n_cols))
+            # Generate random positions.
             self.generate_binary_positions()
         # _end_if_
 
