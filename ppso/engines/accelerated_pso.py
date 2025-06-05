@@ -45,10 +45,6 @@ class AcceleratedPSO(GenericPSO):
 
         :return: None.
         """
-
-        # Get the shape of the velocity array.
-        arr_shape = (self.n_rows, self.n_cols)
-
         # Get the 'alpha' parameter.
         c_alpha = options.get("alpha")
 
@@ -68,7 +64,7 @@ class AcceleratedPSO(GenericPSO):
 
         # Temporary 'velocity-like' parameters.
         tmp_velocities = (c_beta*g_best + GenericPSO.rng_PSO.normal(0, c_alpha,
-                                                                    size=arr_shape))
+                                                                    size=(self.n_rows, self.n_cols)))
         # Compute the complement of beta.
         c_param = (1.0 - c_beta)
 

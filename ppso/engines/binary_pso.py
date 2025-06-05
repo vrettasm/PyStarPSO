@@ -107,12 +107,9 @@ class BinaryPSO(GenericPSO):
         # Update the velocity equations.
         self.update_velocities(options)
 
-        # Get the shape of the velocity array.
-        arr_shape = (self.n_rows, self.n_cols)
-
         # Generate random vectors in U(0, 1).
-        r_uniform = GenericPSO.rng_PSO.uniform(0, 1, size=arr_shape)
-
+        r_uniform = GenericPSO.rng_PSO.uniform(0, 1,
+                                               size=(self.n_rows, self.n_cols))
         # Create a matrix with zeros.
         x_arr = np.zeros_like(r_uniform, dtype=int)
 
