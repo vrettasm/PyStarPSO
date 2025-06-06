@@ -58,7 +58,7 @@ def pareto_front(points: np.typing.ArrayLike) -> np.typing.ArrayLike:
     number_of_points = points.shape[0]
 
     # Set all the flags initially to True.
-    is_pareto = np.ones(number_of_points, dtype=bool)
+    is_pareto = np.full(number_of_points, True)
 
     # Scan all the points.
     for i, point_i in enumerate(points):
