@@ -66,8 +66,10 @@ def pareto_front(points: np.typing.ArrayLike) -> np.typing.ArrayLike:
         # Compare against all others.
         for j, point_j in enumerate(points):
 
-            # If all conditions are True the point does not lie on the front.
-            if i != j and np.all(point_i >= point_j) and np.any(point_i > point_j):
+            # Do not compare point with itself!
+            # If the condition is satisfied the
+            # point_i does not lie on the front.
+            if i != j and np.all(point_i >= point_j):
                 # Change the flag value.
                 is_pareto[i] = False
 
