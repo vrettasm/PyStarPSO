@@ -1,4 +1,5 @@
 import time
+import numpy as np
 from functools import wraps
 
 
@@ -38,4 +39,43 @@ def time_it(func):
         return result
     # _end_def_
     return time_it_wrapper
+# _end_def_
+
+def pareto_front(points: np.typing.ArrayLike) -> np.typing.ArrayLike:
+    """
+    Simple function that calculates the pareto (optimal)
+    front points from a given input points list.
+
+    :param points: array of points [(fx1, fx2, ..., fxn),
+                                    (fy1, fy2, ..., fyn),
+                                    ....................,
+                                    (fk1, fk2, ..., fkn)]
+
+    :return: An array of points that lie on the pareto front.
+    """
+
+    # Number of points.
+    number_of_points = points.shape[0]
+
+    # Set all the flags initially to True.
+    is_pareto = np.ones(number_of_points, dtype=bool)
+
+    # Scan all the points.
+    for i, point_i in enumerate(points):
+
+        # Compare against all others.
+        for j, point_j in enumerate(points):
+
+            # If all conditions are True the point does not lie on the front.
+            if i != j and np.all(point_i >= point_j) and np.any(point_i > point_j):
+                # Change the flag value.
+                is_pareto[i] = False
+
+                # Break the internal loop.
+                break
+            # _end_if_
+
+        # _end_internal_for_
+
+    return points[is_pareto]
 # _end_def_
