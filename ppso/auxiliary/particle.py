@@ -16,7 +16,7 @@ class Particle(object):
     """
 
     # Object variables.
-    __slots__ = ("_position", "_value", "_best_position", "_best_value")
+    __slots__ = ("_position", "_value", "_best_position", "_best_value", "_items")
 
     def __init__(self, initial_position: ArrayLike = None) -> None:
         """
@@ -37,6 +37,19 @@ class Particle(object):
 
         # Initially the function value is set to -Inf.
         self._value = -inf
+
+        # Place holder for additional particle information.
+        self._items = None
+    # _end_def_
+
+    @property
+    def items(self) -> list | tuple | dict:
+        """
+        Accessor (getter) of the _items placeholder container.
+
+        :return: _items (if any).
+        """
+        return self._items
     # _end_def_
 
     @property
