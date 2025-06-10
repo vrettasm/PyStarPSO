@@ -1,6 +1,5 @@
 from math import inf
 from copy import deepcopy
-from typing import Any
 
 from numpy.typing import ArrayLike
 from numpy import copyto as copy_to
@@ -17,18 +16,14 @@ class Particle(object):
     """
 
     # Object variables.
-    __slots__ = ("_position", "_value", "_best_position", "_best_value",
-                 "_params")
+    __slots__ = ("_position", "_value", "_best_position", "_best_value")
 
-    def __init__(self, initial_position: ArrayLike = None,
-                 params: Any = None) -> None:
+    def __init__(self, initial_position: ArrayLike = None) -> None:
         """
         Initialize the Particle object. Note that calling the initializer without
         arguments (i.e., Particle()), it will create an empty 'dummy' particle.
 
         :param initial_position: (ArrayLike) Initial position of the particle.
-
-        :param params: Additional parameters for the particle (optional).
         """
 
         # Set the initial particle position to a vector.
@@ -42,19 +37,6 @@ class Particle(object):
 
         # Initially the function value is set to -Inf.
         self._value = -inf
-
-        # Place holder for additional particle information.
-        self._params = params
-    # _end_def_
-
-    @property
-    def params(self) -> list | tuple | dict:
-        """
-        Accessor (getter) of the _params placeholder container.
-
-        :return: _params (if any).
-        """
-        return self._params
     # _end_def_
 
     @property
