@@ -198,6 +198,7 @@ class GenericPSO(object):
     # _end_def_
 
     def evaluate_function(self, parallel_mode: bool = False,
+                          categorical_mode: bool = False,
                           backend: str = "threading") -> (list[float], bool):
         """
         Evaluate all the particles of the input list with the custom objective
@@ -205,6 +206,9 @@ class GenericPSO(object):
 
         :param parallel_mode: (bool) Enables parallel computation of the objective
         function. Default is False (serial execution).
+
+        :param categorical_mode: (bool) Enables generation of position samples from
+        probabilities.
 
         :param backend: Backend for the parallel Joblib framework.
 
@@ -216,6 +220,11 @@ class GenericPSO(object):
 
         # Extract the positions of the swarm in numpy array.
         positions = self._swarm.positions()
+
+        # Only True in CategoricalPSO.
+        if categorical_mode:
+            positions = self.sample_position(positions)
+        # _end_if_
 
         # Check the 'parallel_mode' flag.
         if parallel_mode:
@@ -266,6 +275,35 @@ class GenericPSO(object):
 
         # Return the tuple.
         return f_max, found_solution
+    # _end_def_
+
+    def sample_position(self, particle_positions) -> ArrayLike:
+        """
+        Samples an actual position based on particles probabilities
+        and valid sets for each position.
+
+        N.B. This method is very slow O(n_rows*n_cols).
+
+        :param particle_positions: the particles that contain the lists
+        of probabilities (one for each position).
+
+        :return: an array-like object that is an actual sample that
+        can be evaluated from the optimization function.
+        """
+
+        # Preallocate an empty array to store the sampled positions.
+        x_new = np.empty((self.n_rows, self.n_cols), dtype=object)
+
+        # Loop over all particle positions.
+        for i, x_pos in enumerate(particle_positions):
+
+            # Each position is sampled according to its
+            # particle probabilities and its valid set.
+            for j, set_j, probs_j in enumerate(zip(self._items["sets"], x_pos)):
+                x_new[i, j] = GenericPSO.rng_PSO.choice(set_j, p=probs_j)
+            # _end_for_
+        # _end_for_
+        return x_new
     # _end_def_
 
     def update_positions(self, *args, **kwargs) -> None:
