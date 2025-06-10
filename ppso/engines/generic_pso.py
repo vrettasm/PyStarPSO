@@ -39,8 +39,8 @@ class GenericPSO(object):
     def __init__(self,
                  initial_swarm: Swarm,
                  obj_func: Callable,
-                 lower_bound: ArrayLike,
-                 upper_bound: ArrayLike,
+                 lower_bound: ArrayLike = None,
+                 upper_bound: ArrayLike = None,
                  copy: bool = False,
                  n_cpus: int = None):
         """
