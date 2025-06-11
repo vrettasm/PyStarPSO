@@ -3,6 +3,7 @@ from math import isclose
 import numpy as np
 from numpy import sum as np_sum
 from numpy import clip as np_clip
+from numpy import subtract as np_subtract
 
 from ppso.auxiliary.utilities import time_it
 from ppso.engines.generic_pso import GenericPSO
@@ -32,9 +33,50 @@ class CategoricalPSO(GenericPSO):
         # Call the super constructor.
         super().__init__(**kwargs)
 
-        # Generate initial particle velocities.
-        self._velocities = None
-        # Somehow ...
+        # First we declare the velocities are an [n_rows x n_cols] array of objects.
+        self._velocities = np.empty(shape=(self.n_rows, self.n_cols), dtype=object)
+
+        # Call the random velocity generator.
+        self.generate_uniform_velocities()
+    # _end_def_
+
+    def generate_uniform_velocities(self) -> None:
+        """
+        Generates random uniform velocities for the categorical
+        variable positions.
+
+        :return: None.
+        """
+        # Local copy of the valid sets.
+        v_sets = self._items["sets"]
+
+        # The we generate the random velocities.
+        for i in range(self.n_rows):
+            for j in range(self.n_cols):
+                self._velocities[i, j] = GenericPSO.rng_PSO.uniform(-0.1, +0.1,
+                                                                    size=len(v_sets[j]))
+        # _end_for_
+    # _end_def_
+
+    def generate_categorical_positions(self) -> None:
+        """
+        Generates random uniform positions
+        for the categorical variables.
+
+        :return: None.
+        """
+        # Local copy of the valid sets.
+        v_sets = self._items["sets"]
+
+        # Reset the positions to uniform values.
+        for i in range(self.n_rows):
+            for j in range(self.n_cols):
+                # Get the length of the j-th set.
+                size_j = len(v_sets[j])
+
+                # Set the variables uniformly.
+                self.swarm.position_at(i)[j] = np.ones(size_j)/size_j
+        # _end_for_
     # _end_def_
 
     def update_velocities(self, options: dict) -> None:
@@ -48,7 +90,53 @@ class CategoricalPSO(GenericPSO):
 
         :return: None.
         """
-        # Somehow ...
+        # Inertia weight parameter.
+        w = options.get("w")
+
+        # Cognitive coefficient.
+        c1 = options.get("c1")
+
+        # Social coefficient.
+        c2 = options.get("c2")
+
+        # Fully informed PSO option.
+        fipso = options.get("fipso", False)
+
+        # Get the shape of the velocity array.
+        arr_shape = (self.n_rows, self.n_cols)
+
+        # Pre-sample the coefficients.
+        R1 = GenericPSO.rng_PSO.uniform(0, c1, size=arr_shape)
+        R2 = GenericPSO.rng_PSO.uniform(0, c2, size=arr_shape)
+
+        # Get the GLOBAL best particle position.
+        if fipso:
+            # In the fully informed case we the distribution from the swarm itself.
+            g_best = None
+        else:
+            g_best = self.swarm.best_particle().position
+        # _end_if_
+
+        for i, (r1, r2) in enumerate(zip(R1, R2)):
+
+            # Get the current position of i-th the particle.
+            x_i = self.swarm[i].position
+
+            # Get the Best local position.
+            l_best = self.swarm[i].best_position
+
+            # Update all positions.
+            for j, (xk, vk) in enumerate(zip(x_i, self._velocities[i])):
+
+                # Apply the update equations.
+                vk = (w * vk +
+                      r1[j] * np_subtract(l_best[j], xk) +
+                      r2[j] * np_subtract(g_best[j], xk))
+
+                # Ensure the velocities are within limits.
+                np_clip(vk, -0.5, +0.5, out=vk)
+            # _end_for_
+        # _end_for_
     # _end_def_
 
     def update_positions(self, options: dict) -> None:
@@ -120,7 +208,11 @@ class CategoricalPSO(GenericPSO):
 
         # Check if resetting the swarm is required.
         if reset_swarm:
-            # Somehow ...
+            # Reset particle velocities.
+            self.generate_uniform_velocities()
+
+            # Reset particle positions.
+            self.generate_categorical_positions()
 
             # Clear the statistics.
             self.stats.clear()
@@ -130,7 +222,7 @@ class CategoricalPSO(GenericPSO):
         # parameters of the original paper.
         if options is None:
             # Default values of the simplified version.
-            options = {"w": 1.0, "c1": 2.0, "c2": 2.0}
+            options = {"w": 1.0, "c1": 0.1, "c2": 0.1}
         else:
             # Make sure the right keys exist.
             for key in {"w", "c1", "c2"}:
