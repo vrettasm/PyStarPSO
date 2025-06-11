@@ -314,7 +314,7 @@ class GenericPSO(object):
 
             # Each position is sampled according to its
             # particle probabilities and its valid set.
-            for j, set_j, probs_j in enumerate(zip(self._items["sets"], x_pos)):
+            for j, (set_j, probs_j) in enumerate(zip(self._items["sets"], x_pos)):
 
                 # Sample an item according to its probabilities.
                 item = GenericPSO.rng_PSO.choice(set_j, p=probs_j)
