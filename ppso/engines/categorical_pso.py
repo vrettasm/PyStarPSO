@@ -126,26 +126,24 @@ class CategoricalPSO(GenericPSO):
 
         # Get the GLOBAL best particle position.
         if fipso:
-            # In the fully informed case we the distribution from the swarm itself.
-            g_best = np.empty(self.n_cols, dtype=object)
+            # Initialize a vector (of vectors).
+            g_best = np.array([np.zeros(len(k)) for k in self._items["sets"]],
+                              dtype=object)
 
-            for i, (cnt_i, set_i) in enumerate(zip(self._stats["x_counts"],
-                                                   self._items["sets"])):
-                # Temporary array.
-                tmp_arr = np.empty(len(set_i), dtype=float)
+            # Accumulate (per positional variable)
+            # the best positions in the swarm.
+            for particle in self.swarm.population:
+                for i, pos in enumerate(particle.best_position):
+                    g_best[i] += pos
+            # _end_for_
 
-                # Go through all the values in the set.
-                for j, key in enumerate(set_i):
+            # Finally process the accumulated vectors.
+            for i in range(self.n_cols):
+                # Get the averaged values.
+                g_best[i] /= self.n_rows
 
-                    # If the key has been sampled use its counter value.
-                    tmp_arr[j] = cnt_i[key] if key in cnt_i else 0.0
-                # _end_for_
-
-                # Normalize it.
-                tmp_arr /= np.sum(tmp_arr)
-
-                # Assign it to global best.
-                g_best[i] = tmp_arr
+                # Normalize them to account for probabilities.
+                g_best[i] /= np_sum(g_best[i], dtype=float)
             # _end_for_
         else:
             g_best = self.swarm.best_particle().position
