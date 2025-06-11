@@ -24,17 +24,30 @@ class CategoricalPSO(GenericPSO):
 
     """
 
-    def __init__(self, **kwargs):
-        """
-        Default constructor of CategoricalPSO object.
+    # Object variables (specific for the CategoricalPSO).
+    __slots__ = ("_velocities",)
 
+    def __init__(self, variable_sets: list, **kwargs):
+        """
+        Default initializer of the CategoricalPSO class.
+
+        :param variable_sets: this is list with the sets
+        (one for each optimization variable).
+
+        :param kwargs: these are the default parameters
+        for the GenericPSO.
         """
 
-        # Call the super constructor.
+        # First call the super initializer.
         super().__init__(**kwargs)
 
-        # First we declare the velocities are an [n_rows x n_cols] array of objects.
-        self._velocities = np.empty(shape=(self.n_rows, self.n_cols), dtype=object)
+        # Local copy of the variable sets.
+        self._items = {"sets": variable_sets}
+
+        # First we declare the velocities to be
+        # an [n_rows x n_cols] array of objects.
+        self._velocities = np.empty(shape=(self.n_rows, self.n_cols),
+                                    dtype=object)
 
         # Call the random velocity generator.
         self.generate_uniform_velocities()
@@ -42,15 +55,17 @@ class CategoricalPSO(GenericPSO):
 
     def generate_uniform_velocities(self) -> None:
         """
-        Generates random uniform velocities for the categorical
-        variable positions.
+        Generates random uniform velocities for the
+        categorical variable positions.
 
         :return: None.
         """
-        # Local copy of the valid sets.
+        # Local copy of the variable sets.
         v_sets = self._items["sets"]
 
-        # The we generate the random velocities.
+        # Here we generate the random velocities
+        # in a short uniform range, according to
+        # the size of the variable set.
         for i in range(self.n_rows):
             for j in range(self.n_cols):
                 self._velocities[i, j] = GenericPSO.rng_PSO.uniform(-0.1, +0.1,
@@ -60,7 +75,8 @@ class CategoricalPSO(GenericPSO):
 
     def generate_categorical_positions(self) -> None:
         """
-        Generates random uniform positions for the categorical variables.
+        Generates random uniform positions
+        for the categorical variables.
 
         :return: None.
         """
@@ -240,7 +256,7 @@ class CategoricalPSO(GenericPSO):
         # parameters of the original paper.
         if options is None:
             # Default values of the simplified version.
-            options = {"w": 1.0, "c1": 0.1, "c2": 0.1}
+            options = {"w": 0.5, "c1": 0.1, "c2": 0.1}
         else:
             # Make sure the right keys exist.
             for key in {"w", "c1", "c2"}:
