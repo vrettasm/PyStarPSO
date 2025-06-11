@@ -19,9 +19,12 @@ class IntegerPSO(GenericPSO):
 
     """
 
+    # Object variables (specific for the IntegerPSO).
+    __slots__ = ("_velocities",)
+
     def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs):
         """
-        Default constructor of StandardPSO object.
+        Default constructor of IntegerPSO object.
 
         :param x_min: lower search space bound.
 
@@ -39,7 +42,7 @@ class IntegerPSO(GenericPSO):
     def update_velocities(self, options: dict) -> None:
         """
         Performs the update on the velocity equations according to the
-        original PSO paper "Kennedy, J. and Eberhart, R. (1995)".
+        original PSO paper by "Kennedy, J. and Eberhart, R. (1995)".
 
         :param options: Dictionary with the basic PSO options:
               i)  'w': inertia weight
@@ -89,7 +92,8 @@ class IntegerPSO(GenericPSO):
         """
         Updates the positions of the particles in the swarm.
 
-        :param options: dictionary with options for the update equations.
+        :param options: dictionary with options for the update
+        equations, i.e. ('w', 'c1', 'c2', 'fipso').
 
         :return: None.
         """
@@ -155,8 +159,9 @@ class IntegerPSO(GenericPSO):
             # Default values of the simplified version.
             options = {"w": 1.0, "c1": 2.0, "c2": 2.0}
         else:
-            # Make sure the right keys exist.
+            # Sanity check.
             for key in {"w", "c1", "c2"}:
+                # Make sure the right keys exist.
                 if key not in options:
                     raise ValueError(f"{self.__class__.__name__}: "
                                      f"Option '{key}' is missing. ")
