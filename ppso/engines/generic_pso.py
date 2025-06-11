@@ -299,7 +299,7 @@ class GenericPSO(object):
         :param particle_positions: the particles that contain the lists
         of probabilities (one for each position).
 
-        :return: an array-like object that is an actual sample that
+        :return: an array-like object that is an actual samples that
         can be evaluated from the optimization function.
         """
 
@@ -326,6 +326,11 @@ class GenericPSO(object):
                 counter_list[j][item] += 1
             # _end_for_
         # _end_for_
+
+        # Get the counter list in the stats.
+        self.stats["x_counts"] = counter_list
+
+        # Return the new sample positions.
         return x_new
     # _end_def_
 
