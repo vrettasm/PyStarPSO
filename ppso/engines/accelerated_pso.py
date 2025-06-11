@@ -26,14 +26,14 @@ class AcceleratedPSO(GenericPSO):
 
     def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs):
         """
-        Default constructor of AcceleratedPSO object.
+        Default initializer of the AcceleratedPSO class.
 
         :param x_min: lower search space bound.
 
         :param x_max: upper search space bound.
         """
 
-        # Call the super constructor with the input parameters.
+        # Call the super initializer with the input parameters.
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
     # _end_def_
 
@@ -41,7 +41,8 @@ class AcceleratedPSO(GenericPSO):
         """
         Updates the positions of the particles in the swarm.
 
-        :param options: dictionary with options for the update equations.
+        :param options: dictionary with options for the update
+        equations, i.e. ('alpha', 'beta', 'fipso').
 
         :return: None.
         """
@@ -79,7 +80,7 @@ class AcceleratedPSO(GenericPSO):
     def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
             parallel: bool = False, reset_swarm: bool = False, verbose: bool = False) -> None:
         """
-        Main method of the StandardPSO class, that implements the optimization routine.
+        Main method of the AcceleratedPSO class, that implements the optimization routine.
 
         :param max_it: (int) maximum number of iterations in the optimization loop.
 
@@ -116,8 +117,9 @@ class AcceleratedPSO(GenericPSO):
             # Default values of the simpler version.
             options = {"alpha": 0.5, "beta": 0.5}
         else:
-            # Make sure the right keys exist.
+            # Sanity check.
             for key in {"alpha", "beta"}:
+                # Make sure the right keys exist.
                 if key not in options:
                     raise ValueError(f"{self.__class__.__name__}: "
                                      f"Option '{key}' is missing. ")
