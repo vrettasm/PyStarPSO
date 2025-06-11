@@ -226,9 +226,6 @@ class GenericPSO(object):
 
             # Sample the positions, using their probabilities.
             positions = self.sample_position(positions)
-
-            # Keep track of the current sampled positions.
-            self.stats["x_sampled"] = positions
         # _end_if_
 
         # Check the 'parallel_mode' flag.
