@@ -245,6 +245,9 @@ class GenericPSO(object):
         # Initialize f_max.
         f_max = -inf
 
+        # Initialize the best position.
+        x_best = None
+
         # Stores the function values.
         fx_array = np.empty(self.n_rows)
 
@@ -265,10 +268,14 @@ class GenericPSO(object):
             # Update f_max value.
             if f_value > f_max:
                 f_max = f_value
+                x_best = positions[n]
         # _end_for_
 
         # Store the function values as ndarray.
         self.stats["f_values"].append(fx_array)
+
+        # Store the best position so far.
+        self.stats["x_best"].append(x_best)
 
         # Update local best for consistent results.
         self.swarm.update_local_best()
