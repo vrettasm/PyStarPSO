@@ -254,7 +254,7 @@ class GenericPSO(object):
         x_best = None
 
         # Stores the function values.
-        fx_array = np.empty(self.n_rows)
+        fx_array = np.empty(self.n_rows, dtype=float)
 
         # Update all particles with their new objective function values.
         for n, (p, result) in enumerate(zip(self._swarm, evaluation_i)):
