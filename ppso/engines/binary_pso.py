@@ -24,16 +24,19 @@ class BinaryPSO(GenericPSO):
 
     """
 
+    # Object variables (specific for the BinaryPSO).
+    __slots__ = ("_velocities",)
+
     def __init__(self, v_min: ArrayLike, v_max: ArrayLike, **kwargs):
         """
-        Default constructor of BinaryPSO object.
+        Default initializer of the BinaryPSO class.
 
         :param v_min: lower velocity bound.
 
         :param v_max: upper velocity bound.
         """
 
-        # Call the super constructor with the input parameters.
+        # Call the super initializer with the input parameters.
         super().__init__(lower_bound=v_min, upper_bound=v_max, **kwargs)
 
         # Generate initial particle velocities.
@@ -44,7 +47,7 @@ class BinaryPSO(GenericPSO):
     def update_velocities(self, options: dict) -> None:
         """
         Performs the update on the velocity equations according to the
-        original PSO paper "Kennedy, J. and Eberhart, R. (1995)".
+        original PSO paper by "Kennedy, J. and Eberhart, R. (1995)".
 
         :param options: Dictionary with the basic PSO options:
               i)  'w': inertia weight
@@ -99,7 +102,8 @@ class BinaryPSO(GenericPSO):
         """
         Updates the positions of the particles in the swarm.
 
-        :param options: dictionary with options for the update equations.
+        :param options: dictionary with options for the update
+        equations, i.e. ('w', 'c1', 'c2', 'fipso').
 
         :return: None.
         """
@@ -130,7 +134,7 @@ class BinaryPSO(GenericPSO):
     def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
             parallel: bool = False, reset_swarm: bool = False, verbose: bool = False) -> None:
         """
-        Main method of the StandardPSO class, that implements the optimization routine.
+        Main method of the BinaryPSO class, that implements the optimization routine.
 
         :param max_it: (int) maximum number of iterations in the optimization loop.
 
@@ -170,8 +174,9 @@ class BinaryPSO(GenericPSO):
             # Default values of the simplified version.
             options = {"w": 1.0, "c1": 2.0, "c2": 2.0}
         else:
-            # Make sure the right keys exist.
+            # Sanity check.
             for key in {"w", "c1", "c2"}:
+                # Make sure the right keys exist.
                 if key not in options:
                     raise ValueError(f"{self.__class__.__name__}: "
                                      f"Option '{key}' is missing. ")
