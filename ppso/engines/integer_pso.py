@@ -24,14 +24,14 @@ class IntegerPSO(GenericPSO):
 
     def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs):
         """
-        Default constructor of IntegerPSO object.
+        Default initializer of the IntegerPSO class.
 
         :param x_min: lower search space bound.
 
         :param x_max: upper search space bound.
         """
 
-        # Call the super constructor with the input parameters.
+        # Call the super initializer with the input parameters.
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
         # Generate initial particle velocities.
