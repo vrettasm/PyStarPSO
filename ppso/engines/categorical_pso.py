@@ -116,22 +116,20 @@ class CategoricalPSO(GenericPSO):
             for i, (cnt_i, set_i) in enumerate(zip(self._stats["x_counts"],
                                                    self._items["sets"])):
                 # Temporary array.
-                tmp_arr = np.zeros(len(set_i), dtype=float)
+                tmp_arr = np.empty(len(set_i), dtype=float)
 
                 # Go through all the values in the set.
                 for j, key in enumerate(set_i):
 
-                    # If the key has been sampled,
-                    # use its counter value.
-                    if key in cnt_i:
-                        tmp_arr[j] = cnt_i[key]
+                    # If the key has been sampled use its counter value.
+                    tmp_arr[j] = cnt_i[key] if key in cnt_i else 0.0
                 # _end_for_
 
                 # Normalize it.
                 tmp_arr /= np.sum(tmp_arr)
 
                 # Assign it to global best.
-                g_best[i] = None
+                g_best[i] = tmp_arr
             # _end_for_
         else:
             g_best = self.swarm.best_particle().position
