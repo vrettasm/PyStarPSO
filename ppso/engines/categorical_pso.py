@@ -60,8 +60,7 @@ class CategoricalPSO(GenericPSO):
 
     def generate_categorical_positions(self) -> None:
         """
-        Generates random uniform positions
-        for the categorical variables.
+        Generates random uniform positions for the categorical variables.
 
         :return: None.
         """
@@ -112,7 +111,28 @@ class CategoricalPSO(GenericPSO):
         # Get the GLOBAL best particle position.
         if fipso:
             # In the fully informed case we the distribution from the swarm itself.
-            g_best = None
+            g_best = np.empty(self.n_cols, dtype=object)
+
+            for i, (cnt_i, set_i) in enumerate(zip(self._stats["x_counts"],
+                                                   self._items["sets"])):
+                # Temporary array.
+                tmp_arr = np.zeros(len(set_i), dtype=float)
+
+                # Go through all the values in the set.
+                for j, key in enumerate(set_i):
+
+                    # If the key has been sampled,
+                    # use its counter value.
+                    if key in cnt_i:
+                        tmp_arr[j] = cnt_i[key]
+                # _end_for_
+
+                # Normalize it.
+                tmp_arr /= np.sum(tmp_arr)
+
+                # Assign it to global best.
+                g_best[i] = None
+            # _end_for_
         else:
             g_best = self.swarm.best_particle().position
         # _end_if_
