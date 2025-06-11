@@ -1,7 +1,5 @@
 from math import isclose
 
-import numpy as np
-
 from ppso.auxiliary.utilities import time_it
 from ppso.engines.generic_pso import GenericPSO
 
@@ -113,8 +111,8 @@ class CategoricalPSO(GenericPSO):
         # _end_if_
 
         # Get the function values before optimisation.
-        f_opt, _ = self.evaluate_function(parallel)
-
+        f_opt, _ = self.evaluate_function(parallel,
+                                          categorical_mode=True)
         # Display an information message.
         print(f"Initial f_optimal = {f_opt:.4f}")
 
@@ -130,8 +128,8 @@ class CategoricalPSO(GenericPSO):
             self.update_positions(options)
 
             # Calculate the new function values.
-            f_new, found_solution = self.evaluate_function(parallel)
-
+            f_new, found_solution = self.evaluate_function(parallel,
+                                                           categorical_mode=True)
             # Check if we want to print output.
             if verbose and (i % its_time_to_print) == 0:
                 # Display an information message.
