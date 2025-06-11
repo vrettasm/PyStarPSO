@@ -22,16 +22,19 @@ class StandardPSO(GenericPSO):
 
     """
 
+    # Object variables (specific for the StandardPSO).
+    __slots__ = ("_velocities",)
+
     def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs):
         """
-        Default constructor of StandardPSO object.
+        Default initializer of the StandardPSO class.
 
         :param x_min: lower search space bound.
 
         :param x_max: upper search space bound.
         """
 
-        # Call the super constructor with the input parameters.
+        # Call the super initializer with the input parameters.
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
         # Generate initial particle velocities.
@@ -42,7 +45,7 @@ class StandardPSO(GenericPSO):
     def update_velocities(self, options: dict) -> None:
         """
         Performs the update on the velocity equations according to the
-        original PSO paper "Kennedy, J. and Eberhart, R. (1995)".
+        original PSO paper by "Kennedy, J. and Eberhart, R. (1995)".
 
         :param options: Dictionary with the basic PSO options:
               i)  'w': inertia weight
@@ -92,7 +95,8 @@ class StandardPSO(GenericPSO):
         """
         Updates the positions of the particles in the swarm.
 
-        :param options: dictionary with options for the update equations.
+        :param options: dictionary with options for the update
+        equations, i.e. ('w', 'c1', 'c2', 'fipso').
 
         :return: None.
         """
@@ -139,7 +143,7 @@ class StandardPSO(GenericPSO):
         :return: None.
         """
 
-        # Check if resetting the swarm is required.
+        # Check if resetting the swarm is requested.
         if reset_swarm:
             # Reset particle velocities.
             self._velocities = GenericPSO.rng_PSO.uniform(-1.0, +1.0,
@@ -157,15 +161,16 @@ class StandardPSO(GenericPSO):
             # Default values of the simplified version.
             options = {"w": 1.0, "c1": 2.0, "c2": 2.0}
         else:
-            # Make sure the right keys exist.
+            # Sanity check.
             for key in {"w", "c1", "c2"}:
+                # Make sure the right keys exist in the options.
                 if key not in options:
                     raise ValueError(f"{self.__class__.__name__}: "
                                      f"Option '{key}' is missing. ")
             # _end_for_
         # _end_if_
 
-        # Get the function values before optimisation.
+        # Get the function values 'before' optimisation.
         f_opt, _ = self.evaluate_function(parallel)
 
         # Display an information message.
