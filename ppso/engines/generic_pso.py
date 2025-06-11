@@ -1,7 +1,7 @@
 from math import inf
 from os import cpu_count
 from copy import deepcopy
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 from typing import Callable
 from joblib import (Parallel, delayed)
@@ -223,7 +223,12 @@ class GenericPSO(object):
 
         # Only True in CategoricalPSO.
         if categorical_mode:
+
+            # Sample the positions, using their probabilities.
             positions = self.sample_position(positions)
+
+            # Keep track of the current sampled positions.
+            self.stats["x_sampled"] = positions
         # _end_if_
 
         # Check the 'parallel_mode' flag.
@@ -274,7 +279,7 @@ class GenericPSO(object):
         # Store the function values as ndarray.
         self.stats["f_values"].append(fx_array)
 
-        # Store the best position so far.
+        # Store the best (sampled) position.
         self.stats["x_best"].append(x_best)
 
         # Update local best for consistent results.
@@ -299,7 +304,10 @@ class GenericPSO(object):
         """
 
         # Preallocate an empty array to store the sampled positions.
-        x_new = np.empty((self.n_rows, self.n_cols), dtype=object)
+        x_new = np.empty(shape=(self.n_rows, self.n_cols), dtype=object)
+
+        # Create a list with counters (one for each direction).
+        counter_list = [Counter() for _ in range(self.n_cols)]
 
         # Loop over all particle positions.
         for i, x_pos in enumerate(particle_positions):
@@ -307,7 +315,15 @@ class GenericPSO(object):
             # Each position is sampled according to its
             # particle probabilities and its valid set.
             for j, set_j, probs_j in enumerate(zip(self._items["sets"], x_pos)):
-                x_new[i, j] = GenericPSO.rng_PSO.choice(set_j, p=probs_j)
+
+                # Sample an item according to its probabilities.
+                item = GenericPSO.rng_PSO.choice(set_j, p=probs_j)
+
+                # Store its position.
+                x_new[i, j] = item
+
+                # Increase the counter value.
+                counter_list[j][item] += 1
             # _end_for_
         # _end_for_
         return x_new
