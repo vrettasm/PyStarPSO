@@ -1,5 +1,9 @@
 from math import isclose
 
+import numpy as np
+from numpy import sum as np_sum
+from numpy import clip as np_clip
+
 from ppso.auxiliary.utilities import time_it
 from ppso.engines.generic_pso import GenericPSO
 
@@ -29,6 +33,7 @@ class CategoricalPSO(GenericPSO):
         super().__init__(**kwargs)
 
         # Generate initial particle velocities.
+        self._velocities = None
         # Somehow ...
     # _end_def_
 
@@ -50,6 +55,8 @@ class CategoricalPSO(GenericPSO):
         """
         Updates the positions of the particles in the swarm.
 
+        N.B. This method is very slow O(n_rows*n_cols).
+
         :param options: dictionary with options for the update equations.
 
         :return: None.
@@ -58,8 +65,31 @@ class CategoricalPSO(GenericPSO):
         # Update the velocity equations.
         self.update_velocities(options)
 
+        # Local reference of the population.
+        population = self._swarm.population
+
         # Update all particle positions.
-        # Somehow ...
+        for particle, v_upd in zip(population, self._velocities):
+
+            # Process each position separately.
+            for x_j, v_j in zip(particle.position, v_upd):
+
+                # Update j-th position.
+                x_j += v_j
+
+                # Ensure they stay within limits.
+                np_clip(x_j, 0.0, 1.0, out=x_j)
+
+                # Ensure there will be at least one
+                # element with positive probability.
+                if np.allclose(x_j, 0.0):
+                    x_j[GenericPSO.rng_PSO.integers(len(x_j))] = 1.0
+                # _end_if_
+
+                # Normalize (to account for probabilities).
+                x_j /= np_sum(x_j, dtype=float)
+            # _end_for_
+        # _end_for_
     # _end_def_
 
     @time_it
@@ -77,7 +107,7 @@ class CategoricalPSO(GenericPSO):
         :param options: dictionary with the update equations options ('w': inertia weight,
         'c1': cognitive coefficient, 'c2': social coefficient).
 
-        :param parallel:(bool) Flag that enables parallel computation of the objective function.
+        :param parallel: (bool) Flag that enables parallel computation of the objective function.
 
         :param reset_swarm: if true it will reset the positions of the swarm to uniformly random
         respecting the boundaries of each space dimension.
