@@ -1,7 +1,7 @@
 from math import inf
 from os import cpu_count
 from copy import deepcopy
-from collections import defaultdict, Counter
+from collections import defaultdict
 
 from typing import Callable
 from joblib import (Parallel, delayed)
@@ -306,9 +306,6 @@ class GenericPSO(object):
         # Preallocate an empty array to store the sampled positions.
         x_new = np.empty(shape=(self.n_rows, self.n_cols), dtype=object)
 
-        # Create a list with counters (one for each direction).
-        counter_list = [Counter() for _ in range(self.n_cols)]
-
         # Loop over all particle positions.
         for i, x_pos in enumerate(particle_positions):
 
@@ -317,18 +314,10 @@ class GenericPSO(object):
             for j, (set_j, probs_j) in enumerate(zip(self._items["sets"], x_pos)):
 
                 # Sample an item according to its probabilities.
-                item = GenericPSO.rng_PSO.choice(set_j, p=probs_j)
+                x_new[i, j] = GenericPSO.rng_PSO.choice(set_j, p=probs_j)
 
-                # Store its position.
-                x_new[i, j] = item
-
-                # Increase the counter value.
-                counter_list[j][item] += 1
             # _end_for_
         # _end_for_
-
-        # Get the counter list in the stats.
-        self.stats["x_counts"] = counter_list
 
         # Return the new sample positions.
         return x_new
