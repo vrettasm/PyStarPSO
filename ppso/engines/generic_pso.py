@@ -44,9 +44,9 @@ class GenericPSO(object):
                  copy: bool = False,
                  n_cpus: int = None):
         """
-        Default constructor of GenericPSO object.
+        Default initializer of the GenericPSO class.
 
-        :param initial_swarm: list of the initial population of (randomized) particles.
+        :param initial_swarm: list of the initial population of particles.
 
         :param obj_func: callable objective function.
 
