@@ -176,7 +176,7 @@ class Swarm(object):
 
         :param index: (int) the position that we want to access.
 
-        :param item: (Particle) the object we want to assign in the genome.
+        :param item: (Particle) object we want to assign in the population.
 
         :return: None.
         """
