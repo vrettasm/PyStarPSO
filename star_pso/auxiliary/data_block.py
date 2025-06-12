@@ -4,6 +4,7 @@ from numbers import Number
 import numpy as np
 from numpy.random import default_rng, Generator
 
+
 class DataBlock(object):
     """
     Description:
@@ -34,65 +35,37 @@ class DataBlock(object):
         self._kind = kind
     # _end_def_
 
-    def upd_float(self, v_new):
-        """
-
-        :param v_new:
-
-        :return:
-        """
+    @staticmethod
+    def upd_float(x_pos, v_new, lower_bound, upper_bound):
         # Ensure the position stays within bounds.
-        np.clip(self._position + v_new,
-                self._lower_bound, self._upper_bound, out=self._position)
+        return np.clip(x_pos + v_new, lower_bound, upper_bound)
     # _end_def_
 
-    def upd_integer(self, v_new):
-        """
-
-        :param v_new:
-
-        :return:
-        """
-
+    @staticmethod
+    def upd_integer(x_pos, v_new, lower_bound, upper_bound):
         # Round the new position and convert it to type int.
-        new_position = np.rint(self._position + v_new).astype(int)
+        new_position = np.rint(x_pos + v_new).astype(int)
 
         # Ensure the position stays within bounds.
-        np.clip(new_position, self._lower_bound, self._upper_bound,
-                out=self._position)
+        return np.clip(new_position, lower_bound, upper_bound)
     # _end_def_
 
-    def upd_binary(self, v_new):
-        """
-
-        :param v_new:
-
-        :return:
-        """
-
+    @classmethod
+    def upd_binary(cls, v_new):
         # Draw a random value in U(0, 1).
-        r_uniform = DataBlock.rng.uniform()
+        r_uniform = cls.rng.uniform()
 
-        # Compute the logistic value.
+        # Compute the logistic function value.
         threshold = 1.0 / (1.0 + np.exp(-v_new))
 
         # Assign the binary value.
-        self._position = 1 if threshold > r_uniform else 0
+        return 1 if threshold > r_uniform else 0
     # _end_def_
 
-    def upd_categorical(self, v_new):
-        """
-
-        :param v_new:
-
-        :return:
-        """
-
-        # Update the position.
-        x_new = self._position + v_new
-
+    @classmethod
+    def upd_categorical(cls, x_pos, v_new):
         # Ensure the vector stays within limits.
-        np.clip(x_new, 0.0, 1.0, out=x_new)
+        x_new = np.clip(x_pos + v_new, 0.0, 1.0)
 
         # Ensure there will be at least one
         # element with positive probability.
@@ -101,7 +74,34 @@ class DataBlock(object):
         # _end_if_
 
         # Normalize (to account for probabilities).
-        self._position = x_new / np.sum(x_new, dtype=float)
+        return x_new / np.sum(x_new, dtype=float)
+    # _end_def_
+
+    @classmethod
+    def get_method_dict(cls):
+        """
+        Initialize a dictionary with method names as keys
+        and method references as values.
+
+        :return:
+        """
+        return {"float": DataBlock.upd_float,
+                "binary": DataBlock.upd_binary,
+                "integer": DataBlock.upd_integer,
+                "categorical": DataBlock.upd_categorical
+                }
+    # _end_def_
+
+    def _call_update(self, *kwargs):
+        # Call the method based on the name provided
+        method_dict = DataBlock.get_method_dict()
+
+        # Return the outcome of the correct method.
+        return method_dict[self._kind](*kwargs)
+    # _end_def_
+
+    def upd_position(self, *kwargs):
+        self._position = DataBlock._call_update(*kwargs)
     # _end_def_
 
 # _end_class_
