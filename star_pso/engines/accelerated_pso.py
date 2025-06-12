@@ -3,28 +3,30 @@ from math import isclose
 import numpy as np
 from numpy.typing import ArrayLike
 
-from ppso.auxiliary.utilities import time_it
-from ppso.engines.generic_pso import GenericPSO
+from star_pso.auxiliary.utilities import time_it
+from star_pso.engines.generic_pso import GenericPSO
 
 # Public interface.
-__all__ = ["IntegerPSO"]
+__all__ = ["AcceleratedPSO"]
 
 
-class IntegerPSO(GenericPSO):
+class AcceleratedPSO(GenericPSO):
     """
     Description:
 
-    This implements an Integer variant of the original PSO algorithm that operates
-    similarly to the StandardPSO, but rounds the positions to the nearest integer.
+    This class implements the 'Accelerated Particle Swarm Optimization' variant
+    as described in:
+
+    Yang, X. S., Deb, S., and Fong, S., (2011), Accelerated Particle Swarm Optimization
+    and Support Vector Machine for Business Optimization and Applications, in: Networked
+    Digital Technologies (NDT2011), Communications in Computer and Information Science,
+    Vol. 136, Springer, pp. 53-66.
 
     """
 
-    # Object variables (specific for the IntegerPSO).
-    __slots__ = ("_velocities",)
-
     def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs):
         """
-        Default initializer of the IntegerPSO class.
+        Default initializer of the AcceleratedPSO class.
 
         :param x_min: lower search space bound.
 
@@ -33,42 +35,25 @@ class IntegerPSO(GenericPSO):
 
         # Call the super initializer with the input parameters.
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
-
-        # Generate initial particle velocities.
-        self._velocities = GenericPSO.rng_PSO.uniform(-1.0, +1.0,
-                                                      size=(self.n_rows, self.n_cols))
     # _end_def_
 
-    def update_velocities(self, options: dict) -> None:
+    def update_positions(self, options: dict) -> None:
         """
-        Performs the update on the velocity equations according to the
-        original PSO paper by "Kennedy, J. and Eberhart, R. (1995)".
+        Updates the positions of the particles in the swarm.
 
-        :param options: Dictionary with the basic PSO options:
-              i)  'w': inertia weight
-             ii) 'c1': cognitive coefficient
-            iii) 'c2': social coefficient
+        :param options: dictionary with options for the update
+        equations, i.e. ('alpha', 'beta', 'fipso').
 
         :return: None.
         """
-        # Inertia weight parameter.
-        w = options.get("w")
+        # Get the 'alpha' parameter.
+        c_alpha = options.get("alpha")
 
-        # Cognitive coefficient.
-        c1 = options.get("c1")
-
-        # Social coefficient.
-        c2 = options.get("c2")
+        # Get the 'beta' parameter.
+        c_beta = options.get("beta")
 
         # Fully informed PSO option.
         fipso = options.get("fipso", False)
-
-        # Get the shape of the velocity array.
-        arr_shape = (self.n_rows, self.n_cols)
-
-        # Pre-sample the coefficients.
-        R1 = GenericPSO.rng_PSO.uniform(0, c1, size=arr_shape)
-        R2 = GenericPSO.rng_PSO.uniform(0, c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
         if fipso:
@@ -78,48 +63,24 @@ class IntegerPSO(GenericPSO):
             g_best = self.swarm.best_particle().position
         # _end_if_
 
-        for i, (r1, r2) in enumerate(zip(R1, R2)):
-            # Get the current position of i-th the particle.
-            x_i = self.swarm[i].position
-
-            # Update the new velocity.
-            self._velocities[i] = w * self._velocities[i] +\
-                r1 * (self.swarm[i].best_position - x_i) +\
-                r2 * (g_best - x_i)
-    # _end_def_
-
-    def update_positions(self, options: dict) -> None:
-        """
-        Updates the positions of the particles in the swarm.
-
-        :param options: dictionary with options for the update
-        equations, i.e. ('w', 'c1', 'c2', 'fipso').
-
-        :return: None.
-        """
-
-        # Update the velocity equations.
-        self.update_velocities(options)
-
-        # Round the new positions and convert them to type int.
-        new_positions = np.rint(self.swarm.positions() +
-                                self._velocities).astype(int)
-
-        # Ensure the particle stays within bounds.
-        np.clip(new_positions, self._lower_bound, self._upper_bound,
-                out=new_positions)
+        # Temporary 'velocity-like' parameters.
+        tmp_velocities = (c_beta*g_best + GenericPSO.rng_PSO.normal(0, c_alpha,
+                                                                    size=(self.n_rows, self.n_cols)))
+        # Compute the complement of beta.
+        c_param = (1.0 - c_beta)
 
         # Update all particle positions.
-        for particle, x_new in zip(self._swarm.population,
-                                   new_positions):
-            particle.position = x_new
+        for particle, velocity in zip(self._swarm.population, tmp_velocities):
+            # Ensure the particle stays within bounds.
+            np.clip(c_param*particle.position + velocity,
+                    self._lower_bound, self._upper_bound, out=particle.position)
     # _end_def_
 
     @time_it
     def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
             parallel: bool = False, reset_swarm: bool = False, verbose: bool = False) -> None:
         """
-        Main method of the IntegerPSO class, that implements the optimization routine.
+        Main method of the AcceleratedPSO class, that implements the optimization routine.
 
         :param max_it: (int) maximum number of iterations in the optimization loop.
 
@@ -127,8 +88,8 @@ class IntegerPSO(GenericPSO):
         of two consecutive iterations. It is used to determine the convergence of the swarm.
         If this value is None (default) the algorithm will terminate using the max_it value.
 
-        :param options: dictionary with the update equations options ('w': inertia weight,
-        'c1': cognitive coefficient, 'c2': social coefficient).
+        :param options: dictionary with the update equations options ('alpha': 0.1xL ~ 0.5xL,
+        'beta': 0.1 ~ 0.7), where L is the typical length of the problem at hand.
 
         :param parallel:(bool) Flag that enables parallel computation of the objective function.
 
@@ -143,11 +104,8 @@ class IntegerPSO(GenericPSO):
 
         # Check if resetting the swarm is required.
         if reset_swarm:
-            # Reset particle velocities.
-            self._velocities = GenericPSO.rng_PSO.uniform(-1.0, +1.0,
-                                                          size=(self.n_rows, self.n_cols))
-            # Generate random integer positions.
-            self.generate_uniform_positions(round_int=True)
+            # Generate random positions.
+            self.generate_uniform_positions()
 
             # Clear the statistics.
             self.stats.clear()
@@ -156,11 +114,11 @@ class IntegerPSO(GenericPSO):
         # If options is not given, set the
         # parameters of the original paper.
         if options is None:
-            # Default values of the simplified version.
-            options = {"w": 1.0, "c1": 2.0, "c2": 2.0}
+            # Default values of the simpler version.
+            options = {"alpha": 0.5, "beta": 0.5}
         else:
             # Sanity check.
-            for key in {"w", "c1", "c2"}:
+            for key in {"alpha", "beta"}:
                 # Make sure the right keys exist.
                 if key not in options:
                     raise ValueError(f"{self.__class__.__name__}: "

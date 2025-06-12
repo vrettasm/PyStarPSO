@@ -5,8 +5,8 @@ from numpy import sum as np_sum
 from numpy import clip as np_clip
 from numpy import subtract as np_subtract
 
-from ppso.auxiliary.utilities import time_it
-from ppso.engines.generic_pso import GenericPSO
+from star_pso.auxiliary.utilities import time_it
+from star_pso.engines.generic_pso import GenericPSO
 
 # Public interface.
 __all__ = ["CategoricalPSO"]

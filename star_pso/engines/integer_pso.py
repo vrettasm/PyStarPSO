@@ -3,31 +3,28 @@ from math import isclose
 import numpy as np
 from numpy.typing import ArrayLike
 
-from ppso.auxiliary.utilities import time_it
-from ppso.engines.generic_pso import GenericPSO
+from star_pso.auxiliary.utilities import time_it
+from star_pso.engines.generic_pso import GenericPSO
 
 # Public interface.
-__all__ = ["StandardPSO"]
+__all__ = ["IntegerPSO"]
 
 
-class StandardPSO(GenericPSO):
+class IntegerPSO(GenericPSO):
     """
     Description:
 
-    This implements a basic variant of the original PSO algorithm as described in:
-
-    Kennedy, J. and Eberhart, R. (1995). "Particle Swarm Optimization". Proceedings
-    of IEEE International Conference on Neural Networks. Vol. IV. pp. 1942–1948.
-    doi:10.1109/ICNN.1995.488968.
+    This implements an Integer variant of the original PSO algorithm that operates
+    similarly to the StandardPSO, but rounds the positions to the nearest integer.
 
     """
 
-    # Object variables (specific for the StandardPSO).
+    # Object variables (specific for the IntegerPSO).
     __slots__ = ("_velocities",)
 
     def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs):
         """
-        Default initializer of the StandardPSO class.
+        Default initializer of the IntegerPSO class.
 
         :param x_min: lower search space bound.
 
@@ -104,8 +101,9 @@ class StandardPSO(GenericPSO):
         # Update the velocity equations.
         self.update_velocities(options)
 
-        # Add the new velocities to the positions.
-        new_positions = self.swarm.positions() + self._velocities
+        # Round the new positions and convert them to type int.
+        new_positions = np.rint(self.swarm.positions() +
+                                self._velocities).astype(int)
 
         # Ensure the particle stays within bounds.
         np.clip(new_positions, self._lower_bound, self._upper_bound,
@@ -121,7 +119,7 @@ class StandardPSO(GenericPSO):
     def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
             parallel: bool = False, reset_swarm: bool = False, verbose: bool = False) -> None:
         """
-        Main method of the StandardPSO class, that implements the optimization routine.
+        Main method of the IntegerPSO class, that implements the optimization routine.
 
         :param max_it: (int) maximum number of iterations in the optimization loop.
 
@@ -143,13 +141,13 @@ class StandardPSO(GenericPSO):
         :return: None.
         """
 
-        # Check if resetting the swarm is requested.
+        # Check if resetting the swarm is required.
         if reset_swarm:
             # Reset particle velocities.
             self._velocities = GenericPSO.rng_PSO.uniform(-1.0, +1.0,
                                                           size=(self.n_rows, self.n_cols))
-            # Generate random positions.
-            self.generate_uniform_positions()
+            # Generate random integer positions.
+            self.generate_uniform_positions(round_int=True)
 
             # Clear the statistics.
             self.stats.clear()
@@ -163,14 +161,14 @@ class StandardPSO(GenericPSO):
         else:
             # Sanity check.
             for key in {"w", "c1", "c2"}:
-                # Make sure the right keys exist in the options.
+                # Make sure the right keys exist.
                 if key not in options:
                     raise ValueError(f"{self.__class__.__name__}: "
                                      f"Option '{key}' is missing. ")
             # _end_for_
         # _end_if_
 
-        # Get the function values 'before' optimisation.
+        # Get the function values before optimisation.
         f_opt, _ = self.evaluate_function(parallel)
 
         # Display an information message.

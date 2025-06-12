@@ -3,8 +3,8 @@ from math import isclose
 import numpy as np
 from numpy.typing import ArrayLike
 
-from ppso.auxiliary.utilities import time_it
-from ppso.engines.generic_pso import GenericPSO
+from star_pso.auxiliary.utilities import time_it
+from star_pso.engines.generic_pso import GenericPSO
 
 # Public interface.
 __all__ = ["BinaryPSO"]
