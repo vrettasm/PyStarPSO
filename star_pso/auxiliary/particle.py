@@ -1,4 +1,5 @@
 from math import inf
+from typing import Any
 from copy import deepcopy
 
 from numpy.typing import ArrayLike
@@ -181,6 +182,30 @@ class Particle(object):
         :return: a "deep-copy" of the object.
         """
         return deepcopy(self)
+    # _end_def_
+
+    def __getitem__(self, index: int):
+        """
+        Get the item at position 'index'.
+
+        :param index: (int) the position that we want to return.
+
+        :return: the reference to the object in position index.
+        """
+        return self._position[index]
+    # _end_def_
+
+    def __setitem__(self, index: int, item: Any) -> None:
+        """
+        Set the 'item' at position 'index'.
+
+        :param index: (int) the position that we want to access.
+
+        :param item: (Any) object we want to assign in the particle.
+
+        :return: None.
+        """
+        self._position[index] = item
     # _end_def_
 
     def __len__(self) -> int:
