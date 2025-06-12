@@ -18,7 +18,7 @@ class CategoricalPSO(GenericPSO):
 
     This implements a simplified variant of the original ICPSO algorithm as described in:
 
-    Strasser, S., Goodman, R., Sheppard, J., et al. A new discrete particle swarm optimization
+    Strasser, S., Goodman, R., Sheppard, J., et al. "A new discrete particle swarm optimization
     algorithm", Proceedings of 2016 Genetic and Evolutionary Computation Conference (GECCO) 16,
     ACM Press, Denver, Colorado, USA, pp. 53-60.
 
