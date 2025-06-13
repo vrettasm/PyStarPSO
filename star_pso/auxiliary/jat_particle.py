@@ -14,7 +14,7 @@ class JatParticle(object):
 
             Implements a dataclass for the 'jack of all trades' particle.
             This is class maintains a container (list of data blocks) and
-            most information is held in its datablocks.
+            most information is held in its data blocks.
         """
 
     # Define the particle as a list of DataBlocks.
@@ -51,7 +51,7 @@ class JatParticle(object):
         """
         Accessor of the particle's position.
 
-        :return: the list of the each data block position.
+        :return: a list with each data block position.
         """
         return [blk.position for blk in self._container]
     # _end_def_
@@ -61,7 +61,7 @@ class JatParticle(object):
         """
         Accessor of the particle's best position.
 
-        :return: the list of the each data block best position.
+        :return: a list with each data block best position.
         """
         return [blk.best_position for blk in self._container]
     # _end_def_
@@ -171,7 +171,7 @@ class JatParticle(object):
         # Make sure both objects are of the same type.
         if isinstance(other, JatParticle):
 
-            # Compare directly the two lists of datablocks.
+            # Compare directly the two lists of data blocks.
             return self._container == other.container
         # _end_if_
         return False
