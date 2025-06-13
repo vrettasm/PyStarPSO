@@ -29,8 +29,7 @@ class DataBlock(object):
     rng: Generator = default_rng()
 
     # Object variables.
-    __slots__ = ("_position", "_best_position", "_velocity",
-                 "_lower_bound", "_upper_bound", "_btype")
+    __slots__ = ("_position", "_best_position", "_lower_bound", "_upper_bound", "_btype")
 
     def __init__(self,
                  position: Any,
