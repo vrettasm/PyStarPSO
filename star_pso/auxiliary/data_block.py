@@ -1,5 +1,6 @@
 from typing import Any
 from numbers import Number
+from functools import cache
 
 import numpy as np
 from numpy.random import default_rng, Generator
@@ -36,13 +37,19 @@ class DataBlock(object):
     # _end_def_
 
     @staticmethod
-    def upd_float(x_pos, v_new, lower_bound, upper_bound):
+    def upd_float(**kwargs):
+        # Extract the required values for the update.
+        x_pos, v_new, lower_bound, upper_bound = kwargs
+
         # Ensure the position stays within bounds.
         return np.clip(x_pos + v_new, lower_bound, upper_bound)
     # _end_def_
 
     @staticmethod
-    def upd_integer(x_pos, v_new, lower_bound, upper_bound):
+    def upd_integer(**kwargs):
+        # Extract the required values for the update.
+        x_pos, v_new, lower_bound, upper_bound = kwargs
+
         # Round the new position and convert it to type int.
         new_position = np.rint(x_pos + v_new).astype(int)
 
@@ -51,7 +58,10 @@ class DataBlock(object):
     # _end_def_
 
     @classmethod
-    def upd_binary(cls, v_new):
+    def upd_binary(cls, **kwargs):
+        # Extract the required value for the update.
+        v_new = kwargs["v_new"]
+
         # Draw a random value in U(0, 1).
         r_uniform = cls.rng.uniform()
 
@@ -63,7 +73,11 @@ class DataBlock(object):
     # _end_def_
 
     @classmethod
-    def upd_categorical(cls, x_pos, v_new):
+    def upd_categorical(cls, **kwargs):
+        # Extract the required values for the update.
+        x_pos = kwargs["x_new"]
+        v_new = kwargs["v_new"]
+
         # Ensure the vector stays within limits.
         x_new = np.clip(x_pos + v_new, 0.0, 1.0)
 
@@ -78,6 +92,7 @@ class DataBlock(object):
     # _end_def_
 
     @classmethod
+    @cache
     def get_method_dict(cls):
         """
         Initialize a dictionary with method names as keys
@@ -92,12 +107,12 @@ class DataBlock(object):
                 }
     # _end_def_
 
-    def _call_update(self, *kwargs):
+    def _call_update(self, **kwargs):
         # Call the method based on the name provided
         method_dict = DataBlock.get_method_dict()
 
         # Return the outcome of the correct method.
-        return method_dict[self._kind](*kwargs)
+        return method_dict[self._kind](**kwargs)
     # _end_def_
 
     def upd_position(self, *kwargs):
