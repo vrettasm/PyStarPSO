@@ -6,6 +6,7 @@ import numpy as np
 from numpy.typing import ArrayLike
 
 from star_pso.auxiliary.particle import Particle
+from star_pso.auxiliary.jat_particle import JatParticle
 
 # Public interface.
 __all__ = ["Swarm"]
