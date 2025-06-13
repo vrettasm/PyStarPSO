@@ -117,13 +117,22 @@ class Swarm(object):
         return self._population[index].position
     # _end_def_
 
-    def positions(self) -> ArrayLike:
+    def positions_as_array(self) -> ArrayLike:
         """
         Get the particle positions of all the swarm.
 
         :return: A numpy array with all the positions.
         """
         return np.asarray([p.position for p in self._population])
+    # _end_def_
+
+    def positions_as_list(self) -> list:
+        """
+        Get the particle positions of all the swarm.
+
+        :return: A list with all the positions.
+        """
+        return [p.position for p in self._population]
     # _end_def_
 
     def update_local_best(self) -> None:
