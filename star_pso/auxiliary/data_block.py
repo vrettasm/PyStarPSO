@@ -1,9 +1,18 @@
+from copy import copy
 from typing import Any
 from numbers import Number
 from functools import cache
 
-import numpy as np
+from numpy import exp as np_exp
+from numpy import sum as np_sum
+from numpy import clip as np_clip
+from numpy import rint as np_rint
+from numpy import allclose as np_allclose
+
+from numpy.typing import ArrayLike
 from numpy.random import default_rng, Generator
+
+from star_pso.auxiliary.utilities import BlockType
 
 
 class DataBlock(object):
@@ -19,104 +28,204 @@ class DataBlock(object):
     rng: Generator = default_rng()
 
     # Object variables.
-    __slots__ = ("_position", "_velocity", "_lower_bound", "_upper_bound", "_kind")
+    __slots__ = ("_position", "_best_position", "_velocity",
+                 "_lower_bound", "_upper_bound", "_btype")
 
-    def __init__(self, position: Any,
-                 lower_bound: Number,
-                 upper_bound: Number,
-                 kind: str):
+    def __init__(self,
+                 position: Any,
+                 btype: BlockType,
+                 lower_bound: Number = None,
+                 upper_bound: Number = None):
         # ...
-        self._position = position
+        self._position = copy(position)
+        self._best_position = copy(position)
 
         # ...
         self._lower_bound = lower_bound
         self._upper_bound = upper_bound
 
         # ...
-        self._kind = kind
+        self._btype = btype
     # _end_def_
 
     @staticmethod
-    def upd_float(**kwargs):
+    def upd_float(**kwargs) -> float:
+        """
+        It is used to update the positions of continuous 'float' data blocks.
+
+        :param kwargs: contains the parameters for the updates equations.
+
+        :return: a new (float) position.
+        """
         # Extract the required values for the update.
-        x_pos, v_new, lower_bound, upper_bound = kwargs
+        x_pos = kwargs["x_pos"]
+        v_new = kwargs["v_new"]
+        lower_bound = kwargs["lower_bound"]
+        upper_bound = kwargs["upper_bound"]
 
         # Ensure the position stays within bounds.
-        return np.clip(x_pos + v_new, lower_bound, upper_bound)
+        return np_clip(x_pos + v_new, lower_bound, upper_bound)
     # _end_def_
 
     @staticmethod
-    def upd_integer(**kwargs):
+    def upd_integer(**kwargs) -> int:
+        """
+        It is used to update the positions of discrete 'int' data blocks.
+
+        :param kwargs: contains the parameters for the updates equations.
+
+        :return: a new (int) position.
+        """
         # Extract the required values for the update.
-        x_pos, v_new, lower_bound, upper_bound = kwargs
+        x_pos = kwargs["x_pos"]
+        v_new = kwargs["v_new"]
+        lower_bound = kwargs["lower_bound"]
+        upper_bound = kwargs["upper_bound"]
 
         # Round the new position and convert it to type int.
-        new_position = np.rint(x_pos + v_new).astype(int)
+        new_position = np_rint(x_pos + v_new).astype(int)
 
         # Ensure the position stays within bounds.
-        return np.clip(new_position, lower_bound, upper_bound)
+        return np_clip(new_position, lower_bound, upper_bound)
     # _end_def_
 
     @classmethod
-    def upd_binary(cls, **kwargs):
+    def upd_binary(cls, **kwargs) -> int:
+        """
+        It is used to update the positions of discrete 'binary' data blocks.
+
+        :param kwargs: contains the parameters for the updates equations.
+
+        :return: a new (binary) position.
+        """
         # Extract the required value for the update.
         v_new = kwargs["v_new"]
 
         # Draw a random value in U(0, 1).
         r_uniform = cls.rng.uniform()
 
-        # Compute the logistic function value.
-        threshold = 1.0 / (1.0 + np.exp(-v_new))
+        # Compute the sigmoid function value.
+        threshold = 1.0 / (1.0 + np_exp(-v_new))
 
         # Assign the binary value.
         return 1 if threshold > r_uniform else 0
     # _end_def_
 
     @classmethod
-    def upd_categorical(cls, **kwargs):
+    def upd_categorical(cls, **kwargs) -> ArrayLike:
         # Extract the required values for the update.
-        x_pos = kwargs["x_new"]
+        x_pos = kwargs["x_pos"]
         v_new = kwargs["v_new"]
 
         # Ensure the vector stays within limits.
-        x_new = np.clip(x_pos + v_new, 0.0, 1.0)
+        x_new = np_clip(x_pos + v_new, 0.0, 1.0)
 
         # Ensure there will be at least one
         # element with positive probability.
-        if np.allclose(x_new, 0.0):
+        if np_allclose(x_new, 0.0):
             x_new[DataBlock.rng.integers(len(x_new))] = 1.0
         # _end_if_
 
         # Normalize (to account for probabilities).
-        return x_new / np.sum(x_new, dtype=float)
+        return x_new / np_sum(x_new, dtype=float)
     # _end_def_
 
     @classmethod
     @cache
     def get_method_dict(cls):
         """
-        Initialize a dictionary with method names as keys
-        and method references as values.
+        Initialize a dictionary with method names
+        as keys and method references as values.
 
-        :return:
+        :return: a (cached) dictionary with functions
+        that correspond to the correct block types.
         """
-        return {"float": DataBlock.upd_float,
-                "binary": DataBlock.upd_binary,
-                "integer": DataBlock.upd_integer,
-                "categorical": DataBlock.upd_categorical
+        return {BlockType.FLOAT: DataBlock.upd_float,
+                BlockType.BINARY: DataBlock.upd_binary,
+                BlockType.INTEGER: DataBlock.upd_integer,
+                BlockType.CATEGORICAL: DataBlock.upd_categorical
                 }
     # _end_def_
 
     def _call_update(self, **kwargs):
+        """
+        Auxiliary (private) method that calls directly the correct
+        update position method according to the btype of the block.
+
+        :param kwargs: the input parameters to the update methods.
+
+        :return: the corresponding upd function value.
+        """
         # Call the method based on the name provided
         method_dict = DataBlock.get_method_dict()
 
         # Return the outcome of the correct method.
-        return method_dict[self._kind](**kwargs)
+        return method_dict[self._btype](**kwargs)
     # _end_def_
 
-    def upd_position(self, *kwargs):
-        self._position = DataBlock._call_update(*kwargs)
+    def new_position(self, **kwargs) -> None:
+        """
+        This method provides the public interface of
+        the new position for all types of data blocks.
+
+        :param kwargs: the input parameters to the update methods.
+
+        :return: None.
+        """
+        self._position = DataBlock._call_update(**kwargs)
+    # _end_def_
+
+    @property
+    def position(self):
+        return self._position
+    # _end_def_
+
+    @property
+    def best_position(self):
+        return self._best_position
+    # _end_def_
+
+    @best_position.setter
+    def best_position(self, new_value):
+        self._best_position = copy(new_value)
+    # _end_def_
+
+    @property
+    def block_type(self):
+        return self._btype
+    # _end_def_
+
+    def __deepcopy__(self, memo):
+        """
+        This custom method overrides the default deepcopy method.
+
+        :param memo: Dictionary of objects already copied during
+        the current copying pass.
+
+        :return: a new identical "clone" of the self object.
+        """
+
+        # Create a new instance.
+        new_object = DataBlock.__new__(DataBlock)
+
+        # Don't copy self reference.
+        memo[id(self)] = new_object
+
+        # Shallow copy the position vector.
+        setattr(new_object, "_position", copy(self._position))
+
+        # Shallow copy the best position vector.
+        setattr(new_object, "_best_position", copy(self._best_position))
+
+        # Simple copy the lower/upper bounds (float).
+        setattr(new_object, "_lower_bound", self._lower_bound)
+        setattr(new_object, "_upper_bound", self._upper_bound)
+
+        # Simple copy the block type value (enum).
+        setattr(new_object, "_btype", self._btype)
+
+        # Return an identical particle.
+        return new_object
     # _end_def_
 
 # _end_class_

@@ -66,6 +66,20 @@ class JatParticle(object):
         return [blk.best_position for blk in self._container]
     # _end_def_
 
+    @best_position.setter
+    def best_position(self, new_vector: list) -> None:
+        """
+        Updates the best position (so far) in the particle object.
+
+        :param new_vector: (list) New best position vector.
+
+        :return: None.
+        """
+        for blk, new_best in zip(self._container, new_vector):
+            blk.best_position = new_best
+        # _end_for_
+    # _end_def_
+
     @property
     def value(self) -> float:
         """
