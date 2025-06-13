@@ -32,7 +32,7 @@ class JackOfAllTradesPSO(object):
 
     # Object variables.
     __slots__ = ("_swarm", "objective_func", "_stats", "_items",
-                 "n_cpus", "n_rows", "n_cols")
+                 "n_cpus", "n_rows", "n_cols", "_velocities")
 
     def __init__(self,
                  initial_swarm: Swarm,
@@ -40,7 +40,7 @@ class JackOfAllTradesPSO(object):
                  copy: bool = False,
                  n_cpus: int = None):
         """
-        Default initializer of the GenericPSO class.
+        Default initializer of the JackOfAllTradesPSO class.
 
         :param initial_swarm: list of the initial population of particles.
 
@@ -84,6 +84,9 @@ class JackOfAllTradesPSO(object):
         # Dictionary with statistics.
         self._stats = defaultdict(list)
 
+        # Generate initial particle velocities.
+        self._velocities = JackOfAllTradesPSO._rng.uniform(-1.0, +1.0,
+                                                           size=(self.n_rows, self.n_cols))
         # Place holder.
         self._items = None
     # _end_def_
@@ -256,10 +259,10 @@ class JackOfAllTradesPSO(object):
 
         # Check if resetting the swarm is requested.
         if reset_swarm:
-            # Reset particle velocities.
-            # ...
-
-            # Generate random positions.
+            # Randomize particle velocities.
+            self._velocities = JackOfAllTradesPSO._rng.uniform(-1.0, +1.0,
+                                                               size=(self.n_rows, self.n_cols))
+            # Randomize particle positions.
             self.generate_random_positions()
 
             # Clear the statistics.
@@ -342,7 +345,6 @@ class JackOfAllTradesPSO(object):
 
         # Display an information message.
         print(f"Final f_optimal = {f_opt:.4f}")
-
     # _end_def_
 
     def __call__(self, *args, **kwargs):
