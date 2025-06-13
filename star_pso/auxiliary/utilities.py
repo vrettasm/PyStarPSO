@@ -1,7 +1,16 @@
 import time
 import numpy as np
+from enum import Enum
 from functools import wraps
 
+
+class BlockType(Enum):
+    """
+    Description:
+        BlockType enumeration defines the types that a data block can take.
+    """
+    FLOAT, INTEGER, BINARY, CATEGORICAL = range(4)
+# _end_class_
 
 def time_it(func):
     """
