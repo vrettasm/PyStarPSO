@@ -12,6 +12,8 @@ from numpy.random import default_rng, Generator
 
 from star_pso.auxiliary.swarm import Swarm
 from star_pso.auxiliary.utilities import time_it
+from star_pso.auxiliary.utilities import BlockType
+
 
 # Public interface.
 __all__ = ["JackOfAllTradesPSO"]
@@ -151,6 +153,32 @@ class JackOfAllTradesPSO(object):
         # _end_for_
     # _end_def_
 
+    def sample_categorical_values(self, positions) -> None:
+        """
+        Samples the actual position based on particles
+        probabilities and valid sets for each data block.
+
+        :param positions: the particles that contain the lists
+        of probabilities (one for each position).
+
+        :return: None
+        """
+
+        # Check all particles in the swarm.
+        for i, particle in enumerate(self.swarm.population):
+
+            # Check all data blocks in the particle.
+            for j, blk in enumerate(particle):
+
+                # If the data block is categorical.
+                if blk.btype == BlockType.CATEGORICAL:
+
+                    # Replace the probabilities with an actual sample.
+                    positions[i, j] = JackOfAllTradesPSO._rng.choice(blk.valid_set,
+                                                                     p=positions[i, j])
+        # _end_for_
+    # _end_def_
+
     def evaluate_function(self, parallel=None) -> (list[float], bool):
         """
         Evaluate all the particles of the input list with the custom objective
@@ -164,6 +192,9 @@ class JackOfAllTradesPSO(object):
 
         # Extract the positions of the swarm in list.
         positions = self._swarm.positions_as_list()
+
+        # Sample categorical variable (if any).
+        self.sample_categorical_values(positions)
 
         # Evaluates the particles in parallel mode.
         if parallel:
