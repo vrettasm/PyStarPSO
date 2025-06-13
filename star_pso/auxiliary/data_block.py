@@ -29,11 +29,13 @@ class DataBlock(object):
     rng: Generator = default_rng()
 
     # Object variables.
-    __slots__ = ("_position", "_best_position", "_lower_bound", "_upper_bound", "_btype")
+    __slots__ = ("_position", "_best_position", "_lower_bound", "_upper_bound",
+                 "_btype", "_valid_set")
 
     def __init__(self,
                  position: Any,
                  btype: BlockType,
+                 valid_set: list | tuple = None,
                  lower_bound: Number = None,
                  upper_bound: Number = None):
         # ...
@@ -46,6 +48,14 @@ class DataBlock(object):
 
         # ...
         self._btype = btype
+
+        # ...
+        self._valid_set = valid_set
+    # _end_def_
+
+    @property
+    def valid_set(self) -> list | tuple:
+        return self._valid_set
     # _end_def_
 
     @staticmethod
