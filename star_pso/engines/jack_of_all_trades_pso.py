@@ -1,4 +1,5 @@
-from math import inf
+from math import inf, isclose
+
 from os import cpu_count
 from copy import deepcopy
 from collections import defaultdict
@@ -10,6 +11,7 @@ import numpy as np
 from numpy.random import default_rng, Generator
 
 from star_pso.auxiliary.swarm import Swarm
+from star_pso.auxiliary.utilities import time_it
 
 # Public interface.
 __all__ = ["JackOfAllTradesPSO"]
@@ -138,16 +140,10 @@ class JackOfAllTradesPSO(object):
         pass
     # _end_def_
 
-    def evaluate_function(self, parallel_mode: bool = False,
-                          backend: str = "threading") -> (list[float], bool):
+    def evaluate_function(self, parallel=None) -> (list[float], bool):
         """
         Evaluate all the particles of the input list with the custom objective
         function. The parallel_mode is optional.
-
-        :param parallel_mode: (bool) Enables parallel computation of the objective
-        function. Default is False (serial execution).
-
-        :param backend: Backend for the parallel Joblib framework.
 
         :return: the max function value and the found solution flag.
         """
@@ -155,20 +151,18 @@ class JackOfAllTradesPSO(object):
         # Get a local copy of the objective function.
         func = self.objective_func
 
-        # Extract the positions of the swarm in numpy array.
-        positions = self._swarm.positions_as_array()
+        # Extract the positions of the swarm in list.
+        positions = self._swarm.positions_as_list()
 
-        # Check the 'parallel_mode' flag.
-        if parallel_mode:
-
-            # Evaluate the particles in parallel mode.
-            evaluation_i = Parallel(n_jobs=self.n_cpus, backend=backend)(
+        # Evaluates the particles in parallel mode.
+        if parallel:
+            # Evaluates the particles in parallel mode.
+            evaluation = parallel(n_jobs=self.n_cpus, backend="loky")(
                 delayed(func)(x) for x in positions
             )
         else:
-
-            # Evaluate all the particles in serial mode.
-            evaluation_i = [func(x) for x in positions]
+            # Evaluates the particles in serial mode.
+            evaluation = [func(x) for x in positions]
         # _end_if_
 
         # Flag to indicate if a solution has been found.
@@ -184,7 +178,7 @@ class JackOfAllTradesPSO(object):
         fx_array = np.empty(self.n_rows, dtype=float)
 
         # Update all particles with their new objective function values.
-        for n, (p, result) in enumerate(zip(self._swarm, evaluation_i)):
+        for n, (p, result) in enumerate(zip(self._swarm, evaluation)):
             # Extract the n-th function value.
             f_value = result[0]
 
@@ -226,13 +220,121 @@ class JackOfAllTradesPSO(object):
                                   f"You should implement this method!")
     # _end_def_
 
-    def run(self, *args, **kwargs):
+    @time_it
+    def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
+            reset_swarm: bool = False, verbose: bool = False) -> None:
         """
-        Main method of the Generic PSO class,
-        that implements the optimization routine.
+        Main method of the JackOfAllTradesPSO class, that implements the optimization
+        routine.
+
+        :param max_it: (int) maximum number of iterations in the optimization loop.
+
+        :param f_tol: (float) tolerance in the difference between the optimal function
+        value of two consecutive iterations. It is used to determine the convergence of
+        the swarm. If this value is None (default) the algorithm will terminate using
+        the max_it value.
+
+        :param options: dictionary with the update equations options ('w': inertia weight,
+        'c1': cognitive coefficient, 'c2': social coefficient).
+
+        :param reset_swarm: if true it will reset the positions of the swarm to uniformly
+        random respecting the boundaries of each space dimension.
+
+        :param verbose: (bool) if 'True' it will display periodically information about
+        the current optimal function values.
+
+        :return: None.
         """
-        raise NotImplementedError(f"{self.__class__.__name__}: "
-                                  f"You should implement this method!")
+
+        # Check if resetting the swarm is requested.
+        if reset_swarm:
+            # Reset particle velocities.
+            # ...
+
+            # Generate random positions.
+            self.generate_random_positions()
+
+            # Clear the statistics.
+            self.stats.clear()
+        # _end_if_
+
+        # If options is not given, set the
+        # parameters of the original paper.
+        if options is None:
+            # Default values of the simplified version.
+            options = {"w": 0.5, "c1": 0.65, "c2": 0.65}
+        else:
+            # Sanity check.
+            for key in {"w", "c1", "c2"}:
+                # Make sure the right keys exist in the options.
+                if key not in options:
+                    raise ValueError(f"{self.__class__.__name__}: "
+                                     f"Option '{key}' is missing. ")
+            # _end_for_
+        # _end_if_
+
+        # Get the function values 'before' optimisation.
+        f_opt, _ = self.evaluate_function()
+
+        # Display an information message.
+        print(f"Initial f_optimal = {f_opt:.4f}")
+
+        # Local variable to display information on the screen.
+        # To avoid cluttering the screen we print info only 10
+        # times regardless of the total number of iterations.
+        its_time_to_print = (max_it // 10)
+
+        # Reuse the pool of workers.
+        with Parallel(n_jobs=self.n_cpus, backend="loky") as parallel:
+
+            # Repeat for 'max_it' times.
+            for i in range(max_it):
+
+                # Update the positions in the swarm.
+                self.update_positions(options)
+
+                # Calculate the new function values.
+                f_new, found_solution = self.evaluate_function(parallel)
+
+                # Check if we want to print output.
+                if verbose and (i % its_time_to_print) == 0:
+                    # Display an information message.
+                    print(f"Iteration: {i + 1:>5} -> f_optimal = {f_new:.4f}")
+                # _end_if_
+
+                # Check for termination.
+                if found_solution:
+                    # Update optimal function.
+                    f_opt = f_new
+
+                    # Display a warning message.
+                    print(f"{self.__class__.__name__} finished in {i + 1} iterations.")
+
+                    # Exit from the loop.
+                    break
+                # _end_if_
+
+                # Check for convergence.
+                if f_tol and isclose(f_new, f_opt, rel_tol=f_tol):
+                    # Update optimal function.
+                    f_opt = f_new
+
+                    # Display a warning message.
+                    print(f"{self.__class__.__name__} converged in {i + 1} iterations.")
+
+                    # Exit from the loop.
+                    break
+                # _end_if_
+
+                # Update optimal function for next iteration.
+                f_opt = f_new
+            # _end_for_
+
+        # _end_with_
+
+        # Display an information message.
+        print(f"Final f_optimal = {f_opt:.4f}")
+
     # _end_def_
 
     def __call__(self, *args, **kwargs):
