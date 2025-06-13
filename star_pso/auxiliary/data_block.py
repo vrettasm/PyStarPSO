@@ -7,6 +7,7 @@ from numpy import exp as np_exp
 from numpy import sum as np_sum
 from numpy import clip as np_clip
 from numpy import rint as np_rint
+from numpy import ones as np_ones
 from numpy import allclose as np_allclose
 
 from numpy.typing import ArrayLike
@@ -60,6 +61,7 @@ class DataBlock(object):
         # Extract the required values for the update.
         x_pos = kwargs["x_pos"]
         v_new = kwargs["v_new"]
+
         lower_bound = kwargs["lower_bound"]
         upper_bound = kwargs["upper_bound"]
 
@@ -79,6 +81,7 @@ class DataBlock(object):
         # Extract the required values for the update.
         x_pos = kwargs["x_pos"]
         v_new = kwargs["v_new"]
+
         lower_bound = kwargs["lower_bound"]
         upper_bound = kwargs["upper_bound"]
 
@@ -132,10 +135,10 @@ class DataBlock(object):
 
     @classmethod
     @cache
-    def get_method_dict(cls):
+    def get_update_method(cls):
         """
-        Initialize a dictionary with method names
-        as keys and method references as values.
+        Create a dictionary with method names as keys
+        and their corresponding update methods as values.
 
         :return: a (cached) dictionary with functions
         that correspond to the correct block types.
@@ -147,32 +150,125 @@ class DataBlock(object):
                 }
     # _end_def_
 
-    def _call_update(self, **kwargs):
-        """
-        Auxiliary (private) method that calls directly the correct
-        update position method according to the btype of the block.
-
-        :param kwargs: the input parameters to the update methods.
-
-        :return: the corresponding upd function value.
-        """
-        # Call the method based on the name provided
-        method_dict = DataBlock.get_method_dict()
-
-        # Return the outcome of the correct method.
-        return method_dict[self._btype](**kwargs)
-    # _end_def_
-
     def new_position(self, **kwargs) -> None:
         """
-        This method provides the public interface of
-        the new position for all types of data blocks.
+        This method provides the public interface of the new position
+        calculation for all types of data blocks.
 
         :param kwargs: the input parameters to the update methods.
 
         :return: None.
         """
-        self._position = DataBlock._call_update(**kwargs)
+        # Call the method based on the name provided
+        method_dict = DataBlock.get_update_method()
+
+        # Assign the function value to the new position.
+        self._position = method_dict[self._btype](**kwargs)
+    # _end_def_
+
+    @classmethod
+    def init_float(cls, **kwargs) -> float:
+        """
+        It is used to initialize randomly the positions
+        of a continuous 'float' data blocks.
+
+        :param kwargs: contains the required parameters.
+
+        :return: a new random (float) position.
+        """
+        lower_bound = kwargs["lower_bound"]
+        upper_bound = kwargs["upper_bound"]
+
+        # Ensure the random position stays within bounds.
+        return DataBlock.rng.uniform(lower_bound,
+                                     upper_bound)
+    # _end_def_
+
+    @classmethod
+    def init_integer(cls, **kwargs) -> int:
+        """
+        It is used to initialize randomly the positions
+        of a discrete 'int' data blocks.
+
+        :param kwargs: contains the required parameters.
+
+        :return: a new random (integer) position.
+        """
+        lower_bound = kwargs["lower_bound"]
+        upper_bound = kwargs["upper_bound"]
+
+        # Ensure the random position stays within bounds.
+        return DataBlock.rng.integers(lower_bound,
+                                      upper_bound,
+                                      endpoint=True)
+    # _end_def_
+
+    @classmethod
+    def init_binary(cls, **kwargs) -> int:
+        """
+        It is used to initialize randomly the positions
+        of a discrete 'binary' data blocks.
+
+        :param kwargs: contains the required parameters.
+
+        :return: a new random (integer) position.
+        """
+        # Get the number of variables.
+        num_var = kwargs["num_var"]
+
+        # Ensure the random position stays within bounds.
+        return DataBlock.rng.integers(0, 1, size=num_var, endpoint=True)
+    # _end_def_
+
+    @classmethod
+    def init_categorical(cls, **kwargs) -> int:
+        """
+        It is used to initialize randomly the positions
+        of a discrete 'categorical' data blocks.
+
+        :param kwargs: contains the required parameters.
+
+        :return: a new random (integer) position.
+        """
+        # Get the number of variables.
+        num_var = kwargs["num_var"]
+
+        # Set the variables uniformly.
+        return np_ones(num_var)/num_var
+    # _end_def_
+
+    @classmethod
+    @cache
+    def get_init_method(cls):
+        """
+        Create a dictionary with method names as keys
+        and their corresponding initialization methods
+        as values.
+
+        :return: a (cached) dictionary with functions
+        that correspond to the correct block types.
+        """
+        return {BlockType.FLOAT: DataBlock.init_float,
+                BlockType.BINARY: DataBlock.init_binary,
+                BlockType.INTEGER: DataBlock.init_integer,
+                BlockType.CATEGORICAL: DataBlock.init_categorical
+                }
+    # _end_def_
+
+    def reset_position(self) -> None:
+        """
+        This method provides the public interface of the
+        reset of new positions for all types of data blocks.
+
+        :return: None.
+        """
+        # Call the method based on the name provided
+        method_dict = DataBlock.get_init_method()
+
+        # Assign the function value to the new position.
+        self._position = method_dict[self._btype](lower_bound=self._lower_bound,
+                                                  upper_bound=self._upper_bound,
+                                                  num_var=len(self._position))
     # _end_def_
 
     @property
