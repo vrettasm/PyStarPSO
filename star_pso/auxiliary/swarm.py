@@ -22,7 +22,7 @@ class Swarm(object):
     """
 
     # Define the swarm as a list of particles.
-    _population: list = field(default_factory=list[Particle])
+    _population: list = field(default_factory=list[Particle | JatParticle])
 
     @property
     def global_best_index(self) -> int:
