@@ -55,7 +55,7 @@ class Particle(object):
         """
         Accessor of the positions in the particle.
 
-        :return: the ArayLike (vector) of the positions.
+        :return: the ArrayLike (vector) of the positions.
         """
         return self._position
     # _end_def_
