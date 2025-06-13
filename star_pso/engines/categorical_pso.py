@@ -3,6 +3,7 @@ from math import isclose
 import numpy as np
 from numpy import sum as np_sum
 from numpy import clip as np_clip
+from numpy import subtract as np_subtract
 
 from star_pso.auxiliary.utilities import time_it
 from star_pso.engines.generic_pso import GenericPSO
@@ -160,7 +161,9 @@ class CategoricalPSO(GenericPSO):
             for j, (xk, vk) in enumerate(zip(x_i, self._velocities[i])):
 
                 # Apply the update equations.
-                vk = w * vk + r1[j] * (l_best[j] - xk) + r2[j] * (g_best[j] - xk)
+                vk = (w * vk +
+                      r1[j] * np_subtract(l_best[j], xk) +
+                      r2[j] * np_subtract(g_best[j], xk))
 
                 # Ensure the velocities are within limits.
                 np_clip(vk, -0.5, +0.5, out=vk)

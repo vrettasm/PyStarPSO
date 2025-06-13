@@ -219,7 +219,7 @@ class GenericPSO(object):
         func = self.objective_func
 
         # Extract the positions of the swarm in numpy array.
-        positions = self._swarm.positions()
+        positions = self._swarm.positions_as_array()
 
         # Only True in CategoricalPSO.
         if categorical_mode:
