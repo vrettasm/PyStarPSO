@@ -36,7 +36,7 @@ class Swarm(object):
     # _end_def_
 
     @property
-    def population(self) -> list[Particle]:
+    def population(self) -> list[Particle | JatParticle]:
         """
         Accessor of the population list of the swarm.
 
@@ -45,7 +45,7 @@ class Swarm(object):
         return self._population
     # _end_def_
 
-    def best_particle(self) -> Particle:
+    def best_particle(self) -> Particle | JatParticle:
         """
         Auxiliary method that returns the particle with the
         highest function value. Safeguard with ignoring NaNs.
@@ -56,7 +56,7 @@ class Swarm(object):
                    key=attrgetter("value"), default=None)
     # _end_def_
 
-    def best_n(self, n: int = 1) -> list[Particle]:
+    def best_n(self, n: int = 1) -> list[Particle | JatParticle]:
         """
         Auxiliary method that returns the best 'n' particles
         with the highest objective function value.
