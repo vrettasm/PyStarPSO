@@ -133,11 +133,19 @@ class JackOfAllTradesPSO(object):
 
     def generate_random_positions(self) -> None:
         """
-        Generate random positions for the population of particles.
+        Generate random positions for the population
+        of particles, by calling the btype dependent
+        reset methods of each data block.
 
         :return: None.
         """
-        pass
+
+        # Go through the whole swarm.
+        for particle in self.swarm.population:
+            # Go through all the data blocks.
+            for blk in particle:
+                blk.reset_position()
+        # _end_for_
     # _end_def_
 
     def evaluate_function(self, parallel=None) -> (list[float], bool):
