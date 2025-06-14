@@ -193,8 +193,11 @@ class JackOfAllTradesPSO(object):
         # Extract the positions of the swarm in list.
         positions = self._swarm.positions_as_list()
 
-        # Sample categorical variable (if any).
-        self.sample_categorical_values(positions)
+        # Check if the swarm has categorical data blocks.
+        if self.swarm.has_categorical:
+            # Sample categorical variable.
+            self.sample_categorical_values(positions)
+        # _end_if_
 
         # Evaluates the particles in parallel mode.
         if parallel:
