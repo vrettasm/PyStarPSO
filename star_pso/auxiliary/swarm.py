@@ -6,6 +6,7 @@ import numpy as np
 from numpy.typing import ArrayLike
 
 from star_pso.auxiliary.particle import Particle
+from star_pso.auxiliary.utilities import BlockType
 from star_pso.auxiliary.jat_particle import JatParticle
 
 # Public interface.
@@ -24,6 +25,38 @@ class Swarm(object):
 
     # Define the swarm as a list of particles.
     _population: list = field(default_factory=list[Particle | JatParticle])
+
+    # Define a flag for categorical variables.
+    _has_categorical: bool = False
+
+    def __post_init__(self) -> None:
+        """
+        The purpose of this method is to scan the swarm
+        for categorical variables (data blocks).
+
+        :return: None.
+        """
+
+        # Early exit if the Swarm has only Particles.
+        if isinstance(self._population[0], Particle):
+            return
+        # _end_if_
+
+        # Check if any of the data blocks in the
+        # JatParticle is of type CATEGORICAL.
+        for blk in self._population[0]:
+            # If the condition is 'True'
+            # change the flag and break the loop.
+            if blk.btype == BlockType.CATEGORICAL:
+                self._has_categorical = True
+                break
+        # _end_def_
+    # _end_def_
+
+    @property
+    def has_categorical(self):
+        return self._has_categorical
+    # _end_def_
 
     @property
     def global_best_index(self) -> int:
