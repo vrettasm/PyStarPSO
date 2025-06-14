@@ -1,4 +1,5 @@
 from math import inf
+from copy import deepcopy
 from dataclasses import dataclass, field
 
 from star_pso.auxiliary.data_block import DataBlock
@@ -175,6 +176,36 @@ class JatParticle(object):
             return self._container == other.container
         # _end_if_
         return False
+    # _end_def_
+
+    def __deepcopy__(self, memo):
+        """
+        This custom method overrides the default deepcopy method
+        and is used when we call the "clone" method of the class.
+
+        :param memo: Dictionary of objects already copied during
+        the current copying pass.
+
+        :return: a new identical "clone" of the self object.
+        """
+
+        # Create a new instance.
+        new_object = JatParticle.__new__(JatParticle)
+
+        # Don't copy self reference.
+        memo[id(self)] = new_object
+
+        # Deep copy the container list.
+        setattr(new_object, "_container", deepcopy(self._container, memo))
+
+        # Simply copy the value (float).
+        setattr(new_object, "_value", self._value)
+
+        # Simply copy the best value (float).
+        setattr(new_object, "_best_value", self._best_value)
+
+        # Return an identical particle.
+        return new_object
     # _end_def_
 
     def __contains__(self, item: DataBlock) -> bool:
