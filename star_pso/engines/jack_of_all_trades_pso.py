@@ -8,11 +8,13 @@ from typing import Callable
 from joblib import (Parallel, delayed)
 
 import numpy as np
+from numpy.typing import ArrayLike
 from numpy.random import default_rng, Generator
 
 from star_pso.auxiliary.swarm import Swarm
 from star_pso.auxiliary.utilities import time_it
 from star_pso.auxiliary.utilities import BlockType
+from star_pso.auxiliary.jat_particle import JatParticle
 
 
 # Public interface.
@@ -202,9 +204,7 @@ class JackOfAllTradesPSO(object):
         # Evaluates the particles in parallel mode.
         if parallel:
             # Evaluates the particles in parallel mode.
-            evaluation = parallel(n_jobs=self.n_cpus, backend="loky")(
-                delayed(func)(x) for x in positions
-            )
+            evaluation = parallel(delayed(func)(x) for x in positions)
         else:
             # Evaluates the particles in serial mode.
             evaluation = [func(x) for x in positions]
@@ -267,12 +267,58 @@ class JackOfAllTradesPSO(object):
 
         :return: None.
         """
-        pass
+        # Inertia weight parameter.
+        w = options.get("w")
+
+        # Cognitive coefficient.
+        c1 = options.get("c1")
+
+        # Social coefficient.
+        c2 = options.get("c2")
+
+        # Fully informed PSO option.
+        fipso = options.get("fipso", False)
+
+        # Get the shape of the velocity array.
+        arr_shape = (self.n_rows, self.n_cols)
+
+        # Pre-sample the coefficients.
+        R1 = JackOfAllTradesPSO._rng.uniform(0, c1, size=arr_shape)
+        R2 = JackOfAllTradesPSO._rng.uniform(0, c2, size=arr_shape)
+
+        # Get the GLOBAL best particle position.
+        if fipso:
+            # In the fully informed case we take the average of all the best positions.
+            g_best = None
+        else:
+            g_best = self.swarm.best_particle().position
+        # _end_if_
+
+        for i, (r1, r2) in enumerate(zip(R1, R2)):
+
+            # Get the current position of i-th the particle.
+            x_i = self.swarm[i].position
+
+            # Get the Best local position.
+            l_best = self.swarm[i].best_position
+
+            # Update all positions.
+            for j, (xk, vk) in enumerate(zip(x_i, self._velocities[i])):
+
+                # Apply the update equations.
+                vk = (w * vk +
+                      r1[j] * (l_best[j] - xk) +
+                      r2[j] * (g_best[j] - xk))
+            # _end_for_
+        # _end_for_
+
     # _end_def_
 
-    def update_positions(self, options: dict) -> None:
+    def update_positions(self, parallel, options: dict) -> None:
         """
         Updates the positions of the particles in the swarm.
+
+        :param parallel:
 
         :param options: dictionary with options for the update
         equations, i.e. ('w', 'c1', 'c2', 'fipso').
@@ -282,13 +328,25 @@ class JackOfAllTradesPSO(object):
         # Get the new updated velocities.
         self.update_velocities(options)
 
-        # Scan all the swarm.
-        for particle, velocity in zip(self.swarm.population,
-                                      self._velocities):
+        def _local_update(particle: JatParticle, velocity: ArrayLike):
+            """
+            Local update function used in the parallel pool to update
+            the data block positions.
+
+            :param particle: to update its positions.
+
+            :param velocity: new velocities.
+
+            :return: None.
+            """
             # Update each data block separately.
             for blk, v_new in zip(particle, velocity):
                 blk.new_position(v_new=v_new)
-        # _end_for_
+        # _end_def_
+
+        # Evaluates all the particles in parallel mode.
+        _ = parallel(delayed(_local_update)(p, v) for p, v in
+                     zip(self.swarm.population, self._velocities))
     # _end_def_
 
     @time_it
@@ -355,14 +413,14 @@ class JackOfAllTradesPSO(object):
         # times regardless of the total number of iterations.
         its_time_to_print = (max_it // 10)
 
-        # Reuse the pool of workers.
+        # Reuse the pool of workers for the whole optimization.
         with Parallel(n_jobs=self.n_cpus, backend="loky") as parallel:
 
             # Repeat for 'max_it' times.
             for i in range(max_it):
 
                 # Update the positions in the swarm.
-                self.update_positions(options)
+                self.update_positions(parallel, options)
 
                 # Calculate the new function values.
                 f_new, found_solution = self.evaluate_function(parallel)
