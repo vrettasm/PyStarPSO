@@ -255,14 +255,40 @@ class JackOfAllTradesPSO(object):
         return f_max, found_solution
     # _end_def_
 
-    def update_positions(self, *args, **kwargs) -> None:
+    def update_velocities(self, options: dict) -> None:
         """
-        Updates the positions of the particles in the swarm.
+        Performs the update on the velocity equations according to the
+        original PSO paper by "Kennedy, J. and Eberhart, R. (1995)".
+
+        :param options: Dictionary with the basic PSO options:
+              i)  'w': inertia weight
+             ii) 'c1': cognitive coefficient
+            iii) 'c2': social coefficient
 
         :return: None.
         """
-        raise NotImplementedError(f"{self.__class__.__name__}: "
-                                  f"You should implement this method!")
+        pass
+    # _end_def_
+
+    def update_positions(self, options: dict) -> None:
+        """
+        Updates the positions of the particles in the swarm.
+
+        :param options: dictionary with options for the update
+        equations, i.e. ('w', 'c1', 'c2', 'fipso').
+
+        :return: None.
+        """
+        # Get the new updated velocities.
+        self.update_velocities(options)
+
+        # Scan all the swarm.
+        for particle, velocity in zip(self.swarm.population,
+                                      self._velocities):
+            # Update each data block separately.
+            for blk, v_new in zip(particle, velocity):
+                blk.new_position(v_new=v_new)
+        # _end_for_
     # _end_def_
 
     @time_it
