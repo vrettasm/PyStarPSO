@@ -302,7 +302,7 @@ class DataBlock(object):
     # _end_def_
 
     @property
-    def block_type(self):
+    def btype(self):
         return self._btype
     # _end_def_
 
