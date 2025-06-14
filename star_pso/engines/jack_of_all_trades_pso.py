@@ -1,4 +1,4 @@
-from math import inf, isclose
+from math import (inf, isclose)
 
 from os import cpu_count
 from copy import deepcopy
@@ -7,9 +7,11 @@ from collections import defaultdict
 from typing import Callable
 from joblib import (Parallel, delayed)
 
-import numpy as np
+from numpy import sum as np_sum
+from numpy import empty as np_empty
+
 from numpy.typing import ArrayLike
-from numpy.random import default_rng, Generator
+from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.swarm import Swarm
 from star_pso.auxiliary.utilities import time_it
@@ -90,7 +92,7 @@ class JackOfAllTradesPSO(object):
 
         # First we declare the velocities to be
         # an [n_rows x n_cols] array of objects.
-        self._velocities = np.empty(shape=(self.n_rows, self.n_cols),
+        self._velocities = np_empty(shape=(self.n_rows, self.n_cols),
                                     dtype=object)
 
         # Call the random velocity generator.
@@ -242,7 +244,7 @@ class JackOfAllTradesPSO(object):
         x_best = None
 
         # Stores the function values.
-        fx_array = np.empty(self.n_rows, dtype=float)
+        fx_array = np_empty(self.n_rows, dtype=float)
 
         # Update all particles with their new objective function values.
         for n, (p, result) in enumerate(zip(self._swarm, evaluation)):
@@ -326,12 +328,9 @@ class JackOfAllTradesPSO(object):
 
             # Update all positions.
             for j, (xk, vk) in enumerate(zip(x_i, self._velocities[i])):
-
                 # Apply the update equations.
-                vk = (w * vk +
-                      r1[j] * (l_best[j] - xk) +
-                      r2[j] * (g_best[j] - xk))
-            # _end_for_
+                np_sum((w * vk, r1[j] * (l_best[j] - xk), r2[j] * (g_best[j] - xk)),
+                       out=vk)
         # _end_for_
 
     # _end_def_
