@@ -327,7 +327,7 @@ class JackOfAllTradesPSO(object):
             # Get the Best local position.
             l_best = self.swarm[i].best_position
 
-            # Update all positions.
+            # Update all velocity values.
             for j, (xk, vk) in enumerate(zip(x_i, self._velocities[i])):
                 # Apply the update equations.
                 np_sum((w * vk, r1[j] * (l_best[j] - xk), r2[j] * (g_best[j] - xk)),
