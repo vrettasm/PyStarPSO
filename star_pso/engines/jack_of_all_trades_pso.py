@@ -88,11 +88,33 @@ class JackOfAllTradesPSO(object):
         # Dictionary with statistics.
         self._stats = defaultdict(list)
 
-        # Generate initial particle velocities.
-        self._velocities = JackOfAllTradesPSO._rng.uniform(-1.0, +1.0,
-                                                           size=(self.n_rows, self.n_cols))
-        # Place holder.
-        self._items = None
+        # First we declare the velocities to be
+        # an [n_rows x n_cols] array of objects.
+        self._velocities = np.empty(shape=(self.n_rows, self.n_cols),
+                                    dtype=object)
+
+        # Call the random velocity generator.
+        self.generate_uniform_velocities()
+    # _end_def_
+
+    def generate_uniform_velocities(self) -> None:
+        """
+        Generates random uniform velocities
+        for the data blocks.
+
+        :return: None.
+        """
+
+        # Here we generate the random velocities.
+        for i, particle in enumerate(self.swarm.population):
+            for j, blk in enumerate(particle):
+                # If the block is CATEGORICAL we
+                # will use it's valid set length.
+                n_vars = len(blk.valid_set) if blk.valid_set else 1
+
+                # Generate the velocities randomly.
+                self._velocities[i, j] = JackOfAllTradesPSO._rng.uniform(-1.0, +1.0, size=n_vars)
+        # _end_for_
     # _end_def_
 
     @classmethod
@@ -378,8 +400,8 @@ class JackOfAllTradesPSO(object):
         # Check if resetting the swarm is requested.
         if reset_swarm:
             # Randomize particle velocities.
-            self._velocities = JackOfAllTradesPSO._rng.uniform(-1.0, +1.0,
-                                                               size=(self.n_rows, self.n_cols))
+            self.generate_uniform_velocities()
+
             # Randomize particle positions.
             self.generate_random_positions()
 
