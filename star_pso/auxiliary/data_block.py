@@ -141,6 +141,9 @@ class DataBlock(object):
         x_old = kwargs["x_old"]
         v_new = kwargs["v_new"]
 
+        # Ensure the velocities are within limits.
+        np_clip(v_new, -0.5, +0.5, out=v_new)
+
         # Ensure the vector stays within limits.
         x_new = np_clip(x_old + v_new, 0.0, 1.0)
 
