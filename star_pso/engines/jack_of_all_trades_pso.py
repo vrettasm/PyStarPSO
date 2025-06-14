@@ -320,7 +320,8 @@ class JackOfAllTradesPSO(object):
 
         for i, (r1, r2) in enumerate(zip(R1, R2)):
 
-            # Get the current position of i-th the particle.
+            # Get the position of the i-th
+            # particle (as list).
             x_i = self.swarm[i].position
 
             # Get the Best local position.
