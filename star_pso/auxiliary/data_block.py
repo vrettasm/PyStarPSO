@@ -125,14 +125,14 @@ class DataBlock(object):
         # Extract the required value for the update.
         v_new = kwargs["v_new"]
 
-        # Draw a random value in U(0, 1).
-        r_uniform = cls.rng.uniform()
+        # Draw a random value in (0, 1).
+        random_01 = cls.rng.random()
 
         # Compute the sigmoid function value.
         threshold = 1.0 / (1.0 + np_exp(-v_new))
 
         # Assign the binary value.
-        return 1 if threshold > r_uniform else 0
+        return 1 if threshold > random_01 else 0
     # _end_def_
 
     @classmethod
