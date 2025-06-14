@@ -1,7 +1,7 @@
-from copy import copy
 from typing import Any
 from numbers import Number
 from functools import cache
+from copy import copy, deepcopy
 
 from numpy import exp as np_exp
 from numpy import sum as np_sum
@@ -29,8 +29,8 @@ class DataBlock(object):
     rng: Generator = default_rng()
 
     # Object variables.
-    __slots__ = ("_position", "_best_position", "_lower_bound", "_upper_bound",
-                 "_btype", "_valid_set")
+    __slots__ = ("_btype", "_valid_set", "_position", "_best_position",
+                 "_lower_bound", "_upper_bound")
 
     def __init__(self,
                  position: Any,
@@ -38,18 +38,32 @@ class DataBlock(object):
                  valid_set: list | tuple = None,
                  lower_bound: Number = None,
                  upper_bound: Number = None):
-        # ...
+        """
+        Default initializer for the DataBlock class.
+
+        :param btype: the type of the data block (e.g. FLOAT, INTEGER, etc.).
+
+        :param position: initial position (i.e. initial value in the block).
+
+        :param valid_set: the set of values in the case of CATEGORICAL type.
+
+        :param lower_bound: the lower bound in the search space.
+
+        :param upper_bound: the upper bound in the search space.
+        """
+
+        # Assign the data block type.
+        self._btype = btype
+
+        # Copy the initial position.
         self._position = copy(position)
         self._best_position = copy(position)
 
-        # ...
+        # Get the lower and upper bounds.
         self._lower_bound = lower_bound
         self._upper_bound = upper_bound
 
-        # ...
-        self._btype = btype
-
-        # ...
+        # Get the valid set (categorical variables).
         self._valid_set = valid_set
     # _end_def_
 
@@ -68,14 +82,13 @@ class DataBlock(object):
         :return: a new (float) position.
         """
         # Extract the required values for the update.
-        x_pos = kwargs["x_pos"]
+        x_old = kwargs["x_old"]
         v_new = kwargs["v_new"]
 
-        lower_bound = kwargs["lower_bound"]
-        upper_bound = kwargs["upper_bound"]
-
-        # Ensure the position stays within bounds.
-        return np_clip(x_pos + v_new, lower_bound, upper_bound)
+        # Ensure the new position stays within bounds.
+        return np_clip(x_old + v_new,
+                       kwargs["lower_bound"],
+                       kwargs["upper_bound"])
     # _end_def_
 
     @staticmethod
@@ -88,17 +101,16 @@ class DataBlock(object):
         :return: a new (int) position.
         """
         # Extract the required values for the update.
-        x_pos = kwargs["x_pos"]
+        x_old = kwargs["x_old"]
         v_new = kwargs["v_new"]
 
-        lower_bound = kwargs["lower_bound"]
-        upper_bound = kwargs["upper_bound"]
-
         # Round the new position and convert it to type int.
-        new_position = np_rint(x_pos + v_new).astype(int)
+        x_new = np_rint(x_old + v_new).astype(int)
 
-        # Ensure the position stays within bounds.
-        return np_clip(new_position, lower_bound, upper_bound)
+        # Ensure the new position stays within bounds.
+        return np_clip(x_new,
+                       kwargs["lower_bound"],
+                       kwargs["upper_bound"])
     # _end_def_
 
     @classmethod
@@ -126,11 +138,11 @@ class DataBlock(object):
     @classmethod
     def upd_categorical(cls, **kwargs) -> ArrayLike:
         # Extract the required values for the update.
-        x_pos = kwargs["x_pos"]
+        x_old = kwargs["x_old"]
         v_new = kwargs["v_new"]
 
         # Ensure the vector stays within limits.
-        x_new = np_clip(x_pos + v_new, 0.0, 1.0)
+        x_new = np_clip(x_old + v_new, 0.0, 1.0)
 
         # Ensure there will be at least one
         # element with positive probability.
@@ -144,7 +156,7 @@ class DataBlock(object):
 
     @classmethod
     @cache
-    def get_update_method(cls):
+    def get_update_method(cls) -> dict:
         """
         Create a dictionary with method names as keys
         and their corresponding update methods as values.
@@ -155,16 +167,15 @@ class DataBlock(object):
         return {BlockType.FLOAT: DataBlock.upd_float,
                 BlockType.BINARY: DataBlock.upd_binary,
                 BlockType.INTEGER: DataBlock.upd_integer,
-                BlockType.CATEGORICAL: DataBlock.upd_categorical
-                }
+                BlockType.CATEGORICAL: DataBlock.upd_categorical}
     # _end_def_
 
-    def new_position(self, **kwargs) -> None:
+    def new_position(self, v_new: Number) -> None:
         """
-        This method provides the public interface of the new position
-        calculation for all types of data blocks.
+        This method provides the public interface of the
+        new position calculation for all types of data blocks.
 
-        :param kwargs: the input parameters to the update methods.
+        :param v_new: new velocity value.
 
         :return: None.
         """
@@ -172,7 +183,10 @@ class DataBlock(object):
         method_dict = DataBlock.get_update_method()
 
         # Assign the function value to the new position.
-        self._position = method_dict[self._btype](**kwargs)
+        self._position = method_dict[self._btype](v_new=v_new,
+                                                  x_old=self._position,
+                                                  lower_bound=self._lower_bound,
+                                                  upper_bound=self._upper_bound)
     # _end_def_
 
     @classmethod
@@ -185,12 +199,9 @@ class DataBlock(object):
 
         :return: a new random (float) position.
         """
-        lower_bound = kwargs["lower_bound"]
-        upper_bound = kwargs["upper_bound"]
-
         # Ensure the random position stays within bounds.
-        return DataBlock.rng.uniform(lower_bound,
-                                     upper_bound)
+        return DataBlock.rng.uniform(kwargs["lower_bound"],
+                                     kwargs["upper_bound"])
     # _end_def_
 
     @classmethod
@@ -203,12 +214,9 @@ class DataBlock(object):
 
         :return: a new random (integer) position.
         """
-        lower_bound = kwargs["lower_bound"]
-        upper_bound = kwargs["upper_bound"]
-
         # Ensure the random position stays within bounds.
-        return DataBlock.rng.integers(lower_bound,
-                                      upper_bound,
+        return DataBlock.rng.integers(kwargs["lower_bound"],
+                                      kwargs["upper_bound"],
                                       endpoint=True)
     # _end_def_
 
@@ -222,11 +230,10 @@ class DataBlock(object):
 
         :return: a new random (integer) position.
         """
-        # Get the number of variables.
-        num_var = kwargs["num_var"]
-
         # Ensure the random position stays within bounds.
-        return DataBlock.rng.integers(0, 1, size=num_var, endpoint=True)
+        return DataBlock.rng.integers(low=0, high=1,
+                                      size=kwargs["n_vars"],
+                                      endpoint=True)
     # _end_def_
 
     @classmethod
@@ -240,15 +247,15 @@ class DataBlock(object):
         :return: a new random (integer) position.
         """
         # Get the number of variables.
-        num_var = kwargs["num_var"]
+        n_vars = kwargs["n_vars"]
 
         # Set the variables uniformly.
-        return np_ones(num_var)/num_var
+        return np_ones(n_vars)/n_vars
     # _end_def_
 
     @classmethod
     @cache
-    def get_init_method(cls):
+    def get_init_method(cls) -> dict:
         """
         Create a dictionary with method names as keys
         and their corresponding initialization methods
@@ -260,8 +267,7 @@ class DataBlock(object):
         return {BlockType.FLOAT: DataBlock.init_float,
                 BlockType.BINARY: DataBlock.init_binary,
                 BlockType.INTEGER: DataBlock.init_integer,
-                BlockType.CATEGORICAL: DataBlock.init_categorical
-                }
+                BlockType.CATEGORICAL: DataBlock.init_categorical}
     # _end_def_
 
     def reset_position(self) -> None:
@@ -275,9 +281,9 @@ class DataBlock(object):
         method_dict = DataBlock.get_init_method()
 
         # Assign the function value to the new position.
-        self._position = method_dict[self._btype](lower_bound=self._lower_bound,
-                                                  upper_bound=self._upper_bound,
-                                                  num_var=len(self._position))
+        self._position = method_dict[self._btype](n_vars=len(self._position),
+                                                  lower_bound=self._lower_bound,
+                                                  upper_bound=self._upper_bound)
     # _end_def_
 
     @property
@@ -317,10 +323,10 @@ class DataBlock(object):
         memo[id(self)] = new_object
 
         # Shallow copy the position vector.
-        setattr(new_object, "_position", copy(self._position))
+        setattr(new_object, "_position", deepcopy(self._position))
 
         # Shallow copy the best position vector.
-        setattr(new_object, "_best_position", copy(self._best_position))
+        setattr(new_object, "_best_position", deepcopy(self._best_position))
 
         # Simple copy the lower/upper bounds (float).
         setattr(new_object, "_lower_bound", self._lower_bound)
