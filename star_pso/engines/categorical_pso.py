@@ -185,11 +185,9 @@ class CategoricalPSO(GenericPSO):
         # Update the velocity equations.
         self.update_velocities(options)
 
-        # Local reference of the population.
-        population = self._swarm.population
-
         # Update all particle positions.
-        for particle, v_upd in zip(population, self._velocities):
+        for particle, v_upd in zip(self._swarm.population,
+                                   self._velocities):
 
             # Process each position separately.
             for x_j, v_j in zip(particle.position, v_upd):
