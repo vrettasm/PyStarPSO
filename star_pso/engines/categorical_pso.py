@@ -157,7 +157,7 @@ class CategoricalPSO(GenericPSO):
             # Get the Best local position.
             l_best = self.swarm[i].best_position
 
-            # Update all positions.
+            # Update all velocities.
             for j, (xk, vk) in enumerate(zip(x_i, self._velocities[i])):
 
                 # Apply the update equations.
