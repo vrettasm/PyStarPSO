@@ -173,25 +173,6 @@ class DataBlock(object):
                 BlockType.CATEGORICAL: DataBlock.upd_categorical}
     # _end_def_
 
-    def new_position(self, v_new: Number) -> None:
-        """
-        This method provides the public interface of the
-        new position calculation for all types of data blocks.
-
-        :param v_new: new velocity value.
-
-        :return: None.
-        """
-        # Call the method based on the name provided
-        method_dict = DataBlock.get_update_method()
-
-        # Assign the function value to the new position.
-        self._position = method_dict[self._btype](v_new=v_new,
-                                                  x_old=self._position,
-                                                  lower_bound=self._lower_bound,
-                                                  upper_bound=self._upper_bound)
-    # _end_def_
-
     @classmethod
     def init_float(cls, **kwargs) -> float:
         """
@@ -292,6 +273,26 @@ class DataBlock(object):
     @property
     def position(self):
         return self._position
+    # _end_def_
+
+    @position.setter
+    def position(self, v_new: Number) -> None:
+        """
+        This method provides the public interface for setting
+        the new position calculation for all types of data blocks.
+
+        :param v_new: new velocity value.
+
+        :return: None.
+        """
+        # Call the method based on the name provided
+        method_dict = DataBlock.get_update_method()
+
+        # Assign the function value to the new position.
+        self._position = method_dict[self._btype](v_new=v_new,
+                                                  x_old=self._position,
+                                                  lower_bound=self._lower_bound,
+                                                  upper_bound=self._upper_bound)
     # _end_def_
 
     @property
