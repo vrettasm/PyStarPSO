@@ -29,7 +29,7 @@ class JackOfAllTradesPSO(object):
     """
 
     # Make a random number generator.
-    _rng: Generator = default_rng()
+    rng: Generator = default_rng()
 
     # Set the maximum number of CPUs (at least one).
     MAX_CPUs: int = 1 if not cpu_count() else cpu_count()
@@ -113,7 +113,7 @@ class JackOfAllTradesPSO(object):
                 n_vars = len(blk.valid_set) if blk.valid_set else 1
 
                 # Generate the velocities randomly.
-                self._velocities[i, j] = JackOfAllTradesPSO._rng.uniform(-1.0, +1.0, size=n_vars)
+                self._velocities[i, j] = JackOfAllTradesPSO.rng.uniform(-1.0, +1.0, size=n_vars)
         # _end_for_
     # _end_def_
 
@@ -127,7 +127,7 @@ class JackOfAllTradesPSO(object):
         :return: None.
         """
         # Re-initialize the class variable.
-        cls._rng = default_rng(seed=new_seed)
+        cls.rng = default_rng(seed=new_seed)
     # _end_def_
 
     @property
@@ -194,8 +194,8 @@ class JackOfAllTradesPSO(object):
                 if blk.btype == BlockType.CATEGORICAL:
 
                     # Replace the probabilities with an actual sample.
-                    positions[i, j] = JackOfAllTradesPSO._rng.choice(blk.valid_set,
-                                                                     p=positions[i, j])
+                    positions[i, j] = JackOfAllTradesPSO.rng.choice(blk.valid_set,
+                                                                    p=positions[i, j])
         # _end_for_
     # _end_def_
 
@@ -301,8 +301,8 @@ class JackOfAllTradesPSO(object):
         arr_shape = (self.n_rows, self.n_cols)
 
         # Pre-sample the coefficients.
-        R1 = JackOfAllTradesPSO._rng.uniform(0, c1, size=arr_shape)
-        R2 = JackOfAllTradesPSO._rng.uniform(0, c2, size=arr_shape)
+        R1 = JackOfAllTradesPSO.rng.uniform(0, c1, size=arr_shape)
+        R2 = JackOfAllTradesPSO.rng.uniform(0, c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
         if fipso:
