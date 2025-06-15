@@ -11,12 +11,12 @@ __all__ = ["JatParticle"]
 @dataclass(init=True, repr=True)
 class JatParticle(object):
     """
-        Description:
+    Description:
 
-            Implements a dataclass for the 'jack of all trades' particle.
-            This is class maintains a container (list of data blocks) and
-            most information is held in its data blocks.
-        """
+        Implements a dataclass for the 'jack of all trades' particle.
+        This is class maintains a container (list of data blocks) and
+        most information is held in its data blocks.
+    """
 
     # Define the particle as a list of DataBlocks.
     _container: list = field(default_factory=list[DataBlock])
@@ -55,6 +55,22 @@ class JatParticle(object):
         :return: a list with each data block position.
         """
         return [blk.position for blk in self._container]
+    # _end_def_
+
+    @position.setter
+    def position(self, v_new) -> None:
+        """
+        Sets a new value to the particle's position
+        by updating each data block in the container.
+
+        :param v_new: new velocity values.
+
+        :return: None.
+        """
+        for blk, v in zip(self._container, v_new):
+            # This calls internally the right
+            # method to update each block type.
+            blk.position = v
     # _end_def_
 
     @property
