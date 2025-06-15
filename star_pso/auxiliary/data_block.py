@@ -21,11 +21,12 @@ class DataBlock(object):
     Description:
 
        This is the main class that encodes the data of a single particle variable.
-       The class encapsulates not only the data (position and velocity), but also
-       the way that this data can be updated using a specific type dependent function.
+       The class encapsulates not only the data (position and best position), but
+       also the way that this data can be updated using a specific type dependent
+       functions.
     """
 
-    # Make a random number generator.
+    # Make a random number generator (Class variable).
     rng: Generator = default_rng()
 
     # Object variables.
@@ -69,6 +70,19 @@ class DataBlock(object):
 
         # Get the valid set (categorical variables).
         self._valid_set = valid_set
+    # _end_def_
+
+    @classmethod
+    def set_seed(cls, new_seed=None) -> None:
+        """
+        Sets a new seed for the random number generator.
+
+        :param new_seed: New seed value (default=None).
+
+        :return: None.
+        """
+        # Re-initialize the class variable.
+        cls.rng = default_rng(seed=new_seed)
     # _end_def_
 
     @property
