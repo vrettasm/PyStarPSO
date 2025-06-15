@@ -246,4 +246,15 @@ class JatParticle(object):
         return item in self._container
     # _end_if_
 
+    def __str__(self) -> str:
+        """
+        Override to print a readable string presentation
+        of the JatParticle object.
+
+        :return: a string representation of a JatParticle.
+        """
+        return f"{self.__class__.__name__}: "\
+               f"(Position, Value) = ({self.position, self.value})."
+    # _end_def_
+
 # _end_class_
