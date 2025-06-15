@@ -54,7 +54,12 @@ class Swarm(object):
     # _end_def_
 
     @property
-    def has_categorical(self):
+    def has_categorical(self) -> bool:
+        """
+        Accessor (getter) of the has_categorical flag.
+
+        :return: true if the data block is CATEGORICAL.
+        """
         return self._has_categorical
     # _end_def_
 
@@ -171,10 +176,10 @@ class Swarm(object):
 
     def update_local_best(self) -> None:
         """
-        Update the particles in the swarm to their local
-        best values and positions.
+        Update the particles in the swarm to
+        their local best values and positions.
 
-        :return: None
+        :return: None.
         """
 
         # Go through all particles.
@@ -202,7 +207,7 @@ class Swarm(object):
         return len(self._population)
     # _end_def_
 
-    def __getitem__(self, index: int) -> Particle:
+    def __getitem__(self, index: int) -> Particle | JatParticle:
         """
         Get the item at position 'index'.
 
@@ -213,7 +218,7 @@ class Swarm(object):
         return self._population[index]
     # _end_def_
 
-    def __setitem__(self, index: int, item: Particle) -> None:
+    def __setitem__(self, index: int, item: Particle | JatParticle) -> None:
         """
         Set the 'item' at position 'index'.
 
@@ -226,7 +231,7 @@ class Swarm(object):
         self._population[index] = item
     # _end_def_
 
-    def __contains__(self, item: Particle) -> bool:
+    def __contains__(self, item: Particle | JatParticle) -> bool:
         """
         Check for membership.
 
