@@ -141,6 +141,17 @@ class JatParticle(object):
         self._best_value = new_value
     # _end_def_
 
+    def reset_position(self) -> None:
+        """
+        Iterate through all data blocks in the
+        container and reset their positions.
+
+        :return: None.
+        """
+        for blk in self._container:
+            blk.reset_position()
+    # _end_def_
+
     def __getitem__(self, index: int):
         """
         Get the item at position 'index'.
