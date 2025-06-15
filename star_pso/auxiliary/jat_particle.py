@@ -68,7 +68,7 @@ class JatParticle(object):
         :return: None.
         """
         for blk, v in zip(self._container, v_new):
-            # This calls internally the right
+            # This calls internally the 'right'
             # method to update each block type.
             blk.position = v
     # _end_def_
@@ -86,7 +86,7 @@ class JatParticle(object):
     @best_position.setter
     def best_position(self, new_vector: list) -> None:
         """
-        Updates the best position (so far) in the particle object.
+        Updates the 'best position' in the particle object.
 
         :param new_vector: (list) New best position vector.
 
@@ -122,7 +122,7 @@ class JatParticle(object):
     @property
     def best_value(self) -> float:
         """
-        Accessor of the best function value recorded.
+        Accessor of the best function value.
 
         :return: (float) best function value.
         """
@@ -143,8 +143,8 @@ class JatParticle(object):
 
     def reset_position(self) -> None:
         """
-        Iterate through all data blocks in the
-        container and reset their positions.
+        Iterate through all the data blocks in
+        the container and reset their positions.
 
         :return: None.
         """
@@ -152,9 +152,9 @@ class JatParticle(object):
             blk.reset_position()
     # _end_def_
 
-    def __getitem__(self, index: int):
+    def __getitem__(self, index: int) -> DataBlock:
         """
-        Get the item at position 'index'.
+        Get the DataBlock item at position 'index'.
 
         :param index: (int) the position that we want to return.
 
@@ -165,7 +165,7 @@ class JatParticle(object):
 
     def __setitem__(self, index: int, item: DataBlock) -> None:
         """
-        Set the 'item' at position 'index'.
+        Set the DataBlock 'item' at position 'index'.
 
         :param index: (int) the position that we want to access.
 
