@@ -184,7 +184,7 @@ class Particle(object):
         return deepcopy(self)
     # _end_def_
 
-    def __getitem__(self, index: int):
+    def __getitem__(self, index: int) -> Any:
         """
         Get the item at position 'index'.
 
