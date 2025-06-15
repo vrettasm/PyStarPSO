@@ -53,7 +53,11 @@ class DataBlock(object):
         """
 
         # Assign the data block type.
-        self._btype = btype
+        if isinstance(btype, BlockType):
+            self._btype = btype
+        else:
+            raise TypeError(f"{self.__class__.__name__}: Unknown Block Type.")
+        # _end_if_
 
         # Copy the initial position.
         self._position = copy(position)
@@ -69,15 +73,22 @@ class DataBlock(object):
 
     @property
     def valid_set(self) -> list | tuple:
+        """
+        Accessor (getter) method for the valid set.
+
+        :return: The set of valid values of a CATEGORICAL block.
+        """
         return self._valid_set
     # _end_def_
 
     @staticmethod
     def upd_float(**kwargs) -> float:
         """
-        It is used to update the positions of continuous 'float' data blocks.
+        It is used to update the positions of continuous
+        'float' data blocks.
 
-        :param kwargs: contains the parameters for the updates equations.
+        :param kwargs: contains the parameters for the
+        update equation.
 
         :return: a new (float) position.
         """
@@ -94,9 +105,11 @@ class DataBlock(object):
     @staticmethod
     def upd_integer(**kwargs) -> int:
         """
-        It is used to update the positions of discrete 'int' data blocks.
+        It is used to update the positions of discrete
+        'int' data blocks.
 
-        :param kwargs: contains the parameters for the updates equations.
+        :param kwargs: contains the parameters for the
+        update equations.
 
         :return: a new (int) position.
         """
@@ -116,9 +129,11 @@ class DataBlock(object):
     @classmethod
     def upd_binary(cls, **kwargs) -> int:
         """
-        It is used to update the positions of discrete 'binary' data blocks.
+        It is used to update the positions of discrete
+        'binary' data blocks.
 
-        :param kwargs: contains the parameters for the updates equations.
+        :param kwargs: contains the parameters for the
+        update equations.
 
         :return: a new (binary) position.
         """
@@ -137,6 +152,15 @@ class DataBlock(object):
 
     @classmethod
     def upd_categorical(cls, **kwargs) -> ArrayLike:
+        """
+        It is used to update the positions of discrete
+        'categorical' data blocks.
+
+        :param kwargs: contains the parameters for the
+        update equations.
+
+        :return: a new array like with probabilities.
+        """
         # Extract the required values for the update.
         x_old = kwargs["x_old"]
         v_new = kwargs["v_new"]
@@ -150,16 +174,16 @@ class DataBlock(object):
         # Ensure there will be at least one
         # element with positive probability.
         if np_allclose(x_new, 0.0):
-            x_new[DataBlock.rng.integers(len(x_new))] = 1.0
+            x_new[cls.rng.integers(len(x_new))] = 1.0
         # _end_if_
 
         # Normalize (to account for probabilities).
         return x_new / np_sum(x_new, dtype=float)
     # _end_def_
 
-    @classmethod
+    @staticmethod
     @cache
-    def get_update_method(cls) -> dict:
+    def get_update_method() -> dict:
         """
         Create a dictionary with method names as keys
         and their corresponding update methods as values.
@@ -184,8 +208,8 @@ class DataBlock(object):
         :return: a new random (float) position.
         """
         # Ensure the random position stays within bounds.
-        return DataBlock.rng.uniform(kwargs["lower_bound"],
-                                     kwargs["upper_bound"])
+        return cls.rng.uniform(kwargs["lower_bound"],
+                               kwargs["upper_bound"])
     # _end_def_
 
     @classmethod
@@ -199,9 +223,9 @@ class DataBlock(object):
         :return: a new random (integer) position.
         """
         # Ensure the random position stays within bounds.
-        return DataBlock.rng.integers(kwargs["lower_bound"],
-                                      kwargs["upper_bound"],
-                                      endpoint=True)
+        return cls.rng.integers(kwargs["lower_bound"],
+                                kwargs["upper_bound"],
+                                endpoint=True)
     # _end_def_
 
     @classmethod
@@ -215,13 +239,13 @@ class DataBlock(object):
         :return: a new random (integer) position.
         """
         # Ensure the random position stays within bounds.
-        return DataBlock.rng.integers(low=0, high=1,
-                                      size=kwargs["n_vars"],
-                                      endpoint=True)
+        return cls.rng.integers(low=0, high=1,
+                                size=kwargs["n_vars"],
+                                endpoint=True)
     # _end_def_
 
-    @classmethod
-    def init_categorical(cls, **kwargs) -> int:
+    @staticmethod
+    def init_categorical(**kwargs) -> int:
         """
         It is used to initialize randomly the positions
         of a discrete 'categorical' data blocks.
@@ -237,9 +261,9 @@ class DataBlock(object):
         return np_ones(n_vars)/n_vars
     # _end_def_
 
-    @classmethod
+    @staticmethod
     @cache
-    def get_init_method(cls) -> dict:
+    def get_init_method() -> dict:
         """
         Create a dictionary with method names as keys
         and their corresponding initialization methods
@@ -271,7 +295,12 @@ class DataBlock(object):
     # _end_def_
 
     @property
-    def position(self):
+    def position(self) -> Any:
+        """
+        Accessor (getter) of the data block's position.
+
+        :return: the position value of the data block.
+        """
         return self._position
     # _end_def_
 
@@ -296,17 +325,37 @@ class DataBlock(object):
     # _end_def_
 
     @property
-    def best_position(self):
+    def best_position(self) -> Any:
+        """
+        Accessor (getter) of the data block's
+        best position.
+
+        :return: the best recorded position
+        value of the data block.
+        """
         return self._best_position
     # _end_def_
 
     @best_position.setter
-    def best_position(self, new_value):
+    def best_position(self, new_value) -> None:
+        """
+        This method provides the public interface for
+        setting the new best position of data block.
+
+        :param new_value: new best position value.
+
+        :return: None.
+        """
         self._best_position = copy(new_value)
     # _end_def_
 
     @property
-    def btype(self):
+    def btype(self) -> BlockType:
+        """
+        Accessor (getter) of the data block's type.
+
+        :return: the data block type.
+        """
         return self._btype
     # _end_def_
 
