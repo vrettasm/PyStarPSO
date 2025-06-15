@@ -168,13 +168,9 @@ class JackOfAllTradesPSO(object):
 
         :return: None.
         """
-
-        # Go through the whole swarm.
+        # Go through the whole swarm population.
         for particle in self.swarm.population:
-            # Go through all the data blocks.
-            for blk in particle:
-                blk.reset_position()
-        # _end_for_
+            particle.reset_position()
     # _end_def_
 
     def sample_categorical_values(self, positions) -> None:
@@ -182,8 +178,8 @@ class JackOfAllTradesPSO(object):
         Samples the actual position based on particles
         probabilities and valid sets for each data block.
 
-        :param positions: the particles that contain the lists
-        of probabilities (one for each position).
+        :param positions: the container with the lists of
+        probabilities (one for each position).
 
         :return: None
         """
@@ -349,9 +345,9 @@ class JackOfAllTradesPSO(object):
         # Evaluates all the particles.
         for particle, velocity in zip(self.swarm.population,
                                       self._velocities):
-            for blk, v_new in zip(particle, velocity):
-                blk.new_position(v_new=v_new)
-        # _end_for_
+            # This calls internally the update method
+            # for each data block.
+            particle.position = velocity
     # _end_def_
 
     @time_it
