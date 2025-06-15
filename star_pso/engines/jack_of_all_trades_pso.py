@@ -35,8 +35,8 @@ class JackOfAllTradesPSO(object):
     MAX_CPUs: int = 1 if not cpu_count() else cpu_count()
 
     # Object variables.
-    __slots__ = ("_swarm", "objective_func", "_stats", "_items",
-                 "n_cpus", "n_rows", "n_cols", "_velocities")
+    __slots__ = ("_swarm", "objective_func", "_stats", "n_cpus",
+                 "n_rows", "n_cols", "_velocities")
 
     def __init__(self,
                  initial_swarm: Swarm,
@@ -141,16 +141,6 @@ class JackOfAllTradesPSO(object):
     # _end_def_
 
     @property
-    def items(self) -> list | tuple:
-        """
-        Accessor (getter) of the _items placeholder container.
-
-        :return: _items (if any).
-        """
-        return self._items
-    # _end_def_
-
-    @property
     def swarm(self) -> Swarm:
         """
         Accessor of the swarm.
@@ -178,8 +168,8 @@ class JackOfAllTradesPSO(object):
         Samples the actual position based on particles
         probabilities and valid sets for each data block.
 
-        :param positions: the container with the lists of
-        probabilities (one for each position).
+        :param positions: the container with the lists
+        of probabilities (one for each position).
 
         :return: None
         """
@@ -199,10 +189,10 @@ class JackOfAllTradesPSO(object):
         # _end_for_
     # _end_def_
 
-    def evaluate_function(self, parallel=None) -> (list[float], bool):
+    def evaluate_function(self, parallel=None) -> (float, bool):
         """
-        Evaluate all the particles of the input list with the custom objective
-        function. The parallel_mode is optional.
+        Evaluate all the particles of the swarm with the custom
+        objective function. The parallel_mode is optional.
 
         :return: the max function value and the found solution flag.
         """
@@ -275,10 +265,11 @@ class JackOfAllTradesPSO(object):
 
     def update_velocities(self, options: dict) -> None:
         """
-        Performs the update on the velocity equations according to the
-        original PSO paper by "Kennedy, J. and Eberhart, R. (1995)".
+        Performs the update on the velocity equations
+        according to the original PSO paper by:
+        "Kennedy, J. and Eberhart, R. (1995)".
 
-        :param options: Dictionary with the basic PSO options:
+        :param options: Dictionary with the basic options:
               i)  'w': inertia weight
              ii) 'c1': cognitive coefficient
             iii) 'c2': social coefficient
@@ -294,15 +285,15 @@ class JackOfAllTradesPSO(object):
         # Social coefficient.
         c2 = options.get("c2")
 
-        # Fully informed PSO option.
+        # Fully informed PSO option (OPTIONAL).
         fipso = options.get("fipso", False)
 
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
 
         # Pre-sample the coefficients.
-        R1 = JackOfAllTradesPSO.rng.uniform(0, c1, size=arr_shape)
-        R2 = JackOfAllTradesPSO.rng.uniform(0, c2, size=arr_shape)
+        cogntv = JackOfAllTradesPSO.rng.uniform(0, c1, size=arr_shape)
+        social = JackOfAllTradesPSO.rng.uniform(0, c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
         if fipso:
@@ -312,20 +303,21 @@ class JackOfAllTradesPSO(object):
             g_best = self.swarm.best_particle().position
         # _end_if_
 
-        for i, (r1, r2) in enumerate(zip(R1, R2)):
+        for i, (param_c, param_s) in enumerate(zip(cogntv, social)):
 
-            # Get the position of the i-th
+            # Get the (old) position of the i-th
             # particle (as list).
-            x_i = self.swarm[i].position
+            x_old = self.swarm[i].position
 
-            # Get the Best local position.
+            # Get the local best position.
             l_best = self.swarm[i].best_position
 
             # Update all velocity values.
-            for j, (xk, vk) in enumerate(zip(x_i, self._velocities[i])):
+            for j, (xk, vk) in enumerate(zip(x_old, self._velocities[i])):
                 # Apply the update equations.
-                np_sum((w * vk, r1[j] * (l_best[j] - xk), r2[j] * (g_best[j] - xk)),
-                       out=vk)
+                np_sum((w * vk,
+                        param_c[j] * (l_best[j] - xk),
+                        param_s[j] * (g_best[j] - xk)), out=vk)
         # _end_for_
 
     # _end_def_
