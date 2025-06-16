@@ -188,7 +188,7 @@ class JackOfAllTradesPSO(object):
                     # Replace the probabilities with an actual sample.
                     positions[i][j] = JackOfAllTradesPSO.rng.choice(blk.valid_set,
                                                                     p=positions[i][j])
-        # _end_for_
+            # _end_for_
     # _end_def_
 
     def evaluate_function(self, parallel=None) -> (float, bool):
