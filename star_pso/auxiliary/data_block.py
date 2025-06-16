@@ -3,12 +3,12 @@ from numbers import Number
 from functools import cache
 from copy import copy, deepcopy
 
-import numpy as np
 from numpy import exp as np_exp
 from numpy import sum as np_sum
 from numpy import clip as np_clip
 from numpy import rint as np_rint
 from numpy import ones as np_ones
+from numpy import isscalar as np_isscalar
 from numpy import allclose as np_allclose
 
 from numpy.typing import ArrayLike
@@ -304,7 +304,7 @@ class DataBlock(object):
         method_dict = DataBlock.get_init_method()
 
         # Differentiate between scalar and vector data block.
-        n_vars = 1 if np.isscalar(self._position) else len(self._position)
+        n_vars = 1 if np_isscalar(self._position) else len(self._position)
 
         # Assign the function value to the new position.
         self._position = method_dict[self._btype](n_vars=n_vars,
