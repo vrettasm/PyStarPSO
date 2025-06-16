@@ -302,6 +302,9 @@ class DataBlock(object):
         # Call the method based on the name provided.
         method_dict = DataBlock.get_init_method()
 
+        # Differentiate between scalar and vector data block.
+        n_vars = 1 if np.isscalar(self._position) else len(self._position)
+
         # Assign the function value to the new position.
         self._position = method_dict[self._btype](n_vars=n_vars,
                                                   lower_bound=self._lower_bound,
