@@ -115,7 +115,7 @@ class JackOfAllTradesPSO(object):
                 n_vars = len(blk.valid_set) if blk.valid_set else 1
 
                 # Generate the velocities randomly.
-                self._velocities[i, j] = JackOfAllTradesPSO.rng.uniform(-1.0, +1.0, size=n_vars)
+                self._velocities[i][j] = JackOfAllTradesPSO.rng.uniform(-1.0, +1.0, size=n_vars)
         # _end_for_
     # _end_def_
 
@@ -186,8 +186,8 @@ class JackOfAllTradesPSO(object):
                 if blk.btype == BlockType.CATEGORICAL:
 
                     # Replace the probabilities with an actual sample.
-                    positions[i, j] = JackOfAllTradesPSO.rng.choice(blk.valid_set,
-                                                                    p=positions[i, j])
+                    positions[i][j] = JackOfAllTradesPSO.rng.choice(blk.valid_set,
+                                                                    p=positions[i][j])
         # _end_for_
     # _end_def_
 
@@ -319,9 +319,7 @@ class JackOfAllTradesPSO(object):
         # _end_if_
 
         for i, (param_c, param_s) in enumerate(zip(cogntv, social)):
-
-            # Get the (old) position of the i-th
-            # particle (as list).
+            # Get the (old) position of the i-th particle (as list).
             x_old = self.swarm[i].position
 
             # Get the local best position.
@@ -330,9 +328,9 @@ class JackOfAllTradesPSO(object):
             # Update all velocity values.
             for j, (xk, vk) in enumerate(zip(x_old, self._velocities[i])):
                 # Apply the update equations.
-                np_sum((w * vk,
-                        param_c[j] * np_subtract(l_best[j], xk),
-                        param_s[j] * np_subtract(g_best[j], xk)), out=vk)
+                self._velocities[i][j] = (w * vk +
+                                          param_c[j] * np_subtract(l_best[j], xk) +
+                                          param_s[j] * np_subtract(g_best[j], xk))
         # _end_for_
     # _end_def_
 
