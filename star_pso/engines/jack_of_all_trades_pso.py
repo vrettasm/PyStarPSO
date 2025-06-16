@@ -7,9 +7,11 @@ from collections import defaultdict
 from typing import Callable
 from joblib import (Parallel, delayed)
 
+import numpy as np
 from numpy import sum as np_sum
 from numpy import empty as np_empty
-
+from numpy import isscalar as np_isscalar
+from numpy import subtract as np_subtract
 from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.swarm import Swarm
@@ -297,8 +299,21 @@ class JackOfAllTradesPSO(object):
 
         # Get the GLOBAL best particle position.
         if fipso:
-            # In the fully informed case we take the average of all the best positions.
-            g_best = None
+            # Initialize an array with the best particle positions.
+            g_best = np.array([particle.best_position
+                               for particle in self.swarm.population],
+                              dtype=object)
+
+            # Get the mean value along the zero-axis.
+            g_best = np.mean(g_best, axis=0)
+
+            # Finally normalize them to
+            # account for probabilities.
+            for i in range(self.n_cols):
+                # Avoid errors with scalar values.
+                if not np_isscalar(g_best[i]):
+                    g_best[i] /= np_sum(g_best[i], dtype=float)
+            # _end_for_
         else:
             g_best = self.swarm.best_particle().position
         # _end_if_
@@ -316,10 +331,9 @@ class JackOfAllTradesPSO(object):
             for j, (xk, vk) in enumerate(zip(x_old, self._velocities[i])):
                 # Apply the update equations.
                 np_sum((w * vk,
-                        param_c[j] * (l_best[j] - xk),
-                        param_s[j] * (g_best[j] - xk)), out=vk)
+                        param_c[j] * np_subtract(l_best[j], xk),
+                        param_s[j] * np_subtract(g_best[j], xk)), out=vk)
         # _end_for_
-
     # _end_def_
 
     def update_positions(self, options: dict) -> None:
