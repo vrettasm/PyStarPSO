@@ -303,7 +303,7 @@ class DataBlock(object):
         method_dict = DataBlock.get_init_method()
 
         # Assign the function value to the new position.
-        self._position = method_dict[self._btype](n_vars=len(self._position),
+        self._position = method_dict[self._btype](n_vars=n_vars,
                                                   lower_bound=self._lower_bound,
                                                   upper_bound=self._upper_bound)
     # _end_def_
