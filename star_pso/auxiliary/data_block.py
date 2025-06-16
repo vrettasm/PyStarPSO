@@ -113,7 +113,7 @@ class DataBlock(object):
         # Ensure the new position stays within bounds.
         return np_clip(x_old + v_new,
                        kwargs["lower_bound"],
-                       kwargs["upper_bound"])
+                       kwargs["upper_bound"]).item()
     # _end_def_
 
     @staticmethod
