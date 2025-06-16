@@ -12,6 +12,21 @@ class BlockType(Enum):
     FLOAT, INTEGER, BINARY, CATEGORICAL = range(4)
 # _end_class_
 
+def my_clip(x_new, lower_limit, upper_limit):
+    """
+
+    :param x_new:
+
+    :param lower_limit:
+
+    :param upper_limit:
+
+    :return:
+    """
+    return np.minimum(np.maximum(x_new, lower_limit),
+                      upper_limit).item()
+# _end_def_
+
 def time_it(func):
     """
     Timing decorator function.
