@@ -299,7 +299,7 @@ class DataBlock(object):
 
         :return: None.
         """
-        # Call the method based on the name provided
+        # Call the method based on the name provided.
         method_dict = DataBlock.get_init_method()
 
         # Assign the function value to the new position.
@@ -328,7 +328,7 @@ class DataBlock(object):
 
         :return: None.
         """
-        # Call the method based on the name provided
+        # Call the method based on the name provided.
         method_dict = DataBlock.get_update_method()
 
         # Assign the function value to the new position.
