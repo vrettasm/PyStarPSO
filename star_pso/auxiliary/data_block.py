@@ -3,6 +3,7 @@ from numbers import Number
 from functools import cache
 from copy import copy, deepcopy
 
+import numpy as np
 from numpy import exp as np_exp
 from numpy import sum as np_sum
 from numpy import clip as np_clip
