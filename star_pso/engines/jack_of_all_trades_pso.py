@@ -78,7 +78,7 @@ class JackOfAllTradesPSO(object):
         if n_cpus is None:
 
             # This is the default option.
-            self.n_cpus = JackOfAllTradesPSO.MAX_CPUs
+            self.n_cpus = 1
         else:
 
             # Assign the  requested number, making sure we have
