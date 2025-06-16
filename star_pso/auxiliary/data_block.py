@@ -14,7 +14,7 @@ from numpy import allclose as np_allclose
 from numpy.typing import ArrayLike
 from numpy.random import default_rng, Generator
 
-from star_pso.auxiliary.utilities import BlockType
+from star_pso.auxiliary.utilities import (BlockType, my_clip)
 
 
 class DataBlock(object):
@@ -112,9 +112,9 @@ class DataBlock(object):
         v_new = kwargs["v_new"]
 
         # Ensure the new position stays within bounds.
-        return np_clip(x_old + v_new,
+        return my_clip(x_old + v_new,
                        kwargs["lower_bound"],
-                       kwargs["upper_bound"]).item()
+                       kwargs["upper_bound"])
     # _end_def_
 
     @staticmethod
@@ -136,9 +136,9 @@ class DataBlock(object):
         x_new = np_rint(x_old + v_new).astype(int)
 
         # Ensure the new position stays within bounds.
-        return np_clip(x_new,
+        return my_clip(x_new,
                        kwargs["lower_bound"],
-                       kwargs["upper_bound"]).item()
+                       kwargs["upper_bound"])
     # _end_def_
 
     @classmethod
