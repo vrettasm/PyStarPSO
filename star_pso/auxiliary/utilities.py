@@ -14,14 +14,18 @@ class BlockType(Enum):
 
 def my_clip(x_new, lower_limit, upper_limit):
     """
+    Local version of numpy clip which limits
+    the values in an a scalar (array). Given
+    an interval, values outside the interval
+    are clipped to the interval edges.
 
-    :param x_new:
+    :param x_new: scalar value to be clipped.
 
-    :param lower_limit:
+    :param lower_limit: lower limit.
 
-    :param upper_limit:
+    :param upper_limit: upper limit.
 
-    :return:
+    :return: the clipped value.
     """
     return np.minimum(np.maximum(x_new, lower_limit),
                       upper_limit).item()
