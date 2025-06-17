@@ -408,7 +408,7 @@ class JackOfAllTradesPSO(object):
         # _end_if_
 
         # Reuse the pool of workers for the whole optimization.
-        with Parallel(n_jobs=self.n_cpus, backend="loky") as parallel:
+        with Parallel(n_jobs=self.n_cpus, prefer="threads") as parallel:
 
             # Get the function values 'before' optimisation.
             f_opt, _ = self.evaluate_function(parallel)
