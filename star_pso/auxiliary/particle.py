@@ -175,15 +175,6 @@ class Particle(object):
         return new_object
     # _end_def_
 
-    def clone(self):
-        """
-        Makes a duplicate of the self object.
-
-        :return: a "deep-copy" of the object.
-        """
-        return deepcopy(self)
-    # _end_def_
-
     def __getitem__(self, index: int) -> Any:
         """
         Get the item at position 'index'.
