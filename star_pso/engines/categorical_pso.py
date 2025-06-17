@@ -68,8 +68,8 @@ class CategoricalPSO(GenericPSO):
         # the size of the variable set.
         for i in range(self.n_rows):
             for j in range(self.n_cols):
-                self._velocities[i, j] = GenericPSO.rng_PSO.uniform(-0.1, +0.1,
-                                                                    size=len(v_sets[j]))
+                self._velocities[i, j] = GenericPSO.rng.uniform(-0.1, +0.1,
+                                                                size=len(v_sets[j]))
         # _end_for_
     # _end_def_
 
@@ -121,8 +121,8 @@ class CategoricalPSO(GenericPSO):
         arr_shape = (self.n_rows, self.n_cols)
 
         # Pre-sample the coefficients.
-        R1 = GenericPSO.rng_PSO.uniform(0, c1, size=arr_shape)
-        R2 = GenericPSO.rng_PSO.uniform(0, c2, size=arr_shape)
+        R1 = GenericPSO.rng.uniform(0, c1, size=arr_shape)
+        R2 = GenericPSO.rng.uniform(0, c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
         if fipso:
@@ -195,7 +195,7 @@ class CategoricalPSO(GenericPSO):
                 # Ensure there will be at least one
                 # element with positive probability.
                 if np.allclose(x_j, 0.0):
-                    x_j[GenericPSO.rng_PSO.integers(len(x_j))] = 1.0
+                    x_j[GenericPSO.rng.integers(len(x_j))] = 1.0
                 # _end_if_
 
                 # Normalize (to account for probabilities).

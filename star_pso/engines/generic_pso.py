@@ -27,7 +27,7 @@ class GenericPSO(object):
     """
 
     # Make a random number generator.
-    rng_PSO: Generator = default_rng()
+    rng: Generator = default_rng()
 
     # Set the maximum number of CPUs (at least one).
     MAX_CPUs: int = 1 if not cpu_count() else cpu_count()
@@ -110,7 +110,7 @@ class GenericPSO(object):
         :return: None.
         """
         # Re-initialize the class variable.
-        cls.rng_PSO = default_rng(seed=new_seed)
+        cls.rng = default_rng(seed=new_seed)
     # _end_def_
 
     @property
@@ -168,8 +168,8 @@ class GenericPSO(object):
         x_max = self._upper_bound if x_max is None else np.asarray(x_max)
 
         # Generate uniform positions U(x_min, x_max).
-        uniform_positions = GenericPSO.rng_PSO.uniform(x_min, x_max,
-                                                       size=(self.n_rows, self.n_cols))
+        uniform_positions = GenericPSO.rng.uniform(x_min, x_max,
+                                                   size=(self.n_rows, self.n_cols))
         # Check if we want integer values.
         if round_int:
             # Round the new positions and convert them to type int.
@@ -190,8 +190,8 @@ class GenericPSO(object):
         """
 
         # Generate binary positions Bin(0, 1).
-        binary_positions = GenericPSO.rng_PSO.integers(0, 1, endpoint=True,
-                                                       size=(self.n_rows, self.n_cols))
+        binary_positions = GenericPSO.rng.integers(0, 1, endpoint=True,
+                                                   size=(self.n_rows, self.n_cols))
         # Assign the new positions in the swarm.
         for p, x_new in zip(self._swarm, binary_positions):
             p.position = x_new
@@ -311,7 +311,7 @@ class GenericPSO(object):
             for j, (set_j, probs_j) in enumerate(zip(self._items["sets"], x_pos)):
 
                 # Sample an item according to its probabilities.
-                x_new[i, j] = GenericPSO.rng_PSO.choice(set_j, p=probs_j)
+                x_new[i, j] = GenericPSO.rng.choice(set_j, p=probs_j)
 
             # _end_for_
         # _end_for_

@@ -64,8 +64,8 @@ class AcceleratedPSO(GenericPSO):
         # _end_if_
 
         # Temporary 'velocity-like' parameters.
-        tmp_velocities = (c_beta*g_best + GenericPSO.rng_PSO.normal(0, c_alpha,
-                                                                    size=(self.n_rows, self.n_cols)))
+        tmp_velocities = (c_beta*g_best + GenericPSO.rng.normal(0, c_alpha,
+                                                                size=(self.n_rows, self.n_cols)))
         # Compute the complement of beta.
         c_param = (1.0 - c_beta)
 

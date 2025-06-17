@@ -35,8 +35,8 @@ class IntegerPSO(GenericPSO):
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
         # Generate initial particle velocities.
-        self._velocities = GenericPSO.rng_PSO.uniform(-1.0, +1.0,
-                                                      size=(self.n_rows, self.n_cols))
+        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
+                                                  size=(self.n_rows, self.n_cols))
     # _end_def_
 
     def update_velocities(self, options: dict) -> None:
@@ -67,8 +67,8 @@ class IntegerPSO(GenericPSO):
         arr_shape = (self.n_rows, self.n_cols)
 
         # Pre-sample the coefficients.
-        R1 = GenericPSO.rng_PSO.uniform(0, c1, size=arr_shape)
-        R2 = GenericPSO.rng_PSO.uniform(0, c2, size=arr_shape)
+        R1 = GenericPSO.rng.uniform(0, c1, size=arr_shape)
+        R2 = GenericPSO.rng.uniform(0, c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
         if fipso:
@@ -144,8 +144,8 @@ class IntegerPSO(GenericPSO):
         # Check if resetting the swarm is required.
         if reset_swarm:
             # Reset particle velocities.
-            self._velocities = GenericPSO.rng_PSO.uniform(-1.0, +1.0,
-                                                          size=(self.n_rows, self.n_cols))
+            self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
+                                                      size=(self.n_rows, self.n_cols))
             # Generate random integer positions.
             self.generate_uniform_positions(round_int=True)
 
