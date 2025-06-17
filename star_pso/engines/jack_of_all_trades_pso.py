@@ -410,6 +410,11 @@ class JackOfAllTradesPSO(object):
             # _end_for_
         # _end_if_
 
+        # Local variable to display information on the screen.
+        # To avoid cluttering the screen we print info only 10
+        # times regardless of the total number of iterations.
+        its_time_to_print = (max_it // 10)
+
         # Reuse the pool of workers for the whole optimization.
         with Parallel(n_jobs=self.n_cpus, prefer="threads") as parallel:
 
@@ -418,11 +423,6 @@ class JackOfAllTradesPSO(object):
 
             # Display an information message.
             print(f"Initial f_optimal = {f_opt:.4f}")
-
-            # Local variable to display information on the screen.
-            # To avoid cluttering the screen we print info only 10
-            # times regardless of the total number of iterations.
-            its_time_to_print = (max_it // 10)
 
             # Repeat for 'max_it' times.
             for i in range(max_it):
@@ -465,8 +465,6 @@ class JackOfAllTradesPSO(object):
 
                 # Update optimal function for next iteration.
                 f_opt = f_new
-            # _end_for_
-
         # _end_with_
 
         # Display an information message.
