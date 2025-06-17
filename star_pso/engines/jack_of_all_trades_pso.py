@@ -78,13 +78,13 @@ class JackOfAllTradesPSO(object):
         if n_cpus is None:
 
             # This is the default option.
-            self.n_cpus = 1
+            self.n_cpus = max(1, JackOfAllTradesPSO.MAX_CPUs - 1)
         else:
 
             # Assign the  requested number, making sure we have
             # enough CPUs and the value entered has the correct
             # type.
-            self.n_cpus = max(1, min(JackOfAllTradesPSO.MAX_CPUs, int(n_cpus)))
+            self.n_cpus = max(1, min(JackOfAllTradesPSO.MAX_CPUs-1, int(n_cpus)))
         # _end_if_
 
         # Dictionary with statistics.
