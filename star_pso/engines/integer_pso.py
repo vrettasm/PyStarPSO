@@ -60,8 +60,8 @@ class IntegerPSO(GenericPSO):
         # Social coefficient.
         c2 = options.get("c2")
 
-        # Fully informed PSO option.
-        fips = options.get("fips", False)
+        # Global average parameter (OPTIONAL).
+        g_avg = options.get("global_avg", False)
 
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
@@ -71,7 +71,7 @@ class IntegerPSO(GenericPSO):
         R2 = GenericPSO.rng.uniform(0, c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
-        if fips:
+        if g_avg:
             # In the fully informed case we take the average of all the best positions.
             g_best = np.mean([p.best_position for p in self.swarm.population], axis=0)
         else:

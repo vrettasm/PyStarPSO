@@ -290,8 +290,8 @@ class JackOfAllTradesPSO(object):
         # Social coefficient.
         c2 = options.get("c2")
 
-        # Fully informed PSO option (OPTIONAL).
-        fips = options.get("fips", False)
+        # Global average parameter (OPTIONAL).
+        g_avg = options.get("global_avg", False)
 
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
@@ -301,7 +301,7 @@ class JackOfAllTradesPSO(object):
         social = JackOfAllTradesPSO.rng.uniform(0, c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
-        if fips:
+        if g_avg:
             # Initialize an array with the best particle positions.
             g_best = np.array([particle.best_position
                                for particle in self.swarm.population],
