@@ -115,7 +115,8 @@ class JackOfAllTradesPSO(object):
                 n_vars = len(blk.valid_set) if blk.valid_set else 1
 
                 # Generate the velocities randomly.
-                self._velocities[i][j] = JackOfAllTradesPSO.rng.uniform(-1.0, +1.0, size=n_vars)
+                self._velocities[i][j] = JackOfAllTradesPSO.rng.uniform(-1.0, +1.0,
+                                                                        size=n_vars)
         # _end_for_
     # _end_def_
 
@@ -186,7 +187,9 @@ class JackOfAllTradesPSO(object):
                 if blk.btype == BlockType.CATEGORICAL:
 
                     # Replace the probabilities with an actual sample.
+                    # WARNING: 'shuffle' option MUST be set to False!
                     positions[i][j] = JackOfAllTradesPSO.rng.choice(blk.valid_set,
+                                                                    shuffle=False,
                                                                     p=positions[i][j])
             # _end_for_
     # _end_def_

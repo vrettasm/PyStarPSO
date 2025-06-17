@@ -258,7 +258,9 @@ class GenericPSO(object):
             for j, (set_j, probs_j) in enumerate(zip(local_sets, x_pos)):
 
                 # Sample an item according to its probabilities.
-                x_new[i, j] = GenericPSO.rng.choice(set_j, p=probs_j)
+                # WARNING: shuffle option MUST be set to False!
+                x_new[i, j] = GenericPSO.rng.choice(set_j, p=probs_j,
+                                                    shuffle=False)
         # _end_for_
 
         # Return the new sample positions.
