@@ -60,7 +60,7 @@ class Swarm(object):
     @property
     def has_categorical(self) -> bool:
         """
-        Accessor (getter) of the has_categorical flag.
+        Accessor (getter) of the 'has_categorical' flag.
 
         :return: true if the data block is CATEGORICAL.
         """
