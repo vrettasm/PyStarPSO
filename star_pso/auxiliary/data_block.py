@@ -255,8 +255,8 @@ class DataBlock(object):
         """
         # Ensure the random position stays within bounds.
         return cls.rng.integers(low=0, high=1,
-                                size=kwargs["n_vars"],
-                                endpoint=True)
+                                endpoint=True,
+                                size=kwargs["n_vars"])
     # _end_def_
 
     @staticmethod
