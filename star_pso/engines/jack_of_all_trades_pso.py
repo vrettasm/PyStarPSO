@@ -217,10 +217,10 @@ class JackOfAllTradesPSO(object):
         # Evaluates the particles in parallel mode.
         if parallel:
             # Evaluates the particles in parallel mode.
-            evaluation = parallel(delayed(func)(x) for x in positions)
+            f_evaluation = parallel(delayed(func)(x) for x in positions)
         else:
             # Evaluates the particles in serial mode.
-            evaluation = [func(x) for x in positions]
+            f_evaluation = [func(x) for x in positions]
         # _end_if_
 
         # Flag to indicate if a solution has been found.
@@ -236,7 +236,7 @@ class JackOfAllTradesPSO(object):
         fx_array = np_empty(self.n_rows, dtype=float)
 
         # Update all particles with their new objective function values.
-        for n, (p, result) in enumerate(zip(self._swarm, evaluation)):
+        for n, (p, result) in enumerate(zip(self._swarm, f_evaluation)):
             # Extract the n-th function value.
             f_value = result[0]
 
@@ -291,7 +291,7 @@ class JackOfAllTradesPSO(object):
         c2 = options.get("c2")
 
         # Fully informed PSO option (OPTIONAL).
-        fipso = options.get("fipso", False)
+        fips = options.get("fips", False)
 
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
@@ -301,7 +301,7 @@ class JackOfAllTradesPSO(object):
         social = JackOfAllTradesPSO.rng.uniform(0, c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
-        if fipso:
+        if fips:
             # Initialize an array with the best particle positions.
             g_best = np.array([particle.best_position
                                for particle in self.swarm.population],
