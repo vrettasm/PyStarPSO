@@ -197,8 +197,8 @@ class Swarm(object):
                 p.best_value = p.value
 
                 # Copy of the current position.
-                # NOTE: best_position() handles
-                # the copy internally.
+                # NOTE: 'best_position' handles
+                #       the copy internally.
                 p.best_position = p.position
     # _end_def_
 
