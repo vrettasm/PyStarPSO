@@ -55,13 +55,14 @@ class CategoricalPSO(GenericPSO):
 
     def generate_uniform_velocities(self) -> None:
         """
-        Generates random uniform velocities for the
-        categorical variable positions.
+        Generates random uniform velocities
+        for the categorical variable positions.
 
         :return: None.
         """
-        # Local copy of the variable sets.
-        v_sets = self._items["sets"]
+        # Get the length of each categorical variable
+        # in the set.
+        size_L = [len(k) for k in self._items["sets"]]
 
         # Here we generate the random velocities
         # in a short uniform range, according to
@@ -69,25 +70,27 @@ class CategoricalPSO(GenericPSO):
         for i in range(self.n_rows):
             for j in range(self.n_cols):
                 self._velocities[i, j] = GenericPSO.rng.uniform(-0.1, +0.1,
-                                                                size=len(v_sets[j]))
+                                                                size=size_L[j])
         # _end_for_
     # _end_def_
 
     def generate_categorical_positions(self) -> None:
         """
-        Generates random uniform positions
-        for the categorical variables.
+        Generate the population of particles positions setting
+        their probabilities to 1/L (for all possible L states).
 
         :return: None.
         """
-        # Local copy of the valid sets.
-        v_sets = self._items["sets"]
 
-        # Reset the positions to uniform values.
+        # Get the length of each categorical variable
+        # in the set.
+        size_L = [len(k) for k in self._items["sets"]]
+
+        # Reset the probabilities to uniform values.
         for i in range(self.n_rows):
             for j in range(self.n_cols):
                 # Get the length of the j-th set.
-                size_j = len(v_sets[j])
+                size_j = size_L[j]
 
                 # Set the variables uniformly.
                 self.swarm[i][j] = np.ones(size_j)/size_j
@@ -115,7 +118,7 @@ class CategoricalPSO(GenericPSO):
         c2 = options.get("c2")
 
         # Fully informed PSO option.
-        fipso = options.get("fipso", False)
+        fips = options.get("fips", False)
 
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
@@ -125,7 +128,7 @@ class CategoricalPSO(GenericPSO):
         R2 = GenericPSO.rng.uniform(0, c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
-        if fipso:
+        if fips:
             # Initialize a vector (of vectors).
             g_best = np.array([particle.best_position
                               for particle in self.swarm.population],

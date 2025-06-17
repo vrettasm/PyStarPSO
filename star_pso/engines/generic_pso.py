@@ -143,60 +143,6 @@ class GenericPSO(object):
         return self._swarm
     # _end_def_
 
-    def generate_uniform_positions(self,
-                                   x_min: ArrayLike = None,
-                                   x_max: ArrayLike = None,
-                                   round_int: bool = False) -> None:
-        """
-        Generate the population of particles positions by sampling
-        uniformly random numbers within the [x_min, x_max] bounds.
-
-        :param x_min: the minimum allowed values for the positions.
-
-        :param x_max: the maximum allowed values for the positions.
-
-        :param round_int: if 'True' it will produce integer random
-        values, by rounding the positions into the nearest integer.
-
-        :return: None.
-        """
-
-        # If 'x_min' is absent use the default lower_bound.
-        x_min = self._lower_bound if x_min is None else np.asarray(x_min)
-
-        # If 'x_max' is absent use the default upper_bound.
-        x_max = self._upper_bound if x_max is None else np.asarray(x_max)
-
-        # Generate uniform positions U(x_min, x_max).
-        uniform_positions = GenericPSO.rng.uniform(x_min, x_max,
-                                                   size=(self.n_rows, self.n_cols))
-        # Check if we want integer values.
-        if round_int:
-            # Round the new positions and convert them to type int.
-            uniform_positions = np.rint(uniform_positions).astype(int)
-        # _end_if_
-
-        # Assign the new positions in the swarm.
-        for p, x_new in zip(self._swarm, uniform_positions):
-            p.position = x_new
-    # _end_def_
-
-    def generate_binary_positions(self) -> None:
-        """
-        Generate the population of particles positions by sampling
-        discrete binary random numbers within the {0, 1} set.
-
-        :return: None.
-        """
-
-        # Generate binary positions Bin(0, 1).
-        binary_positions = GenericPSO.rng.integers(0, 1, endpoint=True,
-                                                   size=(self.n_rows, self.n_cols))
-        # Assign the new positions in the swarm.
-        for p, x_new in zip(self._swarm, binary_positions):
-            p.position = x_new
-    # _end_def_
-
     def evaluate_function(self, parallel_mode: bool = False,
                           categorical_mode: bool = False,
                           backend: str = "threads") -> (list[float], bool):
@@ -225,20 +171,20 @@ class GenericPSO(object):
         if categorical_mode:
 
             # Sample the positions, using their probabilities.
-            positions = self.sample_position(positions)
+            positions = self.sample_categorical(positions)
         # _end_if_
 
         # Check the 'parallel_mode' flag.
         if parallel_mode:
 
             # Evaluate the particles in parallel mode.
-            evaluation_i = Parallel(n_jobs=self.n_cpus, prefer=backend)(
+            f_evaluation = Parallel(n_jobs=self.n_cpus, prefer=backend)(
                 delayed(func)(x) for x in positions
             )
         else:
 
             # Evaluate all the particles in serial mode.
-            evaluation_i = [func(x) for x in positions]
+            f_evaluation = [func(x) for x in positions]
         # _end_if_
 
         # Flag to indicate if a solution has been found.
@@ -254,7 +200,7 @@ class GenericPSO(object):
         fx_array = np.empty(self.n_rows, dtype=float)
 
         # Update all particles with their new objective function values.
-        for n, (p, result) in enumerate(zip(self._swarm, evaluation_i)):
+        for n, (p, result) in enumerate(zip(self._swarm, f_evaluation)):
             # Extract the n-th function value.
             f_value = result[0]
 
@@ -286,38 +232,49 @@ class GenericPSO(object):
         return f_max, found_solution
     # _end_def_
 
-    def sample_position(self, particle_positions) -> ArrayLike:
+    def sample_categorical(self, particle_positions: ArrayLike) -> ArrayLike:
         """
-        Samples an actual position based on particles probabilities
-        and valid sets for each position.
+        Samples an actual categorical position based on particles
+        probabilities and valid sets for each position.
 
-        N.B. This method is very slow O(n_rows*n_cols).
+        :param particle_positions: the particles that contain the
+        lists of probabilities (one for each position).
 
-        :param particle_positions: the particles that contain the lists
-        of probabilities (one for each position).
-
-        :return: an array-like object that is an actual samples that
-        can be evaluated from the optimization function.
+        :return: an array-like object that contains actual values
+        that can be evaluated from the optimization function.
         """
 
         # Preallocate an empty array to store the sampled positions.
         x_new = np.empty(shape=(self.n_rows, self.n_cols), dtype=object)
+
+        # Local copy of the available sets.
+        local_sets = self._items["sets"]
 
         # Loop over all particle positions.
         for i, x_pos in enumerate(particle_positions):
 
             # Each position is sampled according to its
             # particle probabilities and its valid set.
-            for j, (set_j, probs_j) in enumerate(zip(self._items["sets"], x_pos)):
+            for j, (set_j, probs_j) in enumerate(zip(local_sets, x_pos)):
 
                 # Sample an item according to its probabilities.
                 x_new[i, j] = GenericPSO.rng.choice(set_j, p=probs_j)
-
-            # _end_for_
         # _end_for_
 
         # Return the new sample positions.
         return x_new
+    # _end_def_
+
+    def generate_random_positions(self) -> None:
+        """
+        Generate a population of particles with random
+        positions. Each different class that inherits
+        from here should know how to implement it.
+
+        :return: None.
+        """
+        raise NotImplementedError(f"{self.__class__.__name__}: "
+                                  f"You should implement this method!")
     # _end_def_
 
     def update_positions(self, *args, **kwargs) -> None:

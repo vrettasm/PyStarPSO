@@ -66,7 +66,7 @@ class BinaryPSO(GenericPSO):
         c2 = options.get("c2")
 
         # Fully informed PSO option.
-        fipso = options.get("fipso", False)
+        fips = options.get("fips", False)
 
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
@@ -76,7 +76,7 @@ class BinaryPSO(GenericPSO):
         R2 = GenericPSO.rng.uniform(0, c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
-        if fipso:
+        if fips:
             # In the fully informed case we take the average of all the best positions.
             g_best = np.mean([p.best_position for p in self.swarm.population], axis=0).round()
         else:
@@ -130,6 +130,22 @@ class BinaryPSO(GenericPSO):
             particle.position = x_new
     # _end_def_
 
+    def generate_random_positions(self) -> None:
+        """
+        Generate the population of particles positions by
+        sampling discrete binary random numbers within the
+        {0, 1} set.
+
+        :return: None.
+        """
+        # Generate random BINARY positions Bin(0, 1).
+        binary_positions = GenericPSO.rng.integers(0, 1, endpoint=True,
+                                                   size=(self.n_rows, self.n_cols))
+        # Assign the new positions in the swarm.
+        for p, x_new in zip(self._swarm, binary_positions):
+            p.position = x_new
+    # _end_def_
+
     @time_it
     def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
             parallel: bool = False, reset_swarm: bool = False, verbose: bool = False) -> None:
@@ -161,8 +177,8 @@ class BinaryPSO(GenericPSO):
             # Reset particle velocities.
             self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
                                                       size=(self.n_rows, self.n_cols))
-            # Generate random positions.
-            self.generate_binary_positions()
+            # Generate random binary positions.
+            self.generate_random_positions()
 
             # Clear the statistics.
             self.stats.clear()
