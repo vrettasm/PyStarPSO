@@ -84,13 +84,13 @@ class GenericPSO(object):
         if n_cpus is None:
 
             # This is the default option.
-            self.n_cpus = GenericPSO.MAX_CPUs
+            self.n_cpus = max(1, GenericPSO.MAX_CPUs-1)
         else:
 
             # Assign the  requested number, making sure we have
             # enough CPUs and the value entered has the correct
             # type.
-            self.n_cpus = max(1, min(GenericPSO.MAX_CPUs, int(n_cpus)))
+            self.n_cpus = max(1, min(GenericPSO.MAX_CPUs-1, int(n_cpus)))
         # _end_if_
 
         # Dictionary with statistics.
