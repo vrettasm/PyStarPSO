@@ -74,7 +74,7 @@ class CategoricalPSO(GenericPSO):
         # _end_for_
     # _end_def_
 
-    def generate_categorical_positions(self) -> None:
+    def generate_random_positions(self) -> None:
         """
         Generate the population of particles positions setting
         their probabilities to 1/L (for all possible L states).
@@ -239,7 +239,7 @@ class CategoricalPSO(GenericPSO):
             self.generate_uniform_velocities()
 
             # Reset particle positions.
-            self.generate_categorical_positions()
+            self.generate_random_positions()
 
             # Clear the statistics.
             self.stats.clear()
