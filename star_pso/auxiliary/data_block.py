@@ -8,11 +8,11 @@ from numpy import sum as np_sum
 from numpy import clip as np_clip
 from numpy import rint as np_rint
 from numpy import ones as np_ones
+from numpy import isclose as np_isclose
 from numpy import isscalar as np_isscalar
-from numpy import allclose as np_allclose
 
 from numpy.typing import ArrayLike
-from numpy.random import default_rng, Generator
+from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.utilities import (BlockType, my_clip)
 
