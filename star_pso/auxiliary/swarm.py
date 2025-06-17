@@ -31,8 +31,12 @@ class Swarm(object):
 
     def __post_init__(self) -> None:
         """
-        The purpose of this method is to scan the swarm
-        for categorical variables (data blocks).
+        The purpose of this method is to scan the swarm populations for
+        categorical data blocks and update the '_has_categorical' flag.
+
+        The reason is that the categorical variables processing is time
+        consuming and we can try to avoid it if we don't actually have
+        any in the population.
 
         :return: None.
         """
