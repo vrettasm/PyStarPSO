@@ -199,7 +199,7 @@ class GenericPSO(object):
 
     def evaluate_function(self, parallel_mode: bool = False,
                           categorical_mode: bool = False,
-                          backend: str = "threading") -> (list[float], bool):
+                          backend: str = "threads") -> (list[float], bool):
         """
         Evaluate all the particles of the input list with the custom objective
         function. The parallel_mode is optional.
@@ -210,7 +210,7 @@ class GenericPSO(object):
         :param categorical_mode: (bool) Enables generation of position samples from
         probabilities.
 
-        :param backend: Backend for the parallel Joblib framework.
+        :param backend: Backend for the parallel Joblib ('threads' or 'processes').
 
         :return: the max function value and the found solution flag.
         """
@@ -232,7 +232,7 @@ class GenericPSO(object):
         if parallel_mode:
 
             # Evaluate the particles in parallel mode.
-            evaluation_i = Parallel(n_jobs=self.n_cpus, backend=backend)(
+            evaluation_i = Parallel(n_jobs=self.n_cpus, prefer=backend)(
                 delayed(func)(x) for x in positions
             )
         else:
