@@ -17,6 +17,9 @@ def check_parameters(options: dict) -> None:
     Checks that the options dictionary has all the additional
     parameters to estimate the velocities of the optimization
     algorithm.
+        1)  'w': inertia weight
+        2) 'c1': cognitive coefficient
+        3) 'c2': social coefficient
 
     :param options: dictionary to check for missing parameters.
 
