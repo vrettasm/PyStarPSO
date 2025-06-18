@@ -142,6 +142,23 @@ class BinaryPSO(GenericPSO):
             p.position = x_new
     # _end_def_
 
+    def reset_all(self) -> None:
+        """
+        Resets the particle positions, velocities
+        and the statistics dictionary.
+
+        :return: None.
+        """
+        # Reset particle velocities.
+        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
+                                                  size=(self.n_rows, self.n_cols))
+        # Generate random binary positions.
+        self.generate_random_positions()
+
+        # Clear the statistics.
+        self.stats.clear()
+    # _end_def_
+
     @time_it
     def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
             parallel: bool = False, reset_swarm: bool = False, verbose: bool = False) -> None:
@@ -170,14 +187,7 @@ class BinaryPSO(GenericPSO):
 
         # Check if resetting the swarm is required.
         if reset_swarm:
-            # Reset particle velocities.
-            self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
-                                                      size=(self.n_rows, self.n_cols))
-            # Generate random binary positions.
-            self.generate_random_positions()
-
-            # Clear the statistics.
-            self.stats.clear()
+            self.reset_all()
         # _end_if_
 
         if options is None:

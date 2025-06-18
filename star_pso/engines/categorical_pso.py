@@ -248,6 +248,23 @@ class CategoricalPSO(GenericPSO):
         # _end_for_
     # _end_def_
 
+    def reset_all(self) -> None:
+        """
+        Resets the particle positions, velocities
+        and the statistics dictionary.
+
+        :return: None.
+        """
+        # Reset particle velocities.
+        self.generate_uniform_velocities()
+
+        # Reset particle positions.
+        self.generate_random_positions()
+
+        # Clear the statistics.
+        self.stats.clear()
+    # _end_def_
+
     @time_it
     def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
             parallel: bool = False, reset_swarm: bool = False, verbose: bool = False) -> None:
@@ -276,14 +293,7 @@ class CategoricalPSO(GenericPSO):
 
         # Check if resetting the swarm is required.
         if reset_swarm:
-            # Reset particle velocities.
-            self.generate_uniform_velocities()
-
-            # Reset particle positions.
-            self.generate_random_positions()
-
-            # Clear the statistics.
-            self.stats.clear()
+            self.reset_all()
         # _end_if_
 
         if options is None:

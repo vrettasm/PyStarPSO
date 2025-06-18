@@ -198,6 +198,23 @@ class JackOfAllTradesPSO(GenericPSO):
             particle.position = velocity
     # _end_def_
 
+    def reset_all(self) -> None:
+        """
+        Resets the particle positions, velocities
+        and the statistics dictionary.
+
+        :return: None.
+        """
+        # Randomize particle velocities.
+        self.generate_uniform_velocities()
+
+        # Randomize particle positions.
+        self.generate_random_positions()
+
+        # Clear the statistics.
+        self.stats.clear()
+    # _end_def_
+
     @time_it
     def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
             parallel: bool = False, reset_swarm: bool = False, verbose: bool = False) -> None:
@@ -228,14 +245,7 @@ class JackOfAllTradesPSO(GenericPSO):
 
         # Check if resetting the swarm is requested.
         if reset_swarm:
-            # Randomize particle velocities.
-            self.generate_uniform_velocities()
-
-            # Randomize particle positions.
-            self.generate_random_positions()
-
-            # Clear the statistics.
-            self.stats.clear()
+            self.reset_all()
         # _end_if_
 
         if options is None:
