@@ -21,11 +21,7 @@ class CategoricalPSO(GenericPSO):
     Strasser, S., Goodman, R., Sheppard, J., et al. "A new discrete particle swarm optimization
     algorithm", Proceedings of 2016 Genetic and Evolutionary Computation Conference (GECCO) 16,
     ACM Press, Denver, Colorado, USA, pp. 53-60.
-
     """
-
-    # Object variables (specific for the CategoricalPSO).
-    __slots__ = ("_velocities",)
 
     def __init__(self, variable_sets: list, **kwargs):
         """

@@ -19,11 +19,7 @@ class StandardPSO(GenericPSO):
     Kennedy, J. and Eberhart, R. (1995). "Particle Swarm Optimization".
     Proceedings of IEEE International Conference on Neural Networks.
     Vol. IV. pp. 1942–1948. doi:10.1109/ICNN.1995.488968.
-
     """
-
-    # Object variables (specific for the StandardPSO).
-    __slots__ = ("_velocities",)
 
     def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs):
         """

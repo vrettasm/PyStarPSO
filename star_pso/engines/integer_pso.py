@@ -16,11 +16,7 @@ class IntegerPSO(GenericPSO):
 
     This implements an Integer variant of the original PSO algorithm that operates
     similarly to the StandardPSO, but rounds the positions to the nearest integer.
-
     """
-
-    # Object variables (specific for the IntegerPSO).
-    __slots__ = ("_velocities",)
 
     def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs):
         """

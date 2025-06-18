@@ -21,11 +21,7 @@ class BinaryPSO(GenericPSO):
     Swarm Algorithm.” IEEE International conference on systems, man, and cybernetics,
     1997. Computational cybernetics and simulation, Vol. 5, Orlando, FL, October 12–15,
     pp: 4104–4108.
-
     """
-
-    # Object variables (specific for the BinaryPSO).
-    __slots__ = ("_velocities",)
 
     def __init__(self, v_min: ArrayLike, v_max: ArrayLike, **kwargs):
         """
