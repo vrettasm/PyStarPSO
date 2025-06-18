@@ -18,7 +18,13 @@ class JackOfAllTradesPSO(GenericPSO):
     """
     Description:
 
-        JackOfAllTradesPSO class TBD.
+        JackOfAllTradesPSO class  is an implementation  of the  PSO algorithm that
+        can deal with mixed types  of optimization variables.  The supported types
+        are: i) float (continuous), ii) integer (discrete), iii) binary (discrete)
+        and iv) categorical (discrete).
+
+        The fundamental building block of the algorithm is the 'DataBlock' which
+        encapsulates the data and the functionality of each variable type.
     """
 
     def __init__(self, **kwargs):
