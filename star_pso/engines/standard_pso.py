@@ -176,7 +176,7 @@ class StandardPSO(GenericPSO):
             check_parameters(options)
         # _end_if_
 
-        # Get the function values 'before' optimisation.
+        # Get the function values before optimisation.
         f_opt, _ = self.evaluate_function(parallel)
 
         # Display an information message.
