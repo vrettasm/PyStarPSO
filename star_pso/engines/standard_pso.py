@@ -145,7 +145,7 @@ class StandardPSO(GenericPSO):
         :param options: dictionary with the update equations options ('w': inertia weight,
         'c1': cognitive coefficient, 'c2': social coefficient).
 
-        :param parallel:(bool) Flag that enables parallel computation of the objective function.
+        :param parallel: (bool) Flag that enables parallel computation of the objective function.
 
         :param reset_swarm: if true it will reset the positions of the swarm to uniformly random
         respecting the boundaries of each space dimension.
