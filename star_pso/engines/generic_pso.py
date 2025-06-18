@@ -166,12 +166,9 @@ class GenericPSO(object):
         :return: the max function value and the found solution flag.
         """
 
-        # Get a local copy of the objective function.
-        func = self.objective_func
-
-        # TBC
+        # Check if "Jack of All Trades" is enabled.
         if jack_of_all_trades:
-            # Extract positions in a list.
+            # Extract positions in a list of lists.
             positions = self._swarm.positions_as_list()
 
             # Check if the swarm has categorical data blocks.
@@ -190,6 +187,9 @@ class GenericPSO(object):
                 self._items["sample_categorical"](positions)
             # _end_if_
         # _end_if_
+
+        # Get a local copy of the objective function.
+        func = self.objective_func
 
         # Check the 'parallel_mode' flag.
         if parallel_mode:
