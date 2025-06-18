@@ -3,9 +3,9 @@ from math import isclose
 import numpy as np
 from numpy.typing import ArrayLike
 
-from star_pso.auxiliary.utilities import time_it
 from star_pso.engines.generic_pso import GenericPSO
-
+from star_pso.auxiliary.utilities import (time_it,
+                                          check_parameters)
 # Public interface.
 __all__ = ["BinaryPSO"]
 
@@ -185,7 +185,7 @@ class BinaryPSO(GenericPSO):
             options = {"w": 1.0, "c1": 2.0, "c2": 2.0}
         else:
             # Ensure all the parameters are here.
-            self.check_parameters(options)
+            check_parameters(options)
         # _end_if_
 
         # Get the function values before optimisation.

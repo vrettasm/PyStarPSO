@@ -15,10 +15,9 @@ from numpy import subtract as np_subtract
 from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.swarm import Swarm
-from star_pso.auxiliary.utilities import time_it
-from star_pso.auxiliary.utilities import BlockType
-
-
+from star_pso.auxiliary.utilities import (time_it,
+                                          BlockType,
+                                          check_parameters)
 # Public interface.
 __all__ = ["JackOfAllTradesPSO"]
 
@@ -395,19 +394,12 @@ class JackOfAllTradesPSO(object):
             self.stats.clear()
         # _end_if_
 
-        # If options is not given, set the
-        # parameters of the original paper.
         if options is None:
             # Default values of the simplified version.
             options = {"w": 0.5, "c1": 0.65, "c2": 0.65}
         else:
-            # Sanity check.
-            for key in {"w", "c1", "c2"}:
-                # Make sure the right keys exist in the options.
-                if key not in options:
-                    raise ValueError(f"{self.__class__.__name__}: "
-                                     f"Option '{key}' is missing. ")
-            # _end_for_
+            # Ensure all the parameters are here.
+            check_parameters(options)
         # _end_if_
 
         # Local variable to display information on the screen.

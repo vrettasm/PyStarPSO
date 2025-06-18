@@ -5,9 +5,9 @@ from numpy import sum as np_sum
 from numpy import clip as np_clip
 from numpy import subtract as np_subtract
 
-from star_pso.auxiliary.utilities import time_it
 from star_pso.engines.generic_pso import GenericPSO
-
+from star_pso.auxiliary.utilities import (time_it,
+                                          check_parameters)
 # Public interface.
 __all__ = ["CategoricalPSO"]
 
@@ -246,7 +246,7 @@ class CategoricalPSO(GenericPSO):
             options = {"w": 0.5, "c1": 0.1, "c2": 0.1}
         else:
             # Ensure all the parameters are here.
-            self.check_parameters(options)
+            check_parameters(options)
         # _end_if_
 
         # Get the function values before optimisation.

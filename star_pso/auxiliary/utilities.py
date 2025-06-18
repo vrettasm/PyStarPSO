@@ -12,6 +12,24 @@ class BlockType(Enum):
     FLOAT, INTEGER, BINARY, CATEGORICAL = range(4)
 # _end_class_
 
+def check_parameters(options: dict) -> None:
+    """
+    Checks that the options dictionary has all the additional
+    parameters to estimate the velocities of the optimization
+    algorithm.
+
+    :param options: dictionary to check for missing parameters.
+
+    :return: None.
+    """
+    # Sanity check.
+    for key in {"w", "c1", "c2"}:
+        # Make sure the right keys exist.
+        if key not in options:
+            raise ValueError(f"Option '{key}' is missing. ")
+        # _end_if_
+# _end_def_
+
 def my_clip(x_new, lower_limit, upper_limit):
     """
     Local version of numpy clip which limits
