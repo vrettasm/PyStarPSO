@@ -267,6 +267,24 @@ class GenericPSO(object):
         return x_new
     # _end_def_
 
+    def check_parameters(self, options: dict) -> None:
+        """
+        Checks that the options dictionary has all the additional
+        parameters to estimate the velocities of the optimization
+        algorithm.
+
+        :param options: dictionary to check for missing parameters.
+
+        :return: None.
+        """
+        # Sanity check.
+        for key in {"w", "c1", "c2"}:
+            # Make sure the right keys exist.
+            if key not in options:
+                raise ValueError(f"{self.__class__.__name__}: "
+                                 f"Option '{key}' is missing. ")
+    # _end_def_
+
     def generate_random_positions(self) -> None:
         """
         Generate a population of particles with random

@@ -172,19 +172,12 @@ class IntegerPSO(GenericPSO):
             self.stats.clear()
         # _end_if_
 
-        # If options is not given, set the
-        # parameters of the original paper.
         if options is None:
             # Default values of the simplified version.
             options = {"w": 1.0, "c1": 2.0, "c2": 2.0}
         else:
-            # Sanity check.
-            for key in {"w", "c1", "c2"}:
-                # Make sure the right keys exist.
-                if key not in options:
-                    raise ValueError(f"{self.__class__.__name__}: "
-                                     f"Option '{key}' is missing. ")
-            # _end_for_
+            # Ensure all the parameters are here.
+            self.check_parameters(options)
         # _end_if_
 
         # Get the function values before optimisation.

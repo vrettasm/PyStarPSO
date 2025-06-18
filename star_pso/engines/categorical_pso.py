@@ -245,18 +245,12 @@ class CategoricalPSO(GenericPSO):
             self.stats.clear()
         # _end_if_
 
-        # If options is not given, set the
-        # parameters of the original paper.
         if options is None:
             # Default values of the simplified version.
             options = {"w": 0.5, "c1": 0.1, "c2": 0.1}
         else:
-            # Make sure the right keys exist.
-            for key in {"w", "c1", "c2"}:
-                if key not in options:
-                    raise ValueError(f"{self.__class__.__name__}: "
-                                     f"Option '{key}' is missing. ")
-            # _end_for_
+            # Ensure all the parameters are here.
+            self.check_parameters(options)
         # _end_if_
 
         # Get the function values before optimisation.
