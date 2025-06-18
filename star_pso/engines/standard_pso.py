@@ -89,6 +89,7 @@ class StandardPSO(GenericPSO):
             self._velocities[i] = w * self._velocities[i] +\
                 r1 * (self.swarm[i].best_position - x_i) +\
                 r2 * (g_best - x_i)
+        # _end_for_
     # _end_def_
 
     def update_positions(self, options: dict) -> None:
