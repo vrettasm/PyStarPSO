@@ -78,7 +78,7 @@ class BinaryPSO(GenericPSO):
         # Get the GLOBAL best particle position.
         if g_avg:
             # In the fully informed case we take the average of all the best positions.
-            g_best = np.mean([p.best_position for p in self.swarm.population], axis=0).round()
+            g_best = np.mean([p.best_position for p in self.swarm.population], axis=0)
         else:
             g_best = self.swarm.best_particle().position
         # _end_if_
