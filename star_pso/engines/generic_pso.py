@@ -170,9 +170,8 @@ class GenericPSO(object):
 
         # Only True in CategoricalPSO.
         if categorical_mode:
-
-            # Sample the positions, using their probabilities.
-            positions = self.sample_categorical(positions)
+            # Sample categorical variable.
+            self.sample_categorical(positions)
         # _end_if_
 
         # Check the 'parallel_mode' flag.
@@ -233,26 +232,20 @@ class GenericPSO(object):
         return f_max, found_solution
     # _end_def_
 
-    def sample_categorical(self, particle_positions: ArrayLike) -> ArrayLike:
+    def sample_categorical(self, positions: ArrayLike):
         """
-        Samples an actual categorical position based on particles
-        probabilities and valid sets for each position.
+        Samples an actual categorical position based on
+        particle's probabilities and valid set for each
+        particle position in the swarm.
 
-        :param particle_positions: the particles that contain the
-        lists of probabilities (one for each position).
-
-        :return: an array-like object that contains actual values
-        that can be evaluated from the optimization function.
+        :return: None.
         """
-
-        # Preallocate an empty array to store the sampled positions.
-        x_new = np.empty(shape=(self.n_rows, self.n_cols), dtype=object)
 
         # Local copy of the available sets.
         local_sets = self._items["sets"]
 
         # Loop over all particle positions.
-        for i, x_pos in enumerate(particle_positions):
+        for i, x_pos in enumerate(positions):
 
             # Each position is sampled according to its
             # particle probabilities and its valid set.
@@ -260,12 +253,10 @@ class GenericPSO(object):
 
                 # Sample an item according to its probabilities.
                 # WARNING: shuffle option MUST be set to False!
-                x_new[i, j] = GenericPSO.rng.choice(set_j, p=probs_j,
-                                                    shuffle=False)
+                x_pos[j] = GenericPSO.rng.choice(set_j,
+                                                 p=probs_j,
+                                                 shuffle=False)
         # _end_for_
-
-        # Return the new sample positions.
-        return x_new
     # _end_def_
 
     def generate_random_positions(self) -> None:
