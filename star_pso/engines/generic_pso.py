@@ -279,6 +279,18 @@ class GenericPSO(object):
                                   f"You should implement this method!")
     # _end_def_
 
+    def update_velocities(self, options: dict) -> None:
+        """
+        Performs the update on the velocity equations.
+
+        :param options: Dictionary with the PSO options:
+
+        :return: None.
+        """
+        raise NotImplementedError(f"{self.__class__.__name__}: "
+                                  f"You should implement this method!")
+    # _end_def_
+
     def update_positions(self, *args, **kwargs) -> None:
         """
         Updates the positions of the particles in the swarm.
