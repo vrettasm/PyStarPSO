@@ -146,6 +146,7 @@ class GenericPSO(object):
 
     def evaluate_function(self, parallel_mode: bool = False,
                           categorical_mode: bool = False,
+                          jack_of_all_trades: bool = False,
                           backend: str = "threads") -> (list[float], bool):
         """
         Evaluate all the particles of the input list with the custom objective
@@ -154,8 +155,11 @@ class GenericPSO(object):
         :param parallel_mode: (bool) Enables parallel computation of the objective
         function. Default is False (serial execution).
 
-        :param categorical_mode: (bool) Enables generation of position samples from
-        probabilities.
+        :param categorical_mode: (bool) Enables generation of position samples
+        from probabilities.
+
+        :param jack_of_all_trades: (bool) Enables generation of position samples
+        from data blocks as used by the JackOfAllTradesPSO class.
 
         :param backend: Backend for the parallel Joblib ('threads' or 'processes').
 
@@ -165,13 +169,26 @@ class GenericPSO(object):
         # Get a local copy of the objective function.
         func = self.objective_func
 
-        # Extract the positions of the swarm in numpy array.
-        positions = self._swarm.positions_as_array()
+        # TBC
+        if jack_of_all_trades:
+            # Extract positions in a list.
+            positions = self._swarm.positions_as_list()
 
-        # Only True in CategoricalPSO.
-        if categorical_mode:
-            # Sample categorical variable.
-            self.sample_categorical(positions)
+            # Check if the swarm has categorical data blocks.
+            if self.swarm.has_categorical:
+
+                # Sample categorical variable.
+                self._items["sample_categorical"](positions)
+            # _end_if_
+        else:
+            # Extract positions in a 2D numpy array.
+            positions = self._swarm.positions_as_array()
+
+            # Only True in CategoricalPSO.
+            if categorical_mode:
+                # Sample categorical variable.
+                self._items["sample_categorical"](positions)
+            # _end_if_
         # _end_if_
 
         # Check the 'parallel_mode' flag.
@@ -230,33 +247,6 @@ class GenericPSO(object):
 
         # Return the tuple.
         return f_max, found_solution
-    # _end_def_
-
-    def sample_categorical(self, positions: ArrayLike):
-        """
-        Samples an actual categorical position based on
-        particle's probabilities and valid set for each
-        particle position in the swarm.
-
-        :return: None.
-        """
-
-        # Local copy of the available sets.
-        local_sets = self._items["sets"]
-
-        # Loop over all particle positions.
-        for i, x_pos in enumerate(positions):
-
-            # Each position is sampled according to its
-            # particle probabilities and its valid set.
-            for j, (set_j, probs_j) in enumerate(zip(local_sets, x_pos)):
-
-                # Sample an item according to its probabilities.
-                # WARNING: shuffle option MUST be set to False!
-                x_pos[j] = GenericPSO.rng.choice(set_j,
-                                                 p=probs_j,
-                                                 shuffle=False)
-        # _end_for_
     # _end_def_
 
     def generate_random_positions(self) -> None:

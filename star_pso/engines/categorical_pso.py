@@ -1,8 +1,10 @@
 from math import isclose
+from functools import cache
 
 import numpy as np
 from numpy import sum as np_sum
 from numpy import clip as np_clip
+from numpy.typing import ArrayLike
 from numpy import subtract as np_subtract
 
 from star_pso.engines.generic_pso import GenericPSO
@@ -23,6 +25,9 @@ class CategoricalPSO(GenericPSO):
     ACM Press, Denver, Colorado, USA, pp. 53-60.
     """
 
+    # Object variables (specific for the CategoricalPSO).
+    __slots__ = ("_valid_sets",)
+
     def __init__(self, variable_sets: list, **kwargs):
         """
         Default initializer of the CategoricalPSO class.
@@ -38,7 +43,7 @@ class CategoricalPSO(GenericPSO):
         super().__init__(**kwargs)
 
         # Local copy of the variable sets.
-        self._items = {"sets": variable_sets}
+        self._valid_sets = variable_sets
 
         # First we declare the velocities to be
         # an [n_rows x n_cols] array of objects.
@@ -47,6 +52,21 @@ class CategoricalPSO(GenericPSO):
 
         # Call the random velocity generator.
         self.generate_uniform_velocities()
+
+        # Assign the local sample categorical values to the auxiliary dict.
+        self._items = {"sample_categorical": self.sample_categorical_values}
+    # _end_def_
+
+    @cache
+    def size_of_sets(self) -> list[int]:
+        """
+        Compile a list with the sizes of the valid sets.
+        To avoid recomputing the list again and again we
+        decorate it with @cache.
+
+        :return: a list with the sizes of the valid sets.
+        """
+        return [len(k) for k in self._valid_sets]
     # _end_def_
 
     def generate_uniform_velocities(self) -> None:
@@ -56,9 +76,8 @@ class CategoricalPSO(GenericPSO):
 
         :return: None.
         """
-        # Get the length of each categorical variable
-        # in the set.
-        size_L = [len(k) for k in self._items["sets"]]
+        # Get the length of each set.
+        size_L = self.size_of_sets()
 
         # Here we generate the random velocities
         # in a short uniform range, according to
@@ -78,9 +97,8 @@ class CategoricalPSO(GenericPSO):
         :return: None.
         """
 
-        # Get the length of each categorical variable
-        # in the set.
-        size_L = [len(k) for k in self._items["sets"]]
+        # Get the length of each set.
+        size_L = self.size_of_sets()
 
         # Reset the probabilities to uniform values.
         for i in range(self.n_rows):
@@ -90,6 +108,33 @@ class CategoricalPSO(GenericPSO):
 
                 # Set the variables uniformly.
                 self.swarm[i][j] = np.ones(size_j)/size_j
+        # _end_for_
+    # _end_def_
+
+    def sample_categorical_values(self, positions: ArrayLike):
+        """
+        Samples an actual categorical position based on
+        particle's probabilities and valid set for each
+        particle position in the swarm.
+
+        :return: None.
+        """
+
+        # Local copy of the valid sets.
+        local_sets = self._valid_sets
+
+        # Loop over all particle positions.
+        for i, x_pos in enumerate(positions):
+
+            # Each position is sampled according to its
+            # particle probabilities and its valid set.
+            for j, (set_j, probs_j) in enumerate(zip(local_sets, x_pos)):
+
+                # Sample an item according to its probabilities.
+                # WARNING: shuffle option MUST be set to False!
+                x_pos[j] = GenericPSO.rng.choice(set_j,
+                                                 p=probs_j,
+                                                 shuffle=False)
         # _end_for_
     # _end_def_
 

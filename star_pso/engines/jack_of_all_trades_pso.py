@@ -1,20 +1,12 @@
-from math import (inf, isclose)
-
-from os import cpu_count
-from copy import deepcopy
-from collections import defaultdict
-
-from typing import Callable
-from joblib import (Parallel, delayed)
+from math import isclose
 
 import numpy as np
 from numpy import sum as np_sum
 from numpy import empty as np_empty
 from numpy import isscalar as np_isscalar
 from numpy import subtract as np_subtract
-from numpy.random import (default_rng, Generator)
 
-from star_pso.auxiliary.swarm import Swarm
+from star_pso.engines.generic_pso import GenericPSO
 from star_pso.auxiliary.utilities import (time_it,
                                           BlockType,
                                           check_parameters)
@@ -22,72 +14,20 @@ from star_pso.auxiliary.utilities import (time_it,
 __all__ = ["JackOfAllTradesPSO"]
 
 
-class JackOfAllTradesPSO(object):
+class JackOfAllTradesPSO(GenericPSO):
     """
     Description:
 
         JackOfAllTradesPSO class TBD.
     """
 
-    # Make a random number generator.
-    rng: Generator = default_rng()
-
-    # Set the maximum number of CPUs (at least one).
-    MAX_CPUs: int = 1 if not cpu_count() else cpu_count()
-
-    # Object variables.
-    __slots__ = ("_swarm", "objective_func", "_stats", "n_cpus",
-                 "n_rows", "n_cols", "_velocities")
-
-    def __init__(self,
-                 initial_swarm: Swarm,
-                 obj_func: Callable,
-                 copy: bool = False,
-                 n_cpus: int = None):
+    def __init__(self, **kwargs):
         """
         Default initializer of the JackOfAllTradesPSO class.
-
-        :param initial_swarm: list of the initial population of particles.
-
-        :param obj_func: callable objective function.
-
-        :param copy: if true it will create a separate (deep) copy of the initial swarm.
-
-        :param n_cpus: number of requested CPUs for the optimization process.
         """
 
-        # Get the swarm population.
-        self._swarm = deepcopy(initial_swarm) if copy else initial_swarm
-
-        # Number of particles.
-        self.n_rows = len(self._swarm)
-
-        # Size (length) of particle.
-        self.n_cols = len(self._swarm[0])
-
-        # Make sure the fitness function is indeed callable.
-        if not callable(obj_func):
-            raise TypeError(f"{self.__class__.__name__}: Objective function is not callable.")
-        else:
-            # Get the objective function.
-            self.objective_func = obj_func
-        # _end_if_
-
-        # Get the number of requested CPUs.
-        if n_cpus is None:
-
-            # This is the default option.
-            self.n_cpus = max(1, JackOfAllTradesPSO.MAX_CPUs-1)
-        else:
-
-            # Assign the  requested number, making sure we have
-            # enough CPUs and the value entered has the correct
-            # type.
-            self.n_cpus = max(1, min(JackOfAllTradesPSO.MAX_CPUs-1, int(n_cpus)))
-        # _end_if_
-
-        # Dictionary with statistics.
-        self._stats = defaultdict(list)
+        # Call the super initializer.
+        super().__init__(**kwargs)
 
         # First we declare the velocities to be
         # an [n_rows x n_cols] array of objects.
@@ -96,6 +36,9 @@ class JackOfAllTradesPSO(object):
 
         # Call the random velocity generator.
         self.generate_uniform_velocities()
+
+        # Assign the local sample categorical values to the auxiliary dict.
+        self._items = {"sample_categorical": self.sample_categorical_values}
     # _end_def_
 
     def generate_uniform_velocities(self) -> None:
@@ -114,42 +57,9 @@ class JackOfAllTradesPSO(object):
                 n_vars = len(blk.valid_set) if blk.valid_set else 1
 
                 # Generate the velocities randomly.
-                self._velocities[i][j] = JackOfAllTradesPSO.rng.uniform(-1.0, +1.0,
+                self._velocities[i, j] = JackOfAllTradesPSO.rng.uniform(-1.0, +1.0,
                                                                         size=n_vars)
         # _end_for_
-    # _end_def_
-
-    @classmethod
-    def set_seed(cls, new_seed=None) -> None:
-        """
-        Sets a new seed for the random number generator.
-
-        :param new_seed: New seed value (default=None).
-
-        :return: None.
-        """
-        # Re-initialize the class variable.
-        cls.rng = default_rng(seed=new_seed)
-    # _end_def_
-
-    @property
-    def stats(self) -> dict:
-        """
-        Accessor method that returns the 'stats' dictionary.
-
-        :return: the dictionary with the statistics from the run.
-        """
-        return self._stats
-    # _end_def_
-
-    @property
-    def swarm(self) -> Swarm:
-        """
-        Accessor of the swarm.
-
-        :return: the reference the swarm.
-        """
-        return self._swarm
     # _end_def_
 
     def generate_random_positions(self) -> None:
@@ -165,7 +75,7 @@ class JackOfAllTradesPSO(object):
             particle.reset_position()
     # _end_def_
 
-    def sample_categorical_values(self, positions) -> None:
+    def sample_categorical_values(self, positions: list[list]) -> None:
         """
         Samples the actual position based on particles
         probabilities and valid sets for each data block.
@@ -191,80 +101,6 @@ class JackOfAllTradesPSO(object):
                                                                     shuffle=False,
                                                                     p=positions[i][j])
             # _end_for_
-    # _end_def_
-
-    def evaluate_function(self, parallel=None) -> (float, bool):
-        """
-        Evaluate all the particles of the swarm with the custom
-        objective function. The parallel_mode is optional.
-
-        :return: the max function value and the found solution flag.
-        """
-
-        # Get a local copy of the objective function.
-        func = self.objective_func
-
-        # Extract the positions of the swarm in list.
-        positions = self._swarm.positions_as_list()
-
-        # Check if the swarm has categorical data blocks.
-        if self.swarm.has_categorical:
-            # Sample categorical variable.
-            self.sample_categorical_values(positions)
-        # _end_if_
-
-        # Evaluates the particles in parallel mode.
-        if parallel:
-            # Evaluates the particles in parallel mode.
-            f_evaluation = parallel(delayed(func)(x) for x in positions)
-        else:
-            # Evaluates the particles in serial mode.
-            f_evaluation = [func(x) for x in positions]
-        # _end_if_
-
-        # Flag to indicate if a solution has been found.
-        found_solution = False
-
-        # Initialize f_max.
-        f_max = -inf
-
-        # Initialize the best position.
-        x_best = None
-
-        # Stores the function values.
-        fx_array = np_empty(self.n_rows, dtype=float)
-
-        # Update all particles with their new objective function values.
-        for n, (p, result) in enumerate(zip(self._swarm, f_evaluation)):
-            # Extract the n-th function value.
-            f_value = result[0]
-
-            # Attach the function value to each particle.
-            p.value = f_value
-
-            # Update the found solution.
-            found_solution |= result[1]
-
-            # Update the statistics.
-            fx_array[n] = f_value
-
-            # Update f_max value.
-            if f_value > f_max:
-                f_max = f_value
-                x_best = positions[n]
-        # _end_for_
-
-        # Store the function values as ndarray.
-        self.stats["f_values"].append(fx_array)
-
-        # Store the best (sampled) position.
-        self.stats["x_best"].append(x_best)
-
-        # Update local best for consistent results.
-        self.swarm.update_local_best()
-
-        # Return the tuple.
-        return f_max, found_solution
     # _end_def_
 
     def update_velocities(self, options: dict) -> None:
@@ -358,7 +194,7 @@ class JackOfAllTradesPSO(object):
 
     @time_it
     def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
-            reset_swarm: bool = False, verbose: bool = False) -> None:
+            parallel: bool = False, reset_swarm: bool = False, verbose: bool = False) -> None:
         """
         Main method of the JackOfAllTradesPSO class, that implements the optimization
         routine.
@@ -372,6 +208,8 @@ class JackOfAllTradesPSO(object):
 
         :param options: dictionary with the update equations options ('w': inertia weight,
         'c1': cognitive coefficient, 'c2': social coefficient).
+
+        :param parallel: (bool) Flag that enables parallel computation of the objective function.
 
         :param reset_swarm: if true it will reset the positions of the swarm to uniformly
         random respecting the boundaries of each space dimension.
@@ -407,67 +245,57 @@ class JackOfAllTradesPSO(object):
         # times regardless of the total number of iterations.
         its_time_to_print = (max_it // 10)
 
-        # Reuse the pool of workers for the whole optimization.
-        with Parallel(n_jobs=self.n_cpus, prefer="threads") as parallel:
+        # Get the function values 'before' optimisation.
+        f_opt, _ = self.evaluate_function(parallel,
+                                          jack_of_all_trades=True)
+        # Display an information message.
+        print(f"Initial f_optimal = {f_opt:.4f}")
 
-            # Get the function values 'before' optimisation.
-            f_opt, _ = self.evaluate_function(parallel)
+        # Repeat for 'max_it' times.
+        for i in range(max_it):
 
-            # Display an information message.
-            print(f"Initial f_optimal = {f_opt:.4f}")
+            # Update the positions in the swarm.
+            self.update_positions(options)
 
-            # Repeat for 'max_it' times.
-            for i in range(max_it):
+            # Calculate the new function values.
+            f_new, found_solution = self.evaluate_function(parallel,
+                                                           jack_of_all_trades=True)
+            # Check if we want to print output.
+            if verbose and (i % its_time_to_print) == 0:
+                # Display an information message.
+                print(f"Iteration: {i + 1:>5} -> f_optimal = {f_new:.4f}")
+            # _end_if_
 
-                # Update the positions in the swarm.
-                self.update_positions(options)
-
-                # Calculate the new function values.
-                f_new, found_solution = self.evaluate_function(parallel)
-
-                # Check if we want to print output.
-                if verbose and (i % its_time_to_print) == 0:
-                    # Display an information message.
-                    print(f"Iteration: {i + 1:>5} -> f_optimal = {f_new:.4f}")
-                # _end_if_
-
-                # Check for termination.
-                if found_solution:
-                    # Update optimal function.
-                    f_opt = f_new
-
-                    # Display a warning message.
-                    print(f"{self.__class__.__name__} finished in {i + 1} iterations.")
-
-                    # Exit from the loop.
-                    break
-                # _end_if_
-
-                # Check for convergence.
-                if f_tol and isclose(f_new, f_opt, rel_tol=f_tol):
-                    # Update optimal function.
-                    f_opt = f_new
-
-                    # Display a warning message.
-                    print(f"{self.__class__.__name__} converged in {i + 1} iterations.")
-
-                    # Exit from the loop.
-                    break
-                # _end_if_
-
-                # Update optimal function for next iteration.
+            # Check for termination.
+            if found_solution:
+                # Update optimal function.
                 f_opt = f_new
-        # _end_with_
+
+                # Display a warning message.
+                print(f"{self.__class__.__name__} finished in {i + 1} iterations.")
+
+                # Exit from the loop.
+                break
+            # _end_if_
+
+            # Check for convergence.
+            if f_tol and isclose(f_new, f_opt, rel_tol=f_tol):
+                # Update optimal function.
+                f_opt = f_new
+
+                # Display a warning message.
+                print(f"{self.__class__.__name__} converged in {i + 1} iterations.")
+
+                # Exit from the loop.
+                break
+            # _end_if_
+
+            # Update optimal function for next iteration.
+            f_opt = f_new
+        # _end_for_
 
         # Display an information message.
         print(f"Final f_optimal = {f_opt:.4f}")
-    # _end_def_
-
-    def __call__(self, *args, **kwargs):
-        """
-        This method is only a wrapper of the "run" method.
-        """
-        return self.run(*args, **kwargs)
     # _end_def_
 
 # _end_class_
