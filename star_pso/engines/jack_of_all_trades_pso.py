@@ -173,7 +173,7 @@ class JackOfAllTradesPSO(object):
         :param positions: the container with the lists
         of probabilities (one for each position).
 
-        :return: None
+        :return: None.
         """
 
         # Check all particles in the swarm.
