@@ -29,7 +29,7 @@ def check_parameters(options: dict) -> None:
     for key in {"w", "c1", "c2"}:
         # Make sure the right keys exist.
         if key not in options:
-            raise KeyError(f"Option '{key}' is missing. ")
+            raise KeyError(f"Option '{key}' is missing.")
         # _end_if_
 # _end_def_
 
