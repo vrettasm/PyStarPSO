@@ -1,7 +1,10 @@
 import time
-import numpy as np
+
 from enum import Enum
 from functools import wraps
+
+import numpy as np
+from numpy._typing import ArrayLike
 
 
 class BlockType(Enum):
@@ -89,7 +92,7 @@ def time_it(func):
     return time_it_wrapper
 # _end_def_
 
-def pareto_front(points: np.typing.ArrayLike) -> np.typing.ArrayLike:
+def pareto_front(points: ArrayLike) -> ArrayLike:
     """
     Simple function that calculates the pareto (optimal)
     front points from a given input points list.
@@ -103,7 +106,7 @@ def pareto_front(points: np.typing.ArrayLike) -> np.typing.ArrayLike:
     """
 
     # Number of points.
-    number_of_points = points.shape[0]
+    number_of_points = len(points)
 
     # Set all the flags initially to True.
     is_pareto = np.full(number_of_points, True)
