@@ -187,8 +187,8 @@ class JatParticle(object):
 
     def __eq__(self, other) -> bool:
         """
-        Compares the jat_particle of self, with the other and
-        returns 'True' if they are identical otherwise 'False'.
+        Compares the jat_particle of self with the other and
+        returns True if they are identical, otherwise False.
 
         :param other: jat_particle to compare.
 
