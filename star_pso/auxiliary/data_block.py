@@ -3,6 +3,7 @@ from numbers import Number
 from functools import cache
 from copy import copy, deepcopy
 
+import numpy as np
 from numpy import exp as np_exp
 from numpy import sum as np_sum
 from numpy import clip as np_clip
@@ -380,6 +381,49 @@ class DataBlock(object):
         :return: the data block type.
         """
         return self._btype
+    # _end_def_
+
+    def __eq__(self, other) -> bool:
+        """
+        Compares the data block of self with the other and
+        returns True if they are identical, otherwise False.
+
+        :param other: data block to compare.
+
+        :return: True if the data blocks are identical else
+        False.
+        """
+
+        # Make sure both items are of type 'DataBlock'.
+        if isinstance(other, DataBlock):
+
+            # Check the positions.
+            if np_isscalar(self._position) and np_isscalar(other._position):
+                positions_are_equal = (self._position == other._position)
+            else:
+                positions_are_equal = np.array_equal(self._position,
+                                                     other._position)
+            # _end_if_
+
+            # Check the block types.
+            types_are_equal = self._btype == other._btype
+
+            # Check valid sets.
+            valid_sets_are_equal = (True if not self._valid_set
+                                    else self._valid_set == other._valid_set)
+
+            # Check lower bounds.
+            lower_bounds_are_equal = (True if not self._lower_bound
+                                      else self._lower_bound == other._lower_bound)
+
+            # Check upper bounds.
+            upper_bounds_are_equal = (True if not self._upper_bound
+                                      else self._upper_bound == other._upper_bound)
+
+            return (types_are_equal and positions_are_equal and valid_sets_are_equal and
+                    lower_bounds_are_equal and upper_bounds_are_equal)
+        # _end_if_
+        return NotImplemented
     # _end_def_
 
     def __deepcopy__(self, memo):
