@@ -192,7 +192,8 @@ class JatParticle(object):
 
         :param other: jat_particle to compare.
 
-        :return: True if the data blocks are identical else False.
+        :return: True if their containers have the same data
+        blocks.
         """
 
         # Make sure both objects are of the same type.
