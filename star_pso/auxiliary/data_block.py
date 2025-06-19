@@ -261,7 +261,7 @@ class DataBlock(object):
         return cls.rng.integers(low=0, high=1,
                                 endpoint=True,
                                 size=kwargs["n_vars"],
-                                dtype=int)
+                                dtype=int).item()
     # _end_def_
 
     @staticmethod
