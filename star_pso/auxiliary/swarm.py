@@ -34,10 +34,6 @@ class Swarm(object):
         The purpose of this method is to scan the swarm populations for
         categorical data blocks and update the '_has_categorical' flag.
 
-        The reason is that the categorical variables processing is time
-        consuming and we can try to avoid it if we don't actually have
-        any in the population.
-
         :return: None.
         """
 
