@@ -35,10 +35,9 @@ def check_parameters(options: dict) -> None:
 
 def my_clip(x_new, lower_limit, upper_limit):
     """
-    Local version of numpy clip which limits
-    the values in an a scalar (array). Given
-    an interval, values outside the interval
-    are clipped to the interval edges.
+    Local version of numpy clip which limits the values of a scalar.
+    Given an interval values outside the interval are clipped to the
+    interval edges. The final value is returned with item().
 
     :param x_new: scalar value to be clipped.
 
@@ -125,8 +124,6 @@ def pareto_front(points: np.typing.ArrayLike) -> np.typing.ArrayLike:
                 # Break the internal loop.
                 break
             # _end_if_
-
-        # _end_internal_for_
-
+    # _end_for_
     return points[is_pareto]
 # _end_def_
