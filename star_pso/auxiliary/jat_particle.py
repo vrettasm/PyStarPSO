@@ -201,7 +201,7 @@ class JatParticle(object):
             # Compare directly their two containers.
             return self._container == other.container
         # _end_if_
-        return False
+        return NotImplemented
     # _end_def_
 
     def __deepcopy__(self, memo):
