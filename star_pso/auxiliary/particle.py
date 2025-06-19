@@ -21,10 +21,11 @@ class Particle(object):
 
     def __init__(self, initial_position: ArrayLike = None) -> None:
         """
-        Initialize the Particle object. Note that calling the initializer without
-        arguments (i.e., Particle()), it will create an empty 'dummy' particle.
+        Initialize the Particle object. Note that calling the initializer
+        without arguments i.e., Particle(), will create an empty 'dummy'
+        particle.
 
-        :param initial_position: (ArrayLike) Initial position of the particle.
+        :param initial_position: (ArrayLike) initial position array.
         """
 
         # Set the initial particle position to a vector.
@@ -65,7 +66,7 @@ class Particle(object):
         """
         Updates the position in the particle object.
 
-        :param new_vector: (ArrayLike) New position vector.
+        :param new_vector: (ArrayLike) new position vector.
 
         :return: None.
         """
@@ -87,7 +88,7 @@ class Particle(object):
         """
         Updates the best position (so far) in the particle object.
 
-        :param new_vector: (ArrayLike) New best position vector.
+        :param new_vector: (ArrayLike) new best position vector.
 
         :return: None.
         """
@@ -113,7 +114,7 @@ class Particle(object):
         """
         Updates the best function value in the particle object.
 
-        :param new_value: (float) New best function value.
+        :param new_value: (float) new best function value.
 
         :return: None.
         """
@@ -135,7 +136,7 @@ class Particle(object):
         """
         Updates the best function value in the particle object.
 
-        :param new_value: (float) New best function value.
+        :param new_value: (float) new best function value.
 
         :return: None.
         """
@@ -144,10 +145,9 @@ class Particle(object):
 
     def __deepcopy__(self, memo):
         """
-        This custom method overrides the default deepcopy method
-        and is used when we call the "clone" method of the class.
+        This custom method overrides the default deepcopy method.
 
-        :param memo: Dictionary of objects already copied during
+        :param memo: dictionary of objects already copied during
         the current copying pass.
 
         :return: a new identical "clone" of the self object.
@@ -192,7 +192,7 @@ class Particle(object):
 
         :param index: (int) the position that we want to access.
 
-        :param item: (Any) object we want to assign in the particle.
+        :param item: the object we want to assign in the particle.
 
         :return: None.
         """
@@ -210,8 +210,8 @@ class Particle(object):
 
     def __eq__(self, other) -> bool:
         """
-        Compares the 'self' particle, with the 'other' particle
-        and returns True if they have the same position otherwise False.
+        Compares the 'self' particle, with the 'other' particle and
+        returns True if they have the same position otherwise False.
 
         :param other: particle to compare.
 
