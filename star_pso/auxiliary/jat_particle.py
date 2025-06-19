@@ -88,7 +88,7 @@ class JatParticle(object):
         """
         Updates the 'best position' in the particle object.
 
-        :param new_vector: (list) New best position vector.
+        :param new_vector: (list) new best position vector.
 
         :return: None.
         """
@@ -112,7 +112,7 @@ class JatParticle(object):
         """
         Updates the best function value in the particle object.
 
-        :param new_value: (float) New best function value.
+        :param new_value: (float) new best function value.
 
         :return: None.
         """
@@ -134,7 +134,7 @@ class JatParticle(object):
         """
         Updates the best function value in the particle object.
 
-        :param new_value: (float) New best function value.
+        :param new_value: (float) new best function value.
 
         :return: None.
         """
@@ -207,10 +207,9 @@ class JatParticle(object):
 
     def __deepcopy__(self, memo):
         """
-        This custom method overrides the default deepcopy method
-        and is used when we call the "clone" method of the class.
+        This custom method overrides the default deepcopy method.
 
-        :param memo: Dictionary of objects already copied during
+        :param memo: dictionary of objects already copied during
         the current copying pass.
 
         :return: a new identical "clone" of the self object.
