@@ -94,7 +94,6 @@ class JatParticle(object):
         """
         for blk, new_best in zip(self._container, new_vector):
             blk.best_position = new_best
-        # _end_for_
     # _end_def_
 
     @property
@@ -110,7 +109,7 @@ class JatParticle(object):
     @value.setter
     def value(self, new_value: float) -> None:
         """
-        Updates the best function value in the particle object.
+        Updates the best function value in the particle.
 
         :param new_value: (float) new best function value.
 
@@ -132,7 +131,7 @@ class JatParticle(object):
     @best_value.setter
     def best_value(self, new_value: float) -> None:
         """
-        Updates the best function value in the particle object.
+        Updates the best function value in the particle.
 
         :param new_value: (float) new best function value.
 
@@ -198,8 +197,7 @@ class JatParticle(object):
 
         # Make sure both objects are of the same type.
         if isinstance(other, JatParticle):
-
-            # Compare directly the two lists of data blocks.
+            # Compare directly their two containers.
             return self._container == other.container
         # _end_if_
         return False
