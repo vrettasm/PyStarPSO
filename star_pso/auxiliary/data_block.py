@@ -243,7 +243,8 @@ class DataBlock(object):
         # Ensure the random position stays within bounds.
         return cls.rng.integers(kwargs["lower_bound"],
                                 kwargs["upper_bound"],
-                                endpoint=True)
+                                endpoint=True,
+                                dtype=int)
     # _end_def_
 
     @classmethod
@@ -259,7 +260,8 @@ class DataBlock(object):
         # Ensure the random position stays within bounds.
         return cls.rng.integers(low=0, high=1,
                                 endpoint=True,
-                                size=kwargs["n_vars"])
+                                size=kwargs["n_vars"],
+                                dtype=int)
     # _end_def_
 
     @staticmethod
