@@ -16,6 +16,9 @@ from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.utilities import (BlockType, my_clip)
 
+# Public interface.
+__all__ = ["DataBlock"]
+
 
 class DataBlock(object):
     """
