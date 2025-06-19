@@ -132,7 +132,7 @@ class DataBlock(object):
         x_old = kwargs["x_old"]
         v_new = kwargs["v_new"]
 
-        # Round the new position and convert it to type int.
+        # Round the new position and convert it to int.
         x_new = np_rint(x_old + v_new).astype(int)
 
         # Ensure the new position stays within bounds.
@@ -295,12 +295,12 @@ class DataBlock(object):
 
     def reset_position(self) -> None:
         """
-        This method provides the public interface of the
-        reset of new positions for all types of data blocks.
+        This method provides a public interface for the reset
+        of the new positions, for all types of data blocks.
 
         :return: None.
         """
-        # Call the method based on the name provided.
+        # Get the dictionary with all the methods.
         method_dict = DataBlock.get_init_method()
 
         # Differentiate between scalar and vector data block.
@@ -332,7 +332,7 @@ class DataBlock(object):
 
         :return: None.
         """
-        # Call the method based on the name provided.
+        # Get the dictionary with all the methods.
         method_dict = DataBlock.get_update_method()
 
         # Assign the function value to the new position.
