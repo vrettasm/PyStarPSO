@@ -33,9 +33,8 @@ class GenericPSO(object):
     MAX_CPUs: int = 1 if not cpu_count() else cpu_count()
 
     # Object variables.
-    __slots__ = ("_swarm", "_velocities", "objective_func",
-                 "_upper_bound", "_lower_bound", "_stats",
-                 "_items", "n_cpus", "n_rows", "n_cols")
+    __slots__ = ("_swarm", "_velocities", "objective_func", "_upper_bound", "_lower_bound",
+                 "_stats", "_items", "n_cpus", "n_rows", "n_cols")
 
     def __init__(self,
                  initial_swarm: Swarm,
@@ -55,7 +54,7 @@ class GenericPSO(object):
 
         :param upper_bound: upper search space bound.
 
-        :param copy: if true it will create a separate (deep) copy of the initial swarm.
+        :param copy: if True it will create a separate (deep) copy of the initial swarm.
 
         :param n_cpus: number of requested CPUs for the optimization process.
         """
@@ -152,16 +151,16 @@ class GenericPSO(object):
         Evaluate all the particles of the input list with the custom objective
         function. The parallel_mode is optional.
 
-        :param parallel_mode: (bool) Enables parallel computation of the objective
+        :param parallel_mode: (bool) enables parallel computation of the objective
         function. Default is False (serial execution).
 
-        :param categorical_mode: (bool) Enables generation of position samples
+        :param categorical_mode: (bool) enables generation of position samples
         from probabilities.
 
-        :param jack_of_all_trades: (bool) Enables generation of position samples
+        :param jack_of_all_trades: (bool) enables generation of position samples
         from data blocks as used by the JackOfAllTradesPSO class.
 
-        :param backend: Backend for the parallel Joblib ('threads' or 'processes').
+        :param backend: backend for the parallel Joblib ('threads' or 'processes').
 
         :return: the max function value and the found solution flag.
         """
@@ -251,9 +250,9 @@ class GenericPSO(object):
 
     def generate_random_positions(self) -> None:
         """
-        Generate a population of particles with random
-        positions. Each different class that inherits
-        from here should know how to implement it.
+        Generate a population of particles with random positions.
+        Each different class that inherits from here should know
+        how to implement it.
 
         :return: None.
         """
@@ -285,8 +284,8 @@ class GenericPSO(object):
 
     def run(self, *args, **kwargs):
         """
-        Main method of the Generic PSO class,
-        that implements the optimization routine.
+        Main method of the Generic PSO class that implements
+        the optimization routine.
         """
         raise NotImplementedError(f"{self.__class__.__name__}: "
                                   f"You should implement this method!")

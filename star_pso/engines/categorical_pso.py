@@ -4,7 +4,6 @@ from functools import cache
 import numpy as np
 from numpy import sum as np_sum
 from numpy import clip as np_clip
-from numpy.typing import ArrayLike
 from numpy import subtract as np_subtract
 
 from star_pso.engines.generic_pso import GenericPSO
@@ -61,8 +60,8 @@ class CategoricalPSO(GenericPSO):
     def size_of_sets(self) -> list[int]:
         """
         Compile a list with the sizes of the valid sets.
-        To avoid recomputing the list again and again we
-        decorate it with @cache.
+        To avoid recomputing the list over and over again
+        we decorate it with @cache.
 
         :return: a list with the sizes of the valid sets.
         """
@@ -71,8 +70,8 @@ class CategoricalPSO(GenericPSO):
 
     def generate_uniform_velocities(self) -> None:
         """
-        Generates random uniform velocities
-        for the categorical variable positions.
+        Generates random uniform velocities for the
+        categorical variable positions.
 
         :return: None.
         """
@@ -111,7 +110,7 @@ class CategoricalPSO(GenericPSO):
         # _end_for_
     # _end_def_
 
-    def sample_categorical_values(self, positions: ArrayLike):
+    def sample_categorical_values(self, positions):
         """
         Samples an actual categorical position based on
         particle's probabilities and valid set for each
@@ -142,7 +141,7 @@ class CategoricalPSO(GenericPSO):
         """
         Performs the update on the velocity equations.
 
-        :param options: Dictionary with the basic PSO options:
+        :param options: dictionary with the basic parameters:
               i)  'w': inertia weight
              ii) 'c1': cognitive coefficient
             iii) 'c2': social coefficient
@@ -213,9 +212,8 @@ class CategoricalPSO(GenericPSO):
         """
         Updates the positions of the particles in the swarm.
 
-        N.B. This method is very slow O(n_rows*n_cols).
-
-        :param options: dictionary with options for the update equations.
+        :param options: dictionary with options for the update
+        equations.
 
         :return: None.
         """
@@ -228,7 +226,7 @@ class CategoricalPSO(GenericPSO):
                                    self._velocities):
 
             # Process each position separately.
-            for x_j, v_j in zip(particle.position, v_upd):
+            for k, (x_j, v_j) in enumerate(zip(particle.position, v_upd)):
 
                 # Update j-th position.
                 x_j += v_j
@@ -244,14 +242,12 @@ class CategoricalPSO(GenericPSO):
 
                 # Normalize (to account for probabilities).
                 x_j /= np_sum(x_j, dtype=float)
-            # _end_for_
         # _end_for_
     # _end_def_
 
     def reset_all(self) -> None:
         """
-        Resets the particle positions, velocities
-        and the statistics dictionary.
+        Resets the particle positions, velocities and the statistics dictionary.
 
         :return: None.
         """
@@ -280,13 +276,13 @@ class CategoricalPSO(GenericPSO):
         :param options: dictionary with the update equations options ('w': inertia weight,
         'c1': cognitive coefficient, 'c2': social coefficient).
 
-        :param parallel: (bool) Flag that enables parallel computation of the objective function.
+        :param parallel: (bool) flag that enables parallel computation of the objective function.
 
-        :param reset_swarm: if true it will reset the positions of the swarm to uniformly random
-        respecting the boundaries of each space dimension.
+        :param reset_swarm: (bool) if True it will reset the positions of the swarm to uniformly
+        random respecting the boundaries of each space dimension.
 
-        :param verbose: (bool) if 'True' it will display periodically information about the
-        current optimal function values.
+        :param verbose: (bool) if True it will display periodically information about the current
+        optimal function values.
 
         :return: None.
         """

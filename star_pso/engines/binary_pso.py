@@ -42,10 +42,9 @@ class BinaryPSO(GenericPSO):
 
     def update_velocities(self, options: dict) -> None:
         """
-        Performs the update on the velocity equations according to the
-        original PSO paper by "Kennedy, J. and Eberhart, R. (1995)".
+        Performs the update on the velocity equations.
 
-        :param options: Dictionary with the basic PSO options:
+        :param options: dictionary with the basic parameters:
               i)  'w': inertia weight
              ii) 'c1': cognitive coefficient
             iii) 'c2': social coefficient
@@ -144,8 +143,7 @@ class BinaryPSO(GenericPSO):
 
     def reset_all(self) -> None:
         """
-        Resets the particle positions, velocities
-        and the statistics dictionary.
+        Resets the particle positions, velocities and the statistics dictionary.
 
         :return: None.
         """
@@ -174,10 +172,10 @@ class BinaryPSO(GenericPSO):
         :param options: dictionary with the update equations options ('w': inertia weight,
         'c1': cognitive coefficient, 'c2': social coefficient).
 
-        :param parallel:(bool) Flag that enables parallel computation of the objective function.
+        :param parallel: (bool) flag that enables parallel computation of the objective function.
 
-        :param reset_swarm: if true it will reset the positions of the swarm to uniformly random
-        respecting the boundaries of each space dimension.
+        :param reset_swarm: (bool) if True it will reset the positions of the swarm to uniformly
+        random respecting the boundaries of each space dimension.
 
         :param verbose: (bool) if 'True' it will display periodically information about the
         current optimal function values.
