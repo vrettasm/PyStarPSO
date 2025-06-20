@@ -1,4 +1,5 @@
 from math import isnan
+from typing import Union
 from operator import attrgetter
 from dataclasses import dataclass, field
 
@@ -8,6 +9,9 @@ from numpy._typing import ArrayLike
 from star_pso.auxiliary.particle import Particle
 from star_pso.auxiliary.utilities import BlockType
 from star_pso.auxiliary.jat_particle import JatParticle
+
+# Make a type alias for the particles types.
+SwarmParticle = Union[Particle, JatParticle]
 
 # Public interface.
 __all__ = ["Swarm"]
@@ -24,7 +28,7 @@ class Swarm(object):
     """
 
     # Define the swarm as a list of particles.
-    _population: list = field(default_factory=list[Particle | JatParticle])
+    _population: list = field(default_factory=list[SwarmParticle])
 
     # Define a flag for categorical variables.
     _has_categorical: bool = False
@@ -74,7 +78,7 @@ class Swarm(object):
     # _end_def_
 
     @property
-    def population(self) -> list[Particle | JatParticle]:
+    def population(self) -> list[SwarmParticle]:
         """
         Accessor of the population list of the swarm.
 
@@ -83,7 +87,7 @@ class Swarm(object):
         return self._population
     # _end_def_
 
-    def best_particle(self) -> Particle | JatParticle:
+    def best_particle(self) -> SwarmParticle:
         """
         Auxiliary method that returns the particle with the
         highest function value. Safeguard with ignoring NaNs.
@@ -94,7 +98,7 @@ class Swarm(object):
                    key=attrgetter("value"), default=None)
     # _end_def_
 
-    def best_n(self, n: int = 1) -> list[Particle | JatParticle]:
+    def best_n(self, n: int = 1) -> list[SwarmParticle]:
         """
         Auxiliary method that returns the best 'n' particles
         with the highest objective function value.
@@ -207,7 +211,7 @@ class Swarm(object):
         return len(self._population)
     # _end_def_
 
-    def __getitem__(self, index: int) -> Particle | JatParticle:
+    def __getitem__(self, index: int) -> SwarmParticle:
         """
         Get the item at position 'index'.
 
@@ -218,7 +222,7 @@ class Swarm(object):
         return self._population[index]
     # _end_def_
 
-    def __setitem__(self, index: int, item: Particle | JatParticle) -> None:
+    def __setitem__(self, index: int, item: SwarmParticle) -> None:
         """
         Set the 'item' at position 'index'.
 
@@ -231,7 +235,7 @@ class Swarm(object):
         self._population[index] = item
     # _end_def_
 
-    def __contains__(self, item: Particle | JatParticle) -> bool:
+    def __contains__(self, item: SwarmParticle) -> bool:
         """
         Check for membership.
 
