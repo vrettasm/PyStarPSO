@@ -1,7 +1,10 @@
 from math import isclose
 
-import numpy as np
-from numpy.typing import ArrayLike
+from numpy import zeros_like
+from numpy import exp as np_exp
+from numpy import mean as np_mean
+from numpy import clip as np_clip
+from numpy._typing import ArrayLike
 
 from star_pso.engines.generic_pso import GenericPSO
 from star_pso.auxiliary.utilities import (time_it,
@@ -73,7 +76,7 @@ class BinaryPSO(GenericPSO):
         # Get the GLOBAL best particle position.
         if g_avg:
             # In the fully informed case we take the average of all the best positions.
-            g_best = np.mean([p.best_position for p in self.swarm.population], axis=0)
+            g_best = np_mean([p.best_position for p in self.swarm.population], axis=0)
         else:
             g_best = self.swarm.best_particle().position
         # _end_if_
@@ -89,7 +92,7 @@ class BinaryPSO(GenericPSO):
         # _end_for_
 
         # We clip the velocities in [V_min, V_max].
-        np.clip(self._velocities, self._lower_bound, self._upper_bound,
+        np_clip(self._velocities, self._lower_bound, self._upper_bound,
                 out=self._velocities)
     # _end_def_
 
@@ -110,10 +113,10 @@ class BinaryPSO(GenericPSO):
         r_uniform = GenericPSO.rng.uniform(0, 1,
                                            size=(self.n_rows, self.n_cols))
         # Create a matrix with zeros.
-        new_positions = np.zeros_like(r_uniform, dtype=int)
+        new_positions = zeros_like(r_uniform, dtype=int)
 
         # Compute the logistic values.
-        s_arr = 1.0 / (1.0 + np.exp(-self._velocities))
+        s_arr = 1.0 / (1.0 + np_exp(-self._velocities))
 
         # Where the logistic function values are
         # higher than the random value set to 1.
