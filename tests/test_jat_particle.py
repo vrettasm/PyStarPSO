@@ -8,6 +8,7 @@ from star_pso.auxiliary.jat_particle import JatParticle
 
 
 class TestJatParticle(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls) -> None:
         print(">> TestJatParticle - START -")
@@ -19,10 +20,11 @@ class TestJatParticle(unittest.TestCase):
         print(">> TestJatParticle - FINISH -", end='\n\n')
     # _end_def_
 
-    def test__eq__(self):
+    def test_equals(self):
         """
+        Tests the __eq__ method of the JatParticle class.
 
-        :return:
+        :return: None.
         """
         # Test variable set.
         var_set = ["a", "b", "c", "d"]
@@ -43,7 +45,10 @@ class TestJatParticle(unittest.TestCase):
                                     BlockType.CATEGORICAL,
                                     valid_set=var_set)])
 
-        # Particle 2.
+        # Should be TRUE.
+        self.assertTrue(p1 == p1)
+
+        # Particle 2 (identical to p1).
         p2 = JatParticle([DataBlock(9.0,
                                     BlockType.FLOAT,
                                     lower_bound=-10.0,
@@ -56,7 +61,10 @@ class TestJatParticle(unittest.TestCase):
                                     BlockType.CATEGORICAL,
                                     valid_set=var_set)])
 
-        # Check if the two particles are equal.
+        # Should be TRUE.
+        self.assertTrue(p2 == p2)
+
+        # Should be TRUE.
         self.assertTrue(p1 == p2)
 
         # Particle 3.
@@ -72,7 +80,10 @@ class TestJatParticle(unittest.TestCase):
                                     BlockType.CATEGORICAL,
                                     valid_set=var_set)])
 
-        # Check if the two particles are unequal.
+        # Should be TRUE.
+        self.assertTrue(p3 == p3)
+
+        # Should be FALSE.
         self.assertFalse(p1 == p3)
     # _end_def_
 
