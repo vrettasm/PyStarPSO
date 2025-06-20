@@ -1,6 +1,7 @@
 from math import isclose
 
-import numpy as np
+from numpy import mean as np_mean
+from numpy import clip as np_clip
 from numpy.typing import ArrayLike
 
 from star_pso.engines.generic_pso import GenericPSO
@@ -71,7 +72,7 @@ class StandardPSO(GenericPSO):
         # Get the GLOBAL best particle position.
         if g_avg:
             # In the fully informed case we take the average of all the best positions.
-            g_best = np.mean([p.best_position for p in self.swarm.population], axis=0)
+            g_best = np_mean([p.best_position for p in self.swarm.population], axis=0)
         else:
             g_best = self.swarm.best_particle().position
         # _end_if_
@@ -104,7 +105,7 @@ class StandardPSO(GenericPSO):
         new_positions = self.swarm.positions_as_array() + self._velocities
 
         # Ensure the particle stays within bounds.
-        np.clip(new_positions, self._lower_bound, self._upper_bound,
+        np_clip(new_positions, self._lower_bound, self._upper_bound,
                 out=new_positions)
 
         # Update all particle positions.
