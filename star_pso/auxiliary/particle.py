@@ -1,10 +1,11 @@
 from math import inf
-from typing import Any
 from copy import deepcopy
 
-from numpy.typing import ArrayLike
+from numpy._typing import ArrayLike
 from numpy import copyto as copy_to
-from numpy import array, array_equal
+from numpy import (array, array_equal, asarray)
+
+from star_pso.auxiliary.utilities import ScalarOrArray
 
 # Public interface.
 __all__ = ["Particle"]
@@ -19,13 +20,13 @@ class Particle(object):
     # Object variables.
     __slots__ = ("_position", "_value", "_best_position", "_best_value")
 
-    def __init__(self, initial_position: ArrayLike = None) -> None:
+    def __init__(self, initial_position: ArrayLike) -> None:
         """
-        Initialize the Particle object. Note that calling the initializer
-        without arguments i.e., Particle(), will create an empty 'dummy'
-        particle.
+        Initializes the Particle object with an initial position.
 
-        :param initial_position: (ArrayLike) initial position array.
+        :param initial_position: (ArrayLike) initial position.
+
+        :return: None.
         """
 
         # Set the initial particle position to a vector.
@@ -70,7 +71,7 @@ class Particle(object):
 
         :return: None.
         """
-        self._position = new_vector
+        self._position = asarray(new_vector)
     # _end_def_
 
     @property
@@ -175,7 +176,7 @@ class Particle(object):
         return new_object
     # _end_def_
 
-    def __getitem__(self, index: int) -> Any:
+    def __getitem__(self, index: int) -> ScalarOrArray:
         """
         Get the item at position 'index'.
 
@@ -186,7 +187,7 @@ class Particle(object):
         return self._position[index]
     # _end_def_
 
-    def __setitem__(self, index: int, item: Any) -> None:
+    def __setitem__(self, index: int, item: ScalarOrArray) -> None:
         """
         Set the 'item' at position 'index'.
 
