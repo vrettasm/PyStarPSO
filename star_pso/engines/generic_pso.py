@@ -21,9 +21,9 @@ class GenericPSO(object):
     """
     Description:
 
-        GenericPSO class models the interface of a specific particle swarm optimization
-        model (or engine). It provides the common variables and functionalities that all
-        PSO models should share.
+        GenericPSO class models the interface of a specific particle swarm
+        optimization model or engine. It provides the common variables and
+        functionalities that all PSO models should share.
     """
 
     # Make a random number generator.
@@ -33,8 +33,9 @@ class GenericPSO(object):
     MAX_CPUs: int = 1 if not cpu_count() else cpu_count()
 
     # Object variables.
-    __slots__ = ("_swarm", "_velocities", "objective_func", "_upper_bound", "_lower_bound",
-                 "_stats", "_items", "n_cpus", "n_rows", "n_cols")
+    __slots__ = ("_swarm", "_velocities", "objective_func",
+                 "_upper_bound", "_lower_bound", "_stats",
+                 "_items", "n_cpus", "n_rows", "n_cols")
 
     def __init__(self,
                  initial_swarm: Swarm,
