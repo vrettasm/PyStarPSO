@@ -109,6 +109,46 @@ class JackOfAllTradesPSO(GenericPSO):
             # _end_for_
     # _end_def_
 
+    def sample_permutation_values(self, positions: list[list]) -> None:
+        """
+        Samples a permutation from a given set of variables.
+        It is used in problems like the 'Traveling Salesman'.
+
+        It is assumed that all data blocks are CATEGORICAL
+        and that they have the same valid set of values.
+
+        :return: None.
+        """
+
+        # Check all particles in the swarm.
+        for i, particle in enumerate(self.swarm.population):
+
+            # Auxiliary set.
+            exclude_idx = set()
+
+            # Check all data blocks in the particle.
+            for j, blk in enumerate(particle):
+
+                # Extract the probability values.
+                xj = positions[i][j]
+
+                # Sort in reverse order from high to low.
+                for k in xj.argsort()[::-1]:
+                    # Continue until we find the first
+                    # unused element of the valid set.
+                    if k not in exclude_idx:
+                        # Assign the element in the right position.
+                        positions[i][j] = blk.valid_set[k]
+
+                        # Update the set() with
+                        # the excluded indexes.
+                        exclude_idx.add(k)
+
+                        # Break the internal loop.
+                        break
+        # _end_for_
+    # _end_def_
+
     def update_velocities(self, options: dict) -> None:
         """
         Performs the update on the velocity equations.

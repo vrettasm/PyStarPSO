@@ -110,7 +110,7 @@ class CategoricalPSO(GenericPSO):
         # _end_for_
     # _end_def_
 
-    def sample_categorical_values(self, positions):
+    def sample_categorical_values(self, positions) -> None:
         """
         Samples an actual categorical position based on
         particle's probabilities and valid set for each
@@ -137,10 +137,13 @@ class CategoricalPSO(GenericPSO):
         # _end_for_
     # _end_def_
 
-    def sample_permutation_values(self, positions):
+    def sample_permutation_values(self, positions) -> None:
         """
         Samples a permutation from a given set of variables.
         It is used in problems like the 'Traveling Salesman'.
+
+        It is assumed that all particle variables have the
+        same valid set of values.
 
         :return: None.
         """
