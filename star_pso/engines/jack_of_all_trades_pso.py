@@ -4,6 +4,7 @@ from numpy import sum as np_sum
 from numpy import mean as np_mean
 from numpy import array as np_array
 from numpy import empty as np_empty
+from numpy import arange as np_arange
 from numpy import isscalar as np_isscalar
 from numpy import subtract as np_subtract
 
@@ -130,14 +131,25 @@ class JackOfAllTradesPSO(GenericPSO):
         :return: None.
         """
 
+        # Create a range of values.
+        random_index = np_arange(self.n_cols)
+
+        # Shuffle in place. This is used to avoid introducing
+        # biasing by using always the same order of blocks to
+        # select first their categorical sample value.
+        JackOfAllTradesPSO.rng.shuffle(random_index)
+
         # Check all particles in the swarm.
         for i, particle in enumerate(self.swarm.population):
 
             # Auxiliary set.
             exclude_idx = set()
 
-            # Check all data blocks in the particle.
-            for j, blk in enumerate(particle):
+            # Check all data blocks in the particle,
+            # using the randomized index.
+            for j in random_index:
+                # Get the j-th data block.
+                blk = particle[j]
 
                 # Extract the probability values.
                 xj = positions[i][j]

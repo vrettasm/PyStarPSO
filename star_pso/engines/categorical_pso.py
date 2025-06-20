@@ -162,14 +162,25 @@ class CategoricalPSO(GenericPSO):
         # Local copy of the valid sets.
         local_sets = self._valid_sets
 
+        # Create a range of values.
+        random_index = np.arange(self.n_cols)
+
+        # Shuffle in place. This is used to avoid introducing
+        # biasing by using always the same order of blocks to
+        # select first their categorical sample value.
+        CategoricalPSO.rng.shuffle(random_index)
+
         # Loop over all particle positions.
         for i, x_pos in enumerate(positions):
 
             # Auxiliary set.
             exclude_idx = set()
 
-            # Scan the particle.
-            for j, xj in enumerate(x_pos):
+            # Scan the particle using the random index.
+            for j in random_index:
+                # Get the j-th element.
+                xj = x_pos[j]
+
                 # Reference of the j-th set.
                 set_j = local_sets[j]
 
