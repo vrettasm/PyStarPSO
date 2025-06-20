@@ -1,4 +1,3 @@
-from typing import Union
 from numbers import Number
 from functools import cache
 from copy import copy, deepcopy
@@ -15,13 +14,10 @@ from numpy import isscalar as np_isscalar
 from numpy._typing import ArrayLike
 from numpy.random import (default_rng, Generator)
 
-from star_pso.auxiliary.utilities import (BlockType, my_clip)
-
+from star_pso.auxiliary.utilities import (BlockType, ScalarOrArray,
+                                          my_clip)
 # Public interface.
 __all__ = ["DataBlock"]
-
-# Make a type alias for the position's type.
-ScalarOrArray = Union[int, float, ArrayLike]
 
 
 class DataBlock(object):
