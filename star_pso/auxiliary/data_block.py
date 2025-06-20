@@ -410,11 +410,9 @@ class DataBlock(object):
                 # Check valid sets.
                 valid_sets_are_equal = (True if not self._valid_set
                                         else self._valid_set == other._valid_set)
-
                 # Check lower bounds.
                 lower_bounds_are_equal = (True if not self._lower_bound
                                           else self._lower_bound == other._lower_bound)
-
                 # Check upper bounds.
                 upper_bounds_are_equal = (True if not self._upper_bound
                                           else self._upper_bound == other._upper_bound)
