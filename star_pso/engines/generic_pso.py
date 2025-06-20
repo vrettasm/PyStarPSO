@@ -173,7 +173,6 @@ class GenericPSO(object):
 
             # Check if the swarm has categorical data blocks.
             if self.swarm.has_categorical:
-
                 # Sample categorical variable.
                 self._items["sample_random_values"](positions)
             # _end_if_
