@@ -137,9 +137,10 @@ class CategoricalPSO(GenericPSO):
         # _end_for_
     # _end_def_
 
-    def sample_combinatorial_values(self, positions):
+    def sample_permutation_values(self, positions):
         """
-        TBD ...
+        Samples a permutation from a given set of variables.
+        It is used in problems like the 'Traveling Salesman'.
 
         :return: None.
         """
@@ -150,30 +151,26 @@ class CategoricalPSO(GenericPSO):
         # Loop over all particle positions.
         for i, x_pos in enumerate(positions):
 
-            # Auxiliary list.
-            exclude_idx = []
+            # Auxiliary set.
+            exclude_idx = set()
 
             # Scan the particle.
             for j, xj in enumerate(x_pos):
                 # Reference of the j-th set.
                 set_j = local_sets[j]
 
-                # Sort in reverse order form high to low.
-                sorted_idx_j = np.argsort(xj)[::-1]
-
-                # Check if the index is included in the
-                # auxiliary list.
-                for k in sorted_idx_j:
+                # Sort in reverse order from high to low.
+                for k in xj.argsort()[::-1]:
                     # Continue until we find the first
-                    # 'not used' element of the valid set.
-                    if k in exclude_idx:
-                        continue
-                    else:
-                        # Update the list with the excluded indexes.
-                        exclude_idx.append(k)
-
-                        # Assign the element in the position[i, j].
+                    # unused element of the valid set.
+                    if k not in exclude_idx:
+                        # Assign the element in
+                        # the position[i, j].
                         x_pos[j] = set_j[k]
+
+                        # Update the set() with
+                        # the excluded indexes.
+                        exclude_idx.add(k)
 
                         # Break the internal loop.
                         break
