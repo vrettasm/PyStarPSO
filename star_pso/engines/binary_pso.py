@@ -55,13 +55,13 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Inertia weight parameter.
-        w = options.get("w")
+        w = options["w"]
 
         # Cognitive coefficient.
-        c1 = options.get("c1")
+        c1 = options["c1"]
 
         # Social coefficient.
-        c2 = options.get("c2")
+        c2 = options["c2"]
 
         # Global average parameter (OPTIONAL).
         g_avg = options.get("global_avg", False)

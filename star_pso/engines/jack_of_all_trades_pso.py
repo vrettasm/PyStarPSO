@@ -1,7 +1,8 @@
 from math import isclose
 
-import numpy as np
 from numpy import sum as np_sum
+from numpy import mean as np_mean
+from numpy import array as np_array
 from numpy import empty as np_empty
 from numpy import isscalar as np_isscalar
 from numpy import subtract as np_subtract
@@ -120,13 +121,13 @@ class JackOfAllTradesPSO(GenericPSO):
         :return: None.
         """
         # Inertia weight parameter.
-        w = options.get("w")
+        w = options["w"]
 
         # Cognitive coefficient.
-        c1 = options.get("c1")
+        c1 = options["c1"]
 
         # Social coefficient.
-        c2 = options.get("c2")
+        c2 = options["c2"]
 
         # Global average parameter (OPTIONAL).
         g_avg = options.get("global_avg", False)
@@ -141,12 +142,12 @@ class JackOfAllTradesPSO(GenericPSO):
         # Get the GLOBAL best particle position.
         if g_avg:
             # Initialize an array with the best particle positions.
-            g_best = np.array([particle.best_position
+            g_best = np_array([particle.best_position
                                for particle in self.swarm.population],
                               dtype=object)
 
             # Get the mean value along the zero-axis.
-            g_best = np.mean(g_best, axis=0)
+            g_best = np_mean(g_best, axis=0)
 
             # Finally normalize them to
             # account for probabilities.
