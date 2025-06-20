@@ -6,9 +6,9 @@ from collections import defaultdict
 from typing import Callable
 from joblib import (Parallel, delayed)
 
-import numpy as np
 from numpy.typing import ArrayLike
 from numpy import array as np_array
+from numpy import empty as np_empty
 from numpy.random import default_rng, Generator
 
 from star_pso.auxiliary.swarm import Swarm
@@ -213,7 +213,7 @@ class GenericPSO(object):
         x_best = None
 
         # Stores the function values.
-        fx_array = np.empty(self.n_rows, dtype=float)
+        fx_array = np_empty(self.n_rows, dtype=float)
 
         # Update all particles with their new objective function values.
         for n, (p, result) in enumerate(zip(self._swarm, f_evaluation)):
