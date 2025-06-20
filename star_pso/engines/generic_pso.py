@@ -175,7 +175,7 @@ class GenericPSO(object):
             if self.swarm.has_categorical:
 
                 # Sample categorical variable.
-                self._items["sample_categorical"](positions)
+                self._items["sample_random_values"](positions)
             # _end_if_
         else:
             # Extract positions in a 2D numpy array.
@@ -184,7 +184,7 @@ class GenericPSO(object):
             # Only True in CategoricalPSO.
             if categorical_mode:
                 # Sample categorical variable.
-                self._items["sample_categorical"](positions)
+                self._items["sample_random_values"](positions)
             # _end_if_
         # _end_if_
 

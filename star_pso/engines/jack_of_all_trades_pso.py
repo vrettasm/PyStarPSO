@@ -28,9 +28,12 @@ class JackOfAllTradesPSO(GenericPSO):
         encapsulates the data and the functionality of each variable type.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, permutation_mode: bool = False, **kwargs):
         """
         Default initializer of the JackOfAllTradesPSO class.
+
+        :param permutation_mode: (bool) if True it will sample
+        permutations of the valid sets.
         """
 
         # Call the super initializer.
@@ -44,8 +47,15 @@ class JackOfAllTradesPSO(GenericPSO):
         # Call the random velocity generator.
         self.generate_uniform_velocities()
 
-        # Assign the local sample categorical values to the auxiliary dict.
-        self._items = {"sample_categorical": self.sample_categorical_values}
+        # Assign the correct local sample method
+        # according to the permutation mode flag.
+        if permutation_mode:
+            self._items = {"sample_random_values":
+                               self.sample_permutation_values}
+        else:
+            self._items = {"sample_random_values":
+                               self.sample_categorical_values}
+        # _end_if_
     # _end_def_
 
     def generate_uniform_velocities(self) -> None:

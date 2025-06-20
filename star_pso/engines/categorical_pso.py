@@ -27,15 +27,19 @@ class CategoricalPSO(GenericPSO):
     # Object variables (specific for the CategoricalPSO).
     __slots__ = ("_valid_sets",)
 
-    def __init__(self, variable_sets: list, **kwargs):
+    def __init__(self, variable_sets: list, permutation_mode: bool = False,
+                 **kwargs):
         """
         Default initializer of the CategoricalPSO class.
 
         :param variable_sets: this is list with the sets
         (one for each optimization variable).
 
-        :param kwargs: these are the default parameters
-        for the GenericPSO.
+        :param permutation_mode: (bool) if True it will sample
+        permutations of the valid sets.
+
+        :param kwargs: these are the default parameters for the
+        GenericPSO.
         """
 
         # First call the super initializer.
@@ -52,8 +56,15 @@ class CategoricalPSO(GenericPSO):
         # Call the random velocity generator.
         self.generate_uniform_velocities()
 
-        # Assign the local sample categorical values to the auxiliary dict.
-        self._items = {"sample_categorical": self.sample_categorical_values}
+        # Assign the correct local sample method
+        # according to the permutation mode flag.
+        if permutation_mode:
+            self._items = {"sample_random_values":
+                               self.sample_permutation_values}
+        else:
+            self._items = {"sample_random_values":
+                               self.sample_categorical_values}
+        # _end_if_
     # _end_def_
 
     @cache
