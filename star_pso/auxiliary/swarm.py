@@ -3,7 +3,7 @@ from operator import attrgetter
 from dataclasses import dataclass, field
 
 import numpy as np
-from numpy.typing import ArrayLike
+from numpy._typing import ArrayLike
 
 from star_pso.auxiliary.particle import Particle
 from star_pso.auxiliary.utilities import BlockType
