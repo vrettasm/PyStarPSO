@@ -137,6 +137,46 @@ class CategoricalPSO(GenericPSO):
         # _end_for_
     # _end_def_
 
+    def sample_combinatorial_values(self, positions):
+        """
+        TBD ...
+
+        :return: None.
+        """
+
+        # Local copy of the valid sets.
+        local_sets = self._valid_sets
+
+        # Loop over all particle positions.
+        for i, x_pos in enumerate(positions):
+
+            # Auxiliary list.
+            exclude_idx = []
+
+            # Scan the particle.
+            for j, xj in enumerate(x_pos):
+                # Reference of the j-th set.
+                set_j = local_sets[j]
+
+                # Sort in reverse order from high to low.
+                sorted_idx_j = np.argsort(xj)[::-1]
+
+                # Check if the index is included
+                # in the auxiliary list.
+                for k in sorted_idx_j:
+                    # Continue until we find the first
+                    # 'not used' element of the valid set.
+                    if k in exclude_idx:
+                        continue
+                    else:
+                        exclude_idx.append(k)
+                        x_pos[j] = set_j[k]
+                        break
+                # _end_for_
+            # _end_for_
+        # _end_for_
+    # _end_def_
+
     def update_velocities(self, options: dict) -> None:
         """
         Performs the update on the velocity equations.
