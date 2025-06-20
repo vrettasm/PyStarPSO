@@ -2,7 +2,7 @@ from math import isnan
 from operator import attrgetter
 from dataclasses import dataclass, field
 
-import numpy as np
+from numpy import asarray
 from numpy._typing import ArrayLike
 
 from star_pso.auxiliary.particle import Particle
@@ -131,7 +131,7 @@ class Swarm(object):
 
         :return: A numpy array (vector) with all the values.
         """
-        return np.asarray([p.value for p in self._population])
+        return asarray([p.value for p in self._population])
     # _end_def_
 
     def value_at(self, index: int) -> float:
@@ -162,7 +162,7 @@ class Swarm(object):
 
         :return: A numpy array with all the positions.
         """
-        return np.asarray([p.position for p in self._population])
+        return asarray([p.position for p in self._population])
     # _end_def_
 
     def positions_as_list(self) -> list:
