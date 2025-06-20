@@ -192,6 +192,66 @@ class TestDataBlock(unittest.TestCase):
         self.assertAlmostEqual(np.sum(blk.position), 1.0)
     # _end_def_
 
+    def test_equals(self):
+        """
+        Tests the __eq__ method of the DataBlock class.
+
+        :return: None.
+        """
+        # Test variable set.
+        var_set = ["a", "b", "c", "d"]
+
+        # Size of the vector.
+        D = len(var_set)
+
+        # DataBlock 1.
+        p1 = DataBlock(9.0,
+                       BlockType.FLOAT,
+                       lower_bound=-10.0,
+                       upper_bound=+10.0)
+
+        # Should be TRUE.
+        self.assertTrue(p1 == p1)
+
+        # DataBlock 2.
+        p2 = DataBlock(1,
+                       BlockType.INTEGER,
+                       lower_bound=-3,
+                       upper_bound=+3)
+
+        # Should be TRUE.
+        self.assertTrue(p2 == p2)
+
+        # DataBlock 3.
+        p3 = DataBlock(np.ones(D) / D,
+                       BlockType.CATEGORICAL,
+                       valid_set=var_set)
+
+        # Should be TRUE.
+        self.assertTrue(p3 == p3)
+
+        # DataBlock 4 (identical to p2).
+        p4 = DataBlock(1,
+                       BlockType.INTEGER,
+                       lower_bound=-3,
+                       upper_bound=+3)
+
+        # Should be TRUE.
+        self.assertTrue(p4 == p4)
+
+        # Should be TRUE.
+        self.assertTrue(p4 == p2)
+
+        # Should be FALSE.
+        self.assertFalse(p1 == p2)
+
+        # Should be FALSE.
+        self.assertFalse(p2 == p3)
+
+        # Should be FALSE.
+        self.assertFalse(p3 == p1)
+    # _end_def_
+
 # _end_class_
 
 
