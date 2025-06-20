@@ -1,10 +1,14 @@
 import time
 
 from enum import Enum
+from typing import Union
 from functools import wraps
 
 import numpy as np
 from numpy._typing import ArrayLike
+
+# Make a type alias for the position's type.
+ScalarOrArray = Union[int, float, ArrayLike]
 
 
 class BlockType(Enum):
