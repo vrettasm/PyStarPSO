@@ -1,9 +1,9 @@
-from typing import Any
+from typing import Union
 from numbers import Number
 from functools import cache
 from copy import copy, deepcopy
 
-import numpy as np
+from numpy import array_equal
 from numpy import exp as np_exp
 from numpy import sum as np_sum
 from numpy import clip as np_clip
@@ -19,6 +19,9 @@ from star_pso.auxiliary.utilities import (BlockType, my_clip)
 
 # Public interface.
 __all__ = ["DataBlock"]
+
+# Make a type alias for the position's type.
+ScalarOrArray = Union[int, float, ArrayLike]
 
 
 class DataBlock(object):
@@ -39,7 +42,7 @@ class DataBlock(object):
                  "_lower_bound", "_upper_bound")
 
     def __init__(self,
-                 position: Any,
+                 position: ScalarOrArray,
                  btype: BlockType,
                  valid_set: list | tuple = None,
                  lower_bound: Number = None,
@@ -319,7 +322,7 @@ class DataBlock(object):
     # _end_def_
 
     @property
-    def position(self) -> Any:
+    def position(self) -> ScalarOrArray:
         """
         Accessor (getter) of the data block's position.
 
@@ -349,7 +352,7 @@ class DataBlock(object):
     # _end_def_
 
     @property
-    def best_position(self) -> Any:
+    def best_position(self) -> ScalarOrArray:
         """
         Accessor (getter) of the data block's
         best position.
@@ -361,7 +364,7 @@ class DataBlock(object):
     # _end_def_
 
     @best_position.setter
-    def best_position(self, new_value) -> None:
+    def best_position(self, new_value: ScalarOrArray) -> None:
         """
         This method provides the public interface for
         setting the new best position of data block.
@@ -397,31 +400,34 @@ class DataBlock(object):
         # Make sure both items are of type 'DataBlock'.
         if isinstance(other, DataBlock):
 
-            # Check the positions.
-            if np_isscalar(self._position) and np_isscalar(other._position):
-                positions_are_equal = (self._position == other._position)
+            # Check their block type.
+            if self._btype == other._btype:
+
+                # Check the positions.
+                if np_isscalar(self._position) and np_isscalar(other._position):
+                    positions_are_equal = (self._position == other._position)
+                else:
+                    positions_are_equal = array_equal(self._position,
+                                                      other._position)
+                # _end_if_
+
+                # Check valid sets.
+                valid_sets_are_equal = (True if not self._valid_set
+                                        else self._valid_set == other._valid_set)
+
+                # Check lower bounds.
+                lower_bounds_are_equal = (True if not self._lower_bound
+                                          else self._lower_bound == other._lower_bound)
+
+                # Check upper bounds.
+                upper_bounds_are_equal = (True if not self._upper_bound
+                                          else self._upper_bound == other._upper_bound)
+
+                # Return the logical AND condition.
+                return (positions_are_equal and valid_sets_are_equal and
+                        lower_bounds_are_equal and upper_bounds_are_equal)
             else:
-                positions_are_equal = np.array_equal(self._position,
-                                                     other._position)
-            # _end_if_
-
-            # Check the block types.
-            types_are_equal = self._btype == other._btype
-
-            # Check valid sets.
-            valid_sets_are_equal = (True if not self._valid_set
-                                    else self._valid_set == other._valid_set)
-
-            # Check lower bounds.
-            lower_bounds_are_equal = (True if not self._lower_bound
-                                      else self._lower_bound == other._lower_bound)
-
-            # Check upper bounds.
-            upper_bounds_are_equal = (True if not self._upper_bound
-                                      else self._upper_bound == other._upper_bound)
-
-            return (types_are_equal and positions_are_equal and valid_sets_are_equal and
-                    lower_bounds_are_equal and upper_bounds_are_equal)
+                return False
         # _end_if_
         return NotImplemented
     # _end_def_
