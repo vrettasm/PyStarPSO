@@ -158,21 +158,26 @@ class CategoricalPSO(GenericPSO):
                 # Reference of the j-th set.
                 set_j = local_sets[j]
 
-                # Sort in reverse order from high to low.
+                # Sort in reverse order form high to low.
                 sorted_idx_j = np.argsort(xj)[::-1]
 
-                # Check if the index is included
-                # in the auxiliary list.
+                # Check if the index is included in the
+                # auxiliary list.
                 for k in sorted_idx_j:
                     # Continue until we find the first
                     # 'not used' element of the valid set.
                     if k in exclude_idx:
                         continue
                     else:
+                        # Update the list with the excluded indexes.
                         exclude_idx.append(k)
+
+                        # Assign the element in the position[i, j].
                         x_pos[j] = set_j[k]
+
+                        # Break the internal loop.
                         break
-                # _end_for_
+                    # _end_if_
             # _end_for_
         # _end_for_
     # _end_def_
