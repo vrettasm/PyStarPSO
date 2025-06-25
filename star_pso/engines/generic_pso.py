@@ -9,7 +9,7 @@ from joblib import (Parallel, delayed)
 from numpy.typing import ArrayLike
 from numpy import array as np_array
 from numpy import empty as np_empty
-from numpy.random import default_rng, Generator
+from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.swarm import Swarm
 
