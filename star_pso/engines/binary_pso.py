@@ -4,7 +4,7 @@ from numpy import zeros_like
 from numpy import exp as np_exp
 from numpy import mean as np_mean
 from numpy import clip as np_clip
-from numpy._typing import ArrayLike
+from numpy.typing import ArrayLike
 
 from star_pso.engines.generic_pso import GenericPSO
 from star_pso.auxiliary.utilities import (time_it,

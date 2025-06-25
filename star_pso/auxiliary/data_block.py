@@ -11,7 +11,7 @@ from numpy import ones as np_ones
 from numpy import isclose as np_isclose
 from numpy import isscalar as np_isscalar
 
-from numpy._typing import ArrayLike
+from numpy.typing import ArrayLike
 from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.utilities import (BlockType, ScalarOrArray,

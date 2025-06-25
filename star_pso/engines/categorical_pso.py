@@ -60,10 +60,10 @@ class CategoricalPSO(GenericPSO):
         # according to the permutation mode flag.
         if permutation_mode:
             self._items = {"sample_random_values":
-                               self.sample_permutation_values}
+                           self.sample_permutation_values}
         else:
             self._items = {"sample_random_values":
-                               self.sample_categorical_values}
+                           self.sample_categorical_values}
         # _end_if_
     # _end_def_
 

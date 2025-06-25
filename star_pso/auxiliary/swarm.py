@@ -4,7 +4,7 @@ from operator import attrgetter
 from dataclasses import dataclass, field
 
 from numpy import asarray
-from numpy._typing import ArrayLike
+from numpy.typing import ArrayLike
 
 from star_pso.auxiliary.particle import Particle
 from star_pso.auxiliary.utilities import BlockType

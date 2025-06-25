@@ -1,7 +1,7 @@
 from math import inf
 from copy import deepcopy
 
-from numpy._typing import ArrayLike
+from numpy.typing import ArrayLike
 from numpy import copyto as copy_to
 from numpy import (array, array_equal, asarray)
 
