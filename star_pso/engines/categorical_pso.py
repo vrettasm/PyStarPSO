@@ -69,7 +69,7 @@ class CategoricalPSO(GenericPSO):
         """
         Compile a list with the sizes of the valid sets.
         To avoid recomputing the list over and over again
-        we decorate it with @cache.
+        we decorate it with @cached_property.
 
         :return: a list with the sizes of the valid sets.
         """
