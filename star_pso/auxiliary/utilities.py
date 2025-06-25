@@ -3,6 +3,7 @@ import time
 from enum import Enum
 from typing import Union
 from functools import wraps
+from collections import namedtuple
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -12,6 +13,14 @@ from numba import njit
 # Make a type alias for the position's type.
 ScalarOrArray = Union[int, float, ArrayLike]
 
+# Declare a named tuple with the parameters
+# we want to use in the velocity equations:
+# 1) 'w': inertia weight
+# 2) 'c1': cognitive coefficient
+# 3) 'c2': social coefficient
+# 4) 'global_avg': global average is optional.
+VOptions = namedtuple("VOptions",
+                      ["w", "c1", "c2", "global_avg"], defaults=[False])
 
 class BlockType(Enum):
     """
