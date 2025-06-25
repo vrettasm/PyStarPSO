@@ -210,27 +210,17 @@ class CategoricalPSO(GenericPSO):
 
         :return: None.
         """
-        # Inertia weight parameter.
-        w = params.w
-
-        # Cognitive coefficient.
-        c1 = params.c1
-
-        # Social coefficient.
-        c2 = params.c2
-
-        # Global average parameter (OPTIONAL).
-        g_avg = params.global_avg
-
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
 
-        # Pre-sample the coefficients.
-        R1 = GenericPSO.rng.uniform(0, c1, size=arr_shape)
-        R2 = GenericPSO.rng.uniform(0, c2, size=arr_shape)
+        # Pre-sample the cognitive coefficients.
+        cogntv = GenericPSO.rng.uniform(0, params.c1, size=arr_shape)
+
+        # Pre-sample the social coefficients.
+        social = GenericPSO.rng.uniform(0, params.c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
-        if g_avg:
+        if params.global_avg:
             # Initialize a vector (of vectors).
             g_best = np.array([particle.best_position
                               for particle in self.swarm.population],
@@ -248,8 +238,10 @@ class CategoricalPSO(GenericPSO):
             g_best = self.swarm.best_particle().position
         # _end_if_
 
-        for i, (r1, r2) in enumerate(zip(R1, R2)):
+        # Inertia weight parameter.
+        w = params.w
 
+        for i, (c1, c2) in enumerate(zip(cogntv, social)):
             # Get the current position of i-th the particle.
             x_i = self.swarm[i].position
 
@@ -261,8 +253,8 @@ class CategoricalPSO(GenericPSO):
 
                 # Apply the update equations.
                 vk = (w * vk +
-                      r1[j] * np_subtract(l_best[j], xk) +
-                      r2[j] * np_subtract(g_best[j], xk))
+                      c1[j] * np_subtract(l_best[j], xk) +
+                      c2[j] * np_subtract(g_best[j], xk))
 
                 # Ensure the velocities are within limits.
                 np_clip(vk, -0.5, +0.5, out=vk)

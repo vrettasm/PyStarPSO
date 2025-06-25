@@ -183,27 +183,17 @@ class JackOfAllTradesPSO(GenericPSO):
 
         :return: None.
         """
-        # Inertia weight parameter.
-        w = params.w
-
-        # Cognitive coefficient.
-        c1 = params.c1
-
-        # Social coefficient.
-        c2 = params.c2
-
-        # Global average parameter (OPTIONAL).
-        g_avg = params.global_avg
-
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
 
-        # Pre-sample the coefficients.
-        cogntv = JackOfAllTradesPSO.rng.uniform(0, c1, size=arr_shape)
-        social = JackOfAllTradesPSO.rng.uniform(0, c2, size=arr_shape)
+        # Pre-sample the cognitive coefficients.
+        cogntv = JackOfAllTradesPSO.rng.uniform(0, params.c1, size=arr_shape)
+
+        # Pre-sample the social coefficients.
+        social = JackOfAllTradesPSO.rng.uniform(0, params.c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
-        if g_avg:
+        if params.global_avg:
             # Initialize an array with the best particle positions.
             g_best = np_array([particle.best_position
                                for particle in self.swarm.population],
@@ -223,7 +213,10 @@ class JackOfAllTradesPSO(GenericPSO):
             g_best = self.swarm.best_particle().position
         # _end_if_
 
-        for i, (param_c, param_s) in enumerate(zip(cogntv, social)):
+        # Inertia weight parameter.
+        w = params.w
+
+        for i, (c1, c2) in enumerate(zip(cogntv, social)):
             # Get the (old) position of the i-th particle (as list).
             x_old = self.swarm[i].position
 
@@ -234,8 +227,8 @@ class JackOfAllTradesPSO(GenericPSO):
             for j, (xk, vk) in enumerate(zip(x_old, self._velocities[i])):
                 # Apply the update equations.
                 self._velocities[i][j] = (w * vk +
-                                          param_c[j] * np_subtract(l_best[j], xk) +
-                                          param_s[j] * np_subtract(g_best[j], xk))
+                                          c1[j] * np_subtract(l_best[j], xk) +
+                                          c2[j] * np_subtract(g_best[j], xk))
         # _end_for_
     # _end_def_
 
