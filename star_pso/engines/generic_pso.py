@@ -12,6 +12,7 @@ from numpy import empty as np_empty
 from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.swarm import Swarm
+from star_pso.auxiliary.utilities import VOptions
 
 # Public interface.
 __all__ = ["GenericPSO"]
@@ -260,11 +261,11 @@ class GenericPSO(object):
                                   f"You should implement this method!")
     # _end_def_
 
-    def update_velocities(self, options: dict) -> None:
+    def update_velocities(self, params: VOptions) -> None:
         """
         Performs the update on the velocity equations.
 
-        :param options: Dictionary with the PSO options:
+        :param params: VOptions tuple with the PSO options.
 
         :return: None.
         """
