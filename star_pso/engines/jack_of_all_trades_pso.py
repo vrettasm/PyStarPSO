@@ -128,6 +128,9 @@ class JackOfAllTradesPSO(GenericPSO):
         It is assumed that all data blocks are CATEGORICAL
         and that they have the same valid set of values.
 
+        :param positions: the container with the lists of probabilities
+        (one list for each position).
+
         :return: None.
         """
 
