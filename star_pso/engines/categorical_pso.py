@@ -1,5 +1,5 @@
 from math import isclose
-from functools import cache
+from functools import cached_property
 
 import numpy as np
 from numpy import sum as np_sum
@@ -23,9 +23,6 @@ class CategoricalPSO(GenericPSO):
     algorithm", Proceedings of 2016 Genetic and Evolutionary Computation Conference (GECCO) 16,
     ACM Press, Denver, Colorado, USA, pp. 53-60.
     """
-
-    # Object variables (specific for the CategoricalPSO).
-    __slots__ = ("_valid_sets",)
 
     def __init__(self, variable_sets: list, permutation_mode: bool = False,
                  **kwargs):
@@ -67,7 +64,7 @@ class CategoricalPSO(GenericPSO):
         # _end_if_
     # _end_def_
 
-    @cache
+    @cached_property
     def size_of_sets(self) -> list[int]:
         """
         Compile a list with the sizes of the valid sets.
@@ -87,7 +84,7 @@ class CategoricalPSO(GenericPSO):
         :return: None.
         """
         # Get the length of each set.
-        size_L = self.size_of_sets()
+        size_L = self.size_of_sets
 
         # Here we generate the random velocities
         # in a short uniform range, according to
@@ -108,7 +105,7 @@ class CategoricalPSO(GenericPSO):
         """
 
         # Get the length of each set.
-        size_L = self.size_of_sets()
+        size_L = self.size_of_sets
 
         # Reset the probabilities to uniform values.
         for i in range(self.n_rows):
