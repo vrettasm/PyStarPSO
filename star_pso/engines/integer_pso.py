@@ -86,19 +86,12 @@ class IntegerPSO(GenericPSO):
         # _end_for_
     # _end_def_
 
-    def update_positions(self, options: dict) -> None:
+    def update_positions(self) -> None:
         """
         Updates the positions of the particles in the swarm.
 
-        :param options: dictionary with options for the update
-        equations, i.e. ('w', 'c1', 'c2', 'fipso').
-
         :return: None.
         """
-
-        # Update the velocity equations.
-        self.update_velocities(options)
-
         # Round the new positions and convert them to type int.
         new_positions = np_rint(self.swarm.positions_as_array() +
                                 self._velocities).astype(int)
@@ -200,8 +193,11 @@ class IntegerPSO(GenericPSO):
         # Repeat for 'max_it' times.
         for i in range(max_it):
 
-            # Update the positions in the swarm.
-            self.update_positions(options)
+            # First update the velocity equations.
+            self.update_velocities(options)
+
+            # Then update the positions in the swarm.
+            self.update_positions()
 
             # Calculate the new function values.
             f_new, found_solution = self.evaluate_function(parallel)

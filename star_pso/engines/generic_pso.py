@@ -272,7 +272,7 @@ class GenericPSO(object):
                                   f"You should implement this method!")
     # _end_def_
 
-    def update_positions(self, *args, **kwargs) -> None:
+    def update_positions(self) -> None:
         """
         Updates the positions of the particles in the swarm.
 
