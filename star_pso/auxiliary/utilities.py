@@ -7,6 +7,8 @@ from functools import wraps
 import numpy as np
 from numpy.typing import ArrayLike
 
+from numba import njit
+
 # Make a type alias for the position's type.
 ScalarOrArray = Union[int, float, ArrayLike]
 
@@ -40,9 +42,10 @@ def check_parameters(options: dict) -> None:
         # _end_if_
 # _end_def_
 
-def my_clip(x_new, lower_limit, upper_limit):
+@njit
+def nb_clip(x_new, lower_limit, upper_limit):
     """
-    Local version of numpy clip which limits the values of a scalar.
+    Local version of numba clip which limits the values of a scalar.
     Given an interval values outside the interval are clipped to the
     interval edges. The final value is returned with item().
 
