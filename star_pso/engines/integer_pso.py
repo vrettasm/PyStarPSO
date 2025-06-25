@@ -7,6 +7,7 @@ from numpy.typing import ArrayLike
 
 from star_pso.engines.generic_pso import GenericPSO
 from star_pso.auxiliary.utilities import (time_it,
+                                          VOptions,
                                           check_parameters)
 # Public interface.
 __all__ = ["IntegerPSO"]
@@ -37,28 +38,25 @@ class IntegerPSO(GenericPSO):
                                                   size=(self.n_rows, self.n_cols))
     # _end_def_
 
-    def update_velocities(self, options: dict) -> None:
+    def update_velocities(self, params: VOptions) -> None:
         """
         Performs the update on the velocity equations.
 
-        :param options: dictionary with the basic parameters:
-              i)  'w': inertia weight
-             ii) 'c1': cognitive coefficient
-            iii) 'c2': social coefficient
+        :param params: VOptions tuple with the PSO options.
 
         :return: None.
         """
         # Inertia weight parameter.
-        w = options["w"]
+        w = params.w
 
         # Cognitive coefficient.
-        c1 = options["c1"]
+        c1 = params.c1
 
         # Social coefficient.
-        c2 = options["c2"]
+        c2 = params.c2
 
         # Global average parameter (OPTIONAL).
-        g_avg = options.get("global_avg", False)
+        g_avg = params.global_avg
 
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
@@ -179,6 +177,9 @@ class IntegerPSO(GenericPSO):
             check_parameters(options)
         # _end_if_
 
+        # Convert options dict to VOptions.
+        params = VOptions(**options)
+
         # Get the function values before optimisation.
         f_opt, _ = self.evaluate_function(parallel)
 
@@ -194,7 +195,7 @@ class IntegerPSO(GenericPSO):
         for i in range(max_it):
 
             # First update the velocity equations.
-            self.update_velocities(options)
+            self.update_velocities(params)
 
             # Then update the positions in the swarm.
             self.update_positions()
