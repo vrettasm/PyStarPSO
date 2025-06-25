@@ -1,7 +1,7 @@
 import unittest
 
-from star_pso.auxiliary.utilities import (check_parameters,
-                                          my_clip)
+from star_pso.auxiliary.utilities import (nb_clip,
+                                          check_parameters)
 
 
 class TestUtilities(unittest.TestCase):
@@ -37,15 +37,15 @@ class TestUtilities(unittest.TestCase):
             check_parameters(options={"w": None, "c1": None, "c_": None})
     # _end_def_
 
-    def test_my_clip(self) -> None:
+    def test_nb_clip(self) -> None:
         """
-        Check if my_clip does the right job.
+        Check if nb_clip does the right job.
 
         :return: None.
         """
 
         # Create a test variable.
-        x_test_lower = my_clip(x_new=-1.0,
+        x_test_lower = nb_clip(x_new=-1.0,
                                lower_limit=0.0,
                                upper_limit=1.0)
 
@@ -54,7 +54,7 @@ class TestUtilities(unittest.TestCase):
                          msg="Lower limit failed.")
 
         # Create a test variable.
-        x_test_upper = my_clip(x_new=2.0,
+        x_test_upper = nb_clip(x_new=2.0,
                                lower_limit=0.0,
                                upper_limit=1.0)
 
