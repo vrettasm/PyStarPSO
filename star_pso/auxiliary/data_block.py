@@ -1,6 +1,7 @@
 from numbers import Number
 from functools import cache
 from copy import copy, deepcopy
+from collections import namedtuple
 
 from numpy import array_equal
 from numpy import exp as np_exp
@@ -17,6 +18,9 @@ from numpy.random import (default_rng, Generator)
 from star_pso.auxiliary.utilities import (nb_clip,
                                           BlockType,
                                           ScalarOrArray)
+# Create a tuple to pack some inputs.
+Params = namedtuple("Params",
+                    ["v_new", "x_old", "lower_bound", "upper_bound"])
 # Public interface.
 __all__ = ["DataBlock"]
 
@@ -101,94 +105,77 @@ class DataBlock(object):
     # _end_def_
 
     @staticmethod
-    def upd_float(**kwargs) -> float:
+    def upd_float(params: Params) -> float:
         """
         It is used to update the positions of continuous
         'float' data blocks.
 
-        :param kwargs: contains the parameters for the
-        update equation.
+        :param params: tuple which contains the parameters
+        for the update equation.
 
         :return: a new (float) position.
         """
-        # Extract the required values for the update.
-        x_old = kwargs["x_old"]
-        v_new = kwargs["v_new"]
-
         # Ensure the new position stays within bounds.
-        return nb_clip(x_old + v_new,
-                       kwargs["lower_bound"],
-                       kwargs["upper_bound"])
+        return nb_clip(params.x_old + params.v_new,
+                       params.lower_bound,
+                       params.upper_bound)
     # _end_def_
 
     @staticmethod
-    def upd_integer(**kwargs) -> int:
+    def upd_integer(params: Params) -> int:
         """
         It is used to update the positions of discrete
         'int' data blocks.
 
-        :param kwargs: contains the parameters for the
-        update equations.
+        :param params: tuple which contains the parameters
+        for the update equation.
 
         :return: a new (int) position.
         """
-        # Extract the required values for the update.
-        x_old = kwargs["x_old"]
-        v_new = kwargs["v_new"]
-
         # Round the new position and convert it to int.
-        x_new = np_rint(x_old + v_new).astype(int)
+        x_new = np_rint(params.x_old + params.v_new).astype(int)
 
         # Ensure the new position stays within bounds.
-        return nb_clip(x_new,
-                       kwargs["lower_bound"],
-                       kwargs["upper_bound"])
+        return nb_clip(x_new, params.lower_bound, params.upper_bound)
     # _end_def_
 
     @classmethod
-    def upd_binary(cls, **kwargs) -> int:
+    def upd_binary(cls, params: Params) -> int:
         """
         It is used to update the positions of discrete
         'binary' data blocks.
 
-        :param kwargs: contains the parameters for the
-        update equations.
+        :param params: tuple which contains the parameters
+        for the update equation.
 
         :return: a new (binary) position.
         """
-        # Extract the required value for the update.
-        v_new = kwargs["v_new"]
-
         # Draw a random value in (0, 1).
         random_01 = cls.rng.random()
 
         # Compute the sigmoid function value.
-        threshold = 1.0 / (1.0 + np_exp(-v_new))
+        threshold = 1.0 / (1.0 + np_exp(-params.v_new))
 
         # Assign the binary value.
         return 1 if threshold > random_01 else 0
     # _end_def_
 
     @classmethod
-    def upd_categorical(cls, **kwargs) -> ArrayLike:
+    def upd_categorical(cls, params: Params) -> ArrayLike:
         """
         It is used to update the positions of discrete
         'categorical' data blocks.
 
-        :param kwargs: contains the parameters for the
-        update equations.
+        :param params: tuple which contains the parameters
+        for the update equation.
 
         :return: a new array like with probabilities.
         """
-        # Extract the required values for the update.
-        x_old = kwargs["x_old"]
-        v_new = kwargs["v_new"]
-
         # Ensure the velocities are within limits.
-        np_clip(v_new, -0.5, +0.5, out=v_new)
+        v_new = np_clip(params.v_new, -0.5, +0.5)
 
         # Ensure the vector stays within limits.
-        x_new = np_clip(x_old + v_new, 0.0, 1.0)
+        x_new = np_clip(params.x_old + v_new, 0.0, 1.0)
 
         # Ensure there will be at least one
         # element with positive probability.
@@ -341,11 +328,14 @@ class DataBlock(object):
         # Get the dictionary with all the methods.
         method_dict = DataBlock.get_update_method()
 
-        # Assign the function value to the new position.
-        self._position = method_dict[self._btype](v_new=v_new,
-                                                  x_old=self._position,
-                                                  lower_bound=self._lower_bound,
-                                                  upper_bound=self._upper_bound)
+        # Pack the parameters in a tuple.
+        params = Params(v_new=v_new,
+                        x_old=self._position,
+                        lower_bound=self._lower_bound,
+                        upper_bound=self._upper_bound)
+
+        # Assign the function values to the new position.
+        self._position = method_dict[self._btype](params)
     # _end_def_
 
     @property
