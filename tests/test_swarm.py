@@ -21,6 +21,11 @@ class TestSwarm(unittest.TestCase):
     # _end_def_
 
     def test_post_init(self):
+        """
+        Check if the __post_init__ method works correctly.
+
+        :return: None.
+        """
         # Define the number of optimizing variables.
         D = 2
 
@@ -59,6 +64,11 @@ class TestSwarm(unittest.TestCase):
     # _end_def_
 
     def test_global_best_index(self):
+        """
+        Check if the global_best_index returns the right index.
+
+        :return: None.
+        """
         # Define the number of optimizing variables.
         D = 2
 
@@ -80,6 +90,8 @@ class TestSwarm(unittest.TestCase):
         # Check the global index property.
         self.assertEqual(j, swarm_A.global_best_index)
     # _end_def_
+
+# _end_class_
 
 
 if __name__ == '__main__':
