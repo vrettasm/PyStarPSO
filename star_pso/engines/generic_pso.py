@@ -169,7 +169,7 @@ class GenericPSO(object):
 
         # Check if "Jack of All Trades" is enabled.
         if jack_of_all_trades:
-            # Extract positions in a list of lists.
+            # Extract the positions in a list of lists.
             positions = self._swarm.positions_as_list()
 
             # Check if the swarm has categorical data blocks.
@@ -178,7 +178,7 @@ class GenericPSO(object):
                 self._items["sample_random_values"](positions)
             # _end_if_
         else:
-            # Extract positions in a 2D numpy array.
+            # Extract the positions in a 2D numpy array.
             positions = self._swarm.positions_as_array()
 
             # Only True in CategoricalPSO.
