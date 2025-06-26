@@ -2,7 +2,6 @@ from math import inf
 from copy import deepcopy
 
 from numpy.typing import ArrayLike
-from numpy import copyto as copy_to
 from numpy import (array, array_equal, asarray)
 
 from star_pso.auxiliary.utilities import ScalarOrArray
@@ -97,7 +96,7 @@ class Particle(object):
         # current position we need to copy the new vector
         # into the best_position vector to avoid pointing
         # to the same memory twice.
-        copy_to(self._best_position, new_vector)
+        self._best_position = array(new_vector, copy=True)
     # _end_def_
 
     @property
