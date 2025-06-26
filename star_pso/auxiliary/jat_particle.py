@@ -24,7 +24,7 @@ class JatParticle(object):
     # Initially the function value is set to -Inf.
     _value: float = -inf
 
-    # Initialize the best (historical) value to -inf.
+    # Initialize the best (historical) value to -Inf.
     _best_value: float = -inf
 
     @property
