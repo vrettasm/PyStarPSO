@@ -1,14 +1,15 @@
+from copy import deepcopy
 from numbers import Number
 from functools import cache
-from copy import copy, deepcopy
 from collections import namedtuple
 
-from numpy import array_equal
+import numpy as np
 from numpy import exp as np_exp
 from numpy import sum as np_sum
 from numpy import clip as np_clip
 from numpy import rint as np_rint
 from numpy import ones as np_ones
+from numpy import (array, array_equal)
 from numpy import isclose as np_isclose
 from numpy import isscalar as np_isscalar
 
@@ -40,7 +41,7 @@ class DataBlock(object):
 
     # Object variables.
     __slots__ = ("_btype", "_valid_set", "_position", "_best_position",
-                 "_lower_bound", "_upper_bound")
+                 "_lower_bound", "_upper_bound", "_copy")
 
     def __init__(self,
                  position: ScalarOrArray,
@@ -70,8 +71,21 @@ class DataBlock(object):
         # _end_if_
 
         # Copy the initial position.
-        self._position = copy(position)
-        self._best_position = copy(position)
+        if np.isscalar(position):
+            # Make simple copies.
+            self._position = position
+            self._best_position = position
+
+            # Simple lambda method.
+            self._copy = lambda x: x
+        else:
+            # Make array copies.
+            self._position = array(position, copy=True)
+            self._best_position = array(position, copy=True)
+
+            # Get a local reference of the array copy.
+            self._copy = lambda x: array(x, copy=True)
+        # _end_if_
 
         # Get the lower and upper bounds.
         self._lower_bound = lower_bound
@@ -360,7 +374,7 @@ class DataBlock(object):
 
         :return: None.
         """
-        self._best_position = copy(new_value)
+        self._best_position = self._copy(new_value)
     # _end_def_
 
     @property
