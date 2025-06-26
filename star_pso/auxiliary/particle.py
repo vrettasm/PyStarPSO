@@ -222,11 +222,11 @@ class Particle(object):
         # Make sure both objects are of the same type 'particle'.
         if isinstance(other, Particle):
 
-            # Compare directly the two positions vectors.
+            # Compare directly their two positions arrays.
             return array_equal(self._position, other.position)
-
         # _end_if_
-        return False
+
+        return NotImplemented
     # _end_def_
 
     def __str__(self) -> str:

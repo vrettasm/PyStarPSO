@@ -198,9 +198,11 @@ class JatParticle(object):
 
         # Make sure both objects are of the same type.
         if isinstance(other, JatParticle):
+
             # Compare directly their two containers.
             return self._container == other.container
         # _end_if_
+
         return NotImplemented
     # _end_def_
 
