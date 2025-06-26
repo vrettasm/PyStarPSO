@@ -109,7 +109,7 @@ class DataBlock(object):
 
     def _copy_to_array(self, x) -> None:
         """
-        Simple copy to arra method. It is used to provide
+        Simple copy to array method. It is used to provide
         a dynamic interface when copy to the best position.
 
         :param x: array to be copied to best_position.
