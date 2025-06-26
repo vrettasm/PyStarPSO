@@ -35,7 +35,7 @@ class Particle(object):
         # Initialize the best (historical) position.
         self._best_position = array(initial_position, copy=True)
 
-        # Initialize the best (historical) value to -inf.
+        # Initialize the best (historical) value to -Inf.
         self._best_value = -inf
 
         # Initially the function value is set to -Inf.
