@@ -3,13 +3,13 @@ from numbers import Number
 from functools import cache
 from collections import namedtuple
 
-import numpy as np
 from numpy import exp as np_exp
 from numpy import sum as np_sum
 from numpy import clip as np_clip
 from numpy import rint as np_rint
 from numpy import ones as np_ones
 from numpy import (array, array_equal)
+from numpy import copyto as np_copyto
 from numpy import isclose as np_isclose
 from numpy import isscalar as np_isscalar
 
@@ -41,7 +41,7 @@ class DataBlock(object):
 
     # Object variables.
     __slots__ = ("_btype", "_valid_set", "_position", "_best_position",
-                 "_lower_bound", "_upper_bound", "_copy")
+                 "_lower_bound", "_upper_bound", "_copy_best")
 
     def __init__(self,
                  position: ScalarOrArray,
@@ -71,20 +71,20 @@ class DataBlock(object):
         # _end_if_
 
         # Copy the initial position.
-        if np.isscalar(position):
+        if np_isscalar(position):
             # Make simple copies.
             self._position = position
             self._best_position = position
 
-            # Simple lambda method.
-            self._copy = lambda x: x
+            # Simple copy to scalar method.
+            self._copy_best = self._copy_to_scalar
         else:
             # Make array copies.
             self._position = array(position, copy=True)
             self._best_position = array(position, copy=True)
 
-            # Get a local reference of the array copy.
-            self._copy = lambda x: array(x, copy=True)
+            # Get a local reference of the copy-to.
+            self._copy_best = self._copy_to_array
         # _end_if_
 
         # Get the lower and upper bounds.
@@ -93,6 +93,30 @@ class DataBlock(object):
 
         # Get the valid set (categorical variables).
         self._valid_set = valid_set
+    # _end_def_
+
+    def _copy_to_scalar(self, x) -> None:
+        """
+        Simple copy to scalar method. It is used to provide
+        a dynamic interface when copy to the best position.
+
+        :param x: scalar to be copied to best_position.
+
+        :return: None.
+        """
+        self._best_position = x
+    # _end_def_
+
+    def _copy_to_array(self, x) -> None:
+        """
+        Simple copy to arra method. It is used to provide
+        a dynamic interface when copy to the best position.
+
+        :param x: array to be copied to best_position.
+
+        :return: None.
+        """
+        np_copyto(self._best_position, x)
     # _end_def_
 
     @classmethod
@@ -374,7 +398,7 @@ class DataBlock(object):
 
         :return: None.
         """
-        self._best_position = self._copy(new_value)
+        self._copy_best(new_value)
     # _end_def_
 
     @property
