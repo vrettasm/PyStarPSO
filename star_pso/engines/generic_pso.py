@@ -255,11 +255,12 @@ class GenericPSO(object):
 
     def get_optimal_values(self) -> tuple:
         """
-        Iterates through the stats to find the best
-        recorded position form all the iterations.
+        Iterates through the stats to find the best recorded
+        position form all the iterations.
 
-        :return: a tuple with the optimal particle
-        position, its function value and its iteration.
+        :return: a tuple with the optimal particle position,
+                 its function value and the iteration it was
+                 found.
         """
 
         # Get the maximum of f_best.
@@ -268,7 +269,7 @@ class GenericPSO(object):
         # Get the index of f_best.
         i_opt = self.stats["f_best"].index(f_opt)
 
-        # Get the corresponding of x_best.
+        # Get the corresponding x_best.
         x_opt = self.stats["x_best"][i_opt]
 
         # Return the optimal particle position,
