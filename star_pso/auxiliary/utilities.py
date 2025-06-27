@@ -71,18 +71,14 @@ def nb_average_hamming_distance(x_pos):
     # Scan all the positions.
     for i, p in enumerate(x_pos):
 
-        # If we reach the end exit
-        # to avoid double counting.
-        if i == (n_rows - 1):
-            break
-        # _end_if_
-
-        # Count the non-identical positions.
-        total_diff += np.count_nonzero(p != x_pos[i+1])
+        # Avoid double counting.
+        for q in x_pos[i + 1:]:
+            # Count the non-identical positions.
+            total_diff += np.count_nonzero(p != q)
     # _end_for_
 
-    # Compute the total number of variables.
-    total_vars = (n_rows - 1) * n_cols
+    # Compute the total number of counted variables.
+    total_vars = (n_cols * n_rows * (n_rows - 1) / 2.0)
 
     # Return the averaged value.
     return float(total_diff / total_vars)
