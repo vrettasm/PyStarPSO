@@ -242,11 +242,39 @@ class GenericPSO(object):
         # Store the best (sampled) position.
         self.stats["x_best"].append(x_best)
 
+        # Store the optimal f-value of this
+        # iteration.
+        self.stats["f_best"].append(f_max)
+
         # Update local best for consistent results.
         self.swarm.update_local_best()
 
         # Return the tuple.
         return f_max, found_solution
+    # _end_def_
+
+    def get_optimal_values(self) -> tuple:
+        """
+        Iterates through the stats to find the best
+        recorded position form all the iterations.
+
+        :return: a tuple with the optimal particle
+        position, its function value and its iteration.
+        """
+
+        # Get the maximum of f_best.
+        f_opt = max(self.stats["f_best"])
+
+        # Get the index of f_best.
+        i_opt = self.stats["f_best"].index(f_opt)
+
+        # Get the corresponding of x_best.
+        x_opt = self.stats["x_best"][i_opt]
+
+        # Return the optimal particle position,
+        # along with its function value and its
+        # iteration.
+        return i_opt, f_opt, x_opt
     # _end_def_
 
     def generate_random_positions(self) -> None:
