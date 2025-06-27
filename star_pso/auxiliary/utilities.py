@@ -52,6 +52,43 @@ def check_parameters(options: dict) -> None:
 # _end_def_
 
 @njit
+def nb_average_hamming_distance(x_pos):
+    """
+    Compute the averaged Hamming distance of the input array.
+    It is assumed that the input 'x_pos', represents the 2D
+    array of particle binary positions {0, 1}.
+
+    :param x_pos: a 2D array with the particle positions.
+
+    :return: the mean Hamming distance.
+    """
+    # Initialize the counter.
+    total_diff = 0
+
+    # Get the shape of the array.
+    n_rows, n_cols = x_pos.shape
+
+    # Scan all the positions.
+    for i, p in enumerate(x_pos):
+
+        # If we reach the end exit
+        # to avoid double counting.
+        if i == (n_rows - 1):
+            break
+        # _end_if_
+
+        # Count the non-identical positions.
+        total_diff += np.count_nonzero(p != x_pos[i+1])
+    # _end_for_
+
+    # Compute the total number of variables.
+    total_vars = (n_rows - 1) * n_cols
+
+    # Return the averaged value.
+    return float(total_diff / total_vars)
+# _end_def_
+
+@njit
 def nb_clip(x_new, lower_limit, upper_limit):
     """
     Local version of numba clip which limits the values of a scalar.
