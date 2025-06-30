@@ -349,7 +349,7 @@ class GenericPSO(object):
 
     def __call__(self, *args, **kwargs):
         """
-        This method is only a wrapper of the "run" method.
+        This method is only a wrapper of the run() method.
         """
         return self.run(*args, **kwargs)
     # _end_def_
