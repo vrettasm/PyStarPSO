@@ -256,6 +256,16 @@ class GenericPSO(object):
         return f_max, found_solution
     # _end_def_
 
+    def clear_all(self) -> None:
+        """
+        Clears the stats dictionary and the f_eval counter.
+
+        :return: None.
+        """
+        self.stats.clear()
+        self._f_eval = 0
+    # _end_def_
+
     def get_optimal_values(self) -> tuple:
         """
         Iterates through the stats to find the best recorded
