@@ -246,6 +246,9 @@ class GenericPSO(object):
         # iteration.
         self.stats["f_best"].append(f_max)
 
+        # Update the counter of function evaluations.
+        self._f_eval += self.swarm.size
+
         # Update local best for consistent results.
         self.swarm.update_local_best()
 
