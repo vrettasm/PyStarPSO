@@ -1,6 +1,6 @@
 import unittest
 
-from star_pso.auxiliary.utilities import (nb_clip,
+from star_pso.auxiliary.utilities import (nb_clip_item,
                                           check_parameters)
 
 
@@ -45,18 +45,18 @@ class TestUtilities(unittest.TestCase):
         """
 
         # Create a test variable.
-        x_test_lower = nb_clip(x_new=-1.0,
-                               lower_limit=0.0,
-                               upper_limit=1.0)
+        x_test_lower = nb_clip_item(x_new=-1.0,
+                                    lower_limit=0.0,
+                                    upper_limit=1.0)
 
         # Check if the lower limit is satisfied.
         self.assertEqual(x_test_lower, 0.0,
                          msg="Lower limit failed.")
 
         # Create a test variable.
-        x_test_upper = nb_clip(x_new=2.0,
-                               lower_limit=0.0,
-                               upper_limit=1.0)
+        x_test_upper = nb_clip_item(x_new=2.0,
+                                    lower_limit=0.0,
+                                    upper_limit=1.0)
 
         # Check if the upper limit is satisfied.
         self.assertEqual(x_test_upper, 1.0,
