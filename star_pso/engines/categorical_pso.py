@@ -310,7 +310,8 @@ class CategoricalPSO(GenericPSO):
 
     @time_it
     def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
-            parallel: bool = False, reset_swarm: bool = False, verbose: bool = False) -> None:
+            parallel: bool = False, reset_swarm: bool = False, f_max_eval: int = None,
+            verbose: bool = False) -> None:
         """
         Main method of the CategoricalPSO class, that implements the optimization routine.
 
@@ -327,6 +328,9 @@ class CategoricalPSO(GenericPSO):
 
         :param reset_swarm: (bool) if True it will reset the positions of the swarm to uniformly
         random respecting the boundaries of each space dimension.
+
+        :param f_max_eval: (int) it sets an upper limit of function evaluations. If the number
+        is exceeded the algorithm stops.
 
         :param verbose: (bool) if True it will display periodically information about the current
         optimal function values.
@@ -377,6 +381,19 @@ class CategoricalPSO(GenericPSO):
             if verbose and (i % its_time_to_print) == 0:
                 # Display an information message.
                 print(f"Iteration: {i + 1:>5} -> f_optimal = {f_new:.4f}")
+            # _end_if_
+
+            # Check for the maximum function evaluations.
+            if f_max_eval and self.f_eval >= f_max_eval:
+                # Update optimal function.
+                f_opt = f_new
+
+                # Display an information message.
+                print(f"{self.__class__.__name__} "
+                      "Reached the maximum number of function evaluations.")
+
+                # Exit from the loop.
+                break
             # _end_if_
 
             # Check for termination.

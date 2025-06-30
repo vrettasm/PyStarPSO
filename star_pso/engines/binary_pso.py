@@ -219,20 +219,20 @@ class BinaryPSO(GenericPSO):
                 print(f"Iteration: {i + 1:>5} -> f_optimal = {f_new:.4f}")
             # _end_if_
 
-            # Check for maximum function evaluations.
-            if f_max_eval and f_max_eval <= self.f_eval:
+            # Check for the maximum function evaluations.
+            if f_max_eval and self.f_eval >= f_max_eval:
                 # Update optimal function.
                 f_opt = f_new
 
-                # Display a warning message.
+                # Display an information message.
                 print(f"{self.__class__.__name__} "
-                      "Maximum number of function evaluations.")
+                      "Reached the maximum number of function evaluations.")
 
                 # Exit from the loop.
                 break
             # _end_if_
 
-            # Check for termination.
+            # Check for termination condition.
             if found_solution:
                 # Update optimal function.
                 f_opt = f_new
@@ -244,7 +244,7 @@ class BinaryPSO(GenericPSO):
                 break
             # _end_if_
 
-            # Check for convergence.
+            # Check for convergence in function values.
             if f_tol and isclose(f_new, f_opt, rel_tol=f_tol):
                 # Update optimal function.
                 f_opt = f_new
