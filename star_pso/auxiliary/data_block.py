@@ -16,8 +16,8 @@ from numpy import isscalar as np_isscalar
 from numpy.typing import ArrayLike
 from numpy.random import (default_rng, Generator)
 
-from star_pso.auxiliary.utilities import (nb_clip,
-                                          BlockType,
+from star_pso.auxiliary.utilities import (BlockType,
+                                          nb_clip_item,
                                           ScalarOrArray)
 # Create a tuple to pack some inputs.
 Params = namedtuple("Params",
@@ -154,9 +154,9 @@ class DataBlock(object):
         :return: a new (float) position.
         """
         # Ensure the new position stays within bounds.
-        return nb_clip(params.x_old + params.v_new,
-                       params.lower_bound,
-                       params.upper_bound)
+        return nb_clip_item(params.x_old + params.v_new,
+                            params.lower_bound,
+                            params.upper_bound)
     # _end_def_
 
     @staticmethod
@@ -174,7 +174,7 @@ class DataBlock(object):
         x_new = np_rint(params.x_old + params.v_new).astype(int)
 
         # Ensure the new position stays within bounds.
-        return nb_clip(x_new, params.lower_bound, params.upper_bound)
+        return nb_clip_item(x_new, params.lower_bound, params.upper_bound)
     # _end_def_
 
     @classmethod

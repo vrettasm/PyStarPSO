@@ -85,7 +85,7 @@ def nb_average_hamming_distance(x_pos):
 # _end_def_
 
 @njit
-def nb_clip(x_new, lower_limit, upper_limit):
+def nb_clip_item(x_new, lower_limit, upper_limit):
     """
     Local version of numba clip which limits the values of a scalar.
     Given an interval values outside the interval are clipped to the
