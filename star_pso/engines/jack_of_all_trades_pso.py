@@ -259,8 +259,8 @@ class JackOfAllTradesPSO(GenericPSO):
         # Randomize particle positions.
         self.generate_random_positions()
 
-        # Clear the statistics.
-        self.stats.clear()
+        # Clear all the internal bookkeeping.
+        self.clear_all()
     # _end_def_
 
     @time_it
