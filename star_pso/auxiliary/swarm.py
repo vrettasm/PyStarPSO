@@ -1,6 +1,7 @@
 from math import isnan
 from typing import Union
 from operator import attrgetter
+from functools import cached_property
 from dataclasses import dataclass, field
 
 from numpy import asarray
@@ -57,7 +58,19 @@ class Swarm(object):
         # _end_def_
     # _end_def_
 
-    @property
+    @cached_property
+    def size(self) -> int:
+        """
+        Returns the size (length) of the population.
+        Note that the size of the population is not
+        expected to change during the optimization.
+
+        :return: (int) the length of the population.
+        """
+        return len(self._population)
+    # _end_def_
+
+    @cached_property
     def has_categorical(self) -> bool:
         """
         Accessor (getter) of the 'has_categorical' flag.
