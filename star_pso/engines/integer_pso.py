@@ -1,14 +1,11 @@
-from math import isclose
-
 from numpy import mean as np_mean
 from numpy import clip as np_clip
 from numpy import rint as np_rint
 from numpy.typing import ArrayLike
 
+from star_pso.auxiliary.utilities import VOptions
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.auxiliary.utilities import (time_it,
-                                          VOptions,
-                                          check_parameters)
+
 # Public interface.
 __all__ = ["IntegerPSO"]
 
@@ -129,126 +126,6 @@ class IntegerPSO(GenericPSO):
 
         # Clear all the internal bookkeeping.
         self.clear_all()
-    # _end_def_
-
-    @time_it
-    def run(self, max_it: int = 100, f_tol: float = None, options: dict = None,
-            parallel: bool = False, reset_swarm: bool = False, f_max_eval: int = None,
-            verbose: bool = False) -> None:
-        """
-        Main method of the IntegerPSO class, that implements the optimization routine.
-
-        :param max_it: (int) maximum number of iterations in the optimization loop.
-
-        :param f_tol: (float) tolerance in the difference between the optimal function value
-        of two consecutive iterations. It is used to determine the convergence of the swarm.
-        If this value is None (default) the algorithm will terminate using the max_it value.
-
-        :param options: dictionary with the update equations options ('w': inertia weight,
-        'c1': cognitive coefficient, 'c2': social coefficient).
-
-        :param parallel: (bool) flag that enables parallel computation of the objective function.
-
-        :param reset_swarm: if True it will reset the positions of the swarm to uniformly random
-        respecting the boundaries of each space dimension.
-
-        :param f_max_eval: (int) it sets an upper limit of function evaluations. If the number
-        is exceeded the algorithm stops.
-
-        :param verbose: (bool) if True it will display periodically information about the current
-        optimal function values.
-
-        :return: None.
-        """
-
-        # Check if resetting the swarm is required.
-        if reset_swarm:
-            self.reset_all()
-        # _end_if_
-
-        if options is None:
-            # Default values of the simplified version.
-            options = {"w": 1.0, "c1": 2.0, "c2": 2.0}
-        else:
-            # Ensure all the parameters are here.
-            check_parameters(options)
-        # _end_if_
-
-        # Convert options dict to VOptions.
-        params = VOptions(**options)
-
-        # Get the function values before optimisation.
-        f_opt, _ = self.evaluate_function(parallel)
-
-        # Display an information message.
-        print(f"Initial f_optimal = {f_opt:.4f}")
-
-        # Local variable to display information on the screen.
-        # To avoid cluttering the screen we print info only 10
-        # times regardless of the total number of iterations.
-        its_time_to_print = (max_it // 10)
-
-        # Repeat for 'max_it' times.
-        for i in range(max_it):
-
-            # First update the velocity equations.
-            self.update_velocities(params)
-
-            # Then update the positions in the swarm.
-            self.update_positions()
-
-            # Calculate the new function values.
-            f_new, found_solution = self.evaluate_function(parallel)
-
-            # Check if we want to print output.
-            if verbose and (i % its_time_to_print) == 0:
-                # Display an information message.
-                print(f"Iteration: {i + 1:>5} -> f_optimal = {f_new:.4f}")
-            # _end_if_
-
-            # Check for the maximum function evaluations.
-            if f_max_eval and self.f_eval >= f_max_eval:
-                # Update optimal function.
-                f_opt = f_new
-
-                # Display an information message.
-                print(f"{self.__class__.__name__} "
-                      "Reached the maximum number of function evaluations.")
-
-                # Exit from the loop.
-                break
-            # _end_if_
-
-            # Check for termination.
-            if found_solution:
-                # Update optimal function.
-                f_opt = f_new
-
-                # Display a warning message.
-                print(f"{self.__class__.__name__} finished in {i + 1} iterations.")
-
-                # Exit from the loop.
-                break
-            # _end_if_
-
-            # Check for convergence.
-            if f_tol and isclose(f_new, f_opt, rel_tol=f_tol):
-                # Update optimal function.
-                f_opt = f_new
-
-                # Display a warning message.
-                print(f"{self.__class__.__name__} converged in {i + 1} iterations.")
-
-                # Exit from the loop.
-                break
-            # _end_if_
-
-            # Update optimal function for next iteration.
-            f_opt = f_new
-        # _end_for_
-
-        # Display an information message.
-        print(f"Final f_optimal = {f_opt:.4f}")
     # _end_def_
 
 # _end_class_
