@@ -97,7 +97,7 @@ def nb_clip_item(x_new, lower_limit, upper_limit):
 
     :param upper_limit: upper limit.
 
-    :return: the clipped value.
+    :return: the clipped item value.
     """
     return np.minimum(np.maximum(x_new, lower_limit),
                       upper_limit).item()
