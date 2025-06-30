@@ -5,7 +5,6 @@ from collections import namedtuple
 
 from numpy import exp as np_exp
 from numpy import sum as np_sum
-from numpy import clip as np_clip
 from numpy import rint as np_rint
 from numpy import ones as np_ones
 from numpy import (array, array_equal)
@@ -18,6 +17,7 @@ from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.utilities import (BlockType,
                                           nb_clip_item,
+                                          nb_clip_array,
                                           ScalarOrArray)
 # Create a tuple to pack some inputs.
 Params = namedtuple("Params",
@@ -210,10 +210,10 @@ class DataBlock(object):
         :return: a new array like with probabilities.
         """
         # Ensure the velocities are within limits.
-        v_new = np_clip(params.v_new, -0.5, +0.5)
+        v_new = nb_clip_array(params.v_new, -0.5, +0.5)
 
         # Ensure the vector stays within limits.
-        x_new = np_clip(params.x_old + v_new, 0.0, 1.0)
+        x_new = nb_clip_array(params.x_old + v_new, 0.0, 1.0)
 
         # Ensure there will be at least one
         # element with positive probability.
