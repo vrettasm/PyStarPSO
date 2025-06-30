@@ -116,6 +116,16 @@ class GenericPSO(object):
     # _end_def_
 
     @property
+    def f_eval(self) -> int:
+        """
+        Accessor method that returns the value of the f_eval.
+
+        :return: (int) the counted number of function evaluations.
+        """
+        return self._f_eval
+    # _end_def_
+
+    @property
     def stats(self) -> dict:
         """
         Accessor method that returns the 'stats' dictionary.
