@@ -100,6 +100,9 @@ class GenericPSO(object):
 
         # Place holder.
         self._items = None
+
+        # Set the function evaluation to zero.
+        self._f_eval = 0
     # _end_def_
 
     @classmethod
