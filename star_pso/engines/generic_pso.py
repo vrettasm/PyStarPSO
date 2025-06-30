@@ -348,7 +348,7 @@ class GenericPSO(object):
     # _end_def_
 
     @time_it
-    def run(self, max_it: int = 100, options: dict = None, parallel: bool = False,
+    def run(self, max_it: int = 1000, options: dict = None, parallel: bool = False,
             reset_swarm: bool = False, f_tol: float = None, f_max_eval: int = None,
             verbose: bool = False) -> None:
         """
