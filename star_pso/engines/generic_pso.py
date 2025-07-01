@@ -472,7 +472,7 @@ class GenericPSO(object):
                 # dict_options = params._asdict()
 
                 # Update the parameters.
-                # TODO
+                # TO-DO
                 # ----
 
                 # Convert the new parameters to VOptions
