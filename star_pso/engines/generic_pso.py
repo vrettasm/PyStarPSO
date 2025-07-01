@@ -456,7 +456,6 @@ class GenericPSO(object):
                 # Display a warning message.
                 print(f"{self.__class__.__name__} converged in {i + 1} iterations.")
 
-                # _end_if_
                 # Exit from the loop.
                 break
             # _end_if_
