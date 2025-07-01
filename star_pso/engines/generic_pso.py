@@ -350,7 +350,7 @@ class GenericPSO(object):
     @time_it
     def run(self, max_it: int = 1000, options: dict = None, parallel: bool = False,
             reset_swarm: bool = False, f_tol: float = None, f_max_eval: int = None,
-            verbose: bool = False) -> None:
+            adapt_params: bool = False, verbose: bool = False) -> None:
         """
         Main method of the GenericPSO class that implements the optimization routine.
 
@@ -372,6 +372,10 @@ class GenericPSO(object):
 
         :param f_max_eval: (int) it sets an upper limit of function evaluations. If the
         number is exceeded the algorithm stops.
+
+        :param adapt_params: (bool) If set to "True" it will allow the inertia, cognitive
+        and social parameters to adapt according to the convergence of the swarm population
+        to a single solution. Default is set to "False".
 
         :param verbose: (bool) if True it will display periodically information about the
         current optimal function values.
@@ -458,6 +462,22 @@ class GenericPSO(object):
 
                 # Exit from the loop.
                 break
+            # _end_if_
+
+            # Check for adapting the parameters.
+            if adapt_params:
+                raise NotImplementedError(f"{self.__class__.__name__} Not done yet.")
+
+                # Get a copy of the previous parameters.
+                # dict_options = params._asdict()
+
+                # Update the parameters.
+                # TODO
+                # ----
+
+                # Convert the new parameters to VOptions
+                # enumeration for the next iteration.
+                # params = VOptions(**dict_options)
             # _end_if_
 
             # Update optimal function for next iteration.
