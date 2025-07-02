@@ -62,7 +62,8 @@ def check_parameters(options: dict) -> None:
 # _end_def_
 
 @njit
-def nb_average_hamming_distance(x_pos, normal: bool = False):
+def nb_average_hamming_distance(x_pos: np.ndarray,
+                                normal: bool = False) -> float:
     """
     Compute the averaged Hamming distance of the input array.
     It is assumed that the input 'x_pos', represents the 2D
