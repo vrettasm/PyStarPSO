@@ -62,7 +62,7 @@ def check_parameters(options: dict) -> None:
 # _end_def_
 
 @njit
-def nb_average_hamming_distance(x_pos):
+def nb_average_hamming_distance(x_pos, normal: bool = False):
     """
     Compute the averaged Hamming distance of the input array.
     It is assumed that the input 'x_pos', represents the 2D
@@ -70,7 +70,16 @@ def nb_average_hamming_distance(x_pos):
 
     :param x_pos: a 2D array with the particle positions.
 
-    :return: the mean Hamming distance.
+    :param normal: whether to compute the normalized average
+    Hamming distance. This will yield a value between 0 and 1.
+    * A value of '0' indicates that all rows are identical.
+    * A value of '1' indicates that all rows are completely
+    different across all positions.
+
+    The normalization provides a clearer understanding of the
+    diversity of the binary strings in relation to their length.
+
+    :return: the (normalized) averaged Hamming distance.
     """
     # Initialize the counter.
     total_diff = 0
@@ -87,8 +96,13 @@ def nb_average_hamming_distance(x_pos):
             total_diff += np.count_nonzero(p != q)
     # _end_for_
 
-    # Compute the total number of counted variables.
-    total_vars = (n_cols * n_rows * (n_rows - 1) / 2.0)
+    # Compute the total number of counted pairs.
+    total_vars = (n_rows * (n_rows - 1) / 2.0)
+
+    # Check for normalization.
+    if normal:
+        total_vars *= n_cols
+    # _end_if_
 
     # Return the averaged value.
     return float(total_diff / total_vars)
