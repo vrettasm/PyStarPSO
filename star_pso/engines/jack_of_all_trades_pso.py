@@ -68,7 +68,7 @@ class JackOfAllTradesPSO(GenericPSO):
 
         # Here we generate the random velocities.
         for i, particle in enumerate(self.swarm.population):
-            for j, blk in enumerate(particle):
+            for j, blk in enumerate(particle.container):
                 # If the block is CATEGORICAL we
                 # will use it's valid set length.
                 n_vars = len(blk.valid_set) if blk.valid_set else 1
@@ -107,7 +107,7 @@ class JackOfAllTradesPSO(GenericPSO):
         for i, particle in enumerate(self.swarm.population):
 
             # Check all data blocks in the particle.
-            for j, blk in enumerate(particle):
+            for j, blk in enumerate(particle.container):
 
                 # If the data block is categorical.
                 if blk.btype == BlockType.CATEGORICAL:
