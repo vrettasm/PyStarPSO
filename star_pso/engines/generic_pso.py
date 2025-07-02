@@ -226,7 +226,7 @@ class GenericPSO(object):
         fx_array = np_empty(self.n_rows, dtype=float)
 
         # Update all particles with their new objective function values.
-        for n, (p, result) in enumerate(zip(self._swarm, f_evaluation)):
+        for n, (p, result) in enumerate(zip(self._swarm.population, f_evaluation)):
             # Extract the n-th function value.
             f_value = result[0]
 
