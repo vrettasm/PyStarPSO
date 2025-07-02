@@ -106,7 +106,7 @@ def nb_average_hamming_distance(x_pos: np.ndarray,
     # _end_if_
 
     # Return the averaged value.
-    return float(total_diff / total_vars)
+    return float(total_diff / total_vars) if total_vars > 0 else 0.0
 # _end_def_
 
 @njit
