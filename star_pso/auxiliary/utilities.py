@@ -110,6 +110,75 @@ def nb_average_hamming_distance(x_pos: np.ndarray,
 # _end_def_
 
 @njit
+def nb_average_euclidean_distance(x_pos: np.ndarray,
+                                  normal: bool = False) -> float:
+    """
+    Calculate the average Euclidean distance of particles from their centroid.
+
+    :param x_pos: (np.ndarray) A 2D array of shape (n_particles, n_features)
+    representing the positions of the swarm.
+
+    :param normal: (bool) if "True", normalize the distances by their maximum
+    distance.
+
+    :return: the average Euclidean distance from the centroid (normalized if
+    requested).
+    """
+    # Find the centroid.
+    x_centroid = np.array([x_pos[:, i].mean() for i in range(x_pos.shape[1])])
+
+    # Get the distances from the centroid.
+    x_dist = np.sqrt(np.sum((x_pos-x_centroid) ** 2, axis=1))
+
+    # Find the maximum distance.
+    d_max = x_dist.max()
+
+    # Normalize the distances with d_max.
+    if normal and d_max != 0.0:
+        x_dist /= d_max
+
+    # Return the average value.
+    return x_dist.mean()
+# _end_def_
+
+@njit
+def nb_average_taxicab_distance(x_pos: np.ndarray,
+                                normal: bool = False) -> float:
+    """
+    Calculate the average TaxiCab (Manhattan) distance of particles from their
+    centroid.
+
+    :param x_pos: (np.ndarray) A 2D array of shape (n_particles, n_features)
+    representing the positions of the swarm.
+
+    :param normal: (bool) if "True", normalize the distances by their maximum
+    distance.
+
+    :return: the average taxicab distance from the centroid (normalized if
+    requested).
+    """
+    # Find the centroid.
+    x_centroid = np.array([x_pos[:, i].mean() for i in range(x_pos.shape[1])])
+
+    # Round the centroid to the nearest grid points.
+    x_centroid = np.rint(x_centroid)
+
+    # Get the distances from the centroid.
+    x_dist = np.sum(np.abs(x_pos-x_centroid), axis=1)
+
+    # Find the maximum distance.
+    d_max = x_dist.max()
+
+    # Normalize the distances with d_max.
+    if normal and d_max != 0.0:
+        x_dist /= d_max
+    # _end_if_
+
+    # Return the average value.
+    return x_dist.mean()
+# _end_def_
+
+@njit
 def nb_clip_array(x_new, lower_limit, upper_limit):
     """
     Local version of numba clip which limits the values of an array.
