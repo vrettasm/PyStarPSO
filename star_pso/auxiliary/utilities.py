@@ -80,7 +80,7 @@ def np_average_entropy(x_pos: np.ndarray,
     be normalized using the maximum entropy value depending on
     the set of possible outcomes for each categorical variable.
 
-    :return: The average entropy of the columns.
+    :return: The average entropy of the swarm positions.
     """
     # Get the input columns.
     n_cols = x_pos.shape[1]
