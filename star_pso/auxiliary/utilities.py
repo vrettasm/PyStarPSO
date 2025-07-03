@@ -76,9 +76,9 @@ def np_average_entropy(x_pos: np.ndarray,
     :param x_pos: 2D numpy array where each column represents
     a different optimization (categorical) variable.
 
-    :param normal: If enabled (True), the entropy values will
-    be normalized using the maximum entropy value, depending on
-    the set of possible outcomes for each categorical variable).
+    :param normal: If enabled (True), the  entropy values will
+    be normalized using the maximum entropy value depending on
+    the set of possible outcomes for each categorical variable.
 
     :return: The average entropy of the columns.
     """
