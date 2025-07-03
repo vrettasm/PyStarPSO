@@ -61,6 +61,60 @@ def check_parameters(options: dict) -> None:
         # _end_if_
 # _end_def_
 
+def np_average_entropy(x_pos: np.ndarray,
+                       normal: bool = False) -> float:
+    """
+    Calculate the averaged entropy value of the input array.
+    It is assumed that the input 'x_pos', represents the 2D
+    array of "objects", where each row represents a particle
+    and the columns contain the probability vectors (one for
+    each of the categorical variables). In essence x_pos is
+    a 3D array.
+
+    :param x_pos: 2D numpy array where each column represents
+    a different optimization (categorical) variable.
+
+    :param normal: If enabled (True), the entropy values will
+    be normalized using the maximum entropy value, depending on
+    the set of possible outcomes for each categorical variable).
+
+    :return: The average entropy of the columns.
+    """
+    # Get the input columns.
+    n_cols = x_pos.shape[1]
+
+    # Preallocate entropy array.
+    entropy_x = np.zeros(n_cols)
+
+    # Process along the columns of the x_pos.
+    for j in range(n_cols):
+
+        # Sum the values.
+        x_sum = x_pos[:, j].sum()
+
+        # Normalize to account for probabilities.
+        x_j = x_sum / x_sum.sum()
+
+        # Compute only the positive values.
+        only_positive = x_j > 0.0
+
+        # Calculate the entropy value.
+        entropy_x[j] = -np.sum(x_j * np.log(x_j, where=only_positive),
+                               where=only_positive)
+
+        # Check for normalized values.
+        if normal:
+            # Compute maximum entropy value.
+            log_k = np.log(len(x_pos[0, j]))
+
+            # Normalize entropy.
+            entropy_x[j] /= log_k
+        # _end_for_
+
+    # Return the average value.
+    return entropy_x.mean()
+# _end_def_
+
 @njit
 def nb_average_hamming_distance(x_pos: np.ndarray,
                                 normal: bool = False) -> float:
