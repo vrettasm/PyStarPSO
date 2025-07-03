@@ -4,6 +4,7 @@ from numpy.typing import ArrayLike
 
 from star_pso.auxiliary.utilities import VOptions
 from star_pso.engines.generic_pso import GenericPSO
+from star_pso.auxiliary.utilities import nb_average_euclidean_distance
 
 # Public interface.
 __all__ = ["StandardPSO"]
@@ -125,6 +126,26 @@ class StandardPSO(GenericPSO):
 
         # Clear all the internal bookkeeping.
         self.clear_all()
+    # _end_def_
+
+    def calculate_spread(self) -> float:
+        """
+        Calculates a spread measure for the particle positions using
+        the (normalized) average Euclidean distance from the swarm
+        centroid position.
+
+        A value close to '0' indicates the swarm is converging to a
+        single value. On the contrary, a value close to '1' indicates
+        the swarm is still wide spread around the search space.
+
+        :return: an estimated measure (float) for the spread
+        of the particles.
+        """
+        # Extract the positions in a 2D numpy array.
+        positions = self.swarm.positions_as_array()
+
+        # Normalized average Euclidean distance.
+        return nb_average_euclidean_distance(positions, normal=True)
     # _end_def_
 
 # _end_class_

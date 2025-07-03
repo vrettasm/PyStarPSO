@@ -12,7 +12,7 @@ from numpy import empty as np_empty
 from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.swarm import Swarm
-from star_pso.auxiliary.utilities import (time_it, VOptions,
+from star_pso.auxiliary.utilities import (time_it, VOptions, nb_clip_item,
                                           SpecialMode, check_parameters)
 # Public interface.
 __all__ = ["GenericPSO"]
@@ -347,6 +347,61 @@ class GenericPSO(object):
                                   f"You should implement this method!")
     # _end_def_
 
+    def calculate_spread(self) -> None:
+        """
+        Calculates a spread measure for the particle positions
+        according to the specific type of PSO.
+
+        :return: None.
+        """
+        raise NotImplementedError(f"{self.__class__.__name__}: "
+                                  f"You should implement this method!")
+    # _end_def_
+
+    def adapt_velocity_parameters(self, options: dict) -> None:
+        """
+        TBD
+
+        :param options:
+
+        :return: None.
+        """
+        # Get an estimate of the spread.
+        spread_t = self.calculate_spread()
+
+        # Compute the new inertia weight parameter.
+        wt = 0.2 + (1.0 - 0.2) * (1.0 - spread_t)
+
+        # Get the previous values of the parameters.
+        w = options["w"]
+        c1 = options["c1"]
+        c2 = options["c2"]
+
+        # Update the cognitive and social parameters accordingly.
+        if wt > w:
+            c1 *= 0.9
+            c2 *= 0.9
+        elif wt < w:
+            c1 *= 1.1
+            c2 *= 1.1
+        # _end_if_
+
+        # Ensure that all updated values stay within bounds.
+        wt = nb_clip_item(wt, 0.2, 1.00)
+        c1 = nb_clip_item(c1, 0.5, 2.05)
+        c2 = nb_clip_item(c2, 0.5, 2.05)
+
+        # Update the dictionary.
+        options["w"] = wt
+        options["c1"] = c1
+        options["c2"] = c2
+
+        # Store the updated parameters.
+        self.stats["inertia_w"].append(wt)
+        self.stats["cogntv_c1"].append(c1)
+        self.stats["social_c2"].append(c2)
+    # _end_def_
+
     @time_it
     def run(self, max_it: int = 1000, options: dict = None, parallel: bool = False,
             reset_swarm: bool = False, f_tol: float = None, f_max_eval: int = None,
@@ -466,18 +521,15 @@ class GenericPSO(object):
 
             # Check for adapting the parameters.
             if adapt_params:
-                raise NotImplementedError(f"{self.__class__.__name__} Not done yet.")
-
                 # Get a copy of the previous parameters.
-                # dict_options = params._asdict()
+                dict_options = params._asdict()
 
                 # Update the parameters.
-                # TO-DO
-                # ----
+                self.adapt_velocity_parameters(dict_options)
 
-                # Convert the new parameters to VOptions
-                # enumeration for the next iteration.
-                # params = VOptions(**dict_options)
+                # Convert  the new  parameters to
+                # VOptions for the next iteration.
+                params = VOptions(**dict_options)
             # _end_if_
 
             # Update optimal function for next iteration.
