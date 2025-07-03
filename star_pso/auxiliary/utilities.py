@@ -156,6 +156,9 @@ def nb_average_hamming_distance(x_pos: np.ndarray,
 
     # Check for normalization.
     if normal:
+        # In this case the number of columns represents
+        # the  maximum  hamming  distance where all the
+        # positions between two particles are different.
         total_vars *= n_cols
     # _end_if_
 
