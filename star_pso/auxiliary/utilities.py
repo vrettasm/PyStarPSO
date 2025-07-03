@@ -6,6 +6,8 @@ from functools import wraps
 from collections import namedtuple
 
 import numpy as np
+from numpy import sum as np_sum
+from numpy import log as np_log
 from numpy.typing import ArrayLike
 
 from numba import njit
@@ -86,30 +88,36 @@ def np_average_entropy(x_pos: np.ndarray,
     # Preallocate entropy array.
     entropy_x = np.zeros(n_cols)
 
+    # Sum all the positional values
+    # on the first dimension (rows).
+    x_sum = x_pos.sum(0)
+
     # Process along the columns of the x_pos.
     for j in range(n_cols):
 
-        # Sum the values.
-        x_sum = x_pos[:, j].sum()
+        # Normalize them to account for
+        # probabilities in [0, 1].
+        x_j = x_sum[j] / x_sum[j].sum()
 
-        # Normalize to account for probabilities.
-        x_j = x_sum / x_sum.sum()
+        # Keep only the positive values.
+        x_j = x_j[x_j > 0.0]
 
-        # Compute only the positive values.
-        only_positive = x_j > 0.0
+        # Sanity check.
+        if x_j.size > 0:
+            # Calculate the entropy value.
+            entropy_x[j] = -np_sum(x_j * np_log(x_j))
 
-        # Calculate the entropy value.
-        entropy_x[j] = -np.sum(x_j * np.log(x_j, where=only_positive),
-                               where=only_positive)
-
-        # Check for normalized values.
-        if normal:
             # Compute maximum entropy value.
-            log_k = np.log(len(x_pos[0, j]))
+            log_k = np_log(len(x_pos[0, j]))
 
-            # Normalize entropy.
-            entropy_x[j] /= log_k
-        # _end_for_
+            # Check for normalization.
+            if normal and log_k != 0.0:
+                # Normalize the entropy.
+                entropy_x[j] /= log_k
+            # _end_if_
+        else:
+            raise RuntimeError("Something went wrong when calculating the entropy value.")
+    # _end_for_
 
     # Return the average value.
     return entropy_x.mean()
@@ -193,6 +201,7 @@ def nb_average_euclidean_distance(x_pos: np.ndarray,
     # Normalize the distances with d_max.
     if normal and d_max != 0.0:
         x_dist /= d_max
+    # _end_if_
 
     # Return the average value.
     return x_dist.mean()
