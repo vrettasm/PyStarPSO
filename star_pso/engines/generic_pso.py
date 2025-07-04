@@ -347,7 +347,7 @@ class GenericPSO(object):
                                   f"You should implement this method!")
     # _end_def_
 
-    def calculate_spread(self) -> None:
+    def calculate_spread(self) -> float:
         """
         Calculates a spread measure for the particle positions
         according to the specific type of PSO.
