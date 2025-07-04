@@ -4,6 +4,7 @@ from operator import attrgetter
 from functools import cached_property
 from dataclasses import dataclass, field
 
+from numpy import ndarray
 from numpy import asarray
 from numpy.typing import ArrayLike
 
@@ -142,7 +143,7 @@ class Swarm(object):
         return sorted_swarm[0:n]
     # _end_def_
 
-    def function_values(self) -> ArrayLike:
+    def function_values(self) -> ndarray:
         """
         Get the objectives function values of all the swarm.
 
@@ -173,7 +174,7 @@ class Swarm(object):
         return self._population[index].position
     # _end_def_
 
-    def positions_as_array(self) -> ArrayLike:
+    def positions_as_array(self) -> ndarray:
         """
         Get the particle positions of all the swarm.
 
