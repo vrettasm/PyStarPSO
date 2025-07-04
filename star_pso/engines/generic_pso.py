@@ -520,7 +520,7 @@ class GenericPSO(object):
             # _end_if_
 
             # Check for adapting the parameters.
-            if adapt_params:
+            if adapt_params and (i % 5) == 0:
                 # Get a copy of the previous parameters.
                 dict_options = params._asdict()
 
