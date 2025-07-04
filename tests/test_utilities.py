@@ -1,7 +1,8 @@
 import unittest
-
+import numpy as np
 from star_pso.auxiliary.utilities import (nb_clip_item,
-                                          check_parameters)
+                                          check_parameters,
+                                          nb_average_hamming_distance)
 
 
 class TestUtilities(unittest.TestCase):
