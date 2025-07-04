@@ -87,7 +87,7 @@ class CategoricalPSO(GenericPSO):
         :return: None.
         """
         # Get the length of each set.
-        size_L = self.size_of_sets
+        size_k = self.size_of_sets
 
         # Here we generate the random velocities
         # in a short uniform range, according to
@@ -95,7 +95,7 @@ class CategoricalPSO(GenericPSO):
         for i in range(self.n_rows):
             for j in range(self.n_cols):
                 self._velocities[i, j] = GenericPSO.rng.uniform(-0.1, +0.1,
-                                                                size=size_L[j])
+                                                                size=size_k[j])
         # _end_for_
     # _end_def_
 
@@ -108,13 +108,13 @@ class CategoricalPSO(GenericPSO):
         """
 
         # Get the length of each set.
-        size_L = self.size_of_sets
+        size_k = self.size_of_sets
 
         # Reset the probabilities to uniform values.
         for i in range(self.n_rows):
             for j in range(self.n_cols):
                 # Get the length of the j-th set.
-                size_j = size_L[j]
+                size_j = size_k[j]
 
                 # Set the variables uniformly.
                 self.swarm[i][j] = np.ones(size_j)/size_j
