@@ -63,6 +63,42 @@ class TestUtilities(unittest.TestCase):
                          msg="Upper limit failed.")
     # _end_def_
 
+    def test_nb_average_hamming_distance(self) -> None:
+        """
+        Check if nb_average_hamming_distance does the right job.
+        """
+        # Set the matrix dimensions.
+        n_rows, n_dims = 100, 15
+
+        # Generate a random binary matrix.
+        x = np.random.randint(0, 2, size=(n_rows, n_dims))
+
+        # Compute the average Hamming distance.
+        avg_hd = nb_average_hamming_distance(x, normal=True)
+
+        # Ensure the value is in [0, 1].
+        self.assertTrue(0.0 < avg_hd < 1.0)
+
+        # Generate a single random vector.
+        x0 = np.random.randint(0, 2, n_dims)
+
+        # Create a list with 99 identical copies.
+        xl = [x0 for _ in range(99)]
+
+        # Append a new random vector.
+        xl.append(np.random.randint(0, 2, n_dims))
+
+        # Create an array.
+        z = np.array(xl)
+
+        # Compute the average Hamming distance.
+        avg_hd = nb_average_hamming_distance(z, normal=True)
+
+        # This should be around 1% since we have 99 identical
+        # vectors and one different.
+        self.assertTrue(np.isclose(avg_hd, 1/100, atol=0.01))
+    # _end_def_
+
 # _end_class_
 
 
