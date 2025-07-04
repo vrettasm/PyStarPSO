@@ -144,55 +144,56 @@ def nb_average_hamming_distance(x_pos: np.ndarray,
 
     :return: the (normalized) averaged Hamming distance.
     """
+    # Get the columns size.
+    n_cols = x_pos.shape[1]
+
     # Initialize the counter.
-    total_diff = 0
+    total_diff = []
 
-    # Get the shape of the array.
-    n_rows, n_cols = x_pos.shape
-
-    # Scan all the positions.
+    # Count the non-identical positions.
     for i, p in enumerate(x_pos):
-
-        # Avoid double counting.
-        for q in x_pos[i + 1:]:
-            # Count the non-identical positions.
-            total_diff += np.count_nonzero(p != q)
+        total_diff.extend(np.count_nonzero(p != x_pos[i + 1:], axis=1))
     # _end_for_
 
-    # Compute the total number of counted pairs.
-    total_vars = (n_rows * (n_rows - 1) / 2.0)
+    # Convert the list to an array of floats.
+    x_diff = np.array([float(k) for k in total_diff])
 
     # Check for normalization.
     if normal:
         # In this case the number of columns represents
         # the  maximum  hamming  distance where all the
         # positions between two particles are different.
-        total_vars *= n_cols
+        x_diff /= n_cols
     # _end_if_
 
     # Return the averaged value.
-    return float(total_diff / total_vars) if total_vars > 0 else 0.0
+    return x_diff.mean().item()
 # _end_def_
 
 @njit
 def nb_average_euclidean_distance(x_pos: np.ndarray,
                                   normal: bool = False) -> float:
     """
-    Calculate the average Euclidean distance of particles from their centroid.
+    Calculate the average Euclidean distance of swarm particles.
 
-    :param x_pos: (np.ndarray) A 2D array of shape (n_particles, n_features)
-    representing the positions of the swarm.
+    :param x_pos: (np.ndarray) A 2D array of shape (n_particles,
+    n_features) representing the positions of the swarm.
 
-    :param normal: (bool) if "True", normalize the distances by their maximum
-    distance.
+    :param normal: (bool) if "True", normalize the distances by
+    their maximum distance.
 
-    :return: the average Euclidean distance from the centroid.
+    :return: the average Euclidean distance.
     """
-    # Find the centroid.
-    x_centroid = np.array([x_pos[:, i].mean() for i in range(x_pos.shape[1])])
+    # Collect all the distances.
+    total_dist = []
 
-    # Get the distances from the centroid.
-    x_dist = np.sqrt(np.sum((x_pos-x_centroid) ** 2, axis=1))
+    # Scan the positions array.
+    for i, p in enumerate(x_pos):
+        total_dist.extend(np.sqrt(np.sum((p - x_pos[i + 1:]) ** 2, axis=1)))
+    # _end_for_
+
+    # Convert to array.
+    x_dist = np.array(total_dist)
 
     # Find the maximum distance.
     d_max = x_dist.max()
