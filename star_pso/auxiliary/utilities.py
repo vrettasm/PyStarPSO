@@ -204,15 +204,14 @@ def nb_average_euclidean_distance(x_pos: np.ndarray,
     # _end_if_
 
     # Return the average value.
-    return x_dist.mean()
+    return x_dist.mean().item()
 # _end_def_
 
 @njit
 def nb_average_taxicab_distance(x_pos: np.ndarray,
                                 normal: bool = False) -> float:
     """
-    Calculate the average TaxiCab (Manhattan) distance of particles
-    from their centroid.
+    Calculate the average TaxiCab (Manhattan) distance of swarm particles.
 
     :param x_pos: (array) A 2D numpy array (n_particles, n_features)
     representing the positions of the swarm.
@@ -220,16 +219,18 @@ def nb_average_taxicab_distance(x_pos: np.ndarray,
     :param normal: (bool) if "True", normalize the distances by their
     maximum distance.
 
-    :return: the average taxicab distance from the centroid.
+    :return: the average taxicab distance.
     """
-    # Find the centroid.
-    x_centroid = np.array([x_pos[:, i].mean() for i in range(x_pos.shape[1])])
+    # Collect all the distances.
+    total_dist = []
 
-    # Round the centroid to the nearest grid points.
-    x_centroid = np.rint(x_centroid)
+    # Scan the positions array.
+    for i, p in enumerate(x_pos):
+        total_dist.extend(np.sum(np.abs(p - x_pos[i + 1:]), axis=1))
+    # _end_for_
 
-    # Get the distances from the centroid.
-    x_dist = np.sum(np.abs(x_pos-x_centroid), axis=1)
+    # Convert to array.
+    x_dist = np.array([float(k) for k in total_dist])
 
     # Find the maximum distance.
     d_max = x_dist.max()
@@ -240,7 +241,7 @@ def nb_average_taxicab_distance(x_pos: np.ndarray,
     # _end_if_
 
     # Return the average value.
-    return x_dist.mean()
+    return x_dist.mean().item()
 # _end_def_
 
 @njit
