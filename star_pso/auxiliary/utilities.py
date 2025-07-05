@@ -126,8 +126,9 @@ def np_average_entropy(x_pos: np.ndarray,
 @njit
 def kl_divergence(p: np.array, q: np.array) -> float:
     """
-    Calculates the Kullback-Leibler divergence between two distributions.
-    Note that KL divergence is not symmetric, thus KL(p, q) != KL(q, p).
+    Calculates the Kullback-Leibler divergence between
+    two distributions. Note that KL divergence is not
+    symmetric, thus KL(p, q) != KL(q, p).
 
     :param p: (np.array) probability distribution.
     :param q: (np.array) probability distribution.
