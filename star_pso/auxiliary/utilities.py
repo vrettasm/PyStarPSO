@@ -124,6 +124,20 @@ def np_average_entropy(x_pos: np.ndarray,
 # _end_def_
 
 @njit
+def kl_divergence(p: np.array, q: np.array) -> float:
+    """
+    Calculates the Kullback-Leibler divergence between two distributions.
+    Note that KL divergence is not symmetric, thus KL(p, q) != KL(q, p).
+
+    :param p: (np.array) probability distribution.
+    :param q: (np.array) probability distribution.
+
+    :return: (float) Kullback-Leibler divergence.
+    """
+    return np.sum(np.where(p != 0.0, p * np.log(p / q), 0.0)).item()
+# _end_def_
+
+@njit
 def nb_average_hamming_distance(x_pos: np.ndarray,
                                 normal: bool = False) -> float:
     """
