@@ -69,16 +69,17 @@ def np_average_entropy(x_pos: np.ndarray,
     Calculate the averaged entropy value of the input array.
     It is assumed that the input 'x_pos', represents the 2D
     array of "objects", where each row represents a particle
-    and the columns contain the probability vectors (one for
-    each of the categorical variables). In essence x_pos is
-    a 3D array.
+    and the columns contain the probability vectors, one for
+    each of the categorical variables. In essence x_pos is a
+    3D array.
 
     :param x_pos: 2D numpy array where each column represents
     a different optimization (categorical) variable.
 
-    :param normal: If enabled (True), the  entropy values will
-    be normalized using the maximum entropy value depending on
-    the set of possible outcomes for each categorical variable.
+    :param normal: If enabled the entropy values will be
+    normalized using the maximum entropy value depending
+    on the set of possible outcomes for each categorical
+    variable.
 
     :return: The average entropy of the swarm positions.
     """
