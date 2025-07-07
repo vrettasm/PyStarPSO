@@ -201,6 +201,9 @@ def kl_divergence_item(p: np.array, q: np.array) -> float:
     NOTE: Both distributions 'p' and 'q' should already
     be normalized to sum to one.
 
+    This method is equivalent to entropy(p, q) from scipy.stats,
+    only it's around 10x faster.
+
     :param p: (np.array) probability distribution.
     :param q: (np.array) probability distribution.
 
