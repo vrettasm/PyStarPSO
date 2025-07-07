@@ -349,8 +349,8 @@ class GenericPSO(object):
 
     def calculate_spread(self) -> float:
         """
-        Calculates a spread measure for the particle positions
-        according to the specific type of PSO.
+        Calculates a measure of how spread are the particle
+        positions, according to the specific type of PSO.
 
         :return: None.
         """
