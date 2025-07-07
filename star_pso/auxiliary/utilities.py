@@ -131,6 +131,9 @@ def kl_divergence(p: np.array, q: np.array) -> float:
     two distributions. Note that KL divergence is not
     symmetric, thus KL(p, q) != KL(q, p).
 
+    NOTE: Both distributions 'p' and 'q' should already
+    be normalized to sum to one.
+
     :param p: (np.array) probability distribution.
     :param q: (np.array) probability distribution.
 
