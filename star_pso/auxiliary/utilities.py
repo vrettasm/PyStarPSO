@@ -124,8 +124,7 @@ def np_average_entropy(x_pos: np.ndarray,
     return entropy_x.mean().item()
 # _end_def_
 
-@njit
-def nb_average_kl(x_pos: np.ndarray,
+def np_average_kl(x_pos: np.ndarray,
                   normal: bool = False) -> float:
     """
     Calculate the averaged KL divergence value of the input array. It is assumed
@@ -151,7 +150,7 @@ def nb_average_kl(x_pos: np.ndarray,
     for j in range(n_cols):
 
         # Get a slice of the j-th variables only.
-        x_data = x_pos[:, j, :]
+        x_data = x_pos[:, j, :].astype(float)
 
         # Accumulate the KL divergence values.
         total_kl = []
