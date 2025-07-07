@@ -121,7 +121,75 @@ def np_average_entropy(x_pos: np.ndarray,
     # _end_for_
 
     # Return the average value.
-    return entropy_x.mean()
+    return entropy_x.mean().item()
+# _end_def_
+
+@njit
+def nb_average_kl(x_pos: np.ndarray,
+                  normal: bool = False) -> float:
+    """
+    Calculate the averaged KL divergence value of the input array. It is assumed
+    that the input 'x_pos', represents the 2D array of "objects", where each row
+    represents a particle and the columns contain the probability vectors one for
+    each of the categorical variables. In essence x_pos is a 3D array.
+
+    :param x_pos: 2D array where each column represents a different optimization
+    (categorical) variable.
+
+    :param normal: If enabled the KL values will be normalized using the maximum
+    value depending on the set of possible outcomes for each categorical variable.
+
+    :return: The average KL divergence of the swarm positions.
+    """
+    # Get the input columns.
+    n_cols = x_pos.shape[1]
+
+    # Preallocate KL divergence array.
+    kl_div = np.zeros(n_cols)
+
+    # Process along the columns of the x_pos.
+    for j in range(n_cols):
+
+        # Get a slice of the j-th variables only.
+        x_data = x_pos[:, j, :]
+
+        # Accumulate the KL divergence values.
+        total_kl = []
+
+        # Forward calculation of KL.
+        for i, p in enumerate(x_data):
+            total_kl.extend(kl_divergence_array(p, x_data[i + 1:]))
+        # _end_for_
+
+        # NOTE: Since the KL divergence is not symmetric,
+        # we have to calculate the divergences from both
+        # directions.
+
+        # Flip the data array vertically.
+        x_flipped = np.flipud(x_data)
+
+        # Backward calculation of KL.
+        for i, p in enumerate(x_flipped):
+            total_kl.extend(kl_divergence_array(p, x_flipped[i + 1:]))
+        # _end_for_
+
+        # Convert to numpy array.
+        kl_dist = np.array(total_kl)
+
+        # Find the maximum KL.
+        kl_max = kl_dist.max()
+
+        # Normalize the "distances" with kl_max.
+        if normal and kl_max != 0.0:
+            kl_dist /= kl_max
+        # _end_if_
+
+        # Store it in the return vector.
+        kl_div[j] = kl_dist.mean().item()
+    # _end_for_
+
+    # Return an averaged value.
+    return kl_div.mean().item()
 # _end_def_
 
 @njit
