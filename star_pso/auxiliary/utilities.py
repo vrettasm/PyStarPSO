@@ -220,6 +220,26 @@ def kl_divergence_array(p: np.array, q: np.array) -> np.array:
     NOTE: Both distributions 'p' and 'q' should already be normalized to
     sum to one.
 
+    This method is equivalent to entropy(p, q, axis=1) from scipy.stats,
+    only it's around 10x faster.
+
+    Example:
+    # Create a random array.
+    x = np.random.rand(10, 4)
+
+    # Normalize to sum to 1.0
+    x /= np.sum(x, axis=1).reshape(-1, 1)
+
+    # Entropy (from scipy.stats).
+    entropy(x[0], x[1:], axis=1)
+    > array([0.12405413, 0.79411391, 0.5340511 , 0.13075877, 0.77733431,
+    >        0.04979758, 0.34470209, 0.83185617, 0.29883382])
+
+    # This (numba optimized) method.
+    kl_divergence_array(x[0], x[1:])
+    > array([0.12405413, 0.79411391, 0.5340511 , 0.13075877, 0.77733431,
+    >        0.04979758, 0.34470209, 0.83185617, 0.29883382])
+
     :param p: (np.array) probability distribution.
     :param q: (np.array) probability distribution.
 
