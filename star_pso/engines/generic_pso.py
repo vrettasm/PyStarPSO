@@ -4,6 +4,8 @@ from math import inf, isclose
 from collections import defaultdict
 
 from typing import Callable
+
+import numpy as np
 from joblib import (Parallel, delayed)
 
 from numpy.typing import ArrayLike
@@ -360,46 +362,64 @@ class GenericPSO(object):
 
     def adapt_velocity_parameters(self, options: dict) -> None:
         """
-        TBD
+        Provides a very basic adapt mechanism for the PSO update
+        velocity parameters. It can be used as a placeholder for
+        more advanced techniques.
 
-        :param options:
+        :param options: (dict) contains the previous estimates of
+        the PSO parameters.
 
         :return: None.
         """
-        # Get an estimate of the spread.
+        # For the moment we hardcode the min/max
+        # values of the inertia weight parameter
+        # (as well as the c1 and c2 parameters).
+        w_min, w_max = 0.2, 0.90
+        c_min, c_max = 0.5, 2.05
+
+        # Get an estimate of the particles' spread.
         spread_t = self.calculate_spread()
 
         # Compute the new inertia weight parameter.
-        wt = 0.2 + (1.0 - 0.2) * (1.0 - spread_t)
+        wt = w_min + (w_max - w_min) * (1.0 - spread_t)
 
         # Get the previous values of the parameters.
         w = options["w"]
         c1 = options["c1"]
         c2 = options["c2"]
 
-        # Update the cognitive and social parameters accordingly.
-        if wt > w:
-            c1 *= 0.9
-            c2 *= 0.9
-        elif wt < w:
-            c1 *= 1.1
-            c2 *= 1.1
+        # To reduce "noise effects" if the new inertia parameter "w"
+        # is close to the previous value do not update the parameters.
+        if not np.isclose(wt, w, atol=1.0E-3):
+
+            # Update the cognitive and social parameters.
+            if wt > w:
+                # If the inertia weight has increased,
+                # then decrease the c1/c2 coefficients.
+                c1 *= 0.9
+                c2 *= 0.9
+            else:
+                # If the inertia weight has decreased,
+                # then increase the c1/c2 coefficients.
+                c1 *= 1.1
+                c2 *= 1.1
+            # _end_if_
+
+            # Ensure that all updated values stay within bounds.
+            wt = nb_clip_item(wt, w_min, w_max)
+            c1 = nb_clip_item(c1, c_min, c_max)
+            c2 = nb_clip_item(c2, c_min, c_max)
+
+            # Update the dictionary.
+            options["w"] = wt
+            options["c1"] = c1
+            options["c2"] = c2
+
+            # Store the updated parameters.
+            self.stats["inertia_w"].append(wt)
+            self.stats["cogntv_c1"].append(c1)
+            self.stats["social_c2"].append(c2)
         # _end_if_
-
-        # Ensure that all updated values stay within bounds.
-        wt = nb_clip_item(wt, 0.2, 1.00)
-        c1 = nb_clip_item(c1, 0.5, 2.05)
-        c2 = nb_clip_item(c2, 0.5, 2.05)
-
-        # Update the dictionary.
-        options["w"] = wt
-        options["c1"] = c1
-        options["c2"] = c2
-
-        # Store the updated parameters.
-        self.stats["inertia_w"].append(wt)
-        self.stats["cogntv_c1"].append(c1)
-        self.stats["social_c2"].append(c2)
     # _end_def_
 
     @time_it
