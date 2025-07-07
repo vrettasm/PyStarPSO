@@ -206,7 +206,9 @@ def kl_divergence_item(p: np.array, q: np.array) -> float:
 
     :return: (float) Kullback-Leibler divergence.
     """
-    return np.sum(np.where(p != 0.0, p * np.log(p / q), 0.0)).item()
+    return np.sum(np.where(p != 0.0,
+                           np.where(q != 0.0,
+                                    p * np.log(p / q), np.nan), 0.0)).item()
 # _end_def_
 
 @njit
@@ -223,7 +225,9 @@ def kl_divergence_array(p: np.array, q: np.array) -> np.array:
 
     :return: (np.array) Kullback-Leibler divergence.
     """
-    return np.sum(np.where(p != 0.0, p * np.log(p / q), 0.0), axis=1)
+    return np.sum(np.where(p != 0.0,
+                           np.where(q != 0.0,
+                                    p * np.log(p / q), np.nan), 0.0), axis=1)
 # _end_def_
 
 @njit
