@@ -140,8 +140,8 @@ def np_median_kl_div(x_pos: np.ndarray,
 
     :return: The median KL divergence of the swarm positions.
     """
-    # Get the input columns.
-    n_cols = x_pos.shape[1]
+    # Get the input row/columns.
+    n_rows, n_cols = x_pos.shape
 
     # Preallocate KL divergence array.
     kl_div = np.zeros(n_cols)
@@ -149,8 +149,11 @@ def np_median_kl_div(x_pos: np.ndarray,
     # Process along the columns of the x_pos.
     for j in range(n_cols):
 
-        # Get a slice of the j-th variables only.
-        x_data = x_pos[:, j, :].astype(float)
+        # Get a slice of the j-th variables positions.
+        # Make sure they are normalized to account for
+        # probabilities.
+        x_data = np.array([x_pos[i, j]/np.sum(x_pos[i, j])
+                           for i in range(n_rows)])
 
         # Accumulate the KL divergence values.
         total_kl = []
