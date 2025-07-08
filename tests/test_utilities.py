@@ -2,6 +2,7 @@ import unittest
 import numpy as np
 from star_pso.auxiliary.utilities import (nb_clip_item,
                                           check_parameters,
+                                          np_median_entropy,
                                           nb_median_hamming_distance)
 
 
@@ -95,9 +96,55 @@ class TestUtilities(unittest.TestCase):
         # Compute the average Hamming distance.
         avg_hd = nb_median_hamming_distance(z, normal=True)
 
-        # This should be around 1% since we have 99 identical
-        # vectors and one different.
-        self.assertTrue(np.isclose(avg_hd, 1/100, atol=0.01))
+        # This should be around 1% since we have
+        # 99 identical vectors and one different.
+        self.assertAlmostEqual(avg_hd, 1/100, places=1)
+    # _end_def_
+
+    def test_nb_median_entropy(self) -> None:
+        """
+        Check if np_median_entropy does the right job.
+        """
+
+        # Create an empty array of objects.
+        x = np.empty(shape=(50, 4), dtype=object)
+
+        # Extract the shape dimensions.
+        n_rows, n_cols = x.shape
+
+        # Set of values.
+        k = [[1, 0],
+             [0, 1, 0],
+             [0, 0, 1, 0, 0],
+             [0, 0, 0, 1]]
+
+        # Fill the "x" array.
+        for i in range(n_rows):
+            for j in range(n_cols):
+                x[i, j] = np.array(k[j])
+        # _end_for_
+
+        # Get the estimate of the spread.
+        spread_0 = np_median_entropy(x, normal=True)
+
+        # The spread should be zero, because
+        # all particles have the same positions.
+        self.assertEqual(spread_0, 0.0)
+
+        # Refill the "x" array.
+        for i in range(n_rows):
+            for j in range(n_cols):
+                # Randomize the positions before assignment.
+                np.random.shuffle(k[j])
+                x[i, j] = np.array(k[j])
+        # _end_for_
+
+        # Get the estimate of the spread.
+        spread_1 = np_median_entropy(x, normal=True)
+
+        # The spread should be close to 1.0, because
+        # all particles have random positions.
+        self.assertAlmostEqual(spread_1, 1.0, places=1)
     # _end_def_
 
 # _end_class_
