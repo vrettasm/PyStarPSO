@@ -124,8 +124,8 @@ def np_average_entropy(x_pos: np.ndarray,
     return entropy_x.mean().item()
 # _end_def_
 
-def np_average_kl(x_pos: np.ndarray,
-                  normal: bool = False) -> float:
+def np_average_kl_div(x_pos: np.ndarray,
+                      normal: bool = False) -> float:
     """
     Calculate the averaged KL divergence value of the input array. It is assumed
     that the input 'x_pos', represents the 2D array of "objects", where each row
@@ -155,7 +155,7 @@ def np_average_kl(x_pos: np.ndarray,
         # Accumulate the KL divergence values.
         total_kl = []
 
-        # Forward calculation of KL.
+        # 'Forward' calculation of KL.
         for i, p in enumerate(x_data):
             total_kl.extend(kl_divergence_array(p, x_data[i + 1:]))
         # _end_for_
@@ -167,7 +167,7 @@ def np_average_kl(x_pos: np.ndarray,
         # Flip the data array vertically.
         x_flipped = np.flipud(x_data)
 
-        # Backward calculation of KL.
+        # 'Backward' calculation of KL.
         for i, p in enumerate(x_flipped):
             total_kl.extend(kl_divergence_array(p, x_flipped[i + 1:]))
         # _end_for_
