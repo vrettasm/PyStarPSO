@@ -2,7 +2,7 @@ import unittest
 import numpy as np
 from star_pso.auxiliary.utilities import (nb_clip_item,
                                           check_parameters,
-                                          nb_average_hamming_distance)
+                                          nb_median_hamming_distance)
 
 
 class TestUtilities(unittest.TestCase):
@@ -64,9 +64,9 @@ class TestUtilities(unittest.TestCase):
                          msg="Upper limit failed.")
     # _end_def_
 
-    def test_nb_average_hamming_distance(self) -> None:
+    def test_nb_median_hamming_distance(self) -> None:
         """
-        Check if nb_average_hamming_distance does the right job.
+        Check if nb_median_hamming_distance does the right job.
         """
         # Set the matrix dimensions.
         n_rows, n_dims = 100, 15
@@ -74,8 +74,8 @@ class TestUtilities(unittest.TestCase):
         # Generate a random binary matrix.
         x = np.random.randint(0, 2, size=(n_rows, n_dims))
 
-        # Compute the average Hamming distance.
-        avg_hd = nb_average_hamming_distance(x, normal=True)
+        # Compute the median Hamming distance.
+        avg_hd = nb_median_hamming_distance(x, normal=True)
 
         # Ensure the value is in [0, 1].
         self.assertTrue(0.0 < avg_hd < 1.0)
@@ -93,7 +93,7 @@ class TestUtilities(unittest.TestCase):
         z = np.array(xl)
 
         # Compute the average Hamming distance.
-        avg_hd = nb_average_hamming_distance(z, normal=True)
+        avg_hd = nb_median_hamming_distance(z, normal=True)
 
         # This should be around 1% since we have 99 identical
         # vectors and one different.
