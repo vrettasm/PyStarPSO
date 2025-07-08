@@ -6,7 +6,7 @@ from numpy import clip as np_clip
 from numpy import subtract as np_subtract
 
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.auxiliary.utilities import np_average_entropy
+from star_pso.auxiliary.utilities import np_median_entropy
 from star_pso.auxiliary.utilities import (VOptions, SpecialMode)
 
 # Public interface.
@@ -312,21 +312,22 @@ class CategoricalPSO(GenericPSO):
 
     def calculate_spread(self) -> float:
         """
-        Calculates a spread measure for the particle
-        positions using the (normalized) average Entropy.
+        Calculates a spread measure for the particle positions
+        using the (normalized) median Entropy.
 
-        A value close to '0' indicates the swarm is converging to a
-        single value. On the contrary, a value close to '1' indicates
-        the swarm is still wide spread around the search space.
+        A value close to '0' indicates the swarm is converging
+        to a single value. On the contrary a value close to '1'
+        indicates the swarm is still spread around the search
+        space.
 
-        :return: an estimated measure (float) for the spread
-        of the particles.
+        :return: an estimated measure (float) for the spread of
+        the particles.
         """
         # Extract the positions in a 2D numpy array.
         positions = self.swarm.positions_as_array()
 
-        # Normalized average Entropy distance.
-        return np_average_entropy(positions, normal=True)
+        # Normalized median Entropy distance.
+        return np_median_entropy(positions, normal=True)
     # _end_def_
 
 # _end_class_

@@ -63,10 +63,10 @@ def check_parameters(options: dict) -> None:
         # _end_if_
 # _end_def_
 
-def np_average_entropy(x_pos: np.ndarray,
-                       normal: bool = False) -> float:
+def np_median_entropy(x_pos: np.ndarray,
+                      normal: bool = False) -> float:
     """
-    Calculate the averaged entropy value of the input array.
+    Calculate the median entropy value of the input array.
     It is assumed that the input 'x_pos', represents the 2D
     array of "objects", where each row represents a particle
     and the columns contain the probability vectors, one for
@@ -81,7 +81,7 @@ def np_average_entropy(x_pos: np.ndarray,
     on the set of possible outcomes for each categorical
     variable.
 
-    :return: The average entropy of the swarm positions.
+    :return: The median entropy value of the swarm positions.
     """
     # Get the input columns.
     n_cols = x_pos.shape[1]
@@ -120,14 +120,14 @@ def np_average_entropy(x_pos: np.ndarray,
             raise RuntimeError("Something went wrong when calculating the entropy value.")
     # _end_for_
 
-    # Return the average value.
-    return entropy_x.mean().item()
+    # Return the median value.
+    return np.median(entropy_x).item()
 # _end_def_
 
-def np_average_kl_div(x_pos: np.ndarray,
-                      normal: bool = False) -> float:
+def np_median_kl_div(x_pos: np.ndarray,
+                     normal: bool = False) -> float:
     """
-    Calculate the averaged KL divergence value of the input array. It is assumed
+    Calculate the 'median KL divergence' value of the input array. It is assumed
     that the input 'x_pos', represents the 2D array of "objects", where each row
     represents a particle and the columns contain the probability vectors one for
     each of the categorical variables. In essence x_pos is a 3D array.
@@ -138,7 +138,7 @@ def np_average_kl_div(x_pos: np.ndarray,
     :param normal: If enabled the KL values will be normalized using the maximum
     value depending on the set of possible outcomes for each categorical variable.
 
-    :return: The average KL divergence of the swarm positions.
+    :return: The median KL divergence of the swarm positions.
     """
     # Get the input columns.
     n_cols = x_pos.shape[1]
@@ -184,11 +184,11 @@ def np_average_kl_div(x_pos: np.ndarray,
         # _end_if_
 
         # Store it in the return vector.
-        kl_div[j] = kl_dist.mean().item()
+        kl_div[j] = np.median(kl_dist).item()
     # _end_for_
 
-    # Return an averaged value.
-    return kl_div.mean().item()
+    # Return an median value.
+    return np.median(kl_div).item()
 # _end_def_
 
 @njit
@@ -254,10 +254,10 @@ def kl_divergence_array(p: np.array, q: np.array) -> np.array:
 # _end_def_
 
 @njit
-def nb_average_hamming_distance(x_pos: np.ndarray,
-                                normal: bool = False) -> float:
+def nb_median_hamming_distance(x_pos: np.ndarray,
+                               normal: bool = False) -> float:
     """
-    Compute the averaged Hamming distance of the input array.
+    Compute the median Hamming distance of the input array.
     It is assumed that the input 'x_pos', represents the 2D
     array of particle binary positions {0, 1}.
 
@@ -272,7 +272,7 @@ def nb_average_hamming_distance(x_pos: np.ndarray,
     The normalization provides a clearer understanding of the
     diversity of the binary strings in relation to their length.
 
-    :return: the (normalized) averaged Hamming distance.
+    :return: the (normalized) median Hamming distance value.
     """
     # Get the columns size.
     n_cols = x_pos.shape[1]
@@ -296,15 +296,15 @@ def nb_average_hamming_distance(x_pos: np.ndarray,
         x_diff /= n_cols
     # _end_if_
 
-    # Return the averaged value.
-    return x_diff.mean().item()
+    # Return the median value.
+    return np.median(x_diff).item()
 # _end_def_
 
 @njit
-def nb_average_euclidean_distance(x_pos: np.ndarray,
-                                  normal: bool = False) -> float:
+def nb_median_euclidean_distance(x_pos: np.ndarray,
+                                 normal: bool = False) -> float:
     """
-    Calculate the average Euclidean distance of swarm particles.
+    Calculate the median Euclidean distance of swarm particles.
 
     :param x_pos: (np.ndarray) A 2D array of shape (n_particles,
     n_features) representing the positions of the swarm.
@@ -312,7 +312,7 @@ def nb_average_euclidean_distance(x_pos: np.ndarray,
     :param normal: (bool) if "True", normalize the distances by
     their maximum distance.
 
-    :return: the average Euclidean distance.
+    :return: the median Euclidean distance.
     """
     # Collect all the distances.
     total_dist = []
@@ -333,15 +333,15 @@ def nb_average_euclidean_distance(x_pos: np.ndarray,
         x_dist /= d_max
     # _end_if_
 
-    # Return the average value.
-    return x_dist.mean().item()
+    # Return the median value.
+    return np.median(x_dist).item()
 # _end_def_
 
 @njit
-def nb_average_taxicab_distance(x_pos: np.ndarray,
-                                normal: bool = False) -> float:
+def nb_median_taxicab_distance(x_pos: np.ndarray,
+                               normal: bool = False) -> float:
     """
-    Calculate the average TaxiCab (Manhattan) distance of swarm particles.
+    Calculate the median TaxiCab (Manhattan) distance of swarm particles.
 
     :param x_pos: (array) A 2D numpy array (n_particles, n_features)
     representing the positions of the swarm.
@@ -349,7 +349,7 @@ def nb_average_taxicab_distance(x_pos: np.ndarray,
     :param normal: (bool) if "True", normalize the distances by their
     maximum distance.
 
-    :return: the average taxicab distance.
+    :return: the median taxicab distance.
     """
     # Collect all the distances.
     total_dist = []
@@ -370,8 +370,8 @@ def nb_average_taxicab_distance(x_pos: np.ndarray,
         x_dist /= d_max
     # _end_if_
 
-    # Return the average value.
-    return x_dist.mean().item()
+    # Return the median value.
+    return np.median(x_dist).item()
 # _end_def_
 
 @njit

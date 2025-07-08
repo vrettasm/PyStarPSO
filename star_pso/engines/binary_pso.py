@@ -6,7 +6,7 @@ from numpy.typing import ArrayLike
 
 from star_pso.auxiliary.utilities import VOptions
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.auxiliary.utilities import nb_average_hamming_distance
+from star_pso.auxiliary.utilities import nb_median_hamming_distance
 
 # Public interface.
 __all__ = ["BinaryPSO"]
@@ -145,20 +145,21 @@ class BinaryPSO(GenericPSO):
     def calculate_spread(self) -> float:
         """
         Calculates a spread measure for the particle positions
-        using the (normalized) average Hamming distance.
+        using the normalized median Hamming distance.
 
-        A value close to '0' indicates the swarm is converging to a
-        single value. On the contrary, a value close to '1' indicates
-        the swarm is still wide spread around the search space.
+        A value close to '0' indicates the swarm is converging
+        to a single value. On the contrary a value close to '1'
+        indicates the swarm is still spread around the search
+        space.
 
-        :return: an estimated measure (float) for the spread
-        of the particles.
+        :return: an estimated measure (float) for the spread of
+        the particles.
         """
         # Extract the positions in a 2D numpy array.
         positions = self.swarm.positions_as_array()
 
-        # Normalized average Hamming distance.
-        return nb_average_hamming_distance(positions, normal=True)
+        # Normalized median Hamming distance.
+        return nb_median_hamming_distance(positions, normal=True)
     # _end_def_
 
 # _end_class_
