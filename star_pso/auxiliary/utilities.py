@@ -106,7 +106,6 @@ def np_median_entropy(x_pos: np.ndarray,
 
         # Check for normalization.
         if normal and log_k != 0.0:
-            # Normalize the entropy.
             entropy_x[j] /= log_k
     # _end_for_
 
