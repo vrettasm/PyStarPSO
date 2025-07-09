@@ -148,21 +148,9 @@ def np_median_kl_div(x_pos: np.ndarray,
         # Accumulate the KL divergence values.
         total_kl = []
 
-        # 'Forward' calculation of KL.
+        # Pairwise calculation of KL.
         for i, p in enumerate(x_data):
             total_kl.extend(kl_divergence_array(p, x_data[i + 1:]))
-        # _end_for_
-
-        # NOTE: Since the KL divergence is not symmetric,
-        # we have to calculate the divergences from both
-        # directions.
-
-        # Flip the data array vertically.
-        x_flipped = np.flipud(x_data)
-
-        # 'Backward' calculation of KL.
-        for i, p in enumerate(x_flipped):
-            total_kl.extend(kl_divergence_array(p, x_flipped[i + 1:]))
         # _end_for_
 
         # Convert to numpy array.
@@ -171,7 +159,7 @@ def np_median_kl_div(x_pos: np.ndarray,
         # Find the maximum KL.
         kl_max = kl_dist.max()
 
-        # Normalize the "distances" with kl_max.
+        # Check for normalization.
         if normal and kl_max != 0.0:
             kl_dist /= kl_max
         # _end_if_
