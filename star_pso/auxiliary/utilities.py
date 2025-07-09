@@ -6,8 +6,6 @@ from functools import wraps
 from collections import namedtuple
 
 import numpy as np
-from numpy import sum as np_sum
-from numpy import log as np_log
 from numpy.typing import ArrayLike
 
 from numba import njit
@@ -96,28 +94,20 @@ def np_median_entropy(x_pos: np.ndarray,
     # Process along the columns of the x_pos.
     for j in range(n_cols):
 
-        # Normalize them to account for
-        # probabilities in [0, 1].
-        x_j = x_sum[j] / x_sum[j].sum()
+        # Normalize values to account
+        # for probabilities in [0, 1].
+        xj = x_sum[j] / x_sum[j].sum()
 
-        # Keep only the positive values.
-        x_j = x_j[x_j > 0.0]
+        # Calculate the entropy value.
+        entropy_x[j] = -np.sum(np.where(xj > 0.0,
+                                        xj * np.log(xj), 0.0))
+        # Compute maximum entropy value.
+        log_k = np.log(len(x_pos[0, j]))
 
-        # Sanity check.
-        if x_j.size > 0:
-            # Calculate the entropy value.
-            entropy_x[j] = -np_sum(x_j * np_log(x_j))
-
-            # Compute maximum entropy value.
-            log_k = np_log(len(x_pos[0, j]))
-
-            # Check for normalization.
-            if normal and log_k != 0.0:
-                # Normalize the entropy.
-                entropy_x[j] /= log_k
-            # _end_if_
-        else:
-            raise RuntimeError("Something went wrong when calculating the entropy value.")
+        # Check for normalization.
+        if normal and log_k != 0.0:
+            # Normalize the entropy.
+            entropy_x[j] /= log_k
     # _end_for_
 
     # Return the median value.
@@ -190,7 +180,7 @@ def np_median_kl_div(x_pos: np.ndarray,
         kl_div[j] = np.median(kl_dist).item()
     # _end_for_
 
-    # Return an median value.
+    # Return the median value.
     return np.median(kl_div).item()
 # _end_def_
 
