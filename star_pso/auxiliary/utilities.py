@@ -87,16 +87,16 @@ def np_median_entropy(x_pos: np.ndarray,
     # Preallocate entropy array.
     entropy_x = np.zeros(n_cols)
 
-    # Sum all the positional values
-    # on the first dimension (rows).
-    x_sum = x_pos.sum(0)
+    # Average all the positional
+    # values on the first rows.
+    x_mean = x_pos.mean(0)
 
     # Process along the columns of the x_pos.
     for j in range(n_cols):
 
         # Normalize values to account
         # for probabilities in [0, 1].
-        xj = x_sum[j] / x_sum[j].sum()
+        xj = x_mean[j] / x_mean[j].sum()
 
         # Calculate the entropy value.
         entropy_x[j] = -np.sum(np.where(xj > 0.0,
