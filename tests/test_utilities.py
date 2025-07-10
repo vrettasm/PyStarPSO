@@ -3,7 +3,8 @@ import numpy as np
 from star_pso.auxiliary.utilities import (nb_clip_item,
                                           check_parameters,
                                           np_median_entropy,
-                                          nb_median_hamming_distance)
+                                          nb_median_hamming_distance,
+                                          nb_median_euclidean_distance)
 
 
 class TestUtilities(unittest.TestCase):
@@ -144,6 +145,28 @@ class TestUtilities(unittest.TestCase):
         # The spread should be close to 1.0, because
         # all particles have random positions.
         self.assertAlmostEqual(spread_1, 1.0, places=1)
+    # _end_def_
+
+    def test_nb_median_euclidean_distance(self) -> None:
+        """
+        Check if nb_median_euclidean_distance does the right job.
+        """
+        from math import isclose
+
+        # Set the number of test particles.
+        n_rows = 2500
+
+        # Test a range of different number of variables.
+        for m in range(2, 10):
+
+            # Generate a random sample from U(0, 1).
+            x = np.random.rand(n_rows, m)
+
+            # Get the estimate of the spread.
+            spread_m = nb_median_euclidean_distance(x)
+
+            # Check if the estimated value is close to the True approximation.
+            self.assertTrue(isclose(spread_m, np.sqrt(m/6.0), abs_tol=0.1))
     # _end_def_
 
 # _end_class_
