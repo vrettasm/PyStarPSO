@@ -134,9 +134,8 @@ class TestUtilities(unittest.TestCase):
         # Refill the "x" array.
         for i in range(n_rows):
             for j in range(n_cols):
-                # Randomize the positions before assignment.
-                np.random.shuffle(k[j])
-                x[i, j] = np.array(k[j])
+                # Randomize the positions.
+                x[i, j] = np.random.rand(len(k[j]))
         # _end_for_
 
         # Get the estimate of the spread.
