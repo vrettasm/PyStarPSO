@@ -5,7 +5,6 @@ from collections import defaultdict
 
 from typing import Callable
 
-import numpy as np
 from joblib import (Parallel, delayed)
 
 from numpy.typing import ArrayLike
@@ -374,8 +373,8 @@ class GenericPSO(object):
         # For the moment we hardcode the min/max
         # values of the inertia weight parameter
         # (as well as the c1 and c2 parameters).
-        w_min, w_max = 0.2, 0.90
-        c_min, c_max = 0.5, 2.05
+        w_min, w_max = 0.0, 1.0
+        c_min, c_max = 0.1, 2.5
 
         # Get an estimate of the particles' spread.
         spread_t = self.calculate_spread()
@@ -390,7 +389,7 @@ class GenericPSO(object):
 
         # To reduce "noise effects" if the new inertia parameter "w"
         # is close to the previous value do not update the parameters.
-        if not np.isclose(wt, w, atol=1.0E-3):
+        if not isclose(wt, w, abs_tol=1.0E-3):
 
             # Update the cognitive and social parameters.
             if wt > w:
