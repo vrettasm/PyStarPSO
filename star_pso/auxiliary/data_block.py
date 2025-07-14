@@ -471,11 +471,14 @@ class DataBlock(object):
         # Don't copy self reference.
         memo[id(self)] = new_object
 
-        # Shallow copy the position vector.
+        # Deep copy the position (ScalarOrArray).
         setattr(new_object, "_position", deepcopy(self._position))
 
-        # Shallow copy the best position vector.
+        # Deep copy the best position (ScalarOrArray).
         setattr(new_object, "_best_position", deepcopy(self._best_position))
+
+        # Deep copy the valid set (list/tuple).
+        setattr(new_object, "_valid_set", deepcopy(self._valid_set))
 
         # Simple copy the lower/upper bounds (float).
         setattr(new_object, "_lower_bound", self._lower_bound)
@@ -483,6 +486,9 @@ class DataBlock(object):
 
         # Simple copy the block type value (enum).
         setattr(new_object, "_btype", self._btype)
+
+        # Simple copy of the copy best method (callable).
+        setattr(new_object, "_copy_best", self._copy_best)
 
         # Return an identical particle.
         return new_object
