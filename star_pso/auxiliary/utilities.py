@@ -3,6 +3,8 @@ import time
 from enum import Enum
 from typing import Union
 from functools import wraps
+from functools import cache
+
 from collections import namedtuple
 
 import numpy as np
@@ -169,6 +171,32 @@ def np_median_kl_div(x_pos: np.ndarray,
 
     # Return the median value.
     return np.median(kl_div).item()
+# _end_def_
+
+@cache
+def linear_rank_probabilities(p_size: int) -> np.array:
+    """
+    Calculate the rank probability distribution over the
+    population size.  The function is cached so repeated
+    calls with the  same input should not  recompute the
+    same array since the population size of the swarm is
+    not expected to change.
+
+    :param p_size: (int) population size.
+
+    :return: (array) rank probability distribution.
+    """
+    # Sanity check.
+    if p_size <= 0:
+        raise ValueError("'p_size' must be a positive number.")
+    # _end_if_
+
+    # Calculate the sum of all the ranked swarm particles.
+    sum_ranked_values = float(0.5 * p_size * (p_size + 1))
+
+    # Calculate the linear ranked probabilities of each
+    # particle in the swarm using their ranking position.
+    return np.arange(1, p_size + 1) / sum_ranked_values
 # _end_def_
 
 @njit
