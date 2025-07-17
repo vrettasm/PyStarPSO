@@ -3,7 +3,6 @@ from functools import cached_property
 import numpy as np
 from numpy import sum as np_sum
 from numpy import clip as np_clip
-from numpy import average as np_average
 from numpy import subtract as np_subtract
 
 from star_pso.engines.generic_pso import GenericPSO
@@ -237,10 +236,13 @@ class CategoricalPSO(GenericPSO):
             # Extract only their positions and convert to numpy array.
             all_positions = np.array([item[0] for item in all_positions])
 
+            # Compute the probabilities.
+            p_weights = linear_rank_probabilities(self.swarm.size)
+
             # In the "fully informed" case we take a weighted
             # average from all the positions of the swarm.
-            g_best = np_average(all_positions, axis=0,
-                                weights=linear_rank_probabilities(self.swarm.size))
+            g_best = np.multiply(all_positions,
+                                 p_weights[:, np.newaxis]).sum(axis=0) / p_weights.sum()
 
             # Finally normalize them to
             # account for probabilities.

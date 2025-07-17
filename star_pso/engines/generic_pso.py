@@ -7,10 +7,10 @@ from typing import Callable
 
 from joblib import (Parallel, delayed)
 
+import numpy as np
 from numpy.typing import ArrayLike
 from numpy import array as np_array
 from numpy import empty as np_empty
-from numpy import average as np_average
 from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.swarm import Swarm
@@ -362,10 +362,13 @@ class GenericPSO(object):
             # Extract only their positions and convert to numpy array.
             all_positions = np_array([item[0] for item in all_positions])
 
+            # Compute the probabilities.
+            p_weights = linear_rank_probabilities(self.swarm.size)
+
             # In the "fully informed" case we take a weighted
             # average from all the positions of the swarm.
-            g_best = np_average(all_positions, axis=0,
-                                weights=linear_rank_probabilities(self.swarm.size))
+            g_best = np.multiply(all_positions,
+                                 p_weights[:, np.newaxis]).sum(axis=0) / p_weights.sum()
         else:
             g_best = self.swarm.best_particle().position
         # _end_if_
