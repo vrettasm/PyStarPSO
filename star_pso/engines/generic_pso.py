@@ -350,21 +350,21 @@ class GenericPSO(object):
 
         # Get the GLOBAL best particle position.
         if params.global_avg:
-            # Compile a list with best positions, along with
-            # their best values.
-            best_positions = [(p.best_position, p.best_value)
-                              for p in self.swarm.population]
+            # Compile a list with all positions,
+            # along with their function values.
+            all_positions = [(p.position, p.value)
+                             for p in self.swarm.population]
 
-            # Sort the list in ascending order
-            # using their best function value.
-            best_positions.sort(key=lambda item: item[1])
+            # Sort the list in ascending order using only
+            # their function value.
+            all_positions.sort(key=lambda item: item[1])
 
-            # Extract only the best positions and convert to numpy array.
-            best_positions = np_array([item[0] for item in best_positions])
+            # Extract only their positions and convert to numpy array.
+            all_positions = np_array([item[0] for item in all_positions])
 
             # In the "fully informed" case we take a weighted
-            # average from all the best positions of the swarm.
-            g_best = np_average(best_positions, axis=0,
+            # average from all the positions of the swarm.
+            g_best = np_average(all_positions, axis=0,
                                 weights=linear_rank_probabilities(self.swarm.size))
         else:
             g_best = self.swarm.best_particle().position

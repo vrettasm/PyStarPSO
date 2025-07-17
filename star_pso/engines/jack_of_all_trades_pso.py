@@ -193,22 +193,24 @@ class JackOfAllTradesPSO(GenericPSO):
 
         # Get the GLOBAL best particle position.
         if params.global_avg:
-            # Compile a list with best positions, along with
-            # their best values.
-            best_positions = [(p.best_position, p.best_value)
-                              for p in self.swarm.population]
+            # Compile a list with all positions,
+            # along with their function values.
+            all_positions = [(p.position, p.value)
+                             for p in self.swarm.population]
 
-            # Sort the list in ascending order
-            # using their best function value.
-            best_positions.sort(key=lambda item: item[1])
+            # Sort the list in ascending order using only
+            # their function value.
+            all_positions.sort(key=lambda item: item[1])
 
-            # Extract only the best positions and convert to numpy array.
-            g_best = np_array([item[0] for item in best_positions],
+            # Extract only their positions and convert to numpy
+            # array. Due to the different shape of each variable
+            # we need to set the dtype as object.
+            g_best = np_array([item[0] for item in all_positions],
                               dtype=object)
 
             # Compute the weighted average according to their ranking.
             g_best = np_average(g_best, axis=0,
-                                weights=linear_rank_probabilities(self.swarm.size))
+                                weights=linear_rank_probabilities(self.swarm.size)).tolist()
 
             # Finally normalize them to
             # account for probabilities.
