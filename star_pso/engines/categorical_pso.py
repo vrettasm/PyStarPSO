@@ -3,11 +3,13 @@ from functools import cached_property
 import numpy as np
 from numpy import sum as np_sum
 from numpy import clip as np_clip
+from numpy import average as np_average
 from numpy import subtract as np_subtract
 
 from star_pso.engines.generic_pso import GenericPSO
 from star_pso.auxiliary.utilities import np_median_entropy
-from star_pso.auxiliary.utilities import (VOptions, SpecialMode)
+from star_pso.auxiliary.utilities import (VOptions, SpecialMode,
+                                          linear_rank_probabilities)
 
 # Public interface.
 __all__ = ["CategoricalPSO"]
@@ -163,7 +165,7 @@ class CategoricalPSO(GenericPSO):
         local_sets = self._valid_sets
 
         # Create a range of values.
-        random_index = np.arange(self.n_cols)
+        random_index = np.arange(self.n_cols, dtype=int)
 
         # Shuffle in place. This is used to avoid introducing
         # biasing by using always the same order of blocks to
@@ -223,13 +225,22 @@ class CategoricalPSO(GenericPSO):
 
         # Get the GLOBAL best particle position.
         if params.global_avg:
-            # Initialize a vector (of vectors).
-            g_best = np.array([particle.best_position
-                              for particle in self.swarm.population],
-                              dtype=object)
+            # Compile a list with best positions, along with
+            # their best values.
+            best_positions = [(p.best_position, p.best_value)
+                              for p in self.swarm.population]
 
-            # Get the mean value along the zero-axis.
-            g_best = np.mean(g_best, axis=0)
+            # Sort the list in ascending order
+            # using their best function value.
+            best_positions.sort(key=lambda item: item[1])
+
+            # Extract only the best positions and convert to numpy array.
+            best_positions = np.array([item[0] for item in best_positions])
+
+            # In the "fully informed" case we take a weighted
+            # average from all the best positions of the swarm.
+            g_best = np_average(best_positions, axis=0,
+                                weights=linear_rank_probabilities(self.swarm.size))
 
             # Finally normalize them to
             # account for probabilities.
