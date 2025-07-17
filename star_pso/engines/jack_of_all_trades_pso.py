@@ -1,14 +1,14 @@
 from numpy import sum as np_sum
-from numpy import mean as np_mean
 from numpy import array as np_array
 from numpy import empty as np_empty
 from numpy import arange as np_arange
+from numpy import average as np_average
 from numpy import isscalar as np_isscalar
 from numpy import subtract as np_subtract
 
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.auxiliary.utilities import (VOptions, BlockType,
-                                          SpecialMode)
+from star_pso.auxiliary.utilities import (VOptions, BlockType, SpecialMode,
+                                          linear_rank_probabilities)
 # Public interface.
 __all__ = ["JackOfAllTradesPSO"]
 
@@ -193,13 +193,22 @@ class JackOfAllTradesPSO(GenericPSO):
 
         # Get the GLOBAL best particle position.
         if params.global_avg:
-            # Initialize an array with the best particle positions.
-            g_best = np_array([particle.best_position
-                               for particle in self.swarm.population],
+            # Compile a list with best positions, along with
+            # their best values.
+            best_positions = [(p.best_position, p.best_value)
+                              for p in self.swarm.population]
+
+            # Sort the list in ascending order
+            # using their best function value.
+            best_positions.sort(key=lambda item: item[1])
+
+            # Extract only the best positions and convert to numpy array.
+            g_best = np_array([item[0] for item in best_positions],
                               dtype=object)
 
-            # Get the mean value along the zero-axis.
-            g_best = np_mean(g_best, axis=0)
+            # Compute the weighted average according to their ranking.
+            g_best = np_average(g_best, axis=0,
+                                weights=linear_rank_probabilities(self.swarm.size))
 
             # Finally normalize them to
             # account for probabilities.
