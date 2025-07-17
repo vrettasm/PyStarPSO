@@ -135,7 +135,7 @@ class JackOfAllTradesPSO(GenericPSO):
         """
 
         # Create a range of values.
-        random_index = np_arange(self.n_cols)
+        random_index = np_arange(self.n_cols, dtype=int)
 
         # Shuffle in place. This is used to avoid introducing
         # biasing by using always the same order of blocks to
