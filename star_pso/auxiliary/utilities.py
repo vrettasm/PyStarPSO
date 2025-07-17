@@ -475,7 +475,7 @@ def pareto_front(points: ArrayLike) -> ArrayLike:
     number_of_points = len(points)
 
     # Set all the flags initially to True.
-    is_pareto = np.full(number_of_points, True)
+    is_pareto = np.full(number_of_points, True, dtype=bool)
 
     # Scan all the points.
     for i, point_i in enumerate(points):
