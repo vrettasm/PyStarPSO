@@ -1,6 +1,5 @@
 from numpy import zeros_like
 from numpy import exp as np_exp
-from numpy import mean as np_mean
 from numpy import clip as np_clip
 from numpy.typing import ArrayLike
 
@@ -50,39 +49,12 @@ class BinaryPSO(GenericPSO):
 
         :return: None.
         """
-        # Get the shape of the velocity array.
-        arr_shape = (self.n_rows, self.n_cols)
-
-        # Pre-sample the cognitive coefficients.
-        cogntv = GenericPSO.rng.uniform(0, params.c1, size=arr_shape)
-
-        # Pre-sample the social coefficients.
-        social = GenericPSO.rng.uniform(0, params.c2, size=arr_shape)
-
-        # Get the GLOBAL best particle position.
-        if params.global_avg:
-            # In the fully informed case we take the average of all the best positions.
-            g_best = np_mean([p.best_position for p in self.swarm.population], axis=0)
-        else:
-            g_best = self.swarm.best_particle().position
-        # _end_if_
-
-        # Inertia weight parameter.
-        w = params.w
-
-        for i, (c1, c2) in enumerate(zip(cogntv, social)):
-            # Get the current position of i-th the particle.
-            x_i = self.swarm[i].position
-
-            # Update the new velocity.
-            self._velocities[i] = w * self._velocities[i] +\
-                c1 * (self.swarm[i].best_position - x_i) +\
-                c2 * (g_best - x_i)
-        # _end_for_
+        # Call the method of the parent class.
+        super().update_velocities(params)
 
         # We clip the velocities in [V_min, V_max].
-        np_clip(self._velocities, self._lower_bound, self._upper_bound,
-                out=self._velocities)
+        np_clip(self._velocities, self._lower_bound,
+                self._upper_bound, out=self._velocities)
     # _end_def_
 
     def update_positions(self) -> None:

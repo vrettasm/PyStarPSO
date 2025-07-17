@@ -10,11 +10,13 @@ from joblib import (Parallel, delayed)
 from numpy.typing import ArrayLike
 from numpy import array as np_array
 from numpy import empty as np_empty
+from numpy import average as np_average
 from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.swarm import Swarm
 from star_pso.auxiliary.utilities import (time_it, VOptions, nb_clip_item,
-                                          SpecialMode, check_parameters)
+                                          SpecialMode, check_parameters,
+                                          linear_rank_probabilities)
 # Public interface.
 __all__ = ["GenericPSO"]
 
@@ -337,8 +339,49 @@ class GenericPSO(object):
 
         :return: None.
         """
-        raise NotImplementedError(f"{self.__class__.__name__}: "
-                                  f"You should implement this method!")
+        # Get the shape of the velocity array.
+        arr_shape = (self.n_rows, self.n_cols)
+
+        # Pre-sample the cognitive coefficients.
+        cogntv = GenericPSO.rng.uniform(0, params.c1, size=arr_shape)
+
+        # Pre-sample the social coefficients.
+        social = GenericPSO.rng.uniform(0, params.c2, size=arr_shape)
+
+        # Get the GLOBAL best particle position.
+        if params.global_avg:
+            # Compile a list with best positions, along with
+            # their best values.
+            best_positions = [(p.best_position, p.best_value)
+                              for p in self.swarm.population]
+
+            # Sort the list in ascending order
+            # using their best function value.
+            best_positions.sort(key=lambda item: item[1])
+
+            # Extract only the best positions and convert to numpy array.
+            best_positions = np_array([item[0] for item in best_positions])
+
+            # In the "fully informed" case we take a weighted
+            # average from all the best positions of the swarm.
+            g_best = np_average(best_positions, axis=0,
+                                weights=linear_rank_probabilities(self.swarm.size))
+        else:
+            g_best = self.swarm.best_particle().position
+        # _end_if_
+
+        # Inertia weight parameter.
+        w = params.w
+
+        for i, (c1, c2) in enumerate(zip(cogntv, social)):
+            # Get the current position of i-th the particle.
+            x_i = self.swarm[i].position
+
+            # Update the new velocity.
+            self._velocities[i] = w * self._velocities[i] +\
+                c1 * (self.swarm[i].best_position - x_i) +\
+                c2 * (g_best - x_i)
+        # _end_for_
     # _end_def_
 
     def update_positions(self) -> None:
