@@ -458,7 +458,7 @@ def time_it(func):
     return time_it_wrapper
 # _end_def_
 
-def pareto_front(points: ArrayLike) -> ArrayLike:
+def pareto_front(points: np.array) -> np.array:
     """
     Simple function that calculates the pareto (optimal)
     front points from a given input points list.
