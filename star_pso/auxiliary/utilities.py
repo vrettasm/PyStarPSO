@@ -116,62 +116,41 @@ def np_median_entropy(x_pos: np.ndarray,
     return np.median(entropy_x).item()
 # _end_def_
 
-def np_median_kl_div(x_pos: np.ndarray,
-                     normal: bool = False) -> float:
+@njit
+def nb_median_kl_divergence(x_pos: np.ndarray,
+                            normal: bool = False) -> float:
     """
-    Calculate the 'median KL divergence' value of the input array. It is assumed
-    that the input 'x_pos', represents the 2D array of "objects", where each row
-    represents a particle and the columns contain the probability vectors one for
-    each of the categorical variables. In essence x_pos is a 3D array.
+    Calculate the 'median KL divergence' value of the input array.
+    It is assumed that each row is a distribution (i.e. sums to 1).
 
-    :param x_pos: 2D array where each column represents a different optimization
-    (categorical) variable.
+    :param x_pos: 2D array where each column.
 
-    :param normal: If enabled the KL values will be normalized using the maximum
-    value depending on the set of possible outcomes for each categorical variable.
+    :param normal: If enabled the KL values will be normalized using
+    the maximum KL divergence from the data.
 
     :return: The median KL divergence of the swarm positions.
     """
-    # Get the input row/columns.
-    n_rows, n_cols = x_pos.shape
+    # Accumulate the KL divergence values.
+    total_kl = []
 
-    # Preallocate KL divergence array.
-    kl_div = np.zeros(n_cols)
-
-    # Process along the columns of the x_pos.
-    for j in range(n_cols):
-
-        # Get a slice of the j-th variables positions.
-        # Make sure they are normalized to account for
-        # probabilities.
-        x_data = np.array([x_pos[i, j]/np.sum(x_pos[i, j])
-                           for i in range(n_rows)])
-
-        # Accumulate the KL divergence values.
-        total_kl = []
-
-        # Pairwise calculation of KL.
-        for i, p in enumerate(x_data):
-            total_kl.extend(kl_divergence_array(p, x_data[i + 1:]))
-        # _end_for_
-
-        # Convert to numpy array.
-        kl_dist = np.array(total_kl)
-
-        # Find the maximum KL.
-        kl_max = kl_dist.max()
-
-        # Check for normalization.
-        if normal and kl_max != 0.0:
-            kl_dist /= kl_max
-        # _end_if_
-
-        # Store it in the return vector.
-        kl_div[j] = np.median(kl_dist).item()
+    # Pairwise calculation of KL.
+    for i, p in enumerate(x_pos):
+        total_kl.extend(kl_divergence_array(p, x_pos[i + 1:]))
     # _end_for_
 
+    # Convert to numpy array.
+    kl_dist = np.array(total_kl)
+
+    # Find the maximum KL.
+    kl_max = kl_dist.max()
+
+    # Check for normalization.
+    if normal and kl_max != 0.0:
+        kl_dist /= kl_max
+    # _end_if_
+
     # Return the median value.
-    return np.median(kl_div).item()
+    return np.median(kl_dist).item()
 # _end_def_
 
 @cache
@@ -499,4 +478,20 @@ def pareto_front(points: np.array) -> np.array:
             # _end_if_
     # _end_for_
     return points[is_pareto]
+# _end_def_
+
+@cache
+def get_spread_method() -> dict:
+    """
+    Create a dictionary with block types as keys and
+    their corresponding spread estimation methods as
+    values.
+
+    :return: a cached dictionary with functions that
+    correspond to the correct block types.
+    """
+    return {BlockType.FLOAT: nb_median_euclidean_distance,
+            BlockType.BINARY: nb_median_hamming_distance,
+            BlockType.INTEGER: nb_median_euclidean_distance,
+            BlockType.CATEGORICAL: nb_median_kl_divergence}
 # _end_def_
