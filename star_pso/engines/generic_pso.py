@@ -463,7 +463,7 @@ class GenericPSO(object):
         spread_t = self.calculate_spread()
 
         # Compute the new inertia weight parameter.
-        wt = self.w_min + (self.w_max - self.w_min) * (1.0 - spread_t)
+        wt = self.w_max - (self.w_max - self.w_min) * spread_t
 
         # Get the previous values of the parameters.
         w = options["w"]
