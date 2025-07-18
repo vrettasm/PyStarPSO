@@ -35,9 +35,10 @@ class BlockType(Enum):
 class SpecialMode(Enum):
     """
     Description:
-        SpecialMode enumeration defines specific modes that the GenericPSO can accommodate.
-        These are handled internally (i.e. NOT by the end user) to call the run/evaluate_function
-        methods and perform operations directly related to the specific versions of PSO method.
+        SpecialMode enumeration defines specific modes that the GenericPSO
+        can accommodate. These are handled internally (i.e. NOT by the end
+        user) to call the evaluate_function methods and perform operations
+        directly related to the specific versions of PSO method.
     """
     NORMAL, CATEGORICAL, JACK_OF_ALL_TRADES = range(3)
 # _end_class_
