@@ -121,7 +121,8 @@ def nb_median_kl_divergence(x_pos: np.ndarray,
                             normal: bool = False) -> float:
     """
     Calculate the 'median KL divergence' value of the input array.
-    It is assumed that each row is a distribution (i.e. sums to 1).
+    It is assumed that each row is a distribution. To ensure that
+    each row sums to 1.0, we perform the normalization.
 
     :param x_pos: 2D array where each column.
 
@@ -132,6 +133,9 @@ def nb_median_kl_divergence(x_pos: np.ndarray,
     """
     # Accumulate the KL divergence values.
     total_kl = []
+
+    # Ensure the input array is normalized.
+    x_pos /= x_pos.sum(axis=1)
 
     # Pairwise calculation of KL.
     for i, p in enumerate(x_pos):
