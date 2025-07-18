@@ -1,3 +1,4 @@
+import numpy as np
 from numpy import sum as np_sum
 from numpy import array as np_array
 from numpy import empty as np_empty
@@ -6,9 +7,10 @@ from numpy import average as np_average
 from numpy import isscalar as np_isscalar
 from numpy import subtract as np_subtract
 
+from collections import defaultdict
 from star_pso.engines.generic_pso import GenericPSO
 from star_pso.auxiliary.utilities import (VOptions, BlockType, SpecialMode,
-                                          linear_rank_probabilities)
+                                          linear_rank_probabilities, get_spread_method)
 # Public interface.
 __all__ = ["JackOfAllTradesPSO"]
 
@@ -273,6 +275,56 @@ class JackOfAllTradesPSO(GenericPSO):
 
         # Clear all the internal bookkeeping.
         self.clear_all()
+    # _end_def_
+
+    def calculate_spread(self) -> float:
+        """
+        Calculates a spread measure for the particle positions.
+
+        A value close to '0' indicates the swarm is converging to a single value.
+        On the contrary a value close to '1' indicates the swarm is still spread
+        around the search space.
+
+        :return: an estimated measure (float) for the spread of the particles.
+        """
+        # Extract the particle positions as a list.
+        positions = self.swarm.positions_as_list()
+
+        # Feature data holder.
+        field = defaultdict(list)
+
+        # Extract the data for each
+        # feature block separately.
+        for particle in positions:
+            for i, block in enumerate(particle):
+                field[i].append(block)
+        # _end_for_
+
+        # Get the dictionary with all the methods.
+        method_dict = get_spread_method()
+
+        # Preallocate
+        spread_per_field = np.empty(len(field))
+
+        # Calculate the spread per data field.
+        for n, data in field.items():
+
+            # The Block type will determine which
+            # method we will use for the spread.
+            b_type = self.swarm[0][n].btype
+
+            # Convert the data to array.
+            data_arr = np.array(data)
+
+            # In categorical data the array is already in 2D.
+            if b_type == BlockType.CATEGORICAL:
+                spread_per_field[n] = method_dict[b_type](data_arr, normal=True)
+            else:
+                spread_per_field[n] = method_dict[b_type](data_arr[:, np.newaxis], normal=True)
+        # _end_for_
+
+        # Return the median value of all spreads.
+        return np.median(spread_per_field).item()
     # _end_def_
 
 # _end_class_
