@@ -20,9 +20,9 @@ ScalarOrArray = Union[int, float, ArrayLike]
 # 1) 'w': inertia weight
 # 2) 'c1': cognitive coefficient
 # 3) 'c2': social coefficient
-# 4) 'global_avg': global average is optional.
+# 4) 'fipso': fully informed PSO (optional).
 VOptions = namedtuple("VOptions",
-                      ["w", "c1", "c2", "global_avg"], defaults=[False])
+                      ["w", "c1", "c2", "fipso"], defaults=[False])
 
 class BlockType(Enum):
     """
@@ -468,7 +468,7 @@ def pareto_front(points: np.array) -> np.array:
                                     ....................,
                                     (fk1, fk2, ..., fkn)]
 
-    :return: An array of points that lie on the pareto front.
+    :return: Array of points that lie on the pareto front.
     """
 
     # Number of points.

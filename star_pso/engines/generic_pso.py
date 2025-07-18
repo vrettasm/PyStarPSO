@@ -349,7 +349,7 @@ class GenericPSO(object):
         social = GenericPSO.rng.uniform(0, params.c2, size=arr_shape)
 
         # Get the GLOBAL best particle position.
-        if params.global_avg:
+        if params.fipso:
             # Compile a list with all positions,
             # along with their function values.
             all_positions = [(p.position, p.value)
