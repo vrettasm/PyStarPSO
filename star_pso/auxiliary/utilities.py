@@ -182,9 +182,12 @@ def linear_rank_probabilities(p_size: int) -> np.array:
     same array since the population size of the swarm is
     not expected to change.
 
+    NOTE: Probabilities are returned in descending order.
+
     :param p_size: (int) population size.
 
-    :return: (array) rank probability distribution.
+    :return: (array) rank probability distribution in
+    descending order.
     """
     # Sanity check.
     if p_size <= 0:
