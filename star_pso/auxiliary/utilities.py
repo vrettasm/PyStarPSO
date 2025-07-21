@@ -65,10 +65,11 @@ def check_parameters(options: dict) -> None:
 # _end_def_
 
 @njit
-def nb_median_entropy(x_pos: np.ndarray,
-                      normal: bool = False) -> float:
+def nb_average_entropy(x_pos: np.ndarray,
+                       normal: bool = False) -> float:
     """
-    Calculate the median entropy value of the input array.
+    Calculate the entropy value of the input array, after we take
+    the average values row-wise.
 
     :param x_pos: 2D numpy array. The rows of the array represent
     the different particles and the columns are the probabilities
@@ -78,7 +79,7 @@ def nb_median_entropy(x_pos: np.ndarray,
     using the maximum entropy value depending on the set of possible
     outcomes for each categorical variable.
 
-    :return: The median entropy value of the swarm positions.
+    :return: The entropy value of the swarm positions.
     """
     # Get the dimensions of input matrix.
     n_rows, n_cols = x_pos.shape
@@ -99,7 +100,7 @@ def nb_median_entropy(x_pos: np.ndarray,
     if normal and log_k != 0.0:
         entropy_x /= log_k
 
-    # Return the median value.
+    # Return the entropy value.
     return entropy_x.item()
 # _end_def_
 
@@ -484,5 +485,5 @@ def get_spread_method() -> dict:
     return {BlockType.FLOAT: nb_median_euclidean_distance,
             BlockType.BINARY: nb_median_hamming_distance,
             BlockType.INTEGER: nb_median_taxicab_distance,
-            BlockType.CATEGORICAL: nb_median_entropy}
+            BlockType.CATEGORICAL: nb_average_entropy}
 # _end_def_
