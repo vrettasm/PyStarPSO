@@ -64,83 +64,6 @@ def check_parameters(options: dict) -> None:
         # _end_if_
 # _end_def_
 
-@njit
-def nb_average_entropy(x_pos: np.ndarray,
-                       normal: bool = False) -> float:
-    """
-    Calculate the entropy value of the input array, after we take
-    the average values row-wise.
-
-    :param x_pos: 2D numpy array. The rows of the array represent
-    the different particles and the columns are the probabilities
-    values (one for each category of the set).
-
-    :param normal: If enabled the entropy values will be normalized
-    using the maximum entropy value depending on the set of possible
-    outcomes for each categorical variable.
-
-    :return: The entropy value of the swarm positions.
-    """
-    # Get the dimensions of input matrix.
-    n_rows, n_cols = x_pos.shape
-
-    # Get the average values.
-    x_avg = x_pos.sum(axis=0) / n_rows
-
-    # Normalize to 1.0.
-    x_avg /= x_avg.sum()
-
-    # Compute the entropy.
-    entropy_x = -np.sum(np.where(x_avg > 0.0,
-                                 x_avg * np.log(x_avg), 0.0))
-    # Compute maximum entropy.
-    log_k = np.log(n_cols)
-
-    # Check for normalization.
-    if normal and log_k != 0.0:
-        entropy_x /= log_k
-
-    # Return the entropy value.
-    return entropy_x.item()
-# _end_def_
-
-@njit
-def nb_median_kl_divergence(x_pos: np.ndarray,
-                            normal: bool = False) -> float:
-    """
-    Calculate the 'median KL divergence' value of the input array.
-    It is assumed that each row is a distribution (i.e. sum to 1).
-
-    :param x_pos: 2D array where each column.
-
-    :param normal: If enabled the KL values will be normalized using
-    the maximum KL divergence from the data.
-
-    :return: The median KL divergence of the swarm positions.
-    """
-    # Accumulate the KL divergence values.
-    total_kl = []
-
-    # Pairwise calculation of KL.
-    for i, p in enumerate(x_pos):
-        total_kl.extend(kl_divergence_array(p, x_pos[i + 1:]))
-    # _end_for_
-
-    # Convert to numpy array.
-    kl_dist = np.array(total_kl)
-
-    # Find the maximum KL.
-    kl_max = kl_dist.max()
-
-    # Check for normalization.
-    if normal and kl_max != 0.0:
-        kl_dist /= kl_max
-    # _end_if_
-
-    # Return the median value.
-    return np.median(kl_dist).item()
-# _end_def_
-
 @cache
 def linear_rank_probabilities(p_size: int) -> np.array:
     """
@@ -358,6 +281,44 @@ def nb_median_taxicab_distance(x_pos: np.ndarray,
 # _end_def_
 
 @njit
+def nb_median_kl_divergence(x_pos: np.ndarray,
+                            normal: bool = False) -> float:
+    """
+    Calculate the 'median KL divergence' value of the input array.
+    It is assumed that each row is a distribution (i.e. sum to 1).
+
+    :param x_pos: 2D array where each column.
+
+    :param normal: If enabled the KL values will be normalized using
+    the maximum KL divergence from the data.
+
+    :return: The median KL divergence of the swarm positions.
+    """
+    # Get the number of rows.
+    n_rows = x_pos.shape[0]
+
+    # Compute the "centroid" distribution.
+    x_centroid = x_pos.sum(axis=0) / n_rows
+
+    # Normalize to 1.0.
+    x_centroid /= x_centroid.sum()
+
+    # Compute the distances from the centroid.
+    kl_dist = kl_divergence_array(x_pos, x_centroid)
+
+    # Find the maximum KL.
+    kl_max = kl_dist.max()
+
+    # Check for normalization.
+    if normal and kl_max != 0.0:
+        kl_dist /= kl_max
+    # _end_if_
+
+    # Return the median value.
+    return np.median(kl_dist).item()
+# _end_def_
+
+@njit
 def nb_clip_array(x_new, lower_limit, upper_limit):
     """
     Local version of numba clip which limits the values of an array.
@@ -485,5 +446,5 @@ def get_spread_method() -> dict:
     return {BlockType.FLOAT: nb_median_euclidean_distance,
             BlockType.BINARY: nb_median_hamming_distance,
             BlockType.INTEGER: nb_median_taxicab_distance,
-            BlockType.CATEGORICAL: nb_average_entropy}
+            BlockType.CATEGORICAL: nb_median_kl_divergence}
 # _end_def_
