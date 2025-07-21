@@ -334,7 +334,11 @@ def nb_median_euclidean_distance(x_pos: np.ndarray,
 def nb_median_taxicab_distance(x_pos: np.ndarray,
                                normal: bool = False) -> float:
     """
-    Calculate the median TaxiCab (Manhattan) distance of swarm particles.
+    Calculates a measure of the particles spread, when their position
+    is defined by integer variables in 'Z'. First we calculate the
+    centroid position of the swarm and then we compute its distance
+    from all the particles. To get an estimate in [0,1] we can divide
+    them with the maximum distance (optional).
 
     :param x_pos: (array) A 2D numpy array (n_particles, n_features)
     representing the positions of the swarm.
@@ -342,18 +346,16 @@ def nb_median_taxicab_distance(x_pos: np.ndarray,
     :param normal: (bool) if "True", normalize the distances by their
     maximum distance.
 
-    :return: the median taxicab distance.
+    :return: the median TaxiCab (Manhattan) distance.
     """
-    # Collect all the distances.
-    total_dist = []
 
-    # Scan the positions array.
-    for i, p in enumerate(x_pos):
-        total_dist.extend(np.sum(np.abs(p - x_pos[i + 1:]), axis=1))
-    # _end_for_
+    # Calculate the centroid.
+    # NOTE: We use this instead of x_pos.mean(axis=0) because in
+    # 'no python mode' numba does not support the 'axis' option.
+    x_centroid = np.sum(x_pos, axis=0) / len(x_pos)
 
-    # Convert to array.
-    x_dist = np.array([float(k) for k in total_dist])
+    # Get the distances from their centroid.
+    x_dist = np.sum(np.abs(x_centroid - x_pos), axis=1)
 
     # Find the maximum distance.
     d_max = x_dist.max()
