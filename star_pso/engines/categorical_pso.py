@@ -7,7 +7,7 @@ from numpy import clip as np_clip
 from numpy import subtract as np_subtract
 
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.auxiliary.utilities import (VOptions, nb_average_entropy,
+from star_pso.auxiliary.utilities import (VOptions, nb_median_kl_divergence,
                                           SpecialMode, linear_rank_probabilities)
 # Public interface.
 __all__ = ["CategoricalPSO"]
@@ -325,7 +325,7 @@ class CategoricalPSO(GenericPSO):
     def calculate_spread(self) -> float:
         """
         Calculates a spread measure for the particle positions
-        using the (normalized) median Entropy.
+        using the (normalized) median KL divergence.
 
         A value close to '0' indicates the swarm is converging
         to a single value. On the contrary a value close to '1'
@@ -362,8 +362,8 @@ class CategoricalPSO(GenericPSO):
                 data_arr = data_arr[:, np.newaxis]
 
             # Categorical data array is already in 2D.
-            per_field[n] = nb_average_entropy(data_arr,
-                                              normal=True)
+            per_field[n] = nb_median_kl_divergence(data_arr,
+                                                   normal=True)
         # _end_for_
 
         # Return the median value of all fields.
