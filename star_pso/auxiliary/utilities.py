@@ -64,56 +64,43 @@ def check_parameters(options: dict) -> None:
         # _end_if_
 # _end_def_
 
-def np_median_entropy(x_pos: np.ndarray,
+@njit
+def nb_median_entropy(x_pos: np.ndarray,
                       normal: bool = False) -> float:
     """
     Calculate the median entropy value of the input array.
-    It is assumed that the input 'x_pos', represents the 2D
-    array of "objects", where each row represents a particle
-    and the columns contain the probability vectors, one for
-    each of the categorical variables. In essence x_pos is a
-    3D array.
 
-    :param x_pos: 2D numpy array where each column represents
-    a different optimization (categorical) variable.
+    :param x_pos: 2D numpy array. The rows of the array represent
+    the different particles and the columns are the probabilities
+    values (one for each category of the set).
 
-    :param normal: If enabled the entropy values will be
-    normalized using the maximum entropy value depending
-    on the set of possible outcomes for each categorical
-    variable.
+    :param normal: If enabled the entropy values will be normalized
+    using the maximum entropy value depending on the set of possible
+    outcomes for each categorical variable.
 
     :return: The median entropy value of the swarm positions.
     """
-    # Get the input columns.
-    n_cols = x_pos.shape[1]
+    # Get the dimensions of input matrix.
+    n_rows, n_cols = x_pos.shape
 
-    # Preallocate entropy array.
-    entropy_x = np.zeros(n_cols)
+    # Get the average values.
+    x_avg = x_pos.sum(axis=0) / n_rows
 
-    # Average all the positional
-    # values on the first rows.
-    x_mean = x_pos.mean(axis=0)
+    # Normalize to 1.0.
+    x_avg /= x_avg.sum()
 
-    # Process along the columns of the x_pos.
-    for j in range(n_cols):
+    # Compute the entropy.
+    entropy_x = -np.sum(np.where(x_avg > 0.0,
+                                 x_avg * np.log(x_avg), 0.0))
+    # Compute maximum entropy.
+    log_k = np.log(n_cols)
 
-        # Normalize values to account
-        # for probabilities in [0, 1].
-        xj = x_mean[j] / x_mean[j].sum()
-
-        # Calculate the entropy value.
-        entropy_x[j] = -np.sum(np.where(xj > 0.0,
-                                        xj * np.log(xj), 0.0))
-        # Compute maximum entropy value.
-        log_k = np.log(len(x_pos[0, j]))
-
-        # Check for normalization.
-        if normal and log_k != 0.0:
-            entropy_x[j] /= log_k
-    # _end_for_
+    # Check for normalization.
+    if normal and log_k != 0.0:
+        entropy_x /= log_k
 
     # Return the median value.
-    return np.median(entropy_x).item()
+    return entropy_x.item()
 # _end_def_
 
 @njit
@@ -497,5 +484,5 @@ def get_spread_method() -> dict:
     return {BlockType.FLOAT: nb_median_euclidean_distance,
             BlockType.BINARY: nb_median_hamming_distance,
             BlockType.INTEGER: nb_median_taxicab_distance,
-            BlockType.CATEGORICAL: np_median_entropy}
+            BlockType.CATEGORICAL: nb_median_entropy}
 # _end_def_
