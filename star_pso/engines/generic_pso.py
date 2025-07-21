@@ -284,7 +284,7 @@ class GenericPSO(object):
     def get_optimal_values(self) -> tuple:
         """
         Iterates through the stats to find the best recorded
-        position form all the iterations.
+        position from all the iterations.
 
         :return: a tuple with the optimal particle position,
                  its function value and the iteration it was
