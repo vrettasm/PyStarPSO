@@ -459,8 +459,10 @@ class GenericPSO(object):
         # values of the c1 and c2 parameters.
         c_min, c_max = 0.1, 2.5
 
-        # Get an estimate of the particles' spread.
-        spread_t = self.calculate_spread()
+        # Get an estimate of the particles' spread,
+        # ensuring its range in [0, 1].
+        spread_t = nb_clip_item(self.calculate_spread(),
+                                0.0, 1.0)
 
         # Compute the new inertia weight parameter.
         wt = self.w_max - (self.w_max - self.w_min) * spread_t
