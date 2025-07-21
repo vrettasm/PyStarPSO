@@ -221,7 +221,7 @@ def kl_divergence_array(p: np.array, q: np.array) -> np.array:
     # Create a random array.
     x = np.random.rand(10, 4)
 
-    # Normalize to sum to 1.0
+    # Normalize to sum to 1.0.
     x /= np.sum(x, axis=1).reshape(-1, 1)
 
     # Entropy (from scipy.stats).
