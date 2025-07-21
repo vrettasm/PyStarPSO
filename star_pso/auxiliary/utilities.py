@@ -208,7 +208,7 @@ def nb_median_euclidean_distance(x_pos: np.ndarray,
     """
     Calculates a measure of the particles spread, when their position
     is defined by continuous variables in 'R'. First we calculate the
-    centroid position  of the swarm and then  we compute its distance
+    centroid position of the swarm, and then  we compute its distance
     from all the particles. To get an estimate in [0,1] we can divide
     them with the maximum distance (optional).
 
@@ -247,7 +247,7 @@ def nb_median_taxicab_distance(x_pos: np.ndarray,
     """
     Calculates a measure of the particles spread, when their position
     is defined by integer variables in 'Z'. First we calculate the
-    centroid position of the swarm and then we compute its distance
+    centroid position of the swarm, and then we compute its distance
     from all the particles. To get an estimate in [0,1] we can divide
     them with the maximum distance (optional).
 
