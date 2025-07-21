@@ -295,7 +295,11 @@ def nb_median_hamming_distance(x_pos: np.ndarray,
 def nb_median_euclidean_distance(x_pos: np.ndarray,
                                  normal: bool = False) -> float:
     """
-    Calculate the median Euclidean distance of swarm particles.
+    Calculates a measure of the particles spread, when their position
+    is defined by continuous variables in 'R'. First we calculate the
+    centroid position  of the swarm and then  we compute its distance
+    from all the particles. To get an estimate in [0,1] we can divide
+    them with the maximum distance (optional).
 
     :param x_pos: (np.ndarray) A 2D array of shape (n_particles,
     n_features) representing the positions of the swarm.
@@ -305,16 +309,14 @@ def nb_median_euclidean_distance(x_pos: np.ndarray,
 
     :return: the median Euclidean distance.
     """
-    # Collect all the distances.
-    total_dist = []
 
-    # Scan the positions array.
-    for i, p in enumerate(x_pos):
-        total_dist.extend(np.sqrt(np.sum((p - x_pos[i + 1:]) ** 2, axis=1)))
-    # _end_for_
+    # Calculate the centroid.
+    # NOTE: We use this instead of x_pos.mean(axis=0) because in
+    # 'no python mode' numba does not support the 'axis' option.
+    x_centroid = np.sum(x_pos, axis=0) / len(x_pos)
 
-    # Convert to array.
-    x_dist = np.array(total_dist)
+    # Get the distances from their centroid.
+    x_dist = np.sqrt(np.sum((x_centroid - x_pos) ** 2, axis=1))
 
     # Find the maximum distance.
     d_max = x_dist.max()
