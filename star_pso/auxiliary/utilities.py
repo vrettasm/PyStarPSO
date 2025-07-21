@@ -92,7 +92,7 @@ def np_median_entropy(x_pos: np.ndarray,
 
     # Average all the positional
     # values on the first rows.
-    x_mean = x_pos.mean(0)
+    x_mean = x_pos.mean(axis=0)
 
     # Process along the columns of the x_pos.
     for j in range(n_cols):
@@ -496,6 +496,6 @@ def get_spread_method() -> dict:
     """
     return {BlockType.FLOAT: nb_median_euclidean_distance,
             BlockType.BINARY: nb_median_hamming_distance,
-            BlockType.INTEGER: nb_median_euclidean_distance,
-            BlockType.CATEGORICAL: nb_median_kl_divergence}
+            BlockType.INTEGER: nb_median_taxicab_distance,
+            BlockType.CATEGORICAL: np_median_entropy}
 # _end_def_
