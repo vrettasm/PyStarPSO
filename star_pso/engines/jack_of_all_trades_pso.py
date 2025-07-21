@@ -303,8 +303,8 @@ class JackOfAllTradesPSO(GenericPSO):
         # Get the dictionary with all the methods.
         spread_method = get_spread_method()
 
-        # Preallocate
-        spread_per_field = np.empty(len(field))
+        # Preallocate a vector (one for each field).
+        per_field = np.empty(len(field))
 
         # Calculate the spread per data field.
         for n, data in field.items():
@@ -314,19 +314,19 @@ class JackOfAllTradesPSO(GenericPSO):
             b_type = self.swarm[0][n].btype
 
             # Convert the data to array.
-            data_arr = np.asarray(data)
+            data_arr = np.array(data)
+
+            # Make sure it has two dimensions.
+            if data_arr.ndim == 1:
+                data_arr = data_arr[:, np.newaxis]
 
             # In categorical data the array is already in 2D.
-            if b_type == BlockType.CATEGORICAL:
-                spread_per_field[n] = spread_method[b_type](data_arr,
-                                                            normal=True)
-            else:
-                spread_per_field[n] = spread_method[b_type](data_arr[:, np.newaxis],
-                                                            normal=True)
+            per_field[n] = spread_method[b_type](data_arr,
+                                                 normal=True)
         # _end_for_
 
         # Return the median value of all spreads.
-        return np.median(spread_per_field).item()
+        return np.median(per_field).item()
     # _end_def_
 
 # _end_class_
