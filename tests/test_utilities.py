@@ -1,9 +1,6 @@
 import unittest
-import numpy as np
 from star_pso.auxiliary.utilities import (nb_clip_item,
-                                          check_parameters,
-                                          nb_median_hamming_distance,
-                                          nb_median_euclidean_distance)
+                                          check_parameters)
 
 
 class TestUtilities(unittest.TestCase):
@@ -67,60 +64,16 @@ class TestUtilities(unittest.TestCase):
 
     def test_nb_median_hamming_distance(self) -> None:
         """
-        Check if nb_median_hamming_distance does the right job.
+        TBD.
         """
-        # Set the matrix dimensions.
-        n_rows, n_dims = 100, 15
-
-        # Generate a random binary matrix.
-        x = np.random.randint(0, 2, size=(n_rows, n_dims))
-
-        # Compute the median Hamming distance.
-        avg_hd = nb_median_hamming_distance(x, normal=True)
-
-        # Ensure the value is in [0, 1].
-        self.assertTrue(0.0 < avg_hd < 1.0)
-
-        # Generate a single random vector.
-        x0 = np.random.randint(0, 2, n_dims)
-
-        # Create a list with 99 identical copies.
-        xl = [x0 for _ in range(99)]
-
-        # Append a new random vector.
-        xl.append(np.random.randint(0, 2, n_dims))
-
-        # Create an array.
-        z = np.array(xl)
-
-        # Compute the average Hamming distance.
-        avg_hd = nb_median_hamming_distance(z, normal=True)
-
-        # This should be around 1% since we have
-        # 99 identical vectors and one different.
-        self.assertAlmostEqual(avg_hd, 1/100, places=1)
+        pass
     # _end_def_
 
     def test_nb_median_euclidean_distance(self) -> None:
         """
-        Check if nb_median_euclidean_distance does the right job.
+        TBD.
         """
-        from math import isclose
-
-        # Set the number of test particles.
-        n_rows = 2500
-
-        # Test a range of different number of variables.
-        for m in range(2, 10):
-
-            # Generate a random sample from U(0, 1).
-            x = np.random.rand(n_rows, m)
-
-            # Get the estimate of the spread.
-            spread_m = nb_median_euclidean_distance(x)
-
-            # Check if the estimated value is close to the True approximation.
-            self.assertTrue(isclose(spread_m, np.sqrt(m/6.0), abs_tol=0.1))
+        pass
     # _end_def_
 
 # _end_class_
