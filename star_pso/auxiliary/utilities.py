@@ -22,7 +22,7 @@ ScalarOrArray = Union[int, float, ArrayLike]
 # 3) 'c2': social coefficient
 # 4) 'fipso': fully informed PSO (optional).
 VOptions = namedtuple("VOptions",
-                      ["w", "c1", "c2", "fipso"], defaults=[False])
+                      ["w0", "c1", "c2", "fipso"], defaults=[False])
 
 class BlockType(Enum):
     """
@@ -48,7 +48,7 @@ def check_parameters(options: dict) -> None:
     Checks that the options dictionary has all the additional
     parameters to estimate the velocities of the optimization
     algorithm.
-        1)  'w': inertia weight
+        1) 'w0': inertia weight
         2) 'c1': cognitive coefficient
         3) 'c2': social coefficient
 
@@ -57,7 +57,7 @@ def check_parameters(options: dict) -> None:
     :return: None.
     """
     # Sanity check.
-    for key in {"w", "c1", "c2"}:
+    for key in {"w0", "c1", "c2"}:
         # Make sure the right keys exist.
         if key not in options:
             raise KeyError(f"Option '{key}' is missing.")

@@ -374,7 +374,7 @@ class GenericPSO(object):
         # _end_if_
 
         # Inertia weight parameter.
-        w = params.w
+        w = params.w0
 
         for i, (c1, c2) in enumerate(zip(cogntv, social)):
             # Get the current position of i-th the particle.
@@ -468,16 +468,16 @@ class GenericPSO(object):
         wt = self.w_max - (self.w_max - self.w_min) * spread_t
 
         # Get the previous values of the parameters.
-        w = options["w"]
+        w0 = options["w0"]
         c1 = options["c1"]
         c2 = options["c2"]
 
         # To reduce "noise effects" if the new inertia parameter "w"
         # is close to the previous value do not update the parameters.
-        if not isclose(wt, w, rel_tol=0.05, abs_tol=1.0e-5):
+        if not isclose(wt, w0, rel_tol=0.05, abs_tol=1.0e-5):
             
             # Update the cognitive and social parameters.
-            if wt > w:
+            if wt > w0:
                 # If the inertia weight has increased,
                 # then decrease the c1/c2 coefficients.
                 c1 *= 0.9
@@ -495,7 +495,7 @@ class GenericPSO(object):
             c2 = nb_clip_item(c2, c_min, c_max)
 
             # Update the dictionary.
-            options["w"] = wt
+            options["w0"] = wt
             options["c1"] = c1
             options["c2"] = c2
 
@@ -548,7 +548,7 @@ class GenericPSO(object):
 
         if options is None:
             # Default values of the simplified version.
-            options = {"w": 0.75, "c1": 2.0, "c2": 2.0}
+            options = {"w0": 0.5, "c1": 2.0, "c2": 2.0}
         else:
             # Ensure all the parameters are here.
             check_parameters(options)

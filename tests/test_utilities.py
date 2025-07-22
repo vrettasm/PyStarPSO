@@ -26,14 +26,18 @@ class TestUtilities(unittest.TestCase):
 
         # Check for the right keys.
         with self.assertRaises(KeyError):
-            # Key "w" is missing.
+            # Key "w0" is missing.
             check_parameters(options={"w_": None, "c1": None, "c2": None})
 
+        # Check for the right keys.
+        with self.assertRaises(KeyError):
             # Key "c1" is missing.
-            check_parameters(options={"w": None, "c_": None, "c2": None})
+            check_parameters(options={"w0": None, "c_": None, "c2": None})
 
+        # Check for the right keys.
+        with self.assertRaises(KeyError):
             # Key "c2" is missing.
-            check_parameters(options={"w": None, "c1": None, "c_": None})
+            check_parameters(options={"w0": None, "c1": None, "c_": None})
     # _end_def_
 
     def test_nb_clip(self) -> None:

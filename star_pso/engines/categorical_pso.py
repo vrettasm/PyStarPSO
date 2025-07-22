@@ -253,7 +253,7 @@ class CategoricalPSO(GenericPSO):
         # _end_if_
 
         # Inertia weight parameter.
-        w = params.w
+        w = params.w0
 
         for i, (c1, c2) in enumerate(zip(cogntv, social)):
             # Get the current position of i-th the particle.

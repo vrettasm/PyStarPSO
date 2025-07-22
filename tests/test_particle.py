@@ -11,11 +11,13 @@ class TestParticle(unittest.TestCase):
     def setUpClass(cls) -> None:
         print(">> TestParticle - START -")
         cls.rng = np.random.default_rng()
+
     # _end_def_
 
     @classmethod
     def tearDownClass(cls) -> None:
         print(">> TestParticle - FINISH -", end='\n\n')
+
     # _end_def_
 
     def test_equals(self):
@@ -51,6 +53,7 @@ class TestParticle(unittest.TestCase):
 
         # Should be FALSE.
         self.assertFalse(p1 == p3)
+
     # _end_def_
 
     def test_best_position(self):
@@ -80,8 +83,8 @@ class TestParticle(unittest.TestCase):
         p1.best_position = p2.position
 
         # Make sure that the positions are equal but not the same.
-        equal_but_not_the_same = (p1.best_position is not p2.position) and\
-                                 all(p1.best_position == p2.position)
+        equal_but_not_the_same = ((p1.best_position is not p2.position) and
+                                  all(p1.best_position == p2.position))
         # Check here.
         self.assertTrue(equal_but_not_the_same)
     # _end_def_
