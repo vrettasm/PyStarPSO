@@ -612,7 +612,7 @@ class GenericPSO(object):
             # _end_if_
 
             # Check for convergence.
-            if f_tol and isclose(f_new, f_opt, rel_tol=f_tol):
+            if f_tol and isclose(f_new, f_opt, abs_tol=f_tol):
                 # Update optimal function.
                 f_opt = f_new
 
