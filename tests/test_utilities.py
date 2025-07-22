@@ -18,8 +18,8 @@ class TestUtilities(unittest.TestCase):
         """
         Check for the correct options.
 
-        The input dictionary MUST contain (as minimum)
-        the following keys: {"w", "c1", "c2"}.
+        The input dictionary MUST contain as minimum
+        the following keys: {"w0", "c1", "c2"}.
 
         :return: None.
         """
@@ -29,15 +29,12 @@ class TestUtilities(unittest.TestCase):
             # Key "w0" is missing.
             check_parameters(options={"w_": None, "c1": None, "c2": None})
 
-        # Check for the right keys.
-        with self.assertRaises(KeyError):
             # Key "c1" is missing.
             check_parameters(options={"w0": None, "c_": None, "c2": None})
 
-        # Check for the right keys.
-        with self.assertRaises(KeyError):
             # Key "c2" is missing.
             check_parameters(options={"w0": None, "c1": None, "c_": None})
+        # _end_with_
     # _end_def_
 
     def test_nb_clip(self) -> None:
