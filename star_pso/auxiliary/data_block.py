@@ -487,7 +487,7 @@ class DataBlock(object):
         # Simple copy the block type value (enum).
         setattr(new_object, "_btype", self._btype)
 
-        # Simple copy of the copy best method (callable).
+        # Simple copy of the copy-best method (callable).
         setattr(new_object, "_copy_best", self._copy_best)
 
         # Return an identical particle.
