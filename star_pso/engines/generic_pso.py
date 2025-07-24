@@ -13,7 +13,7 @@ from numpy import array as np_array
 from numpy import empty as np_empty
 from numpy.random import (default_rng, Generator)
 
-from star_pso.auxiliary.swarm import Swarm
+from star_pso.auxiliary.swarm import Swarm, SwarmParticle
 from star_pso.auxiliary.utilities import (time_it, VOptions, nb_clip_item,
                                           SpecialMode, check_parameters,
                                           linear_rank_probabilities)
@@ -332,15 +332,14 @@ class GenericPSO(object):
     # _end_def_
 
     @staticmethod
-    def fully_informed_global_best(population: list) -> np.array:
+    def fully_informed_global_best(population: list[SwarmParticle]) -> np.array:
         """
-        Uses the whole input population and computes a weighted
-        average position according to the linear ranking of the
-        particles. Those with a higher function value also have
-        a bigger weight in the calculation.
+        Uses the whole input population and computes a weighted average position
+        according to the linear ranking of the particles. Those with a higher
+        function value also have a bigger weight in the calculation.
 
-        :param population: a list of particles which we want to
-        consider in the calculation of the global best position.
+        :param population: a list of particles which we want to consider in the
+        calculation of the global best position.
 
         :return: the gBest (as numpy array).
         """
