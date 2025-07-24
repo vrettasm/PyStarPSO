@@ -331,6 +331,42 @@ class GenericPSO(object):
                                   f"You should implement this method!")
     # _end_def_
 
+    @staticmethod
+    def fully_informed_global_best(population: list) -> np.array:
+        """
+        Uses the whole input population and computes a weighted
+        average position according to the linear ranking of the
+        particles. Those with a higher function value also have
+        a bigger weight in the calculation.
+
+        :param population: a list of particles which we want to
+        consider in the calculation of the global best position.
+
+        :return: the gBest (as numpy array).
+        """
+        # Compile a list with all the particle positions along with
+        # their function values.
+        all_positions = [(p.position, p.value) for p in population]
+
+        # Sort the list in ascending order using only
+        # their function value.
+        all_positions.sort(key=lambda item: item[1])
+
+        # Extract only their positions and convert to numpy array.
+        all_positions = np_array([item[0] for item in all_positions])
+
+        # Compute the probabilities.
+        p_weights = linear_rank_probabilities(len(population))
+
+        # In the "fully informed" case we take a weighted
+        # average from all the positions of the swarm.
+        g_best = np.multiply(all_positions,
+                             p_weights[:, np.newaxis]).sum(axis=0) / p_weights.sum()
+
+        # Return the global best position.
+        return g_best
+    # _end_def_
+
     def update_velocities(self, params: VOptions) -> None:
         """
         Performs the update on the velocity equations.
@@ -348,28 +384,15 @@ class GenericPSO(object):
         # Pre-sample the social coefficients.
         social = GenericPSO.rng.uniform(0, params.c2, size=arr_shape)
 
-        # Get the GLOBAL best particle position.
+        # Get the global best.
         if params.fipso:
-            # Compile a list with all positions,
-            # along with their function values.
-            all_positions = [(p.position, p.value)
-                             for p in self.swarm.population]
 
-            # Sort the list in ascending order using only
-            # their function value.
-            all_positions.sort(key=lambda item: item[1])
-
-            # Extract only their positions and convert to numpy array.
-            all_positions = np_array([item[0] for item in all_positions])
-
-            # Compute the probabilities.
-            p_weights = linear_rank_probabilities(self.swarm.size)
-
-            # In the "fully informed" case we take a weighted
-            # average from all the positions of the swarm.
-            g_best = np.multiply(all_positions,
-                                 p_weights[:, np.newaxis]).sum(axis=0) / p_weights.sum()
+            # In the "fully informed" case we compute a weighted average from all
+            # the positions of the swarm, according to their linear ranking.
+            g_best = GenericPSO.fully_informed_global_best(self.swarm.population)
         else:
+
+            # Get the swarm's best particle position.
             g_best = self.swarm.best_particle().position
         # _end_if_
 
