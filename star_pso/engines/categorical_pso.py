@@ -7,8 +7,8 @@ from numpy import clip as np_clip
 from numpy import subtract as np_subtract
 
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.auxiliary.utilities import (VOptions, nb_median_kl_divergence,
-                                          SpecialMode, linear_rank_probabilities)
+from star_pso.auxiliary.utilities import (VOptions, SpecialMode,
+                                          nb_median_kl_divergence)
 # Public interface.
 __all__ = ["CategoricalPSO"]
 
@@ -221,27 +221,12 @@ class CategoricalPSO(GenericPSO):
         # Pre-sample the social coefficients.
         social = GenericPSO.rng.uniform(0, params.c2, size=arr_shape)
 
-        # Get the GLOBAL best particle position.
+        # Get the global best.
         if params.fipso:
-            # Compile a list with all positions,
-            # along with their function values.
-            all_positions = [(p.position, p.value)
-                             for p in self.swarm.population]
 
-            # Sort the list in ascending order using only
-            # their function value.
-            all_positions.sort(key=lambda item: item[1])
-
-            # Extract only their positions and convert to numpy array.
-            all_positions = np.array([item[0] for item in all_positions])
-
-            # Compute the probabilities.
-            p_weights = linear_rank_probabilities(self.swarm.size)
-
-            # In the "fully informed" case we take a weighted
-            # average from all the positions of the swarm.
-            g_best = np.multiply(all_positions,
-                                 p_weights[:, np.newaxis]).sum(axis=0) / p_weights.sum()
+            # In the "fully informed" case we compute a weighted average from all
+            # the positions of the swarm, according to their linear ranking.
+            g_best = GenericPSO.fully_informed_global_best(self.swarm.population)
 
             # Finally normalize them to
             # account for probabilities.
