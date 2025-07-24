@@ -355,14 +355,14 @@ class CategoricalPSO(GenericPSO):
         for n, data in field.items():
 
             # Convert the data to array.
-            data_arr = np.array(data)
+            data_array = np.array(data)
 
             # Make sure it has two dimensions.
-            if data_arr.ndim == 1:
-                data_arr = data_arr[:, np.newaxis]
+            if data_array.ndim == 1:
+                data_array = data_array[:, np.newaxis]
 
             # Categorical data array is already in 2D.
-            per_field[n] = nb_median_kl_divergence(data_arr,
+            per_field[n] = nb_median_kl_divergence(data_array,
                                                    normal=True)
         # _end_for_
 
