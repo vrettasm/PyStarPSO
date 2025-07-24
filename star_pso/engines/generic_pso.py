@@ -358,8 +358,7 @@ class GenericPSO(object):
         # Compute the probabilities.
         p_weights = linear_rank_probabilities(len(population))
 
-        # In the "fully informed" case we take a weighted
-        # average from all the positions of the swarm.
+        # Take a "weighted average" from all the positions of the swarm.
         g_best = np.multiply(all_positions,
                              p_weights[:, np.newaxis]).sum(axis=0) / p_weights.sum()
 
