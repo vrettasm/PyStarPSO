@@ -16,7 +16,7 @@ from star_pso.auxiliary.jat_particle import JatParticle
 SwarmParticle = Union[Particle, JatParticle]
 
 # Public interface.
-__all__ = ["Swarm"]
+__all__ = ["Swarm", "SwarmParticle"]
 
 
 @dataclass(init=True, repr=True)
