@@ -258,6 +258,6 @@ class Swarm(object):
         :return: true if the 'item' belongs in the swarm population.
         """
         return item in self._population
-    # _end_if_
+    # _end_def_
 
 # _end_class_
