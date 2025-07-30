@@ -1,6 +1,7 @@
 from os import cpu_count
 from copy import deepcopy
 from math import inf, isclose
+from operator import attrgetter
 from collections import defaultdict
 
 from typing import Callable
@@ -343,17 +344,9 @@ class GenericPSO(object):
 
         :return: the gBest (as numpy array).
         """
-        # Compile a list with all the particle positions along with
-        # their function values.
-        all_positions = [(p.position, p.value) for p in population]
-
-        # Sort the list in ascending order using only
-        # their function value.
-        all_positions.sort(key=lambda item: item[1])
-
         # Extract only their positions and convert to numpy array.
-        all_positions = np_array([item[0] for item in all_positions])
-
+        all_positions = np_array([item.position for item in sorted(population,
+                                                                   key=attrgetter("value"))])
         # Compute the probabilities.
         p_weights = linear_rank_probabilities(len(population))
 
