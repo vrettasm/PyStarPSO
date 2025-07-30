@@ -244,7 +244,7 @@ class JatParticle(object):
         :return: true if the 'item' belongs in the container.
         """
         return item in self._container
-    # _end_if_
+    # _end_def_
 
     def __str__(self) -> str:
         """
