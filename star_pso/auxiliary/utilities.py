@@ -96,15 +96,14 @@ def linear_rank_probabilities(p_size: int) -> np.ndarray:
 @njit
 def kl_divergence_item(p: np.ndarray, q: np.ndarray) -> float:
     """
-    Calculates the Kullback-Leibler divergence between
-    two distributions. Note that KL divergence is not
-    symmetric, thus KL(p, q) != KL(q, p).
+    Calculates the Kullback-Leibler divergence between two distributions.
+    Note that KL divergence is not symmetric, thus KL(p, q) != KL(q, p).
 
-    NOTE: Both distributions 'p' and 'q' should already
-    be normalized to sum to one.
+    NOTE: Both distributions 'p' and 'q' should already be normalized to
+    sum to one.
 
-    This method is equivalent to entropy(p, q) from scipy.stats,
-    only it's around 10x faster.
+    This method is equivalent to entropy(p, q) from scipy.stats, only it's
+    around 10x faster.
 
     :param p: (np.array) probability distribution.
     :param q: (np.array) probability distribution.
@@ -215,8 +214,8 @@ def nb_median_euclidean_distance(x_pos: np.ndarray,
     :param x_pos: (np.ndarray) A 2D array of shape (n_particles,
     n_features) representing the positions of the swarm.
 
-    :param normal: (bool) if "True", normalize the distances by
-    their maximum distance.
+    :param normal: (bool) if "True", normalize the distances by their
+    maximum distance.
 
     :return: the median Euclidean distance.
     """
