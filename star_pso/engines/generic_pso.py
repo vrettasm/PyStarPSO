@@ -4,7 +4,7 @@ from math import inf, isclose
 from operator import attrgetter
 from collections import defaultdict
 
-from typing import Callable
+from typing import Callable, Union
 
 from joblib import (Parallel, delayed)
 
@@ -169,7 +169,7 @@ class GenericPSO(object):
     # _end_def_
 
     def evaluate_function(self, parallel_mode: bool = False,
-                          backend: str = "threads") -> (list[float], bool):
+                          backend: str = "threads") -> Union[list[float], bool]:
         """
         Evaluate all the particles of the input list with the custom objective
         function. The parallel_mode is optional.
