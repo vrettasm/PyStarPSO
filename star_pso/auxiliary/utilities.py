@@ -65,7 +65,7 @@ def check_parameters(options: dict) -> None:
 # _end_def_
 
 @cache
-def linear_rank_probabilities(p_size: int) -> np.array:
+def linear_rank_probabilities(p_size: int) -> np.ndarray:
     """
     Calculate the rank probability distribution over the
     population size.  The function is cached so repeated
@@ -94,7 +94,7 @@ def linear_rank_probabilities(p_size: int) -> np.array:
 # _end_def_
 
 @njit
-def kl_divergence_item(p: np.array, q: np.array) -> float:
+def kl_divergence_item(p: np.ndarray, q: np.ndarray) -> float:
     """
     Calculates the Kullback-Leibler divergence between
     two distributions. Note that KL divergence is not
@@ -117,7 +117,7 @@ def kl_divergence_item(p: np.array, q: np.array) -> float:
 # _end_def_
 
 @njit
-def kl_divergence_array(p: np.array, q: np.array) -> np.array:
+def kl_divergence_array(p: np.ndarray, q: np.ndarray) -> np.ndarray:
     """
     Calculates the Kullback-Leibler divergence between two distributions.
     Note that KL divergence is not symmetric, thus KL(p, q) != KL(q, p).
@@ -319,7 +319,7 @@ def nb_median_kl_divergence(x_pos: np.ndarray,
 # _end_def_
 
 @njit
-def nb_clip_array(x_new, lower_limit, upper_limit) -> np.array:
+def nb_clip_array(x_new, lower_limit, upper_limit) -> np.ndarray:
     """
     Local version of numba clip which limits the values of an array.
     Given an interval values outside the interval are clipped to the
@@ -394,7 +394,7 @@ def time_it(func):
     return time_it_wrapper
 # _end_def_
 
-def pareto_front(points: np.array) -> np.array:
+def pareto_front(points: np.ndarray) -> np.ndarray:
     """
     Simple function that calculates the pareto (optimal)
     front points from a given input points list.
