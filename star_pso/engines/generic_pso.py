@@ -333,7 +333,7 @@ class GenericPSO(object):
     # _end_def_
 
     @staticmethod
-    def fully_informed_global_best(population: list[SwarmParticle]) -> np.array:
+    def fully_informed_global_best(population: list[SwarmParticle]) -> np.ndarray:
         """
         Uses the whole input population and computes a weighted average position
         according to the linear ranking of the particles. Those with a higher
