@@ -102,7 +102,7 @@ def kl_divergence_item(p: np.ndarray, q: np.ndarray) -> float:
     NOTE: Both distributions 'p' and 'q' should already be normalized to
     sum to one.
 
-    This method is equivalent to entropy(p, q) from scipy.stats, only it's
+    This method is equivalent to entropy(p, q) from scipy_stats, only it's
     around 10x faster.
 
     :param p: (np.array) probability distribution.
@@ -124,7 +124,7 @@ def kl_divergence_array(p: np.ndarray, q: np.ndarray) -> np.ndarray:
     NOTE: Both distributions 'p' and 'q' should already be normalized to
     sum to one.
 
-    This method is equivalent to entropy(p, q, axis=1) from scipy.stats,
+    This method is equivalent to entropy(p, q, axis=1) from scipy_stats,
     only it's around 10x faster.
 
     Example:
@@ -268,7 +268,7 @@ def nb_median_taxicab_distance(x_pos: np.ndarray,
     x_dist = np.sum(np.abs(x_centroid - x_pos), axis=1)
 
     # Find the maximum distance.
-    d_max = x_dist.max()
+    d_max = x_dist.max(initial=np._NoValue)
 
     # Normalize the distances with d_max.
     if normal and d_max != 0.0:
@@ -306,7 +306,7 @@ def nb_median_kl_divergence(x_pos: np.ndarray,
     kl_dist = kl_divergence_array(x_pos, x_centroid)
 
     # Find the maximum KL.
-    kl_max = kl_dist.max()
+    kl_max = kl_dist.max(initial=np._NoValue)
 
     # Check for normalization.
     if normal and kl_max != 0.0:
