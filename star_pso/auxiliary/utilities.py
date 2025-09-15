@@ -268,7 +268,7 @@ def nb_median_taxicab_distance(x_pos: np.ndarray,
     x_dist = np.sum(np.abs(x_centroid - x_pos), axis=1)
 
     # Find the maximum distance.
-    d_max = x_dist.max(initial=np._NoValue)
+    d_max = x_dist.max()
 
     # Normalize the distances with d_max.
     if normal and d_max != 0.0:
@@ -306,7 +306,7 @@ def nb_median_kl_divergence(x_pos: np.ndarray,
     kl_dist = kl_divergence_array(x_pos, x_centroid)
 
     # Find the maximum KL.
-    kl_max = kl_dist.max(initial=np._NoValue)
+    kl_max = kl_dist.max()
 
     # Check for normalization.
     if normal and kl_max != 0.0:
