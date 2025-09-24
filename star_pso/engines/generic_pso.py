@@ -235,13 +235,13 @@ class GenericPSO(object):
         # Update all particles with their new objective function values.
         for n, (p, result) in enumerate(zip(self._swarm.population, f_evaluation)):
             # Extract the n-th function value.
-            f_value = result[0]
+            f_value = result["f_value"]
 
             # Attach the function value to each particle.
             p.value = f_value
 
             # Update the found solution.
-            found_solution |= result[1]
+            found_solution |= result["solution_is_found"]
 
             # Update the statistics.
             fx_array[n] = f_value
