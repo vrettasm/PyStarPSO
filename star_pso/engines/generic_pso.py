@@ -4,8 +4,7 @@ from math import inf, isclose
 from operator import attrgetter
 from collections import defaultdict
 
-from typing import Callable, Union
-
+from typing import Callable
 from joblib import (Parallel, delayed)
 
 import numpy as np
