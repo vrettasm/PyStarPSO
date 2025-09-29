@@ -1,7 +1,7 @@
 import time
 
 from enum import Enum
-from typing import Union, Callable
+from typing import (Union, Callable, Tuple)
 from functools import (cache, wraps, partial)
 
 from collections import namedtuple
@@ -64,20 +64,20 @@ def check_parameters(options: dict) -> None:
 # _end_def_
 
 @cache
-def linear_rank_probabilities(p_size: int) -> np.ndarray:
+def linear_rank_probabilities(p_size: int) -> Tuple[np.ndarray, float]:
     """
-    Calculate the rank probability distribution over the
-    population size.  The function is cached so repeated
-    calls with the  same input should not  recompute the
-    same array since the population size of the swarm is
-    not expected to change.
+    Calculate the rank probability distribution over the population size.
+    The function is cached so repeated calls with the same input should
+    not recompute the same array since the population size of the swarm
+    is not expected to change.
 
     NOTE: Probabilities are returned in descending order.
 
     :param p_size: (int) population size.
 
-    :return: (array) rank probability distribution in
-    descending order.
+    :return: (array, float) rank probability distribution in descending
+    order along with their sum. Note: The sum should be one, but due to
+    small errors it might be less.
     """
     # Sanity check.
     if p_size <= 0:
@@ -89,7 +89,10 @@ def linear_rank_probabilities(p_size: int) -> np.ndarray:
 
     # Calculate the linear ranked probabilities of each
     # particle in the swarm using their ranking position.
-    return np.arange(1, p_size + 1) / sum_ranked_values
+    probs = np.arange(1, p_size + 1) / sum_ranked_values
+
+    # Return the probs and their sum.
+    return probs, probs.sum()
 # _end_def_
 
 @njit
