@@ -201,7 +201,7 @@ class GenericPSO(object):
     # _end_def_
 
     def evaluate_function(self, parallel_mode: bool = False,
-                          backend: str = "threads") -> Union[list[float], bool]:
+                          backend: str = "threads") -> tuple[list[float], bool]:
         """
         Evaluate all the particles of the input list with the custom objective
         function. The parallel_mode is optional.
