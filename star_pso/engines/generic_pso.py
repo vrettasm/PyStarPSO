@@ -168,7 +168,7 @@ class GenericPSO(object):
         return self._swarm
     # _end_def_
 
-    def _get_typed_positions(self):
+    def _get_typed_positions(self) -> list | np.ndarray:
         """
         Extracts the positions from the swarm and returns them
         in their correct type according to the setting of the algorithm.
