@@ -168,20 +168,13 @@ class GenericPSO(object):
         return self._swarm
     # _end_def_
 
-    def evaluate_function(self, parallel_mode: bool = False,
-                          backend: str = "threads") -> Union[list[float], bool]:
+    def _get_typed_positions(self):
         """
-        Evaluate all the particles of the input list with the custom objective
-        function. The parallel_mode is optional.
+        Extracts the positions from the swarm and returns them
+        in their correct type according to the setting of the algorithm.
 
-        :param parallel_mode: (bool) enables parallel computation of the objective
-        function. Default is False (serial execution).
-
-        :param backend: backend for the parallel Joblib ('threads' or 'processes').
-
-        :return: the max function value and the found solution flag.
+        :return: the particle positions either as list or ndarray.
         """
-
         # Check if "Jack of All Trades" is enabled.
         if self._special_mode == SpecialMode.JACK_OF_ALL_TRADES:
 
@@ -203,6 +196,26 @@ class GenericPSO(object):
                 self._items["sample_random_values"](positions)
             # _end_if_
         # _end_if_
+
+        return positions
+    # _end_def_
+
+    def evaluate_function(self, parallel_mode: bool = False,
+                          backend: str = "threads") -> Union[list[float], bool]:
+        """
+        Evaluate all the particles of the input list with the custom objective
+        function. The parallel_mode is optional.
+
+        :param parallel_mode: (bool) enables parallel computation of the objective
+        function. Default is False (serial execution).
+
+        :param backend: backend for the parallel Joblib ('threads' or 'processes').
+
+        :return: the max function value and the found solution flag.
+        """
+
+        # Extract the correct type positions.
+        positions = self._get_typed_positions()
 
         # Get a local copy of the objective function.
         func = self.objective_func
