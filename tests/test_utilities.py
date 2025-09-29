@@ -1,5 +1,6 @@
 import unittest
 from star_pso.auxiliary.utilities import (nb_clip_item,
+                                          cost_function,
                                           check_parameters)
 
 
@@ -63,18 +64,43 @@ class TestUtilities(unittest.TestCase):
                          msg="Upper limit failed.")
     # _end_def_
 
-    def test_nb_median_hamming_distance(self) -> None:
+    def test_cost_function_min(self) -> None:
         """
-        TBD.
+        Check the default behaviour of the cost_function decorator.
         """
-        pass
+
+        @cost_function
+        def func_1(num):
+            return num
+        # _end_def_
+
+        # Test variable.
+        x = 1
+
+        # Get the result from the function call.
+        result_x = func_1(x)
+
+        # Here x == f(x).
+        self.assertEqual(x, result_x["f_value"])
     # _end_def_
 
-    def test_nb_median_euclidean_distance(self) -> None:
+    def test_cost_function_max(self) -> None:
         """
-        TBD.
+        Check the minimize=True, behaviour of the cost_function decorator.
         """
-        pass
+        @cost_function(minimize=True)
+        def func_2(num):
+            return num
+        # _end_def_
+
+        # Test variable.
+        y = 1
+
+        # Get the result from the function call.
+        result_y = func_2(y)
+
+        # Here y == -f(y).
+        self.assertEqual(y, -result_y["f_value"])
     # _end_def_
 
 # _end_class_
