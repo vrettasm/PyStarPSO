@@ -64,7 +64,7 @@ def check_parameters(options: dict) -> None:
 # _end_def_
 
 @cache
-def linear_rank_probabilities(p_size: int) -> Tuple[np.ndarray, float]:
+def linear_rank_probabilities(p_size: int) -> tuple[np.ndarray, float]:
     """
     Calculate the rank probability distribution over the population size.
     The function is cached so repeated calls with the same input should
