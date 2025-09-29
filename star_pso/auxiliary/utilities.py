@@ -1,7 +1,7 @@
 import time
 
 from enum import Enum
-from typing import (Union, Callable, Tuple)
+from typing import (Union, Callable)
 from functools import (cache, wraps, partial)
 
 from collections import namedtuple
