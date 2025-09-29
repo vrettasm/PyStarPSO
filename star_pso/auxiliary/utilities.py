@@ -339,7 +339,7 @@ def nb_clip_array(x_new, lower_limit, upper_limit) -> np.ndarray:
 # _end_def_
 
 @njit
-def nb_clip_item(x_new, lower_limit, upper_limit) -> Union[int, float]:
+def nb_clip_item(x_new, lower_limit, upper_limit) -> int | float:
     """
     Local version of numba clip which limits the values of a scalar.
     Given an interval values outside the interval are clipped to the
