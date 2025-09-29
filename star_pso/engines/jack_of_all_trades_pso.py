@@ -204,7 +204,7 @@ class JackOfAllTradesPSO(GenericPSO):
                                       for item in sorted(self.swarm.population,
                                                          key=attrgetter("value"))], dtype=object)
             # Compute the linear rank probability weights.
-            rank_weights = linear_rank_probabilities(self.swarm.size)
+            rank_weights, _ = linear_rank_probabilities(self.swarm.size)
 
             # Compute the weighted average according to their ranking.
             g_best = np_average(all_positions, weights=rank_weights, axis=0).tolist()

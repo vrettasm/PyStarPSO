@@ -348,11 +348,11 @@ class GenericPSO(object):
         all_positions = np_array([item.position for item in sorted(population,
                                                                    key=attrgetter("value"))])
         # Compute the probabilities.
-        p_weights = linear_rank_probabilities(len(population))
+        p_weights, p_weights_sum = linear_rank_probabilities(len(population))
 
         # Take a "weighted average" from all the positions of the swarm.
         g_best = np.multiply(all_positions,
-                             p_weights[:, np.newaxis]).sum(axis=0) / p_weights.sum()
+                             p_weights[:, np.newaxis]).sum(axis=0) / p_weights_sum
 
         # Return the global best position.
         return g_best
