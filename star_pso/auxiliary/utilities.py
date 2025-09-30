@@ -459,7 +459,7 @@ def cost_function(func: Callable = None, minimize: bool = False):
     # _end_if_
 
     @wraps(func)
-    def function_wrapper(*args, **kwargs):
+    def function_wrapper(*args, **kwargs) -> dict:
         """
         Internal function wrapper.
 
