@@ -79,7 +79,12 @@ def linear_rank_probabilities(p_size: int) -> tuple[np.ndarray, float]:
     order along with their sum. Note: The sum should be one, but due to
     small errors it might be less.
     """
-    # Sanity check.
+    # Sanity check #1.
+    if not isinstance(p_size, int):
+        raise TypeError("'p_size' must be an integer number.")
+    # _end_if_
+
+    # Sanity check #2.
     if p_size <= 0:
         raise ValueError("'p_size' must be a positive number.")
     # _end_if_
