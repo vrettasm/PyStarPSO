@@ -1,7 +1,6 @@
 import unittest
-from star_pso.auxiliary.utilities import (nb_clip_item,
-                                          cost_function,
-                                          check_parameters)
+from star_pso.auxiliary.utilities import (nb_clip_item, cost_function,
+                                          check_parameters, linear_rank_probabilities)
 
 
 class TestUtilities(unittest.TestCase):
@@ -101,6 +100,34 @@ class TestUtilities(unittest.TestCase):
 
         # Here y == -f(y).
         self.assertEqual(y, -result_y["f_value"])
+    # _end_def_
+
+    def test_linear_rank_probabilities(self) -> None:
+        """
+        Check the behaviour of the linear_rank_probabilities function.
+        We check for the correct type, the positive value and whether
+        the sum of the probabilities sums to 1.0
+
+        :return: None.
+        """
+        # Test input is integer.
+        with self.assertRaises(TypeError):
+            _ = linear_rank_probabilities(2.3)
+        # _end_with_
+
+        # Test input is positive.
+        with self.assertRaises(ValueError):
+            _ = linear_rank_probabilities(-10)
+        # _end_with_
+
+        # Get the probabilities for p_size=10.
+        probs, probs_sum = linear_rank_probabilities(10)
+
+        # Test that the probs sum to the same number.
+        self.assertEqual(probs.sum(), probs_sum)
+
+        # Test that the probs_sum is equal to 1.0.
+        self.assertAlmostEqual(probs_sum, 1.0, places=3)
     # _end_def_
 
 # _end_class_
