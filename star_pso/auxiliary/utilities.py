@@ -507,3 +507,17 @@ def get_spread_method() -> dict:
             BlockType.INTEGER: nb_median_taxicab_distance,
             BlockType.CATEGORICAL: nb_median_kl_divergence}
 # _end_def_
+
+@cache
+def cached_range(n: int) -> np.ndarray:
+    """
+    Create a range of (int) values from 0 to n-1.
+    The function is cached to avoid recalculating
+    again the range with the same input value.
+
+    :param n: the upper bound of the range.
+
+    :return: numpy.arange(n)
+    """
+    return np.arange(n, dtype=int)
+# _end_def_

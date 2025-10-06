@@ -1,5 +1,4 @@
 from operator import attrgetter
-from functools import cache
 
 import numpy as np
 from numpy import sum as np_sum
@@ -11,7 +10,7 @@ from numpy import subtract as np_subtract
 
 from collections import defaultdict
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.auxiliary.utilities import (VOptions, BlockType, SpecialMode,
+from star_pso.auxiliary.utilities import (VOptions, BlockType, SpecialMode, cached_range,
                                           linear_rank_probabilities, get_spread_method)
 # Public interface.
 __all__ = ["JackOfAllTradesPSO"]
@@ -124,21 +123,6 @@ class JackOfAllTradesPSO(GenericPSO):
             # _end_for_
     # _end_def_
 
-    @staticmethod
-    @cache
-    def _cached_range(n: int) -> np.ndarray:
-        """
-        Create a range of values from 0 to n.
-        The function is cached to avoid calculating
-        again the range with the same input value.
-
-        :param n: the upper bound of the range.
-
-        :return: numpy.arange(n)
-        """
-        return np.arange(n, dtype=int)
-    # _end_def_
-
     def sample_permutation_values(self, positions: list[list]) -> None:
         """
         Samples a permutation from a given set of variables.
@@ -154,7 +138,7 @@ class JackOfAllTradesPSO(GenericPSO):
         """
 
         # Create a range of values.
-        random_index = self._cached_range(self.n_cols)
+        random_index = cached_range(self.n_cols)
 
         # Shuffle in place. This is used to avoid introducing
         # biasing by using always the same order of blocks to
