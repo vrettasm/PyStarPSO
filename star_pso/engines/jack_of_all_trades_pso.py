@@ -2,9 +2,6 @@ from operator import attrgetter
 
 import numpy as np
 from numpy import sum as np_sum
-from numpy import array as np_array
-from numpy import empty as np_empty
-from numpy import average as np_average
 from numpy import isscalar as np_isscalar
 from numpy import subtract as np_subtract
 
@@ -42,7 +39,7 @@ class JackOfAllTradesPSO(GenericPSO):
 
         # First we declare the velocities to be
         # an [n_rows x n_cols] array of objects.
-        self._velocities = np_empty(shape=(self.n_rows, self.n_cols),
+        self._velocities = np.empty(shape=(self.n_rows, self.n_cols),
                                     dtype=object)
 
         # Call the random velocity generator.
@@ -199,14 +196,14 @@ class JackOfAllTradesPSO(GenericPSO):
 
             # Extract only their positions and convert to numpy array.
             # Due to the different shape of each variable we need to set the dtype as object.
-            all_positions = np_array([item.position
+            all_positions = np.array([item.position
                                       for item in sorted(self.swarm.population,
                                                          key=attrgetter("value"))], dtype=object)
             # Compute the linear rank probability weights.
             rank_weights, _ = linear_rank_probabilities(self.swarm.size)
 
             # Compute the weighted average according to their ranking.
-            g_best = np_average(all_positions, weights=rank_weights, axis=0).tolist()
+            g_best = np.average(all_positions, weights=rank_weights, axis=0).tolist()
 
             # Finally normalize them to
             # account for probabilities.
