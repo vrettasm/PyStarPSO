@@ -124,6 +124,21 @@ class JackOfAllTradesPSO(GenericPSO):
             # _end_for_
     # _end_def_
 
+    @staticmethod
+    @cache
+    def _cached_range(n: int) -> np.ndarray:
+        """
+        Create a range of values from 0 to n.
+        The function is cached to avoid calculating
+        again the range with the same input value.
+
+        :param n: the upper bound of the range.
+
+        :return: numpy.arange(n)
+        """
+        return np_arange(n, dtype=int)
+    # _end_def_
+
     def sample_permutation_values(self, positions: list[list]) -> None:
         """
         Samples a permutation from a given set of variables.
