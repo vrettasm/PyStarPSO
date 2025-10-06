@@ -515,6 +515,10 @@ def cached_range(n: int) -> np.ndarray:
     The function is cached to avoid recalculating
     again the range with the same input value.
 
+    NOTE: Since the function is cached, repeated calls
+    with the same input value, will return the address
+    of the same (1st called) array in memory!
+
     :param n: the upper bound of the range.
 
     :return: numpy.arange(n)
