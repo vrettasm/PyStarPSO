@@ -1,10 +1,10 @@
 from operator import attrgetter
+from functools import cache
 
 import numpy as np
 from numpy import sum as np_sum
 from numpy import array as np_array
 from numpy import empty as np_empty
-from numpy import arange as np_arange
 from numpy import average as np_average
 from numpy import isscalar as np_isscalar
 from numpy import subtract as np_subtract
@@ -136,7 +136,7 @@ class JackOfAllTradesPSO(GenericPSO):
 
         :return: numpy.arange(n)
         """
-        return np_arange(n, dtype=int)
+        return np.arange(n, dtype=int)
     # _end_def_
 
     def sample_permutation_values(self, positions: list[list]) -> None:
@@ -154,7 +154,7 @@ class JackOfAllTradesPSO(GenericPSO):
         """
 
         # Create a range of values.
-        random_index = np_arange(self.n_cols, dtype=int)
+        random_index = self._cached_range(self.n_cols)
 
         # Shuffle in place. This is used to avoid introducing
         # biasing by using always the same order of blocks to
