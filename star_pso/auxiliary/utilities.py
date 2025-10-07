@@ -71,12 +71,12 @@ def linear_rank_probabilities(p_size: int) -> tuple[np.ndarray, float]:
     not recompute the same array since the population size of the swarm
     is not expected to change.
 
-    NOTE: Probabilities are returned in descending order.
+    NOTE: Probabilities are returned in ascending order.
 
     :param p_size: (int) population size.
 
-    :return: (array, float) rank probability distribution in descending
-    order along with their sum. Note: The sum should be one, but due to
+    :return: (array, float) rank probability distribution in ascending
+    order along with their sum. Note: The sum should be one but due to
     small errors it might be less.
     """
     # Sanity check #1.
