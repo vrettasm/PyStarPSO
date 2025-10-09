@@ -470,7 +470,7 @@ class GenericPSO(object):
         self.w_max = nb_clip_item(new_max, 0.0, 1.0)
     # _end_def_
 
-    def adapt_velocity_parameters(self, options: dict) -> None:
+    def adapt_velocity_parameters(self, options: dict) -> bool:
         """
         Provides a very basic adapt mechanism for the PSO update
         velocity parameters. It can be used as a placeholder for
@@ -479,8 +479,11 @@ class GenericPSO(object):
         :param options: (dict) contains the previous estimates of
         the PSO parameters.
 
-        :return: None.
+        :return: True if the update happened, or False otherise.
         """
+        # Default return parameter.
+        have_been_updated = False
+
         # For the moment we hardcode the min/max
         # values of the c1 and c2 parameters.
         c_min, c_max = 0.1, 2.5
@@ -530,7 +533,12 @@ class GenericPSO(object):
             self.stats["inertia_w"].append(wt)
             self.stats["cogntv_c1"].append(c1)
             self.stats["social_c2"].append(c2)
+
+            # Change the return value.
+            have_been_updated = True
         # _end_if_
+
+        return have_been_updated
     # _end_def_
 
     @time_it
@@ -652,15 +660,16 @@ class GenericPSO(object):
 
             # Check for adapting the parameters.
             if adapt_params and (i % 10) == 0:
-                # Get a copy of the previous parameters.
+                # Make a copy of the parameters.
                 dict_options = params._asdict()
 
-                # Update the parameters.
-                self.adapt_velocity_parameters(dict_options)
+                # Try to perform the update.
+                if self.adapt_velocity_parameters(dict_options):
+                    # If the update was successful convert the new
+                    # parameters to VOptions for the next iteration.
+                    params = VOptions(**dict_options)
+                # _end_if_
 
-                # Convert  the new  parameters to
-                # VOptions for the next iteration.
-                params = VOptions(**dict_options)
             # _end_if_
 
             # Update optimal function for next iteration.
