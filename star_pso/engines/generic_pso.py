@@ -669,7 +669,6 @@ class GenericPSO(object):
                     # parameters to VOptions for the next iteration.
                     params = VOptions(**dict_options)
                 # _end_if_
-
             # _end_if_
 
             # Update optimal function for next iteration.
