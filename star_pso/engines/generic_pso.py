@@ -500,7 +500,7 @@ class GenericPSO(object):
 
         # To reduce "noise effects" if the new inertia parameter "w"
         # is close to the previous value do not update the parameters.
-        if not isclose(wt, w0, rel_tol=0.05, abs_tol=1.0e-5):
+        if not isclose(wt, w0, rel_tol=0.05, abs_tol=1.0e-3):
             
             # Update the cognitive and social parameters.
             if wt > w0:
