@@ -479,7 +479,7 @@ class GenericPSO(object):
         :param options: (dict) contains the previous estimates of
         the PSO parameters.
 
-        :return: True if the update happened, or False otherise.
+        :return: True if the update happened, False otherwise.
         """
         # Default return parameter.
         have_been_updated = False
