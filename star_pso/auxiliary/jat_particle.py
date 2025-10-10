@@ -1,5 +1,6 @@
 from math import inf
 from copy import deepcopy
+from functools import cached_property
 from dataclasses import dataclass, field
 
 from star_pso.auxiliary.data_block import DataBlock
@@ -37,10 +38,14 @@ class JatParticle(object):
         return self._container
     # _end_def_
 
-    @property
+    @cached_property
     def size(self) -> int:
         """
-        Returns the size (length) of the particle.
+        Returns the size (or length) of the particle.
+
+        Since the size of the container doesn't change
+        dynamically we can cache this value for faster
+        retrieval.
 
         :return: (int) the length of the particle.
         """
