@@ -46,7 +46,7 @@ class IntegerPSO(GenericPSO):
                                 self._velocities).astype(int)
 
         # Ensure the particle stays within bounds.
-        np_clip(new_positions, self._lower_bound, self._upper_bound,
+        np_clip(new_positions, self.lower_bound, self.upper_bound,
                 out=new_positions)
 
         # Update all particle positions.
