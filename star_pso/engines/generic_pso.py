@@ -134,6 +134,16 @@ class GenericPSO(object):
         return self._upper_bound
     # _end_def_
 
+    @property
+    def velocities(self) -> np_array:
+        """
+        Accessor method that returns the velocity values.
+
+        :return: (numpy array).
+        """
+        return self._velocities
+    # _end_def_
+
     @classmethod
     def set_seed(cls, new_seed=None) -> None:
         """
