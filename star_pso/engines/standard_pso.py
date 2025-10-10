@@ -47,11 +47,11 @@ class StandardPSO(GenericPSO):
         new_positions = self.swarm.positions_as_array() + self._velocities
 
         # Ensure the particle stays within bounds.
-        np_clip(new_positions, self._lower_bound, self._upper_bound,
+        np_clip(new_positions, self.lower_bound, self.upper_bound,
                 out=new_positions)
 
         # Update all particle positions.
-        for particle, x_new in zip(self._swarm.population,
+        for particle, x_new in zip(self.swarm.population,
                                    new_positions):
             particle.position = x_new
     # _end_def_
@@ -64,8 +64,7 @@ class StandardPSO(GenericPSO):
         :return: None.
         """
         # Generate uniform FLOAT positions U(x_min, x_max).
-        uniform_positions = GenericPSO.rng.uniform(self._lower_bound,
-                                                   self._upper_bound,
+        uniform_positions = GenericPSO.rng.uniform(self.lower_bound, self.upper_bound,
                                                    size=(self.n_rows, self.n_cols))
         # Assign the new positions in the swarm.
         for p, x_new in zip(self._swarm, uniform_positions):
