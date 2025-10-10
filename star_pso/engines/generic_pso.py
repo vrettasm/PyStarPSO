@@ -114,6 +114,26 @@ class GenericPSO(object):
         self._special_mode = SpecialMode.NORMAL
     # _end_def_
 
+    @property
+    def lower_bound(self) -> np_array:
+        """
+        Accessor method that returns the lower bound value(s).
+
+        :return: (numpy array).
+        """
+        return self._lower_bound
+    # _end_def_
+
+    @property
+    def upper_bound(self) -> np_array:
+        """
+        Accessor method that returns the upper bound value(s).
+
+        :return: (numpy array).
+        """
+        return self._upper_bound
+    # _end_def_
+
     @classmethod
     def set_seed(cls, new_seed=None) -> None:
         """
