@@ -115,7 +115,7 @@ class GenericPSO(object):
     # _end_def_
 
     @property
-    def lower_bound(self) -> np_array:
+    def lower_bound(self) -> np.ndarray:
         """
         Accessor method that returns the lower bound value(s).
 
@@ -125,7 +125,7 @@ class GenericPSO(object):
     # _end_def_
 
     @property
-    def upper_bound(self) -> np_array:
+    def upper_bound(self) -> np.ndarray:
         """
         Accessor method that returns the upper bound value(s).
 
@@ -135,7 +135,7 @@ class GenericPSO(object):
     # _end_def_
 
     @property
-    def velocities(self) -> np_array:
+    def velocities(self) -> np.ndarray:
         """
         Accessor method that returns the velocity values.
 
