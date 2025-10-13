@@ -1,6 +1,7 @@
 import unittest
 from star_pso.auxiliary.utilities import (nb_clip_item, cost_function,
-                                          check_parameters, linear_rank_probabilities)
+                                          check_velocity_parameters,
+                                          linear_rank_probabilities)
 
 
 class TestUtilities(unittest.TestCase):
@@ -27,13 +28,13 @@ class TestUtilities(unittest.TestCase):
         # Check for the right keys.
         with self.assertRaises(KeyError):
             # Key "w0" is missing.
-            check_parameters(options={"w_": None, "c1": None, "c2": None})
+            check_velocity_parameters(options={"w_": None, "c1": None, "c2": None})
 
             # Key "c1" is missing.
-            check_parameters(options={"w0": None, "c_": None, "c2": None})
+            check_velocity_parameters(options={"w0": None, "c_": None, "c2": None})
 
             # Key "c2" is missing.
-            check_parameters(options={"w0": None, "c1": None, "c_": None})
+            check_velocity_parameters(options={"w0": None, "c1": None, "c_": None})
         # _end_with_
     # _end_def_
 
