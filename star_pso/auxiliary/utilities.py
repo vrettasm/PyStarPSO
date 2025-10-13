@@ -42,7 +42,7 @@ class SpecialMode(Enum):
     NORMAL, CATEGORICAL, JACK_OF_ALL_TRADES = range(3)
 # _end_class_
 
-def check_parameters(options: dict) -> None:
+def check_velocity_parameters(options: dict) -> None:
     """
     Checks that the options dictionary has all the additional
     parameters to estimate the velocities of the optimization

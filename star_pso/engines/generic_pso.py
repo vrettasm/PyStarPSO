@@ -15,7 +15,7 @@ from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.swarm import Swarm, SwarmParticle
 from star_pso.auxiliary.utilities import (time_it, VOptions, nb_clip_item,
-                                          SpecialMode, check_parameters,
+                                          SpecialMode, check_velocity_parameters,
                                           linear_rank_probabilities)
 # Public interface.
 __all__ = ["GenericPSO"]
@@ -616,7 +616,7 @@ class GenericPSO(object):
             options = {"w0": 0.5, "c1": 2.0, "c2": 2.0}
         else:
             # Ensure all the parameters are here.
-            check_parameters(options)
+            check_velocity_parameters(options)
         # _end_if_
 
         # Convert options dict to VOptions.
