@@ -228,7 +228,7 @@ class GenericPSO(object):
     # _end_def_
 
     def evaluate_function(self, parallel_mode: bool = False,
-                          backend: str = "threads") -> tuple[list[float], bool]:
+                          backend: str = "threads") -> tuple[float, bool]:
         """
         Evaluate all the particles of the input list with the custom objective
         function. The parallel_mode is optional.
@@ -266,8 +266,8 @@ class GenericPSO(object):
         # Initialize f_max.
         f_max = -inf
 
-        # Initialize the best position.
-        x_best = None
+        # Initialize the optimal position.
+        x_opt = None
 
         # Stores the function values.
         fx_array = np.empty(self.n_rows, dtype=float)
@@ -289,17 +289,17 @@ class GenericPSO(object):
             # Update f_max value.
             if f_value > f_max:
                 f_max = f_value
-                x_best = positions[n]
+                x_opt = positions[n]
         # _end_for_
 
         # Store the function values as ndarray.
-        self.stats["f_values"].append(fx_array)
+        self._stats["f_values"].append(fx_array)
 
-        # Store the best (sampled) position.
-        self.stats["x_best"].append(x_best)
+        # Store the optimal sampled position.
+        self._stats["x_opt"].append(x_opt)
 
         # Store the f_max of this iteration.
-        self.stats["f_best"].append(f_max)
+        self._stats["f_opt"].append(f_max)
 
         # Update the counter of function evaluations.
         self._f_eval += self.swarm.size
@@ -317,7 +317,8 @@ class GenericPSO(object):
 
         :return: None.
         """
-        self.stats.clear()
+        self._stats.clear()
+
         self._f_eval = 0
     # _end_def_
 
@@ -331,14 +332,14 @@ class GenericPSO(object):
                  found.
         """
 
-        # Get the maximum of f_best.
-        f_opt = max(self.stats["f_best"])
+        # Get the maximum of the f_opt.
+        f_opt = max(self._stats["f_opt"])
 
-        # Get the index of f_best.
-        i_opt = self.stats["f_best"].index(f_opt)
+        # Get the index of f_opt.
+        i_opt = self._stats["f_opt"].index(f_opt)
 
-        # Get the corresponding x_best.
-        x_opt = self.stats["x_best"][i_opt]
+        # Get the corresponding x_opt.
+        x_opt = self._stats["x_opt"][i_opt]
 
         # Return the optimal particle position,
         # along with its function value and its
@@ -558,9 +559,9 @@ class GenericPSO(object):
             options["c2"] = c2
 
             # Store the updated parameters.
-            self.stats["inertia_w"].append(wt)
-            self.stats["cogntv_c1"].append(c1)
-            self.stats["social_c2"].append(c2)
+            self._stats["inertia_w"].append(wt)
+            self._stats["cogntv_c1"].append(c1)
+            self._stats["social_c2"].append(c2)
 
             # Change the return value.
             have_been_updated = True
