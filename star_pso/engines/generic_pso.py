@@ -298,8 +298,7 @@ class GenericPSO(object):
         # Store the best (sampled) position.
         self.stats["x_best"].append(x_best)
 
-        # Store the optimal f-value of this
-        # iteration.
+        # Store the f_max of this iteration.
         self.stats["f_best"].append(f_max)
 
         # Update the counter of function evaluations.
