@@ -240,12 +240,13 @@ class CategoricalPSO(GenericPSO):
         # Inertia weight parameter.
         w = params.w0
 
-        for i, (c1, c2) in enumerate(zip(cogntv, social)):
-            # Get the current position of i-th the particle.
-            x_i = self.swarm[i].position
+        for i, (particle_i, c1, c2) in enumerate(zip(self.swarm.population,
+                                                     cogntv, social)):
+            # Get the i-th particle' position.
+            x_i = particle_i.position
 
             # Get the Best local position.
-            l_best = self.swarm[i].best_position
+            l_best = particle_i.best_position
 
             # Update all velocities.
             for j, (xk, vk) in enumerate(zip(x_i, self._velocities[i])):

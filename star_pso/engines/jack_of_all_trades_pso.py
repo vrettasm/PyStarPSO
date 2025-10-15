@@ -219,12 +219,13 @@ class JackOfAllTradesPSO(GenericPSO):
         # Inertia weight parameter.
         w = params.w0
 
-        for i, (c1, c2) in enumerate(zip(cogntv, social)):
+        for i, (particle_i, c1, c2) in enumerate(zip(self.swarm.population,
+                                                     cogntv, social)):
             # Get the (old) position of the i-th particle (as list).
-            x_old = self.swarm[i].position
+            x_old = particle_i.position
 
             # Get the local best position.
-            l_best = self.swarm[i].best_position
+            l_best = particle_i.best_position
 
             # Update all velocity values.
             for j, (xk, vk) in enumerate(zip(x_old, self._velocities[i])):

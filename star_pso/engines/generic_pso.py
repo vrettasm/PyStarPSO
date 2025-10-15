@@ -430,13 +430,14 @@ class GenericPSO(object):
         # Inertia weight parameter.
         w = params.w0
 
-        for i, (c1, c2) in enumerate(zip(cogntv, social)):
-            # Get the current position of i-th the particle.
-            x_i = self.swarm[i].position
+        for i, (particle_i, c1, c2) in enumerate(zip(self.swarm.population,
+                                                     cogntv, social)):
+            # Get the i-th particle' position.
+            x_i = particle_i.position
 
             # Update the new velocity.
             self._velocities[i] = w * self._velocities[i] +\
-                c1 * (self.swarm[i].best_position - x_i) +\
+                c1 * (particle_i.best_position - x_i) +\
                 c2 * (g_best - x_i)
         # _end_for_
     # _end_def_
