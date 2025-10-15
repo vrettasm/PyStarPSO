@@ -9,8 +9,6 @@ from joblib import (Parallel, delayed)
 
 import numpy as np
 from numpy.typing import ArrayLike
-from numpy import array as np_array
-from numpy import empty as np_empty
 from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.swarm import Swarm, SwarmParticle
@@ -81,8 +79,8 @@ class GenericPSO(object):
         # _end_if_
 
         # Set the upper/lower bounds of the search space.
-        self._lower_bound = np_array(lower_bound)
-        self._upper_bound = np_array(upper_bound)
+        self._lower_bound = np.array(lower_bound)
+        self._upper_bound = np.array(upper_bound)
 
         # Get the number of requested CPUs.
         if n_cpus is None:
@@ -272,7 +270,7 @@ class GenericPSO(object):
         x_best = None
 
         # Stores the function values.
-        fx_array = np_empty(self.n_rows, dtype=float)
+        fx_array = np.empty(self.n_rows, dtype=float)
 
         # Update all particles with their new objective function values.
         for n, (p, result) in enumerate(zip(self._swarm.population, f_evaluation)):
@@ -387,7 +385,7 @@ class GenericPSO(object):
         :return: the gBest (as numpy array).
         """
         # Extract only their positions and convert to numpy array.
-        all_positions = np_array([item.position for item in sorted(population,
+        all_positions = np.array([item.position for item in sorted(population,
                                                                    key=attrgetter("value"))])
         # Compute the probabilities.
         p_weights, p_weights_sum = linear_rank_probabilities(len(population))
