@@ -3,16 +3,9 @@ from numbers import Number
 from functools import cache
 from collections import namedtuple
 
-from numpy import exp as np_exp
-from numpy import sum as np_sum
-from numpy import rint as np_rint
-from numpy import ones as np_ones
-from numpy import (array, array_equal)
-from numpy import copyto as np_copyto
-from numpy import isclose as np_isclose
-from numpy import isscalar as np_isscalar
-
+import numpy as np
 from numpy.typing import ArrayLike
+from numpy import (array, array_equal)
 from numpy.random import (default_rng, Generator)
 
 from star_pso.auxiliary.utilities import (BlockType,
@@ -71,7 +64,7 @@ class DataBlock(object):
         # _end_if_
 
         # Copy the initial position.
-        if np_isscalar(position):
+        if np.isscalar(position):
             # Make simple copies.
             self._position = position
             self._best_position = position
@@ -116,7 +109,7 @@ class DataBlock(object):
 
         :return: None.
         """
-        np_copyto(self._best_position, x)
+        np.copyto(self._best_position, x)
     # _end_def_
 
     @classmethod
@@ -171,7 +164,7 @@ class DataBlock(object):
         :return: a new (int) position.
         """
         # Round the new position and convert it to int.
-        x_new = np_rint(params.x_old + params.v_new).astype(int)
+        x_new = np.rint(params.x_old + params.v_new).astype(int)
 
         # Ensure the new position stays within bounds.
         return nb_clip_item(x_new, params.lower_bound, params.upper_bound)
@@ -192,7 +185,7 @@ class DataBlock(object):
         random_01 = cls.rng.random()
 
         # Compute the sigmoid function value.
-        threshold = 1.0 / (1.0 + np_exp(-params.v_new))
+        threshold = 1.0 / (1.0 + np.exp(-params.v_new))
 
         # Assign the binary value.
         return 1 if threshold > random_01 else 0
@@ -217,12 +210,12 @@ class DataBlock(object):
 
         # Ensure there will be at least one
         # element with positive probability.
-        if all(np_isclose(x_new, 0.0)):
+        if all(np.isclose(x_new, 0.0)):
             x_new[cls.rng.integers(len(x_new))] = 1.0
         # _end_if_
 
         # Normalize (to account for probabilities).
-        return x_new / np_sum(x_new, dtype=float)
+        return x_new / np.sum(x_new, dtype=float)
     # _end_def_
 
     @staticmethod
@@ -304,7 +297,7 @@ class DataBlock(object):
         n_vars = kwargs["n_vars"]
 
         # Set the variables uniformly.
-        return np_ones(n_vars)/n_vars
+        return np.ones(n_vars)/n_vars
     # _end_def_
 
     @staticmethod
@@ -335,7 +328,7 @@ class DataBlock(object):
         method_dict = DataBlock.get_init_method()
 
         # Differentiate between scalar and vector data block.
-        n_vars = 1 if np_isscalar(self._position) else len(self._position)
+        n_vars = 1 if np.isscalar(self._position) else len(self._position)
 
         # Assign the function value to the new position.
         self._position = method_dict[self._btype](n_vars=n_vars,
@@ -429,7 +422,7 @@ class DataBlock(object):
             if self._btype == other._btype:
 
                 # Check the positions.
-                if np_isscalar(self._position) and np_isscalar(other._position):
+                if np.isscalar(self._position) and np.isscalar(other._position):
                     positions_are_equal = (self._position == other._position)
                 else:
                     positions_are_equal = array_equal(self._position,
