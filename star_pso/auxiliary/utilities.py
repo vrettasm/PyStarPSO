@@ -16,7 +16,7 @@ ScalarOrArray = Union[int, float, ArrayLike]
 
 # Declare a named tuple with the parameters
 # we want to use in the velocity equations:
-# 1) 'w': inertia weight
+# 1) 'w0': inertia weight
 # 2) 'c1': cognitive coefficient
 # 3) 'c2': social coefficient
 # 4) 'fipso': fully informed PSO (optional).
