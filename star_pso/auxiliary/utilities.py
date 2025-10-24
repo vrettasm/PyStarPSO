@@ -403,40 +403,36 @@ def time_it(func):
 def pareto_front(points: np.ndarray) -> np.ndarray:
     """
     Simple function that calculates the pareto (optimal)
-    front points from a given input points list.
+    front points from a given input points numpy array.
 
     :param points: array of points [(fx1, fx2, ..., fxn),
                                     (fy1, fy2, ..., fyn),
                                     ....................,
                                     (fk1, fk2, ..., fkn)]
 
-    :return: Array of points that lie on the pareto front.
+    :return: array of points that lie on the pareto front.
     """
+    # Sanity check.
+    if points.ndim != 2:
+        raise RuntimeError("Points must be a 2-D array.")
+    # _end_if_
 
-    # Number of points.
-    number_of_points = len(points)
+    # Get the number of points.
+    num_points = points.shape[0]
 
-    # Set all the flags initially to True.
-    is_pareto = np.full(number_of_points, True, dtype=bool)
+    # Create a boolean array to track Pareto optimal points.
+    is_pareto_optimal = np.ones(num_points, dtype=bool)
 
-    # Scan all the points.
     for i, point_i in enumerate(points):
-
-        # Compare against all others.
-        for j, point_j in enumerate(points):
-
-            # Do not compare point with itself!
-            # If the condition is satisfied the
-            # point_i does not lie on the front.
-            if i != j and np.all(point_i >= point_j):
-                # Change the flag value.
-                is_pareto[i] = False
-
-                # Break the internal loop.
-                break
-            # _end_if_
+        # Compare point i-th with all other points.
+        is_dominated = np.any(np.all(points <= point_i, axis=1) &
+                              np.any(points < point_i, axis=1))
+        # Set the flag appropriately.
+        is_pareto_optimal[i] = not is_dominated
     # _end_for_
-    return points[is_pareto]
+
+    # Return only the unique Pareto optimal points.
+    return np.unique(points[is_pareto_optimal], axis=0)
 # _end_def_
 
 def cost_function(func: Callable = None, minimize: bool = False):
