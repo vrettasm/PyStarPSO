@@ -36,7 +36,8 @@ class GenericPSO(object):
 
     # Object variables.
     __slots__ = ("_swarm", "_velocities", "objective_func", "_upper_bound", "_lower_bound", "_stats",
-                 "_items", "_f_eval", "n_cpus", "n_rows", "n_cols", "w_min", "w_max", "_special_mode")
+                 "_items", "_f_eval", "n_cpus", "n_rows", "n_cols", "w_min", "w_max", "_special_mode",
+                 "_iteration")
 
     def __init__(self,
                  initial_swarm: Swarm,
@@ -110,6 +111,36 @@ class GenericPSO(object):
 
         # Set the special mode to Normal.
         self._special_mode = SpecialMode.NORMAL
+
+        # Set the iteration counter to zero.
+        self._iteration = 0
+    # _end_def_
+
+    @property
+    def iteration(self) -> int:
+        """
+        Accessor (getter) of the iteration parameter.
+
+        :return: the iteration value.
+        """
+        return self._iteration
+    # _end_def_
+
+    @iteration.setter
+    def iteration(self, value: int) -> None:
+        """
+        Accessor (setter) of the iteration value.
+
+        :param value: (int).
+        """
+        # Check for correct type and allow only
+        # the positive values.
+        if isinstance(value, int) and value >= 0:
+            # Update the iteration value.
+            self._iteration = value
+        else:
+            raise RuntimeError(f"{self.__class__.__name__}: "
+                               f"Iteration value should be positive int: {type(value)}.")
     # _end_def_
 
     @property
@@ -252,12 +283,12 @@ class GenericPSO(object):
 
             # Evaluate the particles in parallel mode.
             f_evaluation = Parallel(n_jobs=self.n_cpus, prefer=backend)(
-                delayed(func)(x) for x in positions
+                delayed(func)(x, it=self._iteration) for x in positions
             )
         else:
 
             # Evaluate all the particles in serial mode.
-            f_evaluation = [func(x) for x in positions]
+            f_evaluation = [func(x, it=self._iteration) for x in positions]
         # _end_if_
 
         # Flag to indicate if a solution has been found.
@@ -634,6 +665,8 @@ class GenericPSO(object):
 
         # Repeat for 'max_it' times.
         for i in range(max_it):
+            # Update the iteration.
+            self._iteration = i
 
             # First update the velocity equations.
             self.update_velocities(params)
