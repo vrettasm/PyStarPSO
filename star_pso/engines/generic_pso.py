@@ -612,7 +612,7 @@ class GenericPSO(object):
 
         if options is None:
             # Default values of the simplified version.
-            options = {"w0": 0.5, "c1": 2.0, "c2": 2.0}
+            options = {"w0": 0.8, "c1": 2.0, "c2": 2.0}
         else:
             # Ensure all the parameters are here.
             check_velocity_parameters(options)
