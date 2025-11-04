@@ -661,7 +661,7 @@ class GenericPSO(object):
         # Local variable to display information on the screen.
         # To avoid cluttering the screen we print info only 10
         # times regardless of the total number of iterations.
-        its_time_to_print = (max_it // 10)
+        its_time_to_print = max_it // 10 if max_it > 10 else 2
 
         # Repeat for 'max_it' times.
         for i in range(max_it):
