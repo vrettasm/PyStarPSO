@@ -463,7 +463,7 @@ class GenericPSO(object):
 
         for i, (particle_i, c1, c2) in enumerate(zip(self.swarm.population,
                                                      cogntv, social)):
-            # Get the i-th particle' position.
+            # Get the i-th particles' position.
             x_i = particle_i.position
 
             # Update the new velocity.
