@@ -429,6 +429,67 @@ class GenericPSO(object):
         return w_best
     # _end_def_
 
+    def get_local_best_positions(self, params: VOptions) -> np.ndarray:
+        """
+        This method uses the swarm's population and the current VOptions
+        to calculate the local best positions.
+
+        :param params: the VOptions object.
+
+        :return: the local best positions (as numpy array).
+        """
+
+        # Size of the population.
+        swarm_size = self.swarm.size
+
+        # Get the global best.
+        if params.mode.lower() == "fipso":
+
+            # Compute a weighted average from all the positions of the swarm,
+            # according to their linear ranking (of fitness value).
+            l_best = swarm_size * [GenericPSO.fully_informed_best(self.swarm.population)]
+
+        elif params.mode.lower() == "multimodal":
+
+            # Extract the swarms positions as array.
+            pos = self.swarm.positions_as_array()
+
+            # Compute the pairwise distances.
+            dist_pos = cdist(pos, pos)
+
+            # Get the indices of the sorted distances.
+            # This way we can have the nearest neighbors first.
+            x_sort = np.argsort(dist_pos, axis=1)
+
+            # Local best array.
+            l_best = []
+
+            # Go through each row of the index matrix.
+            for row in x_sort:
+                # Extract only the m-local particles. Here 'm=5' but note that
+                # the first index refers to the same particle. So in effect we
+                # consider the four nearest neighbors.
+                local_population = [self.swarm.population[l] for l in row[0:5]]
+
+                # Use the 'fully_informed_best' to get a weighted average of the
+                # optimal local position.
+                optimal_position = GenericPSO.fully_informed_best(local_population)
+
+                # Update the local list.
+                l_best.append(optimal_position)
+
+        elif params.mode.lower() == "g_best":
+
+            # Get the (global) swarm's best particle position.
+            l_best = swarm_size * [self.swarm.best_particle().position]
+        else:
+            raise ValueError(f"Unknown operating mode: {params.mode}."
+                             f" Use 'fipso', 'multimodal' or 'g_best'")
+        # _end_if_
+
+        return np.array(l_best)
+    # _end_def_
+
     def update_velocities(self, params: VOptions) -> None:
         """
         Performs the update on the velocity equations.
