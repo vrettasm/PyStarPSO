@@ -450,8 +450,8 @@ class GenericPSO(object):
         if params.fipso:
 
             # Compute a weighted average from all the positions of the swarm,
-            # according to their linear ranking.
-            g_best = GenericPSO.fully_informed_global_best(self.swarm.population)
+            # according to their linear ranking (of fitness value).
+            g_best = GenericPSO.fully_informed_best(self.swarm.population)
         else:
 
             # Get the swarm's best particle position.
