@@ -425,8 +425,8 @@ class GenericPSO(object):
         w_best = np.multiply(all_positions,
                              p_weights[:, np.newaxis]).sum(axis=0) / p_weights_sum
 
-        # Return the global best position.
-        return g_best
+        # Return the weighted best position.
+        return w_best
     # _end_def_
 
     def update_velocities(self, params: VOptions) -> None:
