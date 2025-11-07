@@ -195,7 +195,8 @@ class JackOfAllTradesPSO(GenericPSO):
         if params.mode.lower() == "fipso":
 
             # Extract only their positions and convert to numpy array.
-            # Due to the different shape of each variable we need to set the dtype as object.
+            # Due to the different shapes of the variables we need to
+            # set the dtype as object (instead of float).
             all_positions = np.array([item.position
                                       for item in sorted(self.swarm.population,
                                                          key=attrgetter("value"))], dtype=object)
