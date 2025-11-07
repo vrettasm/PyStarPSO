@@ -6,6 +6,7 @@ from collections import defaultdict
 
 from typing import Callable
 from joblib import (Parallel, delayed)
+from scipy.spatial.distance import cdist
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -429,12 +430,13 @@ class GenericPSO(object):
         return w_best
     # _end_def_
 
-    def get_local_best_positions(self, params: VOptions) -> np.ndarray:
+    def get_local_best_positions(self, operating_mode: str = "g_best") -> np.ndarray:
         """
-        This method uses the swarm's population and the current VOptions
-        to calculate the local best positions.
+        This method uses the swarm's population and the current operation mode
+        (from the VOptions tuple) to calculate the local best positions.
 
-        :param params: the VOptions object.
+        :param operating_mode: the operating mode of the algorithm. The default
+        value is 'g_best'.
 
         :return: the local best positions (as numpy array).
         """
@@ -443,13 +445,13 @@ class GenericPSO(object):
         swarm_size = self.swarm.size
 
         # Get the global best.
-        if params.mode.lower() == "fipso":
+        if operating_mode == "fipso":
 
             # Compute a weighted average from all the positions of the swarm,
             # according to their linear ranking (of fitness value).
             l_best = swarm_size * [GenericPSO.fully_informed_best(self.swarm.population)]
 
-        elif params.mode.lower() == "multimodal":
+        elif operating_mode == "multimodal":
 
             # Extract the swarms positions as array.
             pos = self.swarm.positions_as_array()
@@ -478,12 +480,12 @@ class GenericPSO(object):
                 # Update the local list.
                 l_best.append(optimal_position)
 
-        elif params.mode.lower() == "g_best":
+        elif operating_mode == "g_best":
 
             # Get the (global) swarm's best particle position.
             l_best = swarm_size * [self.swarm.best_particle().position]
         else:
-            raise ValueError(f"Unknown operating mode: {params.mode}."
+            raise ValueError(f"Unknown operating mode: {operating_mode}."
                              f" Use 'fipso', 'multimodal' or 'g_best'")
         # _end_if_
 
@@ -507,31 +509,21 @@ class GenericPSO(object):
         # Pre-sample the social coefficients.
         social = GenericPSO.rng.uniform(0, params.c2, size=arr_shape)
 
-        # Get the global best.
-        if params.fipso:
-
-            # Compute a weighted average from all the positions of the swarm,
-            # according to their linear ranking (of fitness value).
-            g_best = GenericPSO.fully_informed_best(self.swarm.population)
-        else:
-
-            # Get the swarm's best particle position.
-            g_best = self.swarm.best_particle().position
-        # _end_if_
+        # Get the local best positions (for the social attractor).
+        l_best = self.get_local_best_positions(params.mode.lower())
 
         # Inertia weight parameter.
         w = params.w0
 
-        for i, (particle_i, c1, c2) in enumerate(zip(self.swarm.population,
-                                                     cogntv, social)):
+        for i, (particle_i, c1, c2, local_i) in enumerate(zip(self.swarm.population,
+                                                              cogntv, social, l_best)):
             # Get the i-th particle's position.
             x_i = particle_i.position
 
             # Update the new velocity.
             self._velocities[i] = w * self._velocities[i] +\
                                   c1 * (particle_i.best_position - x_i) +\
-                                  c2 * (l_best[i] - x_i)
-        # _end_for_
+                                  c2 * (local_i - x_i)
     # _end_def_
 
     def update_positions(self) -> None:
