@@ -454,30 +454,30 @@ class GenericPSO(object):
         elif operating_mode == "multimodal":
 
             # Extract the swarms positions as array.
-            pos = self.swarm.positions_as_array()
+            x_pos = self.swarm.positions_as_array()
 
             # Compute the pairwise distances.
-            dist_pos = cdist(pos, pos)
+            pair_dists = cdist(x_pos, x_pos)
 
             # Get the indices of the sorted distances.
             # This way we can have the nearest neighbors first.
-            x_sort = np.argsort(dist_pos, axis=1)
+            d_sorted = np.argsort(pair_dists, axis=1)
 
             # Local best array.
             l_best = []
 
             # Go through each row of the index matrix.
-            for row in x_sort:
+            for row in d_sorted:
                 # Extract only the m-local particles. Here 'm=5' but note that
                 # the first index refers to the same particle. So in effect we
                 # consider the four nearest neighbors.
-                local_population = [self.swarm.population[l] for l in row[0:5]]
+                near_neighbors = [self.swarm.population[l] for l in row[0:5]]
 
                 # Use the 'fully_informed_best' to get a weighted average of the
                 # optimal local position.
-                optimal_position = GenericPSO.fully_informed_best(local_population)
+                optimal_position = GenericPSO.fully_informed_best(near_neighbors)
 
-                # Update the local list.
+                # Update the local best list.
                 l_best.append(optimal_position)
 
         elif operating_mode == "g_best":
