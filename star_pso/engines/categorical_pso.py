@@ -222,7 +222,7 @@ class CategoricalPSO(GenericPSO):
         social = GenericPSO.rng.uniform(0, params.c2, size=arr_shape)
 
         # Get the global best.
-        if params.fipso:
+        if params.mode.lower() == "fipso":
 
             # In the "fully informed" case we compute a weighted average
             # from all the positions of the swarm, according to their linear
@@ -234,8 +234,14 @@ class CategoricalPSO(GenericPSO):
             for i in range(self.n_cols):
                 g_best[i] /= np_sum(g_best[i], dtype=float)
             # _end_for_
-        else:
+
+        elif params.mode.lower() == "g_best":
+
+            # Get the (global) swarm's best particle position.
             g_best = self.swarm.best_particle().position
+        else:
+            raise ValueError(f"Unknown operating mode: {params.mode}."
+                             f" Use 'fipso' or 'g_best'")
         # _end_if_
 
         # Inertia weight parameter.
@@ -246,15 +252,15 @@ class CategoricalPSO(GenericPSO):
             # Get the i-th particle's position.
             x_i = particle_i.position
 
-            # Get the Best local position.
-            l_best = particle_i.best_position
+            # Get the personal best position.
+            p_best = particle_i.best_position
 
             # Update all velocities.
             for j, (xk, vk) in enumerate(zip(x_i, self._velocities[i])):
 
                 # Apply the update equations.
                 vk = (w * vk +
-                      c1[j] * np_subtract(l_best[j], xk) +
+                      c1[j] * np_subtract(p_best[j], xk) +
                       c2[j] * np_subtract(g_best[j], xk))
 
                 # Ensure the velocities are within limits.

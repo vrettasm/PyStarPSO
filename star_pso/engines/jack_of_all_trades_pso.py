@@ -191,8 +191,8 @@ class JackOfAllTradesPSO(GenericPSO):
         # Pre-sample the social coefficients.
         social = JackOfAllTradesPSO.rng.uniform(0, params.c2, size=arr_shape)
 
-        # Get the GLOBAL best particle position.
-        if params.fipso:
+        # Get the global best particle position.
+        if params.mode.lower() == "fipso":
 
             # Extract only their positions and convert to numpy array.
             # Due to the different shape of each variable we need to set the dtype as object.
@@ -212,8 +212,14 @@ class JackOfAllTradesPSO(GenericPSO):
                 if not np_isscalar(g_best[i]):
                     g_best[i] /= np_sum(g_best[i], dtype=float)
             # _end_for_
-        else:
+
+        elif params.mode.lower() == "g_best":
+
+            # Get the (global) swarm's best particle position.
             g_best = self.swarm.best_particle().position
+        else:
+            raise ValueError(f"Unknown operating mode: {params.mode}."
+                             f" Use 'fipso' or 'g_best'")
         # _end_if_
 
         # Inertia weight parameter.
@@ -224,14 +230,14 @@ class JackOfAllTradesPSO(GenericPSO):
             # Get the (old) position of the i-th particle (as list).
             x_old = particle_i.position
 
-            # Get the local best position.
-            l_best = particle_i.best_position
+            # Get the personal best position.
+            p_best = particle_i.best_position
 
             # Update all velocity values.
             for j, (xk, vk) in enumerate(zip(x_old, self._velocities[i])):
                 # Apply the update equations.
                 self._velocities[i][j] = (w * vk +
-                                          c1[j] * np_subtract(l_best[j], xk) +
+                                          c1[j] * np_subtract(p_best[j], xk) +
                                           c2[j] * np_subtract(g_best[j], xk))
         # _end_for_
     # _end_def_
