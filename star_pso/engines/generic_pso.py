@@ -413,7 +413,7 @@ class GenericPSO(object):
         :param population: a list of particles which we want to consider in the
         calculation of the global best position.
 
-        :return: the gBest (as numpy array).
+        :return: the weighted best position 'w_best' (as numpy array).
         """
         # Extract only their positions and convert to numpy array.
         all_positions = np.array([item.position for item in sorted(population,
