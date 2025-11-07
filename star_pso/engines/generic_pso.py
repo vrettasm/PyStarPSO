@@ -468,8 +468,8 @@ class GenericPSO(object):
 
             # Update the new velocity.
             self._velocities[i] = w * self._velocities[i] +\
-                c1 * (particle_i.best_position - x_i) +\
-                c2 * (g_best - x_i)
+                                  c1 * (particle_i.best_position - x_i) +\
+                                  c2 * (l_best[i] - x_i)
         # _end_for_
     # _end_def_
 
