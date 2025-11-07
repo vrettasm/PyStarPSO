@@ -225,8 +225,7 @@ class CategoricalPSO(GenericPSO):
         if params.mode.lower() == "fipso":
 
             # In the "fully informed" case we compute a weighted average
-            # from all the positions of the swarm, according to their linear
-            # ranking.
+            # from all the positions of the swarm.
             g_best = GenericPSO.fully_informed_best(self.swarm.population)
 
             # Finally normalize them to
