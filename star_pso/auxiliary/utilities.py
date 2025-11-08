@@ -1,7 +1,6 @@
 import time
 
 from enum import Enum
-from operator import attrgetter
 from typing import (Union, Callable)
 from functools import (cache, wraps, partial)
 
