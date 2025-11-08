@@ -521,3 +521,42 @@ def cached_range(n: int) -> np.ndarray:
     """
     return np.arange(n, dtype=int)
 # _end_def_
+
+@njit(fastmath=True)
+def nb_cdist(x_pos: np.ndarray) -> np.ndarray:
+    """
+    This is equivalent to the scipy.spatial.cdist method with
+    'Euclidean' distance metric. It is a tailored version for
+    the purposes of the multimodal operation mode.
+
+    :param x_pos: a numpy array of positions. The dimensions
+    of the array should [n_rows, n_cols], where n_rows is the
+    number of particles and n_cols are the number of positions.
+
+    :return: a square [n_rows, n_rows] numpy array of distances.
+    """
+
+    # Get the number of rows.
+    n_rows = x_pos.shape[0]
+
+    # Create a square matrix with zeros.
+    dist_x = np.zeros((n_rows, n_rows), dtype=float)
+
+    # Iterate through all vectors.
+    for i in range(0, n_rows):
+
+        # Get the i-th vector.
+        xa = x_pos[i]
+
+        # Since the vector with itself will always
+        # give zero distance we skip this comparison.
+        for j in range(i + 1, n_rows):
+            # Compute the Euclidean norm.
+            euclidean_dist = np.sqrt(np.sum((xa - x_pos[j]) ** 2))
+
+            # Since the distances are symmetric assign
+            # directly to both pairs (i, j) and (j, i).
+            dist_x[i, j] = dist_x[j, i] = euclidean_dist
+    # _end_for_
+    return dist_x
+# _end_def_
