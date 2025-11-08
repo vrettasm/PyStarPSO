@@ -6,7 +6,6 @@ from collections import defaultdict
 
 from typing import Callable
 from joblib import (Parallel, delayed)
-from scipy.spatial.distance import cdist
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -15,7 +14,7 @@ from numpy.random import (default_rng, Generator)
 from star_pso.auxiliary.swarm import Swarm, SwarmParticle
 from star_pso.auxiliary.utilities import (time_it, VOptions, nb_clip_item,
                                           SpecialMode, check_velocity_parameters,
-                                          linear_rank_probabilities)
+                                          linear_rank_probabilities, nb_cdist)
 # Public interface.
 __all__ = ["GenericPSO"]
 
@@ -457,7 +456,7 @@ class GenericPSO(object):
             x_pos = self.swarm.positions_as_array()
 
             # Compute the pairwise distances.
-            pair_dists = cdist(x_pos, x_pos)
+            pair_dists = nb_cdist(x_pos)
 
             # Get the indices of the sorted distances.
             # This way we can have the nearest neighbors first.
