@@ -455,6 +455,10 @@ class GenericPSO(object):
             # Extract the swarms positions as array.
             x_pos = self.swarm.positions_as_array()
 
+            # MaxAbsScaling in case the features are
+            # in different scales.
+            x_pos /= np.max(np.abs(x_pos), axis=0)
+
             # Compute the pairwise distances.
             pair_dists = nb_cdist(x_pos)
 
