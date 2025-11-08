@@ -50,6 +50,7 @@ def check_velocity_parameters(options: dict) -> None:
         1) 'w0': inertia weight
         2) 'c1': cognitive coefficient
         3) 'c2': social coefficient
+        4) 'mode': mode of operation
 
     :param options: dictionary to check for missing parameters.
 
