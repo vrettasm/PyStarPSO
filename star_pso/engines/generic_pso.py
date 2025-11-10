@@ -404,20 +404,32 @@ class GenericPSO(object):
     # _end_def_
 
     @staticmethod
-    def fully_informed_best(population: list[SwarmParticle]) -> np.ndarray:
+    def fully_informed(population: list[SwarmParticle], use_best: bool = False) -> np.ndarray:
         """
-        Uses the input population and computes a weighted average position
-        according to the linear ranking of the particles. Those with a higher
-        function value also have a bigger weight in the calculation.
+        Uses the input population and computes a weighted average position according to
+        the linear ranking of the particles. Those with higher function value also have
+        bigger weight in the calculation.
 
-        :param population: a list of particles which we want to consider in the
-        calculation of the global best position.
+        :param population: list of particles which we want to consider in the calculation
+        of the fully informed best position.
+
+        :param use_best: if True it will use the best_position of each particle to estimate
+        the new weighted best position. Default is False, which means that only the current
+        position is used.
 
         :return: the weighted best position 'w_best' (as numpy array).
         """
-        # Extract only their positions and convert to numpy array.
-        all_positions = np.array([item.position for item in sorted(population,
-                                                                   key=attrgetter("value"))])
+
+        if use_best:
+            # Extract only their best positions and convert to numpy array.
+            all_positions = np.array([item.best_position for item in sorted(population,
+                                                                            key=attrgetter("best_value"))])
+        else:
+            # Extract only their best positions and convert to numpy array.
+            all_positions = np.array([item.position for item in sorted(population,
+                                                                       key=attrgetter("value"))])
+        # _end_if_
+
         # Compute the probabilities.
         p_weights, p_weights_sum = linear_rank_probabilities(len(population))
 
@@ -448,7 +460,7 @@ class GenericPSO(object):
 
             # Compute a weighted average from all the positions of the swarm,
             # according to their linear ranking (of fitness value).
-            l_best = swarm_size * [GenericPSO.fully_informed_best(self.swarm.population)]
+            l_best = swarm_size * [GenericPSO.fully_informed(self.swarm.population)]
 
         elif operating_mode == "multimodal":
 
@@ -460,26 +472,26 @@ class GenericPSO(object):
             x_pos /= np.max(np.abs(x_pos), axis=0)
 
             # Compute the pairwise distances.
-            pair_dists = nb_cdist(x_pos)
+            pairwise_dists = nb_cdist(x_pos)
 
             # Get the indices of the sorted distances.
             # This way we can have the nearest neighbors first.
-            d_sorted = np.argsort(pair_dists, axis=1)
+            x_sorted = np.argsort(pairwise_dists, axis=1)
 
             # Local best array.
             l_best = []
 
             # Go through each row of the index matrix.
-            for row in d_sorted:
+            for row in x_sorted:
                 # Extract only the m-local particles. Here we set 'm=5'. Note
                 # that the first index '0' refers to the same particle. So we
                 # skip it and start counting from 1.
                 near_neighbors = [self.swarm.population[k] for k in row[1:6]]
 
-                # Use the 'fully_informed_best' to get a weighted average of the
-                # optimal local position.
-                optimal_position = GenericPSO.fully_informed_best(near_neighbors)
-
+                # Use the fully_informed with the 'use_best' option enabled to
+                # get a weighted average of the optimal local position.
+                optimal_position = GenericPSO.fully_informed(near_neighbors,
+                                                             use_best=True)
                 # Update the local best list.
                 l_best.append(optimal_position)
 
