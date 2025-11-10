@@ -544,20 +544,10 @@ def nb_cdist(x_pos: np.ndarray) -> np.ndarray:
     dist_x = np.zeros((n_rows, n_rows), dtype=float)
 
     # Iterate through all vectors.
-    for i in range(0, n_rows):
-
-        # Get the i-th vector.
-        xa = x_pos[i]
-
-        # Since the vector with itself will always
-        # give zero distance we skip this comparison.
-        for j in range(i + 1, n_rows):
-            # Compute the Euclidean norm.
-            euclidean_dist = np.sqrt(np.sum((xa - x_pos[j]) ** 2))
-
-            # Since the distances are symmetric assign
-            # directly to both pairs (i, j) and (j, i).
-            dist_x[i, j] = dist_x[j, i] = euclidean_dist
+    for i in range(n_rows):
+        # Compute the Euclidean norm of the 'i-th' element with the
+        # rest of the elements.
+        dist_x[i] = np.sqrt(np.sum((x_pos[i] - x_pos) ** 2, axis=1))
     # _end_for_
     return dist_x
 # _end_def_
