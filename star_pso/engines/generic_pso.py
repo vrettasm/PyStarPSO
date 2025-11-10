@@ -672,7 +672,7 @@ class GenericPSO(object):
         the max_it value.
 
         :param options: dictionary with update equations options ('w': inertia weight,
-        'c1': cognitive coefficient, 'c2': social coefficient).
+        'c1': cognitive coefficient, 'c2': social coefficient, 'mode': operation mode).
 
         :param parallel: (bool) flag that enables parallel computation of the objective
         function.
