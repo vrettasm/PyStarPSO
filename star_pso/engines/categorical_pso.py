@@ -224,9 +224,9 @@ class CategoricalPSO(GenericPSO):
         # Get the global best.
         if params.mode.lower() == "fipso":
 
-            # In the "fully informed" case we compute a weighted average
+            # In the fully informed case we compute a weighted average
             # from all the positions of the swarm.
-            g_best = GenericPSO.fully_informed_best(self.swarm.population)
+            g_best = GenericPSO.fully_informed(self.swarm.population)
 
             # Finally normalize them to
             # account for probabilities.
