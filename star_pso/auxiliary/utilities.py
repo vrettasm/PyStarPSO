@@ -526,13 +526,13 @@ def cached_range(n: int) -> np.ndarray:
 @njit(fastmath=True)
 def nb_cdist(x_pos: np.ndarray) -> np.ndarray:
     """
-    This is equivalent to the scipy.spatial.cdist method with
-    'Euclidean' distance metric. It is a tailored version for
+    This is equivalent to the scipy.spatial.distance.cdist method
+    with Euclidean distance metric. It is a tailored version for
     the purposes of the multimodal operation mode.
 
-    :param x_pos: a numpy array of positions. The dimensions
-    of the array should [n_rows, n_cols], where n_rows is the
-    number of particles and n_cols are the number of positions.
+    :param x_pos: a numpy array of positions. The dimensions of the
+    input array should [n_rows, n_cols], where n_rows is the number
+    of particles and n_cols are the number of positions.
 
     :return: a square [n_rows, n_rows] numpy array of distances.
     """
@@ -545,9 +545,11 @@ def nb_cdist(x_pos: np.ndarray) -> np.ndarray:
 
     # Iterate through all vectors.
     for i in range(n_rows):
-        # Compute the Euclidean norm of the 'i-th' element with the
-        # rest of the elements.
-        dist_x[i] = np.sqrt(np.sum((x_pos[i] - x_pos) ** 2, axis=1))
+        # Compute the Euclidean norm of the 'i-th' element with the rest of them.
+        dist_x[i, i + 1:] = np.sqrt(np.sum((x_pos[i] - x_pos[i + 1:, :]) ** 2, axis=1))
+
+        # Since the array is symmetric store the result in the 'i-th' column too.
+        dist_x[:, i] = dist_x[i, :]
     # _end_for_
     return dist_x
 # _end_def_
