@@ -2,7 +2,7 @@ from os import cpu_count
 from copy import deepcopy
 from math import inf, isclose
 from operator import attrgetter
-from collections import defaultdict
+from collections import deque, defaultdict
 
 from typing import Callable
 from joblib import (Parallel, delayed)
@@ -478,8 +478,8 @@ class GenericPSO(object):
             # This way we can have the nearest neighbors first.
             x_sorted = np.argsort(pairwise_dists, axis=1)
 
-            # Local best array.
-            l_best = []
+            # Local best deque with max length.
+            l_best = deque(maxlen=swarm_size)
 
             # Go through each row of the index matrix. Here we set 'm=5'.
             # Note that the first index '0' refers to the same particle.
@@ -492,7 +492,7 @@ class GenericPSO(object):
                 # to get a weighted average of the optimal local position.
                 optimal_position = GenericPSO.fully_informed(near_neighbors,
                                                              use_best=True)
-                # Update the local best list.
+                # Update the local best deque.
                 l_best.append(optimal_position)
 
         elif operating_mode == "g_best":
