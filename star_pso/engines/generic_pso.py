@@ -486,7 +486,7 @@ class GenericPSO(object):
                 # Extract only the m-local particles. Here we set 'm=5'. Note
                 # that the first index '0' refers to the same particle. So we
                 # skip it and start counting from 1.
-                near_neighbors = [self.swarm.population[k] for k in row[1:6]]
+                near_neighbors = [self.swarm.population[k] for k in row[1:5]]
 
                 # Use the fully_informed with the 'use_best' option enabled to
                 # get a weighted average of the optimal local position.
