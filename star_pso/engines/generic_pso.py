@@ -481,15 +481,15 @@ class GenericPSO(object):
             # Local best array.
             l_best = []
 
-            # Go through each row of the index matrix.
-            for row in x_sorted:
-                # Extract only the m-local particles. Here we set 'm=5'. Note
-                # that the first index '0' refers to the same particle. So we
-                # skip it and start counting from 1.
-                near_neighbors = [self.swarm.population[k] for k in row[1:5]]
+            # Go through each row of the index matrix. Here we set 'm=5'.
+            # Note that the first index '0' refers to the same particle.
+            # So we skip it and start counting from 1.
+            for row in x_sorted[:, 1:5]:
+                # Collect only the m-local particles.
+                near_neighbors = [self.swarm.population[k] for k in row]
 
-                # Use the fully_informed with the 'use_best' option enabled to
-                # get a weighted average of the optimal local position.
+                # Use the fully_informed with the 'use_best' option enabled
+                # to get a weighted average of the optimal local position.
                 optimal_position = GenericPSO.fully_informed(near_neighbors,
                                                              use_best=True)
                 # Update the local best list.
