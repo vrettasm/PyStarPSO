@@ -524,7 +524,7 @@ def cached_range(n: int) -> np.ndarray:
 # _end_def_
 
 @njit(fastmath=True)
-def nb_cdist(x_pos: np.ndarray) -> np.ndarray:
+def nb_cdist(x_pos: np.ndarray, scaled: bool = False) -> np.ndarray:
     """
     This is equivalent to the scipy.spatial.distance.cdist method
     with Euclidean distance metric. It is a tailored version for
@@ -534,11 +534,23 @@ def nb_cdist(x_pos: np.ndarray) -> np.ndarray:
     input array should [n_rows, n_cols], where n_rows is the number
     of particles and n_cols are the number of positions.
 
+    :param scaled: boolean flag that allows the input array to be
+    scaled, using the MaxAbsScaler, before computing the distances.
+
     :return: a square [n_rows, n_rows] numpy array of distances.
     """
 
-    # Get the number of rows.
-    n_rows = x_pos.shape[0]
+    # Get the number of rows/cols.
+    n_rows, n_cols = x_pos.shape
+
+    # Check if we want the input data to be scaled.
+    if scaled:
+        # Get the absolute values first.
+        x_abs = np.abs(x_pos)
+
+        # Scale with the max(abs(x_pos)).
+        x_pos /= np.array([np.max(x_abs[:, i]) for i in range(n_cols)])
+    # _end_if_
 
     # Create a square matrix with zeros.
     dist_x = np.zeros((n_rows, n_rows), dtype=float)
