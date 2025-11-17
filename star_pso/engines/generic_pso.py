@@ -421,17 +421,17 @@ class GenericPSO(object):
         """
 
         if use_best:
-            # Extract only their best positions and convert to numpy array.
+            # Extract the best positions and convert to numpy array.
             all_positions = np.array([item.best_position for item in sorted(population,
                                                                             key=attrgetter("best_value"))])
         else:
-            # Extract only their best positions and convert to numpy array.
+            # Extract the positions and convert to numpy array.
             all_positions = np.array([item.position for item in sorted(population,
                                                                        key=attrgetter("value"))])
         # _end_if_
 
         # Compute the probabilities.
-        p_weights, p_weights_sum = linear_rank_probabilities(len(population))
+        p_weights, p_weights_sum = linear_rank_probabilities(len(all_positions))
 
         # Take a "weighted average" from all the positions of the swarm.
         w_best = np.multiply(all_positions,
