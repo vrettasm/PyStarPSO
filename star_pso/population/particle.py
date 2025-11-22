@@ -6,7 +6,7 @@ from numpy.typing import ArrayLike
 from numpy import copyto as copy_to
 from numpy import (array, array_equal, asarray)
 
-from star_pso.auxiliary.utilities import ScalarOrArray
+from star_pso.utils.auxiliary import ScalarOrArray
 
 # Public interface.
 __all__ = ["Particle"]
