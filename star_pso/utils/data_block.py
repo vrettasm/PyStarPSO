@@ -8,10 +8,10 @@ from numpy.typing import ArrayLike
 from numpy import (array, array_equal)
 from numpy.random import (default_rng, Generator)
 
-from star_pso.auxiliary.utilities import (BlockType,
-                                          nb_clip_item,
-                                          nb_clip_array,
-                                          ScalarOrArray)
+from star_pso.utils.auxiliary import (BlockType,
+                                      nb_clip_item,
+                                      nb_clip_array,
+                                      ScalarOrArray)
 # Create a tuple to pack some inputs.
 Params = namedtuple("Params",
                     ["v_new", "x_old", "lower_bound", "upper_bound"])
