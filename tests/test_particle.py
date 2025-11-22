@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from star_pso.auxiliary.particle import Particle
+from star_pso.population.particle import Particle
 
 
 class TestParticle(unittest.TestCase):
