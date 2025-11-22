@@ -414,38 +414,42 @@ class DataBlock(object):
         :return: True if the data blocks are identical else
         False.
         """
+        # Check if they are the same instance.
+        if self is other:
+            return True
+        # _end_if_
 
         # Make sure both items are of type 'DataBlock'.
-        if isinstance(other, DataBlock):
-
-            # Check their block type.
-            if self._btype == other._btype:
-
-                # Check the positions.
-                if np.isscalar(self._position) and np.isscalar(other._position):
-                    positions_are_equal = (self._position == other._position)
-                else:
-                    positions_are_equal = array_equal(self._position,
-                                                      other._position)
-                # _end_if_
-
-                # Check valid sets.
-                valid_sets_are_equal = (True if not self._valid_set
-                                        else self._valid_set == other._valid_set)
-                # Check lower bounds.
-                lower_bounds_are_equal = (True if not self._lower_bound
-                                          else self._lower_bound == other._lower_bound)
-                # Check upper bounds.
-                upper_bounds_are_equal = (True if not self._upper_bound
-                                          else self._upper_bound == other._upper_bound)
-
-                # Return the logical AND condition.
-                return (positions_are_equal and valid_sets_are_equal and
-                        lower_bounds_are_equal and upper_bounds_are_equal)
-            else:
-                return False
+        if not isinstance(other, DataBlock):
+            return NotImplemented
         # _end_if_
-        return NotImplemented
+
+        # Check their block type.
+        if self._btype == other._btype:
+
+            # Check the positions.
+            if np.isscalar(self._position) and np.isscalar(other._position):
+                positions_are_equal = (self._position == other._position)
+            else:
+                positions_are_equal = array_equal(self._position,
+                                                  other._position)
+            # _end_if_
+
+            # Check valid sets.
+            valid_sets_are_equal = (True if not self._valid_set
+                                    else self._valid_set == other._valid_set)
+            # Check lower bounds.
+            lower_bounds_are_equal = (True if not self._lower_bound
+                                      else self._lower_bound == other._lower_bound)
+            # Check upper bounds.
+            upper_bounds_are_equal = (True if not self._upper_bound
+                                      else self._upper_bound == other._upper_bound)
+
+            # Return the logical AND condition.
+            return (positions_are_equal and valid_sets_are_equal and
+                    lower_bounds_are_equal and upper_bounds_are_equal)
+        else:
+            return False
     # _end_def_
 
     def __deepcopy__(self, memo):
