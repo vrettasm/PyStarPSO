@@ -3,7 +3,7 @@ from copy import deepcopy
 from functools import cached_property
 from dataclasses import dataclass, field
 
-from star_pso.auxiliary.data_block import DataBlock
+from star_pso.utils.data_block import DataBlock
 
 # Public interface.
 __all__ = ["JatParticle"]
