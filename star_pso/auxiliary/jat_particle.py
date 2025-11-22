@@ -15,8 +15,8 @@ class JatParticle(object):
     Description:
 
         Implements a dataclass for the 'jack of all trades' particle.
-        This is class maintains a container (list of data blocks) and
-        most information is held in its data blocks.
+        This dataclass maintains a container (list of data blocks) and
+        the rest of the information is held in its data blocks.
     """
 
     # Define the particle as a list of DataBlocks.
@@ -200,15 +200,18 @@ class JatParticle(object):
         :return: True if their containers have the same data
         blocks.
         """
-
-        # Make sure both objects are of the same type.
-        if isinstance(other, JatParticle):
-
-            # Compare directly their two containers.
-            return self._container == other.container
+        # Check if they are the same instance.
+        if self is other:
+            return True
         # _end_if_
 
-        return NotImplemented
+        # Make sure both objects are of the same type.
+        if not isinstance(other, JatParticle):
+            return NotImplemented
+        # _end_if_
+
+        # Compare directly their two containers.
+        return self._container == other.container
     # _end_def_
 
     def __deepcopy__(self, memo):
