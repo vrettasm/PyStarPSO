@@ -27,40 +27,40 @@ class TestSwarm(unittest.TestCase):
         :return: None.
         """
         # Define the number of optimizing variables.
-        D = 2
+        n_dim = 2
 
         # Define the number of particles.
-        N = 10
+        n_particles = 10
 
         # Draw random samples for the initial points.
-        X_t0 = self.rng.uniform(-1.5, +1.5, size=(N, D))
+        x_t0 = self.rng.uniform(-1.5, +1.5, size=(n_particles, n_dim))
 
         # Initialize the particle population.
-        swarm_A = Swarm([Particle(x) for x in X_t0])
+        swarm_a = Swarm([Particle(x) for x in x_t0])
 
         # Check if it has categorical variables.
-        self.assertFalse(swarm_A.has_categorical)
+        self.assertFalse(swarm_a.has_categorical)
 
         # Define the variable set for the categorical
         # optimization variable.
         var_set = ["a", "b", "c"]
 
         # Define the number of categorical variables.
-        D = 3
+        n_dim = 3
 
         # Define the number of particles.
-        N = 10
+        n_particles = 10
 
         # Initialize the JAT particle population.
-        swarm_B = Swarm([JatParticle([DataBlock(self.rng.uniform(-10.0, +10.0),
+        swarm_b = Swarm([JatParticle([DataBlock(self.rng.uniform(-10.0, +10.0),
                                                 BlockType.FLOAT,
                                                 lower_bound=-10.0,
                                                 upper_bound=+10.0),
-                                      DataBlock(np.ones(D) / D,
+                                      DataBlock(np.ones(n_dim) / n_dim,
                                                 BlockType.CATEGORICAL,
-                                                valid_set=var_set)]) for _ in range(N)])
+                                                valid_set=var_set)]) for _ in range(n_particles)])
         # Check if it has categorical variables.
-        self.assertTrue(swarm_B.has_categorical)
+        self.assertTrue(swarm_b.has_categorical)
     # _end_def_
 
     def test_global_best_index(self):
@@ -70,25 +70,25 @@ class TestSwarm(unittest.TestCase):
         :return: None.
         """
         # Define the number of optimizing variables.
-        D = 2
+        n_dim = 2
 
         # Define the number of particles.
-        N = 10
+        n_particles = 10
 
         # Draw random samples for the initial points.
-        X_t0 = self.rng.uniform(-1.5, +1.5, size=(N, D))
+        x_t0 = self.rng.uniform(-1.5, +1.5, size=(n_particles, n_dim))
 
         # Initialize the particle population.
-        swarm_A = Swarm([Particle(x) for x in X_t0])
+        swarm_a = Swarm([Particle(x) for x in x_t0])
 
         # Select randomly a particle position.
-        j = self.rng.integers(N)
+        j = self.rng.integers(n_particles)
 
         # Manually change its f_value.
-        swarm_A[j].value = 1000
+        swarm_a[j].value = 1000
 
         # Check the global index property.
-        self.assertEqual(j, swarm_A.global_best_index)
+        self.assertEqual(j, swarm_a.global_best_index)
     # _end_def_
 
 # _end_class_
