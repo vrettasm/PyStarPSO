@@ -30,7 +30,7 @@ class TestJatParticle(unittest.TestCase):
         var_set = ["a", "b", "c", "d"]
 
         # Get the size of the vector.
-        D = len(var_set)
+        n_dim = len(var_set)
 
         # Particle 1.
         p1 = JatParticle([DataBlock(9.0,
@@ -41,7 +41,7 @@ class TestJatParticle(unittest.TestCase):
                                     BlockType.INTEGER,
                                     lower_bound=-3,
                                     upper_bound=+3),
-                          DataBlock(np.ones(D) / D,
+                          DataBlock(np.ones(n_dim)/n_dim,
                                     BlockType.CATEGORICAL,
                                     valid_set=var_set)])
 
@@ -57,7 +57,7 @@ class TestJatParticle(unittest.TestCase):
                                     BlockType.INTEGER,
                                     lower_bound=-3,
                                     upper_bound=+3),
-                          DataBlock(np.ones(D) / D,
+                          DataBlock(np.ones(n_dim)/n_dim,
                                     BlockType.CATEGORICAL,
                                     valid_set=var_set)])
 
@@ -76,10 +76,9 @@ class TestJatParticle(unittest.TestCase):
                                     BlockType.INTEGER,
                                     lower_bound=-3,
                                     upper_bound=+3),
-                          DataBlock(np.ones(D) / D,
+                          DataBlock(np.ones(n_dim)/n_dim,
                                     BlockType.CATEGORICAL,
                                     valid_set=var_set)])
-
         # Should be TRUE.
         self.assertTrue(p3 == p3)
 
@@ -99,7 +98,7 @@ class TestJatParticle(unittest.TestCase):
         var_set = ["a", "b", "c", "d"]
 
         # Get the size of the vector.
-        D = len(var_set)
+        n_dim = len(var_set)
 
         # Particle 1.
         p1 = JatParticle([DataBlock(9.0,
@@ -110,7 +109,7 @@ class TestJatParticle(unittest.TestCase):
                                     BlockType.INTEGER,
                                     lower_bound=-3,
                                     upper_bound=+3),
-                          DataBlock(np.ones(D) / D,
+                          DataBlock(np.ones(n_dim)/n_dim,
                                     BlockType.CATEGORICAL,
                                     valid_set=var_set)])
         # Initial boolean flag.
@@ -118,7 +117,7 @@ class TestJatParticle(unittest.TestCase):
 
         # Compare the best position with the truth.
         for item1, item2 in zip(p1.best_position,
-                                [9.0, 1, np.ones(D) / D]):
+                                [9.0, 1, np.ones(n_dim)/n_dim]):
             if np.isscalar(item1):
                 positions_are_equal &= item1 == item2
             else:
@@ -137,7 +136,7 @@ class TestJatParticle(unittest.TestCase):
                                     BlockType.INTEGER,
                                     lower_bound=-3,
                                     upper_bound=+3),
-                          DataBlock(np.ones(D) / D,
+                          DataBlock(np.ones(n_dim)/n_dim,
                                     BlockType.CATEGORICAL,
                                     valid_set=var_set)])
 
