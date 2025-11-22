@@ -8,9 +8,9 @@ from numpy import ndarray
 from numpy import asarray
 from numpy.typing import ArrayLike
 
-from star_pso.auxiliary.particle import Particle
+from star_pso.population.particle import Particle
 from star_pso.auxiliary.utilities import BlockType
-from star_pso.auxiliary.jat_particle import JatParticle
+from star_pso.population.jat_particle import JatParticle
 
 # Make a type alias for the particles types.
 SwarmParticle = Union[Particle, JatParticle]
