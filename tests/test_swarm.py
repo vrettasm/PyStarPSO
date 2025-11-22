@@ -1,11 +1,11 @@
 import unittest
 import numpy as np
 
-from star_pso.auxiliary.swarm import Swarm
-from star_pso.auxiliary.particle import Particle
+from star_pso.population.swarm import Swarm
+from star_pso.population.particle import Particle
 from star_pso.auxiliary.utilities import BlockType
 from star_pso.auxiliary.data_block import DataBlock
-from star_pso.auxiliary.jat_particle import JatParticle
+from star_pso.population.jat_particle import JatParticle
 
 class TestSwarm(unittest.TestCase):
 
