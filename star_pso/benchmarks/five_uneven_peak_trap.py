@@ -8,7 +8,7 @@ class FiveUnevenPeakTrap(TestFunction):
 
     J.-P. Li, M. E. Balazs, G. T. Parks, and P. J. Clarkson,
     “A species conserving genetic algorithm for multimodal function optimization”
-    Evolutionary Computation., vol. 10, no. 3, pp. 207–234, 2002.
+    Evolutionary Computation, vol. 10, no. 3, pp. 207–234, 2002.
     """
 
     def __init__(self) -> None:
@@ -60,8 +60,8 @@ class FiveUnevenPeakTrap(TestFunction):
 
     def initial_random_positions(self, n_pos: int = 50) -> np.ndarray:
         """
-        Generate the initial set of random positions within
-        the minimum / maximum bounds of the problem.
+        Generate the initial set of random positions within the minimum
+        / maximum bounds of the test problem.
 
         :param n_pos: the number of positions to generate.
 
