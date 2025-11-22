@@ -56,7 +56,6 @@ class Swarm(object):
             if blk.btype == BlockType.CATEGORICAL:
                 self._has_categorical = True
                 break
-        # _end_def_
     # _end_def_
 
     @cached_property
