@@ -1,8 +1,8 @@
 import unittest
 
 import numpy as np
-from star_pso.auxiliary.utilities import BlockType
-from star_pso.auxiliary.data_block import DataBlock
+from star_pso.utils.auxiliary import BlockType
+from star_pso.utils.data_block import DataBlock
 
 
 class TestDataBlock(unittest.TestCase):
@@ -97,15 +97,15 @@ class TestDataBlock(unittest.TestCase):
         var_set = ["a", "b", "c"]
 
         # Get the size of the vector.
-        D = len(var_set)
+        n_var = len(var_set)
 
         # Create a test data block (CATEGORICAL).
-        blk = DataBlock(np.ones(D)/D,
+        blk = DataBlock(np.ones(n_var)/n_var,
                         BlockType.CATEGORICAL,
                         valid_set=var_set)
 
         # Here we test the upd_categorical().
-        blk.position = self.rng.random(D)
+        blk.position = self.rng.random(n_var)
         self.assertAlmostEqual(np.sum(blk.position), 1.0)
     # _end_def_
 
@@ -179,10 +179,10 @@ class TestDataBlock(unittest.TestCase):
         var_set = ["a", "b", "c"]
 
         # Get the size of the vector.
-        D = len(var_set)
+        n_var = len(var_set)
 
         # Create a test data block (CATEGORICAL).
-        blk = DataBlock(np.ones(D)/D,
+        blk = DataBlock(np.ones(n_var)/n_var,
                         BlockType.CATEGORICAL,
                         valid_set=var_set)
 
@@ -202,7 +202,7 @@ class TestDataBlock(unittest.TestCase):
         var_set = ["a", "b", "c", "d"]
 
         # Size of the vector.
-        D = len(var_set)
+        n_var = len(var_set)
 
         # DataBlock 1.
         p1 = DataBlock(9.0,
@@ -223,7 +223,7 @@ class TestDataBlock(unittest.TestCase):
         self.assertTrue(p2 == p2)
 
         # DataBlock 3.
-        p3 = DataBlock(np.ones(D) / D,
+        p3 = DataBlock(np.ones(n_var) / n_var,
                        BlockType.CATEGORICAL,
                        valid_set=var_set)
 

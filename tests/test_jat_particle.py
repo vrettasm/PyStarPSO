@@ -2,8 +2,8 @@ import unittest
 
 import numpy as np
 
-from star_pso.auxiliary.utilities import BlockType
-from star_pso.auxiliary.data_block import DataBlock
+from star_pso.utils.auxiliary import BlockType
+from star_pso.utils.data_block import DataBlock
 from star_pso.population.jat_particle import JatParticle
 
 

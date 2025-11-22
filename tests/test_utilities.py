@@ -1,7 +1,7 @@
 import unittest
-from star_pso.auxiliary.utilities import (nb_clip_item, cost_function,
-                                          check_velocity_parameters,
-                                          linear_rank_probabilities)
+from star_pso.utils.auxiliary import (nb_clip_item, cost_function,
+                                      check_velocity_parameters,
+                                      linear_rank_probabilities)
 
 
 class TestUtilities(unittest.TestCase):
