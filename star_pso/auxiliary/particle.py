@@ -223,15 +223,18 @@ class Particle(object):
 
         :return: True if the positions are identical else False.
         """
-
-        # Make sure both objects are of the same type 'particle'.
-        if isinstance(other, Particle):
-
-            # Compare directly their two positions arrays.
-            return array_equal(self._position, other.position)
+        # Check if they are the same instance.
+        if self is other:
+            return True
         # _end_if_
 
-        return NotImplemented
+        # Make sure both objects are of the same type 'particle'.
+        if not isinstance(other, Particle):
+            return NotImplemented
+        # _end_if_
+
+        # Compare directly their two position arrays.
+        return array_equal(self._position, other.position)
     # _end_def_
 
     def __str__(self) -> str:
