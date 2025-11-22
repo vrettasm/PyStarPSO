@@ -3,7 +3,7 @@ from numpy import rint as np_rint
 from numpy.typing import ArrayLike
 
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.auxiliary.utilities import nb_median_taxicab_distance
+from star_pso.utils.auxiliary import nb_median_taxicab_distance
 
 
 # Public interface.

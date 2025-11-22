@@ -7,8 +7,8 @@ from numpy import subtract as np_subtract
 
 from collections import defaultdict
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.auxiliary.utilities import (VOptions, BlockType, SpecialMode, cached_range,
-                                          linear_rank_probabilities, get_spread_method)
+from star_pso.utils.auxiliary import (VOptions, BlockType, SpecialMode, cached_range,
+                                      linear_rank_probabilities, get_spread_method)
 # Public interface.
 __all__ = ["JackOfAllTradesPSO"]
 

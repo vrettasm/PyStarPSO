@@ -5,16 +5,16 @@ from operator import attrgetter
 from collections import deque, defaultdict
 
 from typing import Callable
-from joblib import (Parallel, delayed)
+from joblib import Parallel, delayed
 
 import numpy as np
 from numpy.typing import ArrayLike
-from numpy.random import (default_rng, Generator)
+from numpy.random import default_rng, Generator
 
 from star_pso.population.swarm import Swarm, SwarmParticle
-from star_pso.auxiliary.utilities import (time_it, VOptions, nb_clip_item,
-                                          SpecialMode, check_velocity_parameters,
-                                          linear_rank_probabilities, nb_cdist)
+from star_pso.utils.auxiliary import (time_it, VOptions, nb_clip_item,
+                                      SpecialMode, check_velocity_parameters,
+                                      linear_rank_probabilities, nb_cdist)
 # Public interface.
 __all__ = ["GenericPSO"]
 
