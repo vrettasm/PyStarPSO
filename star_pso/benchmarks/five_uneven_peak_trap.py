@@ -74,4 +74,3 @@ class FiveUnevenPeakTrap(TestFunction):
     # _end_def_
 
 # _end_class_
-
