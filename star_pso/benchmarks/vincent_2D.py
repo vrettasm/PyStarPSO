@@ -40,7 +40,7 @@ class Vincent2D(TestFunction):
         x_range = (0.25 <= x) & (x <= 10.0)
         y_range = (0.25 <= y) & (y <= 10.0)
 
-        # Vectorized calculations based on the condition.
+        # Check the range before computing.
         if x_range & y_range:
             # Compute the function value.
             f_value = - (np.sin(10.0 * np.log(x)) +
