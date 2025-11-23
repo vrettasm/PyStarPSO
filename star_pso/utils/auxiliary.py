@@ -489,21 +489,14 @@ def cost_function(func: Callable = None, minimize: bool = False):
     return function_wrapper
 # _end_def_
 
-@cache
-def get_spread_method() -> dict:
-    """
-    Create a dictionary with block types as keys and
-    their corresponding spread estimation methods as
-    values.
-
-    :return: a cached dictionary with functions that
-    correspond to the correct block types.
-    """
-    return {BlockType.FLOAT: nb_median_euclidean_distance,
-            BlockType.BINARY: nb_median_hamming_distance,
-            BlockType.INTEGER: nb_median_taxicab_distance,
-            BlockType.CATEGORICAL: nb_median_kl_divergence}
-# _end_def_
+"""
+Create a dictionary with block types as keys and their
+corresponding spread estimation methods as values.
+"""
+spread_method: dict = {BlockType.FLOAT: nb_median_euclidean_distance,
+                       BlockType.BINARY: nb_median_hamming_distance,
+                       BlockType.INTEGER: nb_median_taxicab_distance,
+                       BlockType.CATEGORICAL: nb_median_kl_divergence}
 
 @cache
 def cached_range(n: int) -> np.ndarray:
