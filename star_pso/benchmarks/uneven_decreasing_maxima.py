@@ -32,14 +32,12 @@ class UnevenDecreasingMaxima(TestFunction):
         """
 
         # Initialize function values to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        f_value = float("NaN")
 
         # Condition for the valid range.
-        in_range = (0.0 <= x_pos) & (x_pos <= 1.0)
-
-        # Vectorized calculations based on the condition.
-        f_value[in_range] = (np.exp(-2.0*np.log(2.0)*((x_pos[in_range] - 0.08)/0.854)**2)*
-                             np.sin(5.0*np.pi*(x_pos[in_range]**(3/4) - 0.05))**6)
+        if (0.0 <= x_pos) & (x_pos <= 1.0):
+            f_value = (np.exp(-2.0*np.log(2.0)*((x_pos - 0.08)/0.854)**2)*
+                       np.sin(5.0*np.pi*(x_pos**(3/4) - 0.05))**6)
         # Return the ndarray.
         return f_value
     # _end_def_

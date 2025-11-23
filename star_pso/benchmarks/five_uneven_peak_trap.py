@@ -31,28 +31,27 @@ class FiveUnevenPeakTrap(TestFunction):
         """
 
         # Initialize function values to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        f_value = float("NaN")
 
         # Conditions for the different ranges.
-        range_1 = (0.0 <= x_pos) & (x_pos < 2.5)
-        range_2 = (2.5 <= x_pos) & (x_pos < 5.0)
-        range_3 = (5.0 <= x_pos) & (x_pos < 7.5)
-        range_4 = (7.5 <= x_pos) & (x_pos < 12.5)
-        range_5 = (12.5 <= x_pos) & (x_pos < 17.5)
-        range_6 = (17.5 <= x_pos) & (x_pos < 22.5)
-        range_7 = (22.5 <= x_pos) & (x_pos < 27.5)
-        range_8 = (27.5 <= x_pos) & (x_pos <= 30.0)
-
-        # Vectorized calculations based on conditions.
-        f_value[range_1] = 80 * (2.50 - x_pos[range_1])
-        f_value[range_2] = 64 * (x_pos[range_2] - 2.50)
-        f_value[range_3] = 64 * (7.50 - x_pos[range_3])
-        f_value[range_4] = 28 * (x_pos[range_4] - 7.50)
-        f_value[range_5] = 28 * (17.5 - x_pos[range_5])
-        f_value[range_6] = 32 * (x_pos[range_6] - 17.5)
-        f_value[range_7] = 32 * (27.5 - x_pos[range_7])
-        f_value[range_8] = 80 * (x_pos[range_8] - 27.5)
-
+        if (0.0 <= x_pos) & (x_pos < 2.5):
+            f_value = 80 * (2.50 - x_pos)
+        elif (2.5 <= x_pos) & (x_pos < 5.0):
+            f_value = 64 * (x_pos - 2.50)
+        elif (5.0 <= x_pos) & (x_pos < 7.5):
+            f_value = 64 * (7.50 - x_pos)
+        elif (7.5 <= x_pos) & (x_pos < 12.5):
+            f_value = 28 * (x_pos - 7.50)
+        elif (12.5 <= x_pos) & (x_pos < 17.5):
+            f_value = 28 * (17.5 - x_pos)
+        elif (17.5 <= x_pos) & (x_pos < 22.5):
+            f_value = 32 * (x_pos - 17.5)
+        elif (22.5 <= x_pos) & (x_pos < 27.5):
+            f_value = 32 * (27.5 - x_pos)
+        elif (27.5 <= x_pos) & (x_pos <= 30.0):
+            f_value = 80 * (x_pos - 27.5)
+        # _end_if_
+        
         # Return the ndarray.
         return f_value
     # _end_def_

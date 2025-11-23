@@ -32,13 +32,11 @@ class EqualMaxima(TestFunction):
         """
 
         # Initialize function values to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        f_value = float("NaN")
 
         # Condition for the valid range.
-        in_range = (0.0 <= x_pos) & (x_pos <= 1.0)
-
-        # Vectorized calculations based on the condition.
-        f_value[in_range] = np.sin(5.0 * np.pi *x_pos[in_range])**6
+        if (0.0 <= x_pos) & (x_pos <= 1.0):
+            f_value = np.sin(5.0 * np.pi *x_pos)**6
 
         # Return the ndarray.
         return f_value
