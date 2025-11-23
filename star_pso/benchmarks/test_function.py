@@ -124,7 +124,7 @@ class TestFunction(object):
         """
 
         # Create a list with the best fit individuals.
-        fit_list = []
+        optima_list = []
 
         # While not reaching the end of sorted input x_pos.
         for px in swarm_population:
@@ -136,18 +136,18 @@ class TestFunction(object):
             # optimal value (within error - epsilon).
             if abs(f_opt - px.value) <= epsilon:
 
-                for k in fit_list:
+                for k in optima_list:
 
                     if np.sum((k.position - px.position)**2) <= radius:
                         found = True
                         break
 
                 if not found:
-                    fit_list.append(px)
+                    optima_list.append(px)
         # _end_for_
 
         # Return the list.
-        return fit_list
+        return optima_list
     # _end_def_
 
 # _end_class_
