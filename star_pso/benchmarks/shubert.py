@@ -47,7 +47,7 @@ class Shubert(TestFunction):
         f_value = np.nan
 
         # Check the valid function range.
-        if np.all((-10.0 <= x_pos) & (x_pos <= +10.0)):
+        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
             # Range 1 to 6.
             i = np.arange(1, 6)
 
