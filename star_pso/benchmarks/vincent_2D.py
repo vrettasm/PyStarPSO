@@ -43,7 +43,8 @@ class Vincent2D(TestFunction):
         # Vectorized calculations based on the condition.
         if x_range & y_range:
             # Compute the function value.
-            f_value = - (np.sin(10.0 * np.log(x)) + np.sin(10.0 * np.log(y))) / 2.0
+            f_value = - (np.sin(10.0 * np.log(x)) +
+                         np.sin(10.0 * np.log(y))) / 2.0
         # _end_if_
 
         # Return the ndarray.
