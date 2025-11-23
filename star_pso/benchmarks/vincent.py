@@ -46,10 +46,10 @@ class Vincent(TestFunction):
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
             # Compute the function value.
-            f_value = np.sum(np.sin(10.0 * np.log(x_pos)), axis=0)
+            f_value = np.sum(np.sin(10.0 * np.log(x_pos))) / self.n_dim
 
         # Return the ndarray.
-        return f_value/self.n_dim
+        return f_value
     # _end_def_
 
     def initial_random_positions(self, n_pos: int = 50) -> np.ndarray:
@@ -62,7 +62,8 @@ class Vincent(TestFunction):
         :return: a uniformly sampled set of random positions.
         """
         # Draw uniform random samples for the initial points.
-        return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, self.n_dim))
+        return self.rng.uniform(self._x_min, self._x_max,
+                                size=(n_pos, self.n_dim))
     # _end_def_
 
 # _end_class_
