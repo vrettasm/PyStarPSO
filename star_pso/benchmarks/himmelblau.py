@@ -17,9 +17,8 @@ class Himmelblau(TestFunction):
         Default initializer of the Himmelblau class.
         """
 
-        # Call the super initializer with the name.
-        super().__init__(name="Himmelblau",
-                         x_min=-6.0, x_max=6.0)
+        # Call the super initializer with the name and the limits.
+        super().__init__(name="Himmelblau", x_min=-6.0, x_max=6.0)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
@@ -34,16 +33,10 @@ class Himmelblau(TestFunction):
         # Initialize function values to NaN.
         f_value = float("NaN")
 
-        # Separate the two variables.
-        x, y = x_pos
-
-        # Conditions for the different ranges.
-        x_range = (-6.0 <= x) & (x <= +6.0)
-        y_range = (-6.0 <= y) & (y <= +6.0)
-
-        # Vectorized calculations based on the condition.
-        if x_range & y_range:
-            f_value = 200.0 - (x**2 + y - 11)**2 - (x + y**2 - 7)**2
+        # Check the valid function range.
+        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
+            f_value = (200.0 - (x_pos[0]**2 + x_pos[1] - 11)**2 -
+                       (x_pos[0] + x_pos[1]**2 - 7)**2)
         # _end_if_
 
         # Return the ndarray.

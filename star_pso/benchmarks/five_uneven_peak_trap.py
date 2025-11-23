@@ -16,9 +16,8 @@ class FiveUnevenPeakTrap(TestFunction):
         Default initializer of the FiveUnevenPeakTrap class.
         """
 
-        # Call the super initializer with the name.
-        super().__init__(name="Five_Uneven_Peak_Trap",
-                         x_min=0.0, x_max=30.0)
+        # Call the super initializer with the name and the limits.
+        super().__init__(name="Five_Uneven_Peak_Trap", x_min=0.0, x_max=30.0)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:

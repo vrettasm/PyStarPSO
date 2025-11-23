@@ -19,9 +19,9 @@ class Vincent(TestFunction):
         # Ensure correct type.
         n_dim = int(n_dim)
 
-        # Call the super initializer with the name.
-        super().__init__(name=f"Vincent_{n_dim}D",
-                         x_min=0.25, x_max=10.0)
+        # Call the super initializer with the name and the limits.
+        super().__init__(name=f"Vincent_{n_dim}D", x_min=0.25, x_max=10.0)
+
         # Sanity check.
         if n_dim < 2:
             raise ValueError("Vincent D needs to be at least 2 dimensions.")

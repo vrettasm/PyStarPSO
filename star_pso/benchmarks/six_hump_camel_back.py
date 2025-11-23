@@ -15,7 +15,7 @@ class SixHumpCamelBack(TestFunction):
         Default initializer of the SixHumpCamelBack class.
         """
 
-        # Call the super initializer with the name.
+        # Call the super initializer with the name and the limits.
         super().__init__(name="Six_Hump_Camel_Back",
                          x_min=np.array([-1.9, -1.1]),
                          x_max=np.array([+1.9, +1.1]))
