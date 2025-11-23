@@ -1,6 +1,6 @@
 import numpy as np
-from collections import defaultdict
 from numpy.random import default_rng, Generator
+from star_pso.population.particle import Particle
 
 class TestFunction(object):
     """
@@ -106,42 +106,48 @@ class TestFunction(object):
     # _end_def_
 
     @staticmethod
-    def global_optima_found(x_pos: np.ndarray, modes: list | np.ndarray,
-                            radius: float = 1.0) -> dict:
+    def global_optima_found(swarm_population: list[Particle], epsilon: float = 1.0e-5,
+                            radius: float = 1.0e-1, f_opt: float = None) -> list:
         """
         This method will check if the global optimal solution(s)
-        are found in the x_pos.
+        are found in the swarm_population.
 
-        :param x_pos: numpy array with particle positions.
+        :param swarm_population: a list[Particle] of potential solutions.
 
-        :param modes: list of coordinates indicating the global modes.
+        :param epsilon: accuracy level of the global optimal solution.
 
-        :param radius: radius of the distance.
+        :param radius: niche radius of the distance.
 
-        :return: a dictionary with the counts of the particles per mode.
+        :param f_opt: function value for the global optimal solution.
+
+        :return: a list of best-fit individuals identified as solutions.
         """
-        # Create e dictionary to count the success.
-        cppm = defaultdict(int)
 
-        # Check sequentially all x_pos arrays.
-        for px in x_pos:
+        # Create a list with the best fit individuals.
+        fit_list = []
 
-            for vals in modes:
-                # Make sure the modes are a numpy array too.
-                vx = np.asarray(vals)
+        # While not reaching the end of sorted input x_pos.
+        for px in swarm_population:
 
-                # Check the distance from the mode, given a radius value.
-                if np.sum((px - vx)**2, axis=0) <= radius ** 2:
+            # Reset the flag.
+            found = False
 
-                    # Increase counter by one.
-                    cppm[tuple(vals)] += 1
+            # Check if the fitness is near the global
+            # optimal value (within error - epsilon).
+            if abs(f_opt - px.value) <= epsilon:
 
-                    # Exit to avoid double counting.
-                    break
+                for k in fit_list:
+
+                    if np.sum((k.position - px.position)**2) <= radius:
+                        found = True
+                        break
+
+                if not found:
+                    fit_list.append(px)
         # _end_for_
 
-        # Return the dictionary.
-        return cppm
+        # Return the list.
+        return fit_list
     # _end_def_
 
 # _end_class_
