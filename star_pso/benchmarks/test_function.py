@@ -106,8 +106,8 @@ class TestFunction(object):
     # _end_def_
 
     @staticmethod
-    def global_optima_found(x_pos: np.ndarray, modes: list,
-                            radius: int = 1.0) -> dict:
+    def global_optima_found(x_pos: np.ndarray, modes: list | np.ndarray,
+                            radius: float = 1.0) -> dict:
         """
         This method will check if the global optimal solution(s)
         are found in the x_pos.
