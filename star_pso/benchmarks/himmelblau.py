@@ -32,21 +32,20 @@ class Himmelblau(TestFunction):
         """
 
         # Initialize function values to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        f_value = float("NaN")
 
-        # Make separate views for the two variables.
-        x, y = x_pos[:, 0], x_pos[:, 1]
+        # Separate the two variables.
+        x, y = x_pos
 
         # Conditions for the different ranges.
         x_range = (-6.0 <= x) & (x <= +6.0)
         y_range = (-6.0 <= y) & (y <= +6.0)
 
-        # We need both variables to be within range.
-        in_range = x_range & y_range
+        # Vectorized calculations based on the condition.
+        if x_range & y_range:
+            f_value = 200.0 - (x**2 + y - 11)**2 - (x + y**2 - 7)**2
+        # _end_if_
 
-        # Vectorized calculations based on conditions.
-        f_value[in_range] = (200.0 - (x[in_range]**2 + y[in_range] - 11)**2 -
-                             (x[in_range] + y[in_range]**2 - 7)**2)
         # Return the ndarray.
         return f_value
     # _end_def_
