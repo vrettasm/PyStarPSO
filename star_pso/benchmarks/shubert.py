@@ -52,8 +52,8 @@ class Shubert(TestFunction):
             i = np.arange(1, 6)
 
             # Get the product of both sums.
-            f_value = -np.prod(np.sum(i[:, np.newaxis] * np.cos((i[:, np.newaxis] + 1) * x_pos + i[:, np.newaxis]),
-                                      axis=0), axis=0)
+            f_value = -np.prod(np.sum(i[:, np.newaxis] * np.cos((i[:, np.newaxis] + 1) *
+                                                                x_pos + i[:, np.newaxis]), axis=0))
         # _end_if_
 
         # Return the ndarray.
