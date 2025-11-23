@@ -33,15 +33,12 @@ class SixHumpCamelBack(TestFunction):
         # Initialize function values to NaN.
         f_value = float("NaN")
 
-        # Separate the two variables.
-        x, y = x_pos
-
-        # Conditions for the different ranges.
-        x_range = (-1.9 <= x) & (x <= +1.9)
-        y_range = (-1.1 <= y) & (y <= +1.1)
-
         # Vectorized calculations based on the condition.
-        if x_range & y_range:
+        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
+            # Separate the two variables.
+            x, y = x_pos
+
+            # Calculate the function value.
             f_value = -4 * ((4 - 2.1 * x**2 + (x**4)/3) * x**2 +
                             x*y + 4*(y**2 - 1)*(y**2) )
         # _end_if_
