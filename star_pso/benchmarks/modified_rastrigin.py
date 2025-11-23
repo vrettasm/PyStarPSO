@@ -1,4 +1,5 @@
 import numpy as np
+from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 
 
@@ -33,6 +34,9 @@ class ModifiedRastrigin(TestFunction):
 
         # Assign the number of dimensions.
         self.n_dim = n_dim
+
+        # Placeholder for the total optimal values.
+        self.total_optima = None
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
@@ -49,8 +53,11 @@ class ModifiedRastrigin(TestFunction):
 
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Range 1 to D.
-            k = np.arange(2, self.n_dim + 2)
+            # Range 1 to D+1.
+            k = np.arange(1, self.n_dim + 1)
+
+            # Compute the total number of optimal values.
+            self.total_optima = np.prod(k)
 
             # Get the sum.
             f_value = -np.sum(10.0 + 9.0 * np.cos(2.0 * np.pi * k * x_pos))
@@ -71,6 +78,22 @@ class ModifiedRastrigin(TestFunction):
         """
         # Draw uniform random samples for the initial points.
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, self.n_dim))
+    # _end_def_
+
+    def global_optima(self, population: list[Particle]) -> None:
+        """
+        Calculates the global optimum found in the input population.
+        """
+        # Sanity check.
+        if self.total_optima is None:
+            raise ValueError(f"Unknown optimal values.")
+        # _end_if_
+
+        # Get the global optima particles.
+        found_optima = self.global_optima_found(population, epsilon=1.0E-3, radius=0.01,
+                                                f_opt=-float(self.n_dim))
+        # Display the number of global optima found.
+        print(f"Found {len(found_optima)} out of {self.total_optima} global optima.")
     # _end_def_
 
 # _end_class_

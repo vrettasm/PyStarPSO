@@ -1,4 +1,5 @@
 import numpy as np
+from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 
 
@@ -66,6 +67,17 @@ class FiveUnevenPeakTrap(TestFunction):
         """
         # Draw uniform random samples for the initial points.
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 1))
+    # _end_def_
+
+    def global_optima(self, population: list[Particle]) -> None:
+        """
+        Calculates the global optimum found in the input population.
+        """
+        # Get the global optima particles.
+        found_optima = self.global_optima_found(population, epsilon=1.0E-3,
+                                                radius=0.01, f_opt=200.0)
+        # Display the number of global optima found.
+        print(f"Found {len(found_optima)} out of 2 global optima.")
     # _end_def_
 
 # _end_class_

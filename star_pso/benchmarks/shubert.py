@@ -1,4 +1,5 @@
 import numpy as np
+from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 
 
@@ -72,5 +73,30 @@ class Shubert(TestFunction):
         # Draw uniform random samples for the initial points.
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, self.n_dim))
     # _end_def_
+
+    def global_optima(self, population: list[Particle]) -> None:
+        """
+        Calculates the global optimum found in the input population.
+        """
+        # Sanity check.
+        if self.n_dim > 3:
+            raise ValueError(f"Unknown values for D = {self.n_dim}")
+        # _end_if_
+
+        # Calculate the total global optima along with
+        # the f_opt for the given number of dimensions.
+        if self.n_dim == 2:
+            total_optima, f_opt = 18, 186.7309088
+        else:
+            total_optima, f_opt = 81, 2709.093505
+        # _end_if_
+
+        # Get the global optima particles.
+        found_optima = self.global_optima_found(population, epsilon=1.0E-3,
+                                                radius=0.5, f_opt=f_opt)
+        # Display the number of global optima found.
+        print(f"Found {len(found_optima)} out of {total_optima} global optima.")
+    # _end_def_
+
 
 # _end_class_

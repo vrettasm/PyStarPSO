@@ -1,4 +1,5 @@
 import numpy as np
+from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 
 
@@ -35,9 +36,11 @@ class Himmelblau(TestFunction):
 
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            f_value = (200.0 - (x_pos[0]**2 + x_pos[1] - 11)**2 -
-                       (x_pos[0] + x_pos[1]**2 - 7)**2)
-        # _end_if_
+            # Separate the two variables.
+            x, y = x_pos
+
+            # Calculate the function value.
+            f_value = 200.0 - (x**2 + y - 11)**2 - (x + y**2 - 7)**2
 
         # Return the ndarray.
         return f_value
@@ -54,6 +57,17 @@ class Himmelblau(TestFunction):
         """
         # Draw uniform random samples for the initial points.
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 2))
+    # _end_def_
+
+    def global_optima(self, population: list[Particle]) -> None:
+        """
+        Calculates the global optimum found in the input population.
+        """
+        # Get the global optima particles.
+        found_optima = self.global_optima_found(population, epsilon=1.0E-3,
+                                                radius=0.01, f_opt=200.0)
+        # Display the number of global optima found.
+        print(f"Found {len(found_optima)} out of 4 global optima.")
     # _end_def_
 
 # _end_class_
