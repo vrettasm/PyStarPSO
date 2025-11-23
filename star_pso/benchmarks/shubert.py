@@ -2,7 +2,7 @@ import numpy as np
 from star_pso.benchmarks.test_function import TestFunction
 
 
-class Shubert2D(TestFunction):
+class Shubert(TestFunction):
     """
     This function was originally proposed in:
 
@@ -12,19 +12,25 @@ class Shubert2D(TestFunction):
 
     def __init__(self, n_dim: int = 2) -> None:
         """
-        Default initializer of the SixHumpCamelBack class.
+        Default initializer of the Shubert D class.
 
         :param n_dim: Number of dimensions of the problem.
 
         :return: None.
         """
+        # Ensure correct type.
+        n_dim = int(n_dim)
 
         # Call the super initializer with the name.
-        super().__init__(name="Shubert_2D",
+        super().__init__(name=f"Shubert_{n_dim}D",
                          x_min=-10.0, x_max=+10.0)
+        # Sanity check.
+        if n_dim < 2:
+            raise ValueError("Shubert D needs to be at least 2 dimensions.")
+        # _end_if_
 
         # Assign the number of dimensions.
-        self.n_dim = max(int(n_dim), 2)
+        self.n_dim = n_dim
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
@@ -37,23 +43,17 @@ class Shubert2D(TestFunction):
         :return: the function value(s).
         """
 
-        # Initialize function values to NaN.
-        f_value = float("NaN")
+        # Initialize function value to NaN.
+        f_value = np.nan
 
         # Check the valid function range.
         if np.all((-10.0 <= x_pos) & (x_pos <= +10.0)):
             # Range 1 to 6.
             i = np.arange(1, 6)
 
-            # Set the initial value to one.
-            sum_x = np.ones(1)
-
-            # Calculate the summation over each x.
-            for xi in x_pos:
-                sum_x *= np.sum(i * np.cos((i + 1) * xi + i), axis=0)
-
             # Get the product of both sums.
-            f_value = -sum_x
+            f_value = -np.prod(np.sum(i[:, np.newaxis] * np.cos((i[:, np.newaxis] + 1) * x_pos + i[:, np.newaxis]),
+                                      axis=0), axis=0)
         # _end_if_
 
         # Return the ndarray.
