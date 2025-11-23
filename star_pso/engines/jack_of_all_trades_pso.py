@@ -8,7 +8,7 @@ from numpy import subtract as np_subtract
 from collections import defaultdict
 from star_pso.engines.generic_pso import GenericPSO
 from star_pso.utils.auxiliary import (VOptions, BlockType, SpecialMode, cached_range,
-                                      linear_rank_probabilities, get_spread_method)
+                                      linear_rank_probabilities, spread_method)
 # Public interface.
 __all__ = ["JackOfAllTradesPSO"]
 
@@ -296,9 +296,6 @@ class JackOfAllTradesPSO(GenericPSO):
             for i, data_block in enumerate(particle):
                 field[i].append(data_block)
         # _end_for_
-
-        # Get the dictionary with all the methods.
-        spread_method = get_spread_method()
 
         # Preallocate a vector (one for each field).
         per_field = np.empty(len(field))
