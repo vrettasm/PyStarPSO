@@ -14,7 +14,7 @@ class EqualMaxima(TestFunction):
 
     def __init__(self) -> None:
         """
-        Default initializer of the FiveUnevenPeakTrap class.
+        Default initializer of the EqualMaxima class.
         """
 
         # Call the super initializer with the name.
