@@ -41,7 +41,7 @@ class Shubert2D(TestFunction):
 
         # Vectorized calculations based on the condition.
         if x_range & y_range:
-            # Range 1 to 6
+            # Range 1 to 6.
             i = np.arange(1, 6)
 
             # Calculate the first summation over each x.
