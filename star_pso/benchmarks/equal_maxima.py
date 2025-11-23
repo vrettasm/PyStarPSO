@@ -36,7 +36,7 @@ class EqualMaxima(TestFunction):
 
         # Condition for the valid range.
         if (0.0 <= x_pos) & (x_pos <= 1.0):
-            f_value = np.sin(5.0 * np.pi *x_pos)**6
+            f_value = np.sin(5.0 * np.pi * x_pos)**6
 
         # Return the ndarray.
         return f_value
