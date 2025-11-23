@@ -33,7 +33,7 @@ class UnevenDecreasingMaxima(TestFunction):
         f_value = np.nan
 
         # Condition for the valid range.
-        if (0.0 <= x_pos) & (x_pos <= 1.0):
+        if self.x_min <= x_pos <= self.x_max:
             f_value = (np.exp(-2.0*np.log(2.0)*((x_pos - 0.08)/0.854)**2)*
                        np.sin(5.0*np.pi*(x_pos**(3/4) - 0.05))**6)
         # Return the ndarray.
