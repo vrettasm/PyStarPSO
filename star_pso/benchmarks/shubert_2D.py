@@ -51,7 +51,7 @@ class Shubert2D(TestFunction):
             sum_y = np.sum(i * np.cos((i + 1) * y + i), axis=0)
 
             # Get the product of both sums.
-            f_value = sum_x * sum_y
+            f_value = - (sum_x * sum_y)
         # _end_if_
 
         # Return the ndarray.
