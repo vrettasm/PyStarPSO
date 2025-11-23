@@ -31,13 +31,13 @@ class EqualMaxima(TestFunction):
         :return: the function value(s).
         """
 
-        # Initialize function values to NaN
+        # Initialize function values to NaN.
         f_value = np.full_like(x_pos, np.nan, dtype=float)
 
-        # Conditions for the different ranges.
+        # Condition for the valid range.
         in_range = (0.0 <= x_pos) & (x_pos <= 1.0)
 
-        # Vectorized calculations based on conditions.
+        # Vectorized calculations based on the condition.
         f_value[in_range] = np.sin(5.0 * np.pi *x_pos[in_range])**6
 
         # Return the ndarray.
@@ -46,17 +46,15 @@ class EqualMaxima(TestFunction):
 
     def initial_random_positions(self, n_pos: int = 50) -> np.ndarray:
         """
-        Generate the initial set of random positions within the minimum
-        / maximum bounds of the test problem.
+        Generate an initial set of uniformly random sampled positions
+        within the minimum / maximum bounds of the test problem.
 
         :param n_pos: the number of positions to generate.
 
         :return: a uniformly sampled set of random positions.
         """
         # Draw uniform random samples for the initial points.
-        return self.rng.uniform(self._x_min,
-                                self._x_max,
-                                size=(n_pos, 1))
+        return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 1))
     # _end_def_
 
 # _end_class_

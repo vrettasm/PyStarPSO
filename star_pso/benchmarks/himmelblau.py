@@ -53,8 +53,8 @@ class Himmelblau(TestFunction):
 
     def initial_random_positions(self, n_pos: int = 50) -> np.ndarray:
         """
-        Generate the initial set of random positions within the minimum
-        / maximum bounds of the test problem.
+        Generate an initial set of uniformly random sampled positions
+        within the minimum / maximum bounds of the test problem.
 
         :param n_pos: the number of positions to generate.
 

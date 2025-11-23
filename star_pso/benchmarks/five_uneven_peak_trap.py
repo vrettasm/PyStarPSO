@@ -23,15 +23,14 @@ class FiveUnevenPeakTrap(TestFunction):
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
         """
-        This is 1D function. There are two global optima,
-        whilst the number of local optima is 3.
+        This is 1D function. There are two global and one local optima.
 
         :param x_pos: the current position(s) of the function.
 
         :return: the function value(s).
         """
 
-        # Initialize function values to NaN
+        # Initialize function values to NaN.
         f_value = np.full_like(x_pos, np.nan, dtype=float)
 
         # Conditions for the different ranges.
@@ -60,17 +59,15 @@ class FiveUnevenPeakTrap(TestFunction):
 
     def initial_random_positions(self, n_pos: int = 50) -> np.ndarray:
         """
-        Generate the initial set of random positions within the minimum
-        / maximum bounds of the test problem.
+        Generate an initial set of uniformly random sampled positions
+        within the minimum / maximum bounds of the test problem.
 
         :param n_pos: the number of positions to generate.
 
         :return: a uniformly sampled set of random positions.
         """
         # Draw uniform random samples for the initial points.
-        return self.rng.uniform(self._x_min,
-                                self._x_max,
-                                size=(n_pos, 1))
+        return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 1))
     # _end_def_
 
 # _end_class_
