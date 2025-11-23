@@ -50,10 +50,10 @@ class ModifiedRastrigin(TestFunction):
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
             # Range 1 to D.
-            k = np.arange(1, self.n_dim + 1)
+            k = np.arange(2, self.n_dim + 2)
 
             # Get the sum.
-            f_value = -np.sum(10.0 + 9.0 * np.cos(2.0 * np.pi * k[:, np.newaxis] * x_pos), axis=1).sum()
+            f_value = -np.sum(10.0 + 9.0 * np.cos(2.0 * np.pi * k * x_pos))
         # _end_if_
 
         # Return the ndarray.
