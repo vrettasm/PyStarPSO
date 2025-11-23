@@ -70,7 +70,7 @@ class Shubert(TestFunction):
         :return: a uniformly sampled set of random positions.
         """
         # Draw uniform random samples for the initial points.
-        return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 2))
+        return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, self.n_dim))
     # _end_def_
 
 # _end_class_
