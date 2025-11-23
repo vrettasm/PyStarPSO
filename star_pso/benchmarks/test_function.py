@@ -1,4 +1,5 @@
 import numpy as np
+from collections import defaultdict
 from numpy.random import default_rng, Generator
 
 class TestFunction(object):
@@ -104,15 +105,43 @@ class TestFunction(object):
                                   f"You should implement this method!")
     # _end_def_
 
-    def global_optima_found(self, x_pos: np.ndarray):
+    @staticmethod
+    def global_optima_found(x_pos: np.ndarray, modes: list,
+                            radius: int = 1.0) -> dict:
         """
         This method will check if the global optimal solution(s)
         are found in the x_pos.
 
-        :return: None.
+        :param x_pos: numpy array with particle positions.
+
+        :param modes: list of coordinates indicating the global modes.
+
+        :param radius: radius of the distance.
+
+        :return: a dictionary with the counts of the particles per mode.
         """
-        raise NotImplementedError(f"{self.__class__.__name__}: "
-                                  f"You should implement this method!")
+        # Create e dictionary to count the success.
+        cppm = defaultdict(int)
+
+        # Check sequentially all x_pos arrays.
+        for px in x_pos:
+
+            for vals in modes:
+                # Make sure the modes are a numpy array too.
+                vx = np.asarray(vals)
+
+                # Check the distance from the mode, given a radius value.
+                if np.sum((px - vx)**2, axis=0) <= radius ** 2:
+
+                    # Increase counter by one.
+                    cppm[tuple(vals)] += 1
+
+                    # Exit to avoid double counting.
+                    break
+        # _end_for_
+
+        # Return the dictionary.
+        return cppm
     # _end_def_
 
 # _end_class_
