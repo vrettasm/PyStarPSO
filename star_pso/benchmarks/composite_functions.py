@@ -131,7 +131,7 @@ class CompositeFunction(TestFunction):
         """
 
         # Initialize function value to NaN.
-        f_value = 0.0
+        f_value = f_bias
 
         # Compute the weights.
         weights = linear_rank_weights(len(basic_f))
@@ -142,7 +142,7 @@ class CompositeFunction(TestFunction):
         # _end_for_
 
         # Return the ndarray.
-        return f_value + f_bias
+        return f_value
     # _end_def_
 
     def initial_random_positions(self, n_pos: int = 100) -> np.ndarray:
