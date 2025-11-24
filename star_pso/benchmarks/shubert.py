@@ -27,7 +27,7 @@ class Shubert(TestFunction):
 
         # Sanity check.
         if n_dim < 2:
-            raise ValueError("Shubert D needs to be at least 2 dimensions.")
+            raise ValueError("Shubert needs at least 2 dimensions.")
         # _end_if_
 
         # Assign the number of dimensions.

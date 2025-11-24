@@ -25,7 +25,7 @@ class Vincent(TestFunction):
 
         # Sanity check.
         if n_dim < 2:
-            raise ValueError("Vincent D needs to be at least 2 dimensions.")
+            raise ValueError("Vincent needs at least 2 dimensions.")
         # _end_if_
 
         # Assign the number of dimensions.

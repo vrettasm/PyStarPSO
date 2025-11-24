@@ -29,7 +29,7 @@ class Rastrigin(TestFunction):
 
         # Sanity check.
         if n_dim < 2:
-            raise ValueError("Rastrigin D needs to be at least 2 dimensions.")
+            raise ValueError("Rastrigin needs at least 2 dimensions.")
         # _end_if_
 
         # Assign the number of dimensions.
