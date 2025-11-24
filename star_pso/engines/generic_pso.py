@@ -441,6 +441,52 @@ class GenericPSO(object):
         return w_best
     # _end_def_
 
+    def neighborhood_best(self, num_neighbors: int) -> deque:
+        """
+        For each particle in the swarm, finds the 'n' closest neighbors
+        (distance-wise) and computes the local best neighborhood position.
+
+        :param num_neighbors: number of neighbors to consider.
+
+        :return: a container (deque) with the neighborhood best positions.
+        """
+        # Size of the population.
+        swarm_size = self.swarm.size
+
+        # Extract the swarms positions as array.
+        x_pos = self.swarm.positions_as_array()
+
+        # Compute the pairwise distances.
+        pairwise_dists = nb_cdist(x_pos, scaled=True)
+
+        # Get the indices of the sorted distances.
+        # This way we can have the nearest neighbors first.
+        x_sorted = np.argsort(pairwise_dists, axis=1)
+
+        # Local best deque with max length.
+        l_best = deque(maxlen=swarm_size)
+
+        # Go through each row of the x_sorted matrix and for each
+        # particle  compute it's best neighborhood  position as a
+        # weighted average of their best positions, weighted with
+        # their linear ranked probabilities.
+        #
+        # NB: Since the first index 0 refers to the same particle
+        # we skip it and start counting from 1.
+        for row in x_sorted[:, 1:num_neighbors+1]:
+            # Collect only the m-local particles.
+            near_neighbors = [self.swarm.population[k] for k in row]
+
+            # Use the fully_informed with the 'use_best' option enabled
+            # to get a weighted average of the optimal local position.
+            optimal_position = GenericPSO.fully_informed(near_neighbors,
+                                                         use_best=True)
+            # Update the local best deque.
+            l_best.append(optimal_position)
+
+        # Return the container.
+        return l_best
+
     def get_local_best_positions(self, operating_mode: str = "g_best") -> np.ndarray:
         """
         This method uses the swarm's population and the current operation mode
@@ -464,32 +510,8 @@ class GenericPSO(object):
 
         elif operating_mode == "multimodal":
 
-            # Extract the swarms positions as array.
-            x_pos = self.swarm.positions_as_array()
-
-            # Compute the pairwise distances.
-            pairwise_dists = nb_cdist(x_pos, scaled=True)
-
-            # Get the indices of the sorted distances.
-            # This way we can have the nearest neighbors first.
-            x_sorted = np.argsort(pairwise_dists, axis=1)
-
-            # Local best deque with max length.
-            l_best = deque(maxlen=swarm_size)
-
-            # Go through each row of the index matrix. Here we set 'm=5'.
-            # Note that the first index '0' refers to the same particle.
-            # So we skip it and start counting from 1.
-            for row in x_sorted[:, 1:5]:
-                # Collect only the m-local particles.
-                near_neighbors = [self.swarm.population[k] for k in row]
-
-                # Use the fully_informed with the 'use_best' option enabled
-                # to get a weighted average of the optimal local position.
-                optimal_position = GenericPSO.fully_informed(near_neighbors,
-                                                             use_best=True)
-                # Update the local best deque.
-                l_best.append(optimal_position)
+            # Get the (local) neighborhood's best particles.
+            l_best = self.neighborhood_best(num_neighbors=4)
 
         elif operating_mode == "g_best":
 
@@ -500,6 +522,7 @@ class GenericPSO(object):
                              f" Use 'fipso', 'multimodal' or 'g_best'")
         # _end_if_
 
+        # Convert the result to numpy array.
         return np.array(l_best)
     # _end_def_
 
