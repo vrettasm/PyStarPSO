@@ -51,7 +51,7 @@ def f_rastrigin(x_pos: np.ndarray) -> np.ndarray:
 # _end_def_
 
 # Basic function: 4
-def f_weierstrass(x_pos: np.ndarray, k_max: int = 20,
+def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
                   alpha: float = 0.5, beta: int = 3) -> np.ndarray:
     """
     Computes the Weierstrass function at x_pos, with
@@ -168,8 +168,8 @@ class CompositeFunction(TestFunction):
         total number that exist.
         """
         # Get the global optima particles.
-        found_optima = self.global_optima_found(population, epsilon=1.0E-3,
-                                                radius=1.0, f_opt=31.55990)
+        found_optima = self.global_optima_found(population, epsilon=1.0E-4,
+                                                radius=0.2, f_opt=31.55677)
         # Find the number of optima.
         num_optima = len(found_optima)
 
