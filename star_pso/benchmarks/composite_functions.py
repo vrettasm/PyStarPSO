@@ -1,7 +1,23 @@
 import numpy as np
+from functools import cache
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 
+
+@cache
+def linear_rank_weights(p_size: int) -> np.ndarray:
+    """
+    Calculate the rank probability distribution.
+    """
+    # Calculate the sum of all the ranked swarm particles.
+    sum_ranked_values = float(0.5 * p_size * (p_size + 1))
+
+    # Calculate the linear ranked weights.
+    probs = np.arange(1, p_size + 1) / sum_ranked_values
+
+    # Return the probs.
+    return probs
+# _end_def_
 
 # Basic function: 1
 def f_sphere(x_pos: np.ndarray) -> np.ndarray:
@@ -115,11 +131,14 @@ class CompositeFunction(TestFunction):
         """
 
         # Initialize function value to NaN.
-        f_value = np.nan
+        f_value = 0.0
+
+        # Compute the weights.
+        weights = linear_rank_weights(len(basic_f))
 
         # Construct a composite function.
-        for cf in basic_f.values():
-            f_value += cf(x_pos + i_bias)
+        for wi, cf in zip(weights, basic_f.values()):
+            f_value += wi * cf(x_pos + i_bias)
         # _end_for_
 
         # Return the ndarray.
@@ -150,7 +169,7 @@ class CompositeFunction(TestFunction):
         """
         # Get the global optima particles.
         found_optima = self.global_optima_found(population, epsilon=1.0E-3,
-                                                radius=0.01, f_opt=0.0)
+                                                radius=0.5, f_opt=31.55990)
         # Find the number of optima.
         num_optima = len(found_optima)
 
