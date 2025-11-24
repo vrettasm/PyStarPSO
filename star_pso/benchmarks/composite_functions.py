@@ -169,7 +169,7 @@ class CompositeFunction(TestFunction):
         """
         # Get the global optima particles.
         found_optima = self.global_optima_found(population, epsilon=1.0E-3,
-                                                radius=0.5, f_opt=31.55990)
+                                                radius=1.0, f_opt=31.55990)
         # Find the number of optima.
         num_optima = len(found_optima)
 
