@@ -74,9 +74,14 @@ class Shubert(TestFunction):
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, self.n_dim))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> None:
+    def global_optima(self, population: list[Particle]) -> (int, int):
         """
         Calculates the global optimum found in the input population.
+
+        :param population: the population to search the global optimum.
+
+        :return: a tuple with the number of global optima found and the
+        total number that exist.
         """
         # Sanity check.
         if self.n_dim > 3:
@@ -94,8 +99,11 @@ class Shubert(TestFunction):
         # Get the global optima particles.
         found_optima = self.global_optima_found(population, epsilon=1.0E-3,
                                                 radius=0.5, f_opt=f_opt)
-        # Display the number of global optima found.
-        print(f"Found {len(found_optima)} out of {total_optima} global optima.")
+        # Find the number of optima.
+        num_optima = len(found_optima)
+
+        # Return the tuple (number of found, total number)
+        return num_optima, total_optima
     # _end_def_
 
 

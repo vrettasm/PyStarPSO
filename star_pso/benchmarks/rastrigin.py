@@ -3,7 +3,7 @@ from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 
 
-class ModifiedRastrigin(TestFunction):
+class Rastrigin(TestFunction):
     """
     This function was originally proposed in:
 
@@ -15,7 +15,7 @@ class ModifiedRastrigin(TestFunction):
 
     def __init__(self, n_dim: int = 2) -> None:
         """
-        Default initializer of the Modified Rastrigin D class.
+        Default initializer of the D dimensional Rastrigin.
 
         :param n_dim: Number of dimensions of the problem.
 
@@ -80,9 +80,14 @@ class ModifiedRastrigin(TestFunction):
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, self.n_dim))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> None:
+    def global_optima(self, population: list[Particle]) -> (int, int):
         """
         Calculates the global optimum found in the input population.
+
+        :param population: the population to search the global optimum.
+
+        :return: a tuple with the number of global optima found and the
+        total number that exist.
         """
         # Sanity check.
         if self.total_optima is None:
@@ -90,10 +95,13 @@ class ModifiedRastrigin(TestFunction):
         # _end_if_
 
         # Get the global optima particles.
-        found_optima = self.global_optima_found(population, epsilon=1.0E-3, radius=0.01,
-                                                f_opt=-float(self.n_dim))
-        # Display the number of global optima found.
-        print(f"Found {len(found_optima)} out of {self.total_optima} global optima.")
+        found_optima = self.global_optima_found(population, epsilon=1.0E-3,
+                                                radius=0.01, f_opt=-float(self.n_dim))
+        # Find the number of optima.
+        num_optima = len(found_optima)
+
+        # Return the tuple (number of found, total number)
+        return num_optima, self.total_optima
     # _end_def_
 
 # _end_class_

@@ -54,15 +54,23 @@ class UnevenDecreasingMaxima(TestFunction):
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 1))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> None:
+    def global_optima(self, population: list[Particle]) -> (int, int):
         """
         Calculates the global optimum found in the input population.
+
+        :param population: the population to search the global optimum.
+
+        :return: a tuple with the number of global optima found and the
+        total number that exist.
         """
         # Get the global optima particles.
         found_optima = self.global_optima_found(population, epsilon=1.0E-3,
                                                 radius=0.01, f_opt=1.0)
-        # Display the number of global optima found.
-        print(f"Found {len(found_optima)} out of 1 global optima.")
+        # Find the number of optima.
+        num_optima = len(found_optima)
+
+        # Return the tuple (number of found, total number)
+        return num_optima, 1
     # _end_def_
 
 # _end_class_
