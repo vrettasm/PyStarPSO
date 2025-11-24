@@ -89,7 +89,8 @@ basic_f: dir = {1: f_sphere,
 
 class CompositeFunction(TestFunction):
     """
-    TBD...
+    Generates a Composite Function using a weighting average
+    of basic functions, as defined in the 'basic_f' dict.
     """
 
     def __init__(self, n_dim: int = 2) -> None:
