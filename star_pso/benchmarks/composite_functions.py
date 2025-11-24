@@ -130,7 +130,7 @@ class CompositeFunction(TestFunction):
         :return: the function value(s).
         """
 
-        # Initialize function value to NaN.
+        # Initialize function value to f_bias.
         f_value = f_bias
 
         # Compute the weights.
