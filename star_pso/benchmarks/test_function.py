@@ -1,4 +1,6 @@
 import numpy as np
+from math import fabs
+from numpy.linalg import norm
 from numpy.random import default_rng, Generator
 from star_pso.population.particle import Particle
 
@@ -22,7 +24,6 @@ class TestFunction(object):
         Description:
         Default initializer of the "TestFunction" class.
         """
-
         # Sanity check.
         if np.any(x_min >= x_max):
             raise ValueError(f"{self.__class__.__name__}: "
@@ -62,10 +63,10 @@ class TestFunction(object):
     @property
     def x_max(self) -> float | np.ndarray:
         """
-       Accessor (getter) of the upper bounds of the test function.
+        Accessor (getter) of the upper bounds of the test function.
 
-       :return: numpy array with maximum values.
-       """
+        :return: numpy array with maximum values.
+        """
         return self._x_max
     # _end_def_
 
@@ -122,7 +123,6 @@ class TestFunction(object):
 
         :return: a list of best-fit individuals identified as solutions.
         """
-
         # Define a return list that will contain the
         # particles that are on the global solutions.
         optima_list = []
@@ -135,19 +135,18 @@ class TestFunction(object):
 
             # Check if the fitness is near the global
             # optimal value (within error - epsilon).
-            if abs(f_opt - px.value) <= epsilon:
+            if fabs(f_opt - px.value) <= epsilon:
 
                 # Check if the particle is already
                 # in the optimal particles list.
                 for k in optima_list:
 
                     # Check if the two particles are close to each other.
-                    if np.sum((k.position - px.position)**2) <= radius:
+                    if norm(k.position - px.position) <= radius:
                         already_exists = True
                         break
-                # Add the particle only
-                # if it doesn't already
-                # exist in the list.
+                # Add the particle only if it doesn't
+                # already exist in the list.
                 if not already_exists:
                     optima_list.append(px)
         # _end_for_
