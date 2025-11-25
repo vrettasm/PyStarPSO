@@ -159,18 +159,21 @@ class CompositeFunction(TestFunction):
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, self.n_dim))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> tuple[int, int]:
+    def global_optima(self, population: list[Particle],
+                      epsilon: float = 1.0e-4) -> tuple[int, int]:
         """
         Calculates the global optimum found in the input population.
 
         :param population: the population to search the global optimum.
 
+        :param epsilon: accuracy level of the global optimal solution.
+
         :return: a tuple with the number of global optima found and the
         total number that exist.
         """
         # Get the global optima particles.
-        found_optima = self.global_optima_found(population, epsilon=1.0E-4,
-                                                radius=1.0, f_opt=31.55677)
+        found_optima = self.global_optima_found(population, epsilon=epsilon,
+                                                radius=1.0, f_opt=31.556770)
         # Find the number of optima.
         num_optima = len(found_optima)
 

@@ -65,16 +65,24 @@ class Vincent(TestFunction):
                                 size=(n_pos, self.n_dim))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> tuple[int, int]:
+    def global_optima(self, population: list[Particle],
+                      epsilon: float = 1.0e-4) -> tuple[int, int]:
         """
         Calculates the global optimum found in the input population.
+
+        :param population: the population to search the global optimum.
+
+        :param epsilon: accuracy level of the global optimal solution.
+
+        :return: a tuple with the number of global optima found and the
+        total number that exist.
         """
         # Calculate the total global optima along with
         # the f_opt for the given number of dimensions.
         total_optima = int(6**self.n_dim)
 
         # Get the global optima particles.
-        found_optima = self.global_optima_found(population, epsilon=1.0E-3,
+        found_optima = self.global_optima_found(population, epsilon=epsilon,
                                                 radius=0.2, f_opt=1.0)
         # Find the number of optima.
         num_optima = len(found_optima)
