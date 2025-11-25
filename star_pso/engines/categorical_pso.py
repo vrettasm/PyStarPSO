@@ -106,7 +106,6 @@ class CategoricalPSO(GenericPSO):
 
         :return: None.
         """
-
         # Get the length of each set.
         size_k = self.size_of_sets
 
