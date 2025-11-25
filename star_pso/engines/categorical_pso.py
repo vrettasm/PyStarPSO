@@ -25,7 +25,7 @@ class CategoricalPSO(GenericPSO):
     """
 
     def __init__(self, variable_sets: list, permutation_mode: bool = False,
-                 **kwargs):
+                 **kwargs) -> None:
         """
         Default initializer of the CategoricalPSO class.
 
