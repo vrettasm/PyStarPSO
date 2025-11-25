@@ -17,7 +17,6 @@ class EqualMaxima(TestFunction):
         """
         Default initializer of the EqualMaxima class.
         """
-
         # Call the super initializer with the name and the limits.
         super().__init__(name="Equal_Maxima", x_min=0.0, x_max=1.0)
     # _end_def_
@@ -30,12 +29,11 @@ class EqualMaxima(TestFunction):
 
         :return: the function value(s).
         """
-
         # Initialize function value to NaN.
         f_value = np.nan
 
         # Condition for the valid range.
-        if (0.0 <= x_pos) & (x_pos <= 1.0):
+        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
             f_value = np.sin(5.0 * np.pi * x_pos)**6
 
         # Return the ndarray.
@@ -55,7 +53,7 @@ class EqualMaxima(TestFunction):
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 1))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> (int, int):
+    def global_optima(self, population: list[Particle]) -> tuple[int, int]:
         """
         Calculates the global optimum found in the input population.
 
