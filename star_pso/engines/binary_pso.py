@@ -24,7 +24,7 @@ class BinaryPSO(GenericPSO):
     pp: 4104–4108.
     """
 
-    def __init__(self, v_min: ArrayLike, v_max: ArrayLike, **kwargs):
+    def __init__(self, v_min: ArrayLike, v_max: ArrayLike, **kwargs) -> None:
         """
         Default initializer of the BinaryPSO class.
 
