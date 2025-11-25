@@ -60,7 +60,7 @@ class DataBlock(object):
         if isinstance(btype, BlockType):
             self._btype = btype
         else:
-            raise TypeError(f"{self.__class__.__name__}: Unknown Block Type.")
+            raise TypeError(f"{self.__class__.__name__}: Unknown Block Type {btype}.")
         # _end_if_
 
         # Copy the initial position.
