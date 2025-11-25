@@ -93,7 +93,7 @@ class TestFunction(object):
                                   f"You should implement this method!")
     # _end_def_
 
-    def initial_random_positions(self, n_pos: int) -> np.ndarray:
+    def sample_random_positions(self, n_pos: int) -> np.ndarray:
         """
         This method will create an initial set of random positions
         that will be passed to the PSO algorithm to form the swarm.
@@ -107,8 +107,8 @@ class TestFunction(object):
     # _end_def_
 
     @staticmethod
-    def global_optima_found(swarm_population: list[Particle], epsilon: float = 1.0e-5,
-                            radius: float = 1.0e-1, f_opt: float | None = None) -> list:
+    def search_global_optima(swarm_population: list[Particle], epsilon: float = 1.0e-5,
+                             radius: float = 1.0e-1, f_opt: float | None = None) -> list:
         """
         This method will check if the global optimal solution(s)
         are found in the swarm_population.

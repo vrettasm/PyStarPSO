@@ -51,7 +51,7 @@ class Vincent(TestFunction):
         return f_value
     # _end_def_
 
-    def initial_random_positions(self, n_pos: int = 100) -> np.ndarray:
+    def sample_random_positions(self, n_pos: int = 100) -> np.ndarray:
         """
         Generate an initial set of uniformly random sampled positions
         within the minimum / maximum bounds of the test problem.
@@ -82,8 +82,8 @@ class Vincent(TestFunction):
         total_optima = int(6**self.n_dim)
 
         # Get the global optima particles.
-        found_optima = self.global_optima_found(population, epsilon=epsilon,
-                                                radius=0.2, f_opt=1.0)
+        found_optima = self.search_global_optima(population, epsilon=epsilon,
+                                                 radius=0.2, f_opt=1.0)
         # Find the number of optima.
         num_optima = len(found_optima)
 

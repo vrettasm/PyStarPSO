@@ -60,7 +60,7 @@ class Shubert(TestFunction):
         return f_value
     # _end_def_
 
-    def initial_random_positions(self, n_pos: int = 100) -> np.ndarray:
+    def sample_random_positions(self, n_pos: int = 100) -> np.ndarray:
         """
         Generate an initial set of uniformly random sampled positions
         within the minimum / maximum bounds of the test problem.
@@ -99,8 +99,8 @@ class Shubert(TestFunction):
         # _end_if_
 
         # Get the global optima particles.
-        found_optima = self.global_optima_found(population, epsilon=epsilon,
-                                                radius=0.5, f_opt=f_opt)
+        found_optima = self.search_global_optima(population, epsilon=epsilon,
+                                                 radius=0.5, f_opt=f_opt)
         # Find the number of optima.
         num_optima = len(found_optima)
 

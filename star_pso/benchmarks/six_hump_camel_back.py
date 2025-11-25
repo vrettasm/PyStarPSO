@@ -45,7 +45,7 @@ class SixHumpCamelBack(TestFunction):
         return f_value
     # _end_def_
 
-    def initial_random_positions(self, n_pos: int = 50) -> np.ndarray:
+    def sample_random_positions(self, n_pos: int = 50) -> np.ndarray:
         """
         Generate an initial set of uniformly random sampled positions
         within the minimum / maximum bounds of the test problem.
@@ -71,8 +71,8 @@ class SixHumpCamelBack(TestFunction):
         total number that exist.
         """
         # Get the global optima particles.
-        found_optima = self.global_optima_found(population, epsilon=epsilon,
-                                                radius=0.5, f_opt=1.031628453)
+        found_optima = self.search_global_optima(population, epsilon=epsilon,
+                                                 radius=0.5, f_opt=1.031628453)
         # Find the number of optima.
         num_optima = len(found_optima)
 

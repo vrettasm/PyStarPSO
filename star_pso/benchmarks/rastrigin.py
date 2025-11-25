@@ -66,7 +66,7 @@ class Rastrigin(TestFunction):
         return f_value
     # _end_def_
 
-    def initial_random_positions(self, n_pos: int = 100) -> np.ndarray:
+    def sample_random_positions(self, n_pos: int = 100) -> np.ndarray:
         """
         Generate an initial set of uniformly random sampled positions
         within the minimum / maximum bounds of the test problem.
@@ -97,8 +97,8 @@ class Rastrigin(TestFunction):
         # _end_if_
 
         # Get the global optima particles.
-        found_optima = self.global_optima_found(population, epsilon=epsilon,
-                                                radius=0.01, f_opt=-float(self.n_dim))
+        found_optima = self.search_global_optima(population, epsilon=epsilon,
+                                                 radius=0.01, f_opt=-float(self.n_dim))
         # Find the number of optima.
         num_optima = len(found_optima)
 
