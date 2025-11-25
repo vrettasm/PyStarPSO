@@ -1,13 +1,14 @@
 from operator import attrgetter
+from collections import defaultdict
 
 import numpy as np
 from numpy import sum as np_sum
 from numpy import isscalar as np_isscalar
 from numpy import subtract as np_subtract
 
-from collections import defaultdict
+from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import (VOptions, BlockType,
+from star_pso.utils.auxiliary import (BlockType,
                                       linear_rank_probabilities,
                                       SpecialMode, spread_methods)
 # Public interface.

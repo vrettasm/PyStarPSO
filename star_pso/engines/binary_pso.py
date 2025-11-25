@@ -3,9 +3,9 @@ from numpy import exp as np_exp
 from numpy import clip as np_clip
 from numpy.typing import ArrayLike
 
+from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import (VOptions,
-                                      nb_median_hamming_distance)
+from star_pso.utils.auxiliary import nb_median_hamming_distance
 
 # Public interface.
 __all__ = ["BinaryPSO"]

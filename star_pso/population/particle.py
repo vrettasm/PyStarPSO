@@ -5,8 +5,7 @@ from functools import cached_property
 from numpy.typing import ArrayLike
 from numpy import copyto as copy_to
 from numpy import (array, array_equal, asarray)
-
-from star_pso.utils.auxiliary import ScalarOrArray
+from star_pso.utils import ScalarOrArray
 
 # Public interface.
 __all__ = ["Particle"]

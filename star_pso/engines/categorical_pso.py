@@ -6,8 +6,9 @@ from numpy import sum as np_sum
 from numpy import clip as np_clip
 from numpy import subtract as np_subtract
 
+from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import (VOptions, SpecialMode,
+from star_pso.utils.auxiliary import (SpecialMode,
                                       nb_median_kl_divergence)
 # Public interface.
 __all__ = ["CategoricalPSO"]

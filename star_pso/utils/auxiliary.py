@@ -1,28 +1,15 @@
 import time
 from enum import Enum
 from math import fabs
-from collections import namedtuple
-from typing import (Union, Callable)
+from typing import Callable
 from functools import (cache, wraps, partial)
 
 import numpy as np
 from numba import njit
 from numpy.linalg import norm
-from numpy.typing import ArrayLike
 
-from population.particle import Particle
+from star_pso.population.particle import Particle
 
-# Make a type alias for the position's type.
-ScalarOrArray = Union[int, float, ArrayLike]
-
-# Declare a named tuple with the parameters
-# we want to use in the velocity equations:
-# 1) "w0": inertia weight
-# 2) "c1": cognitive coefficient
-# 3) "c2": social coefficient
-# 4) "mode": "fipso", "g_best", "multimodal".
-VOptions = namedtuple("VOptions",
-                      ["w0", "c1", "c2", "mode"], defaults=[False])
 
 class BlockType(Enum):
     """

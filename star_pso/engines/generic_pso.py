@@ -11,10 +11,11 @@ import numpy as np
 from numpy.typing import ArrayLike
 from numpy.random import default_rng, Generator
 
+from star_pso.utils import VOptions
 from star_pso.population.swarm import Swarm, SwarmParticle
-from star_pso.utils.auxiliary import (time_it, VOptions, nb_clip_item,
-                                      SpecialMode, check_velocity_parameters,
-                                      linear_rank_probabilities, nb_cdist)
+from star_pso.utils.auxiliary import (time_it, nb_clip_item, SpecialMode,
+                                      check_velocity_parameters, nb_cdist,
+                                      linear_rank_probabilities)
 # Public interface.
 __all__ = ["GenericPSO"]
 
