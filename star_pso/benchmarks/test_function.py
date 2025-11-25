@@ -4,6 +4,58 @@ from numpy.linalg import norm
 from numpy.random import default_rng, Generator
 from star_pso.population.particle import Particle
 
+# Public interface.
+__all__ = ["TestFunction", "search_global_optima"]
+
+def search_global_optima(swarm_population: list[Particle], epsilon: float = 1.0e-5,
+                         radius: float = 1.0e-1, f_opt: float | None = None) -> list:
+    """
+    This auxiliary method will search if the global optimal solution(s)
+    are found in the swarm population.
+
+    :param swarm_population: a list[Particle] of potential solutions.
+
+    :param epsilon: accuracy level of the global optimal solution.
+
+    :param radius: niche radius of the distance.
+
+    :param f_opt: function value for the global optimal solution.
+
+    :return: a list of best-fit individuals identified as solutions.
+    """
+    # Define a return list that will contain the
+    # particles that are on the global solutions.
+    optima_list = []
+
+    # Check all the particles.
+    for px in swarm_population:
+
+        # Reset the exist flag.
+        already_exists = False
+
+        # Check if the fitness is near the global
+        # optimal value (within error - epsilon).
+        if fabs(f_opt - px.value) <= epsilon:
+
+            # Check if the particle is already
+            # in the optimal particles list.
+            for k in optima_list:
+
+                # Check if the two particles are close to each other.
+                if norm(k.position - px.position) <= radius:
+                    already_exists = True
+                    break
+            # Add the particle only if it doesn't
+            # already exist in the list.
+            if not already_exists:
+                optima_list.append(px)
+    # _end_for_
+
+    # Return the list.
+    return optima_list
+# _end_def_
+
+
 class TestFunction(object):
     """
     Description:
@@ -104,55 +156,6 @@ class TestFunction(object):
         """
         raise NotImplementedError(f"{self.__class__.__name__}: "
                                   f"You should implement this method!")
-    # _end_def_
-
-    @staticmethod
-    def search_global_optima(swarm_population: list[Particle], epsilon: float = 1.0e-5,
-                             radius: float = 1.0e-1, f_opt: float | None = None) -> list:
-        """
-        This method will search if the global optimal solution(s) are found
-        in the swarm population.
-
-        :param swarm_population: a list[Particle] of potential solutions.
-
-        :param epsilon: accuracy level of the global optimal solution.
-
-        :param radius: niche radius of the distance.
-
-        :param f_opt: function value for the global optimal solution.
-
-        :return: a list of best-fit individuals identified as solutions.
-        """
-        # Define a return list that will contain the
-        # particles that are on the global solutions.
-        optima_list = []
-
-        # Check all the particles.
-        for px in swarm_population:
-
-            # Reset the exist flag.
-            already_exists = False
-
-            # Check if the fitness is near the global
-            # optimal value (within error - epsilon).
-            if fabs(f_opt - px.value) <= epsilon:
-
-                # Check if the particle is already
-                # in the optimal particles list.
-                for k in optima_list:
-
-                    # Check if the two particles are close to each other.
-                    if norm(k.position - px.position) <= radius:
-                        already_exists = True
-                        break
-                # Add the particle only if it doesn't
-                # already exist in the list.
-                if not already_exists:
-                    optima_list.append(px)
-        # _end_for_
-
-        # Return the list.
-        return optima_list
     # _end_def_
 
 # _end_class_
