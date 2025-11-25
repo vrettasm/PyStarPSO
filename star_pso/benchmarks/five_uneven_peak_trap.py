@@ -29,9 +29,8 @@ class FiveUnevenPeakTrap(TestFunction):
 
         :return: the function value(s).
         """
-
         # Initialize function values to NaN.
-        f_value = float("NaN")
+        f_value = np.nan
 
         # Conditions for the different ranges.
         if (0.0 <= x_pos) & (x_pos < 2.5):
@@ -52,7 +51,7 @@ class FiveUnevenPeakTrap(TestFunction):
             f_value = 80 * (x_pos - 27.5)
         # _end_if_
         
-        # Return the ndarray.
+        # Return the value.
         return f_value
     # _end_def_
 
@@ -69,7 +68,7 @@ class FiveUnevenPeakTrap(TestFunction):
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 1))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> (int, int):
+    def global_optima(self, population: list[Particle]) -> tuple[int, int]:
         """
         Calculates the global optimum found in the input population.
 
