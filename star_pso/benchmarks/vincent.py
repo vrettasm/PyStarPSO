@@ -67,7 +67,7 @@ class Vincent(TestFunction):
                                 size=(n_pos, self.n_dim))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> (int, int):
+    def global_optima(self, population: list[Particle]) -> tuple[int, int]:
         """
         Calculates the global optimum found in the input population.
         """
