@@ -1,6 +1,7 @@
 import numpy as np
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
+from star_pso.utils.auxiliary import identify_global_optima
 
 
 class Rastrigin(TestFunction):
@@ -99,8 +100,8 @@ class Rastrigin(TestFunction):
         # _end_if_
 
         # Get the global optima particles.
-        found_optima = self.search_global_optima(population, epsilon=epsilon,
-                                                 radius=0.01, f_opt=-float(self.n_dim))
+        found_optima = identify_global_optima(population, epsilon=epsilon,
+                                              radius=0.01, f_opt=-float(self.n_dim))
         # Find the number of optima.
         num_optima = len(found_optima)
 

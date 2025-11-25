@@ -1,6 +1,7 @@
 import numpy as np
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
+from star_pso.utils.auxiliary import identify_global_optima
 
 
 class UnevenDecreasingMaxima(TestFunction):
@@ -68,8 +69,8 @@ class UnevenDecreasingMaxima(TestFunction):
         total number that exist.
         """
         # Get the global optima particles.
-        found_optima = self.search_global_optima(population, epsilon=epsilon,
-                                                 radius=0.01, f_opt=1.0)
+        found_optima = identify_global_optima(population, epsilon=epsilon,
+                                              radius=0.01, f_opt=1.0)
         # Find the number of optima.
         num_optima = len(found_optima)
 

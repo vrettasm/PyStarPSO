@@ -1,6 +1,7 @@
 import numpy as np
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
+from star_pso.utils.auxiliary import identify_global_optima
 
 
 class Shubert(TestFunction):
@@ -101,8 +102,8 @@ class Shubert(TestFunction):
         # _end_if_
 
         # Get the global optima particles.
-        found_optima = self.search_global_optima(population, epsilon=epsilon,
-                                                 radius=0.5, f_opt=f_opt)
+        found_optima = identify_global_optima(population, epsilon=epsilon,
+                                              radius=0.5, f_opt=f_opt)
         # Find the number of optima.
         num_optima = len(found_optima)
 
