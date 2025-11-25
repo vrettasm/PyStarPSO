@@ -220,9 +220,9 @@ class DataBlock(object):
 
     @staticmethod
     @cache
-    def get_update_method() -> dict:
+    def update_methods() -> dict:
         """
-        Create a dictionary with method names as keys
+        Return a dictionary with keys the method names
         and their corresponding update methods as values.
 
         :return: a (cached) dictionary with functions
@@ -356,8 +356,8 @@ class DataBlock(object):
 
         :return: None.
         """
-        # Get the dictionary with all the methods.
-        method_dict = DataBlock.get_update_method()
+        # Get the dictionary with the methods.
+        method_dict = DataBlock.update_methods()
 
         # Pack the parameters in a tuple.
         params = Params(v_new=v_new,
