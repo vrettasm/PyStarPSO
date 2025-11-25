@@ -48,7 +48,7 @@ class Shubert(TestFunction):
 
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Range 1 to 6.
+            # Range 1 to 5 (+1).
             i = np.arange(1, 6)
 
             # Get the product of the sums.
@@ -60,7 +60,7 @@ class Shubert(TestFunction):
         return f_value
     # _end_def_
 
-    def initial_random_positions(self, n_pos: int = 50) -> np.ndarray:
+    def initial_random_positions(self, n_pos: int = 100) -> np.ndarray:
         """
         Generate an initial set of uniformly random sampled positions
         within the minimum / maximum bounds of the test problem.
