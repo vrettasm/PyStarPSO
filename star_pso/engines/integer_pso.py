@@ -18,7 +18,7 @@ class IntegerPSO(GenericPSO):
     similarly to the StandardPSO, but rounds the positions to the nearest integer.
     """
 
-    def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs):
+    def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs) -> None:
         """
         Default initializer of the IntegerPSO class.
 
