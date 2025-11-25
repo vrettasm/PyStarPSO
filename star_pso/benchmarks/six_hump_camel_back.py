@@ -15,7 +15,6 @@ class SixHumpCamelBack(TestFunction):
         """
         Default initializer of the SixHumpCamelBack class.
         """
-
         # Call the super initializer with the name and the limits.
         super().__init__(name="Six_Hump_Camel_Back",
                          x_min=np.array([-1.9, -1.1]),
@@ -30,11 +29,10 @@ class SixHumpCamelBack(TestFunction):
 
         :return: the function value(s).
         """
+        # Initialize function value to NaN.
+        f_value = np.nan
 
-        # Initialize function values to NaN.
-        f_value = float("NaN")
-
-        # Vectorized calculations based on the condition.
+        # Condition for the valid range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
             # Separate the two variables.
             x, y = x_pos
@@ -42,7 +40,7 @@ class SixHumpCamelBack(TestFunction):
             # Calculate the function value.
             f_value = -4 * ((4 - 2.1 * x**2 + (x**4)/3) * x**2 +
                             x*y + 4*(y**2 - 1)*(y**2))
-        # Return the ndarray.
+        # Return the value.
         return f_value
     # _end_def_
 
@@ -59,7 +57,7 @@ class SixHumpCamelBack(TestFunction):
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 2))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> (int, int):
+    def global_optima(self, population: list[Particle]) -> tuple[int, int]:
         """
         Calculates the global optimum found in the input population.
 
@@ -70,7 +68,7 @@ class SixHumpCamelBack(TestFunction):
         """
         # Get the global optima particles.
         found_optima = self.global_optima_found(population, epsilon=1.0E-3,
-                                                radius=0.5, f_opt=4.12651381395951)
+                                                radius=0.5, f_opt=1.031628453)
         # Find the number of optima.
         num_optima = len(found_optima)
 
