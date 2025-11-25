@@ -38,8 +38,9 @@ class SixHumpCamelBack(TestFunction):
             x, y = x_pos
 
             # Calculate the function value.
-            f_value = -4 * ((4 - 2.1 * x**2 + (x**4)/3) * x**2 +
-                            x*y + 4*(y**2 - 1)*(y**2))
+            f_value = -((4 - 2.1 * x**2 + (x**4)/3) * x**2 +
+                        x*y + 4*(y**2 - 1)*(y**2))
+
         # Return the value.
         return f_value
     # _end_def_
