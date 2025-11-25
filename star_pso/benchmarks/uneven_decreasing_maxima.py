@@ -17,7 +17,6 @@ class UnevenDecreasingMaxima(TestFunction):
         """
         Default initializer of the UnevenDecreasingMaxima class.
         """
-
         # Call the super initializer with the name and the limits.
         super().__init__(name="Uneven_Decreasing_Maxima", x_min=0.0, x_max=1.0)
     # _end_def_
@@ -30,14 +29,14 @@ class UnevenDecreasingMaxima(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function values to NaN.
+        # Initialize function value to NaN.
         f_value = np.nan
 
         # Condition for the valid range.
         if self.x_min <= x_pos <= self.x_max:
-            f_value = (np.exp(-2.0*np.log(2.0)*((x_pos - 0.08)/0.854)**2)*
-                       np.sin(5.0*np.pi*(x_pos**(3/4) - 0.05))**6)
-        # Return the ndarray.
+            f_value = (np.exp(-2.0 * np.log(2.0) * ((x_pos - 0.08)/0.854)**2) *
+                       np.sin(5.0 * np.pi * (x_pos**(3/4) - 0.05))**6)
+        # Return the value.
         return f_value
     # _end_def_
 
@@ -54,7 +53,7 @@ class UnevenDecreasingMaxima(TestFunction):
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 1))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> (int, int):
+    def global_optima(self, population: list[Particle]) -> tuple[int, int]:
         """
         Calculates the global optimum found in the input population.
 
