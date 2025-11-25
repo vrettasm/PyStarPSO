@@ -328,10 +328,10 @@ class GenericPSO(object):
         self._stats["f_opt"].append(f_max)
 
         # Update the counter of function evaluations.
-        self._f_eval += self.swarm.size
+        self._f_eval += self._swarm.size
 
         # Update local best for consistent results.
-        self.swarm.update_local_best()
+        self._swarm.update_local_best()
 
         # Return the tuple.
         return f_max, found_solution
@@ -344,7 +344,6 @@ class GenericPSO(object):
         :return: None.
         """
         self._stats.clear()
-
         self._f_eval = 0
     # _end_def_
 
@@ -357,7 +356,6 @@ class GenericPSO(object):
                  its function value and the iteration it was
                  found.
         """
-
         # Get the maximum of the f_opt.
         f_opt = max(self._stats["f_opt"])
 
