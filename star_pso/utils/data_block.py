@@ -487,7 +487,7 @@ class DataBlock(object):
         # Simple copy of the copy-best method (callable).
         setattr(new_object, "_copy_best", self._copy_best)
 
-        # Return an identical particle.
+        # Return an identical datablock.
         return new_object
     # _end_def_
 
