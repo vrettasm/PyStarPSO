@@ -128,7 +128,6 @@ class CategoricalPSO(GenericPSO):
 
         :return: None.
         """
-
         # Local copy of the valid sets.
         local_sets = self._valid_sets
 
