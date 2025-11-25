@@ -19,11 +19,11 @@ class Shubert(TestFunction):
 
         :return: None.
         """
-        # Ensure correct type.
-        n_dim = int(n_dim)
-
         # Call the super initializer with the name and the limits.
         super().__init__(name=f"Shubert_{n_dim}D", x_min=-10.0, x_max=+10.0)
+
+        # Ensure correct type.
+        n_dim = int(n_dim)
 
         # Sanity check.
         if n_dim < 2:
@@ -43,7 +43,6 @@ class Shubert(TestFunction):
 
         :return: the function value(s).
         """
-
         # Initialize function value to NaN.
         f_value = np.nan
 
@@ -52,9 +51,9 @@ class Shubert(TestFunction):
             # Range 1 to 6.
             i = np.arange(1, 6)
 
-            # Get the product of both sums.
-            f_value = -np.prod(np.sum(i[:, np.newaxis] * np.cos((i[:, np.newaxis] + 1) *
-                                                                x_pos + i[:, np.newaxis]), axis=0))
+            # Get the product of the sums.
+            f_value = -np.prod(np.sum(i[:, np.newaxis] * np.cos((i[:, np.newaxis] + 1) * x_pos +
+                                                                 i[:, np.newaxis]), axis=0))
         # _end_if_
 
         # Return the ndarray.
@@ -74,7 +73,7 @@ class Shubert(TestFunction):
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, self.n_dim))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> (int, int):
+    def global_optima(self, population: list[Particle]) -> tuple[int, int]:
         """
         Calculates the global optimum found in the input population.
 
@@ -105,6 +104,5 @@ class Shubert(TestFunction):
         # Return the tuple (number of found, total number)
         return num_optima, total_optima
     # _end_def_
-
 
 # _end_class_
