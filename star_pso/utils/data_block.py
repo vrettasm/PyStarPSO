@@ -302,7 +302,7 @@ class DataBlock(object):
 
     @staticmethod
     @cache
-    def get_init_method() -> dict:
+    def init_methods() -> dict:
         """
         Create a dictionary with method names as keys
         and their corresponding initialization methods
@@ -324,8 +324,8 @@ class DataBlock(object):
 
         :return: None.
         """
-        # Get the dictionary with all the methods.
-        method_dict = DataBlock.get_init_method()
+        # Get the dictionary with the methods.
+        method_dict = DataBlock.init_methods()
 
         # Differentiate between scalar and vector data block.
         n_vars = 1 if np.isscalar(self._position) else len(self._position)
