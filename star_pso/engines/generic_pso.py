@@ -39,13 +39,9 @@ class GenericPSO(object):
                  "_items", "_f_eval", "n_cpus", "n_rows", "n_cols", "w_min", "w_max", "_special_mode",
                  "_iteration")
 
-    def __init__(self,
-                 initial_swarm: Swarm,
-                 obj_func: Callable,
-                 lower_bound: ArrayLike = None,
-                 upper_bound: ArrayLike = None,
-                 copy: bool = False,
-                 n_cpus: int = None):
+    def __init__(self, initial_swarm: Swarm, obj_func: Callable,
+                 lower_bound: ArrayLike = None, upper_bound: ArrayLike = None,
+                 copy: bool = False, n_cpus: int = None) -> None:
         """
         Default initializer of the GenericPSO class.
 
