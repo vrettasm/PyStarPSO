@@ -21,11 +21,11 @@ class Rastrigin(TestFunction):
 
         :return: None.
         """
-        # Ensure correct type.
-        n_dim = int(n_dim)
-
         # Call the super initializer with the name and the limits.
         super().__init__(name=f"Rastrigin_{n_dim}D", x_min=0.0, x_max=1.0)
+
+        # Ensure correct type.
+        n_dim = int(n_dim)
 
         # Sanity check.
         if n_dim < 2:
@@ -47,7 +47,6 @@ class Rastrigin(TestFunction):
 
         :return: the function value(s).
         """
-
         # Initialize function value to NaN.
         f_value = np.nan
 
@@ -60,14 +59,14 @@ class Rastrigin(TestFunction):
             self.total_optima = np.prod(k)
 
             # Get the sum.
-            f_value = -np.sum(10.0 + 9.0 * np.cos(2.0 * np.pi * k * x_pos))
+            f_value = -np.sum(10.0 + 9.0 * np.cos(2.0 * np.pi * k * x_pos), axis=0)
         # _end_if_
 
         # Return the ndarray.
         return f_value
     # _end_def_
 
-    def initial_random_positions(self, n_pos: int = 50) -> np.ndarray:
+    def initial_random_positions(self, n_pos: int = 100) -> np.ndarray:
         """
         Generate an initial set of uniformly random sampled positions
         within the minimum / maximum bounds of the test problem.
@@ -80,7 +79,7 @@ class Rastrigin(TestFunction):
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, self.n_dim))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> (int, int):
+    def global_optima(self, population: list[Particle]) -> tuple[int, int]:
         """
         Calculates the global optimum found in the input population.
 
