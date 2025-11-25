@@ -41,7 +41,7 @@ class DataBlock(object):
                  btype: BlockType,
                  valid_set: list | tuple = None,
                  lower_bound: Number = None,
-                 upper_bound: Number = None):
+                 upper_bound: Number = None) -> None:
         """
         Default initializer for the DataBlock class.
 
