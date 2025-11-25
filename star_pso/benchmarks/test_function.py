@@ -5,10 +5,10 @@ from numpy.random import default_rng, Generator
 from star_pso.population.particle import Particle
 
 # Public interface.
-__all__ = ["TestFunction", "search_global_optima"]
+__all__ = ["TestFunction", "identify_global_optima"]
 
-def search_global_optima(swarm_population: list[Particle], epsilon: float = 1.0e-5,
-                         radius: float = 1.0e-1, f_opt: float | None = None) -> list:
+def identify_global_optima(swarm_population: list[Particle], epsilon: float = 1.0e-5,
+                           radius: float = 1.0e-1, f_opt: float | None = None) -> list:
     """
     This auxiliary method will search if the global optimal solution(s)
     are found in the swarm population.
@@ -17,7 +17,7 @@ def search_global_optima(swarm_population: list[Particle], epsilon: float = 1.0e
 
     :param epsilon: accuracy level of the global optimal solution.
 
-    :param radius: niche radius of the distance.
+    :param radius: niche radius of the distance between two particles.
 
     :param f_opt: function value for the global optimal solution.
 
