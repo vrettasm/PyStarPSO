@@ -30,7 +30,7 @@ def f_sphere(x_pos: np.ndarray) -> np.ndarray:
 # Basic function: 2
 def f_grienwank(x_pos: np.ndarray) -> np.ndarray:
     """
-    Computes the grienwank function at x_pos.
+    Computes the Grienwank function at x_pos.
     """
     # Get the size of the vector.
     n_dim = x_pos.size
@@ -80,11 +80,12 @@ def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
     return sum_x - n_dim * np.sum(alpha_k * np.cos(np.pi * beta_k))
 # _end_def_
 
+
 # Define a dictionary will all the basic functions.
-basic_f: dir = {1: f_sphere,
-                2: f_grienwank,
-                3: f_rastrigin,
-                4: f_weierstrass}
+basic_f: dict = {1: f_sphere,
+                 2: f_grienwank,
+                 3: f_rastrigin,
+                 4: f_weierstrass}
 
 
 class CompositeFunction(TestFunction):
@@ -101,11 +102,11 @@ class CompositeFunction(TestFunction):
 
         :return: None.
         """
-        # Ensure correct type.
-        n_dim = int(n_dim)
-
         # Call the super initializer with the name and the limits.
         super().__init__(name=f"CF_{n_dim}D", x_min=-5.0, x_max=+5.0)
+
+        # Ensure correct type.
+        n_dim = int(n_dim)
 
         # Sanity check.
         if n_dim < 2:
@@ -130,7 +131,6 @@ class CompositeFunction(TestFunction):
 
         :return: the function value(s).
         """
-
         # Initialize function value to f_bias.
         f_value = f_bias
 
@@ -159,7 +159,7 @@ class CompositeFunction(TestFunction):
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, self.n_dim))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> (int, int):
+    def global_optima(self, population: list[Particle]) -> tuple[int, int]:
         """
         Calculates the global optimum found in the input population.
 
