@@ -65,10 +65,12 @@ class Vincent(TestFunction):
                                 size=(n_pos, self.n_dim))
     # _end_def_
 
-    def global_optima(self, population: list[Particle],
-                      epsilon: float = 1.0e-4) -> tuple[int, int]:
+    def search_for_optima(self, population: list[Particle],
+                          epsilon: float = 1.0e-4) -> tuple[int, int]:
         """
-        Calculates the global optimum found in the input population.
+        Searches the input population for the global optimum values
+        of the specific test function, using default (problem specific)
+        parameters.
 
         :param population: the population to search the global optimum.
 

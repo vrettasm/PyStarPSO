@@ -21,7 +21,7 @@ class SixHumpCamelBack(TestFunction):
                          x_max=np.array([+1.9, +1.1]))
     # _end_def_
 
-    def func(self, x_pos: np.ndarray) -> np.ndarray:
+    def func(self, x_pos: np.ndarray) -> float | np.ndarray:
         """
         This is a 2D function with 2 global and 2 local optima.
 
@@ -58,10 +58,12 @@ class SixHumpCamelBack(TestFunction):
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 2))
     # _end_def_
 
-    def global_optima(self, population: list[Particle],
-                      epsilon: float = 1.0e-4) -> tuple[int, int]:
+    def search_for_optima(self, population: list[Particle],
+                          epsilon: float = 1.0e-4) -> tuple[int, int]:
         """
-        Calculates the global optimum found in the input population.
+        Searches the input population for the global optimum values
+        of the specific test function, using default (problem specific)
+        parameters.
 
         :param population: the population to search the global optimum.
 
