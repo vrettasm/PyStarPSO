@@ -267,7 +267,6 @@ class GenericPSO(object):
 
         :return: the max function value and the found solution flag.
         """
-
         # Extract the correct type positions.
         positions = self._get_typed_positions()
 
