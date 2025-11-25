@@ -16,12 +16,11 @@ class Vincent(TestFunction):
         """
         Default initializer of the Vincent D class.
         """
+        # Call the super initializer with the name and the limits.
+        super().__init__(name=f"Vincent_{n_dim}D", x_min=0.25, x_max=10.0)
 
         # Ensure correct type.
         n_dim = int(n_dim)
-
-        # Call the super initializer with the name and the limits.
-        super().__init__(name=f"Vincent_{n_dim}D", x_min=0.25, x_max=10.0)
 
         # Sanity check.
         if n_dim < 2:
@@ -40,8 +39,7 @@ class Vincent(TestFunction):
 
         :return: the function value(s).
         """
-
-        # Initialize function values to NaN.
+        # Initialize function value to NaN.
         f_value = np.nan
 
         # Check the valid function range.
@@ -49,11 +47,11 @@ class Vincent(TestFunction):
             # Compute the function value.
             f_value = np.sum(np.sin(10.0 * np.log(x_pos))) / self.n_dim
 
-        # Return the ndarray.
+        # Return the value.
         return f_value
     # _end_def_
 
-    def initial_random_positions(self, n_pos: int = 50) -> np.ndarray:
+    def initial_random_positions(self, n_pos: int = 100) -> np.ndarray:
         """
         Generate an initial set of uniformly random sampled positions
         within the minimum / maximum bounds of the test problem.
