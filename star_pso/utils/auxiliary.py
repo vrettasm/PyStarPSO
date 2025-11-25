@@ -489,6 +489,7 @@ def cost_function(func: Callable = None, minimize: bool = False):
     return function_wrapper
 # _end_def_
 
+
 """
 Create a dictionary with block types as keys and their
 corresponding spread estimation methods as values.
