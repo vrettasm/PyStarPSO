@@ -110,8 +110,8 @@ class TestFunction(object):
     def search_global_optima(swarm_population: list[Particle], epsilon: float = 1.0e-5,
                              radius: float = 1.0e-1, f_opt: float | None = None) -> list:
         """
-        This method will check if the global optimal solution(s)
-        are found in the swarm_population.
+        This method will search if the global optimal solution(s) are found
+        in the swarm population.
 
         :param swarm_population: a list[Particle] of potential solutions.
 
