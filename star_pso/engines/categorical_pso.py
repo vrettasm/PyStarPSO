@@ -196,8 +196,6 @@ class CategoricalPSO(GenericPSO):
 
                         # Break the internal loop.
                         break
-                    # _end_if_
-            # _end_for_
         # _end_for_
     # _end_def_
 
