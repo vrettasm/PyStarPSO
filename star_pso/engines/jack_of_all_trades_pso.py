@@ -7,8 +7,9 @@ from numpy import subtract as np_subtract
 
 from collections import defaultdict
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import (VOptions, BlockType, SpecialMode, cached_range,
-                                      linear_rank_probabilities, spread_method)
+from star_pso.utils.auxiliary import (VOptions, BlockType,
+                                      linear_rank_probabilities,
+                                      SpecialMode, spread_methods)
 # Public interface.
 __all__ = ["JackOfAllTradesPSO"]
 
@@ -26,7 +27,7 @@ class JackOfAllTradesPSO(GenericPSO):
         encapsulates the data and the functionality of each variable type.
     """
 
-    def __init__(self, permutation_mode: bool = False, **kwargs):
+    def __init__(self, permutation_mode: bool = False, **kwargs) -> None:
         """
         Default initializer of the JackOfAllTradesPSO class.
 
@@ -135,7 +136,7 @@ class JackOfAllTradesPSO(GenericPSO):
         """
 
         # Create a range of values.
-        random_index = cached_range(self.n_cols)
+        random_index = np.arange(self.n_cols, dtype=int)
 
         # Shuffle in place. This is used to avoid introducing
         # biasing by using always the same order of blocks to
@@ -315,8 +316,8 @@ class JackOfAllTradesPSO(GenericPSO):
                 data_arr = data_arr[:, np.newaxis]
 
             # In categorical data the array is already in 2D.
-            per_field[n] = spread_method[b_type](data_arr,
-                                                 normal=True)
+            per_field[n] = spread_methods[b_type](data_arr,
+                                                  normal=True)
         # _end_for_
 
         # Return the median value of all spreads.
