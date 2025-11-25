@@ -1,15 +1,16 @@
 import time
-
 from enum import Enum
+from math import fabs
+from collections import namedtuple
 from typing import (Union, Callable)
 from functools import (cache, wraps, partial)
 
-from collections import namedtuple
-
 import numpy as np
+from numba import njit
+from numpy.linalg import norm
 from numpy.typing import ArrayLike
 
-from numba import njit
+from population.particle import Particle
 
 # Make a type alias for the position's type.
 ScalarOrArray = Union[int, float, ArrayLike]
@@ -540,4 +541,52 @@ def nb_cdist(x_pos: np.ndarray, scaled: bool = False) -> np.ndarray:
         dist_x[:, i] = dist_x[i, :]
     # _end_for_
     return dist_x
+# _end_def_
+
+def identify_global_optima(swarm_population: list[Particle], epsilon: float = 1.0e-5,
+                           radius: float = 1.0e-1, f_opt: float | None = None) -> list:
+    """
+    This auxiliary method will search if the global optimal solution(s)
+    are found in the swarm population.
+
+    :param swarm_population: a list[Particle] of potential solutions.
+
+    :param epsilon: accuracy level of the global optimal solution.
+
+    :param radius: niche radius of the distance between two particles.
+
+    :param f_opt: function value for the global optimal solution.
+
+    :return: a list of best-fit individuals identified as solutions.
+    """
+    # Define a return list that will contain the
+    # particles that are on the global solutions.
+    optima_list = []
+
+    # Check all the particles.
+    for px in swarm_population:
+
+        # Reset the exist flag.
+        already_exists = False
+
+        # Check if the fitness is near the global
+        # optimal value (within error - epsilon).
+        if fabs(f_opt - px.value) <= epsilon:
+
+            # Check if the particle is already
+            # in the optimal particles list.
+            for k in optima_list:
+
+                # Check if the two particles are close to each other.
+                if norm(k.position - px.position) <= radius:
+                    already_exists = True
+                    break
+            # Add the particle only if it doesn't
+            # already exist in the list.
+            if not already_exists:
+                optima_list.append(px)
+    # _end_for_
+
+    # Return the list.
+    return optima_list
 # _end_def_
