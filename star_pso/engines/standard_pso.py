@@ -24,7 +24,7 @@ class StandardPSO(GenericPSO):
     Anchorage, AK, USA, 4–9 May 1998; pp. 69–73.
     """
 
-    def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs):
+    def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs) -> None:
         """
         Default initializer of the StandardPSO class.
 
