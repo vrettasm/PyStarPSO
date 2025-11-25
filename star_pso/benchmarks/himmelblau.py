@@ -17,7 +17,6 @@ class Himmelblau(TestFunction):
         """
         Default initializer of the Himmelblau class.
         """
-
         # Call the super initializer with the name and the limits.
         super().__init__(name="Himmelblau", x_min=-6.0, x_max=6.0)
     # _end_def_
@@ -30,9 +29,8 @@ class Himmelblau(TestFunction):
 
         :return: the function value(s).
         """
-
-        # Initialize function values to NaN.
-        f_value = float("NaN")
+        # Initialize function value to NaN.
+        f_value = np.nan
 
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
@@ -46,7 +44,7 @@ class Himmelblau(TestFunction):
         return f_value
     # _end_def_
 
-    def initial_random_positions(self, n_pos: int = 50) -> np.ndarray:
+    def initial_random_positions(self, n_pos: int = 100) -> np.ndarray:
         """
         Generate an initial set of uniformly random sampled positions
         within the minimum / maximum bounds of the test problem.
@@ -59,7 +57,7 @@ class Himmelblau(TestFunction):
         return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 2))
     # _end_def_
 
-    def global_optima(self, population: list[Particle]) -> (int, int):
+    def global_optima(self, population: list[Particle]) -> tuple[int, int]:
         """
         Calculates the global optimum found in the input population.
 
