@@ -95,7 +95,7 @@ class GenericPSO(object):
         # Dictionary with statistics.
         self._stats = defaultdict(list)
 
-        # Place holder.
+        # Placeholder.
         self._items = None
 
         # Set the function evaluation to zero.
