@@ -158,4 +158,22 @@ class TestFunction(object):
                                   f"You should implement this method!")
     # _end_def_
 
+    def search_for_optima(self, population: list[Particle],
+                          epsilon: float = 1.0e-4) -> tuple[int, int]:
+        """
+        Searches the input population for the global optimum values
+        of the specific test function, using default (problem specific)
+        parameters.
+
+        :param population: the population to search the global optimum.
+
+        :param epsilon: accuracy level of the global optimal solution.
+
+        :return: a tuple with the number of global optima found and the
+        total number that exist.
+        """
+        raise NotImplementedError(f"{self.__class__.__name__}: "
+                                  f"You should implement this method!")
+    # _end_def_
+
 # _end_class_
