@@ -108,7 +108,7 @@ class TestFunction(object):
 
     @staticmethod
     def global_optima_found(swarm_population: list[Particle], epsilon: float = 1.0e-5,
-                            radius: float = 1.0e-1, f_opt: float = None) -> list:
+                            radius: float = 1.0e-1, f_opt: float | None = None) -> list:
         """
         This method will check if the global optimal solution(s)
         are found in the swarm_population.
