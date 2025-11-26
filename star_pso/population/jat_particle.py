@@ -223,7 +223,6 @@ class JatParticle(object):
 
         :return: a new identical "clone" of the self object.
         """
-
         # Create a new instance.
         new_object = JatParticle.__new__(JatParticle)
 
