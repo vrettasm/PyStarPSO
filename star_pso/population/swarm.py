@@ -42,7 +42,6 @@ class Swarm(object):
 
         :return: None.
         """
-
         # Early exit if the Swarm has only Particles.
         if isinstance(self._population[0], Particle):
             return
@@ -120,7 +119,6 @@ class Swarm(object):
 
         :return: Return a list with the 'n' top particles.
         """
-
         # Make sure 'n' is positive integer.
         if not isinstance(n, int) or n <= 0:
             raise ValueError(f"{self.__class__.__name__}: "
@@ -198,7 +196,6 @@ class Swarm(object):
 
         :return: None.
         """
-
         # Go through all particles.
         for p in self._population:
 
