@@ -20,19 +20,16 @@ class Shubert(TestFunction):
 
         :return: None.
         """
-        # Call the super initializer with the name and the limits.
-        super().__init__(name=f"Shubert_{n_dim}D", x_min=-10.0, x_max=+10.0)
-
         # Ensure correct type.
         n_dim = int(n_dim)
 
         # Sanity check.
         if n_dim < 2:
             raise ValueError("Shubert needs at least 2 dimensions.")
-        # _end_if_
 
-        # Assign the number of dimensions.
-        self.n_dim = n_dim
+        # Call the super initializer with the name and the limits.
+        super().__init__(name=f"Shubert_{n_dim}D", n_dim=n_dim,
+                         x_min=-10.0, x_max=+10.0)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
@@ -59,19 +56,6 @@ class Shubert(TestFunction):
 
         # Return the ndarray.
         return f_value
-    # _end_def_
-
-    def sample_random_positions(self, n_pos: int = 100) -> np.ndarray:
-        """
-        Generate an initial set of uniformly random sampled positions
-        within the minimum / maximum bounds of the test problem.
-
-        :param n_pos: the number of positions to generate.
-
-        :return: a uniformly sampled set of random positions.
-        """
-        # Draw uniform random samples for the initial points.
-        return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, self.n_dim))
     # _end_def_
 
     def search_for_optima(self, population: list[Particle],

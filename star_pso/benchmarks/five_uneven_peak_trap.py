@@ -19,7 +19,8 @@ class FiveUnevenPeakTrap(TestFunction):
         """
 
         # Call the super initializer with the name and the limits.
-        super().__init__(name="Five_Uneven_Peak_Trap", x_min=0.0, x_max=30.0)
+        super().__init__(name="Five_Uneven_Peak_Trap", n_dim=1,
+                         x_min=0.0, x_max=30.0)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
@@ -54,19 +55,6 @@ class FiveUnevenPeakTrap(TestFunction):
         
         # Return the value.
         return f_value
-    # _end_def_
-
-    def sample_random_positions(self, n_pos: int = 50) -> np.ndarray:
-        """
-        Generate an initial set of uniformly random sampled positions
-        within the minimum / maximum bounds of the test problem.
-
-        :param n_pos: the number of positions to generate.
-
-        :return: a uniformly sampled set of random positions.
-        """
-        # Draw uniform random samples for the initial points.
-        return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 1))
     # _end_def_
 
     def search_for_optima(self, population: list[Particle],

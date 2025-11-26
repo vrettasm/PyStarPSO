@@ -46,19 +46,6 @@ class SixHumpCamelBack(TestFunction):
         return f_value
     # _end_def_
 
-    def sample_random_positions(self, n_pos: int = 50) -> np.ndarray:
-        """
-        Generate an initial set of uniformly random sampled positions
-        within the minimum / maximum bounds of the test problem.
-
-        :param n_pos: the number of positions to generate.
-
-        :return: a uniformly sampled set of random positions.
-        """
-        # Draw uniform random samples for the initial points.
-        return self.rng.uniform(self._x_min, self._x_max, size=(n_pos, 2))
-    # _end_def_
-
     def search_for_optima(self, population: list[Particle],
                           epsilon: float = 1.0e-4) -> tuple[int, int]:
         """

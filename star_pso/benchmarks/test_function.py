@@ -58,16 +58,6 @@ class TestFunction(object):
                                        optimization="random-cd")
     # _end_def_
 
-    @staticmethod
-    def qmc_scale(*args, **kwargs) -> np.ndarray:
-        """
-        Simply provides access to the QMC scale method.
-
-        :return: the output of the scale method.
-        """
-        return qmc.scale(*args, **kwargs)
-    # _end_def_
-
     @property
     def n_dim(self) -> int:
         """
@@ -76,16 +66,6 @@ class TestFunction(object):
         :return: (int) number of dimensions.
         """
         return self._nDim
-    # _end_def_
-
-    @property
-    def lhc_sampler(self) -> qmc.QMCEngine:
-        """
-        Accessor (getter) of the Latin Hyper-cube.
-
-        :return: string name of the test function.
-        """
-        return self._lhc
     # _end_def_
 
     @property
@@ -141,19 +121,32 @@ class TestFunction(object):
                                   f"You should implement this method!")
     # _end_def_
 
-    def sample_random_positions(self, n_pos: int, method: str) -> np.ndarray:
+    def sample_random_positions(self, n_pos: int = 100, method: str = "random") -> np.ndarray:
         """
-        This method will create an initial set of random positions that will
-        be passed to the PSO algorithm to form the swarm.
+        Generate an initial set of uniformly random sampled positions within
+        the lower / upper bounds of the test problem.
 
         :param n_pos: (int) number of random positions to create.
 
         :param method: (str) method to use for sampling ("random", "latin-hc").
 
-        :return: None.
+        :return: a uniformly sampled set of random positions.
         """
-        raise NotImplementedError(f"{self.__class__.__name__}: "
-                                  f"You should implement this method!")
+        # Sanity check.
+        if method.lower() == "random":
+            # Draw uniform random samples.
+            return self.rng.uniform(self.x_min, self.x_max,
+                                    size=(n_pos, self.n_dim))
+
+        elif method.lower() == "latin-hc":
+            # Draw uniform random samples from LHC.
+            sample = self._lhc.random(n_pos)
+
+            # Scale the samples to the limits.
+            return qmc.scale(sample, self.x_min, self.x_max)
+        else:
+            raise ValueError(f"{self.__class__.__name__}: "
+                             f"Unknown sampling method: {method}. Use 'random' or 'latin-hc'.")
     # _end_def_
 
     def search_for_optima(self, population: list[Particle],
