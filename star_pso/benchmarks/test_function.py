@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.stats import qmc
 from numpy.random import default_rng, Generator
 from star_pso.population.particle import Particle
 
@@ -17,14 +18,22 @@ class TestFunction(object):
     rng: Generator = default_rng()
 
     # Object variables.
-    __slots__ = ("_name", "_x_min", "_x_max")
+    __slots__ = ("_name", "_nDim", "_x_min", "_x_max", "_lhc")
 
-    def __init__(self, name: str,
+    def __init__(self, name: str, n_dim: int,
                  x_min: float | np.ndarray,
                  x_max: float | np.ndarray) -> None:
         """
         Description:
         Default initializer of the "TestFunction" class.
+
+        :param name: (str) the name of the function.
+
+        :param n_dim: (int) the number of dimension of the input space.
+
+        :param x_min: (float) the lower bound values of the search space.
+
+        :param x_max: (float) the upper bound values of the search space.
         """
         # Sanity check.
         if np.any(x_min >= x_max):
@@ -35,11 +44,48 @@ class TestFunction(object):
         # Assign the function name.
         self._name = name
 
+        # Assign the function name.
+        self._nDim = int(n_dim)
+
         # Assign the minimum value(s).
         self._x_min = x_min
 
         # Assign the maximum value(s).
         self._x_max = x_max
+
+        # Construct a Latin Hyper Cube sampler.
+        self._lhc = qmc.LatinHypercube(d=self._nDim, rng=TestFunction.rng,
+                                       optimization="random-cd")
+    # _end_def_
+
+    @staticmethod
+    def qmc_scale(*args, **kwargs) -> np.ndarray:
+        """
+        Simply provides access to the QMC scale method.
+
+        :return: the output of the scale method.
+        """
+        return qmc.scale(*args, **kwargs)
+    # _end_def_
+
+    @property
+    def n_dim(self) -> int:
+        """
+        Accessor (getter) of the test function dimensions.
+
+        :return: (int) number of dimensions.
+        """
+        return self._nDim
+    # _end_def_
+
+    @property
+    def lhc_sampler(self) -> qmc.QMCEngine:
+        """
+        Accessor (getter) of the Latin Hyper-cube.
+
+        :return: string name of the test function.
+        """
+        return self._lhc
     # _end_def_
 
     @property
@@ -95,12 +141,14 @@ class TestFunction(object):
                                   f"You should implement this method!")
     # _end_def_
 
-    def sample_random_positions(self, n_pos: int) -> np.ndarray:
+    def sample_random_positions(self, n_pos: int, method: str) -> np.ndarray:
         """
-        This method will create an initial set of random positions
-        that will be passed to the PSO algorithm to form the swarm.
+        This method will create an initial set of random positions that will
+        be passed to the PSO algorithm to form the swarm.
 
-        :param n_pos: Number of random positions to create.
+        :param n_pos: (int) number of random positions to create.
+
+        :param method: (str) method to use for sampling ("random", "latin-hc").
 
         :return: None.
         """
