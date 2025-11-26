@@ -28,7 +28,6 @@ class Particle(object):
 
         :return: None.
         """
-
         # Set the initial particle position to a vector.
         self._position = array(initial_position, copy=True)
 
@@ -157,7 +156,6 @@ class Particle(object):
 
         :return: a new identical "clone" of the self object.
         """
-
         # Create a new instance.
         new_object = Particle.__new__(Particle)
 
