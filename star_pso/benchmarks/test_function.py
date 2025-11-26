@@ -24,7 +24,6 @@ class TestFunction(object):
                  x_min: float | np.ndarray,
                  x_max: float | np.ndarray) -> None:
         """
-        Description:
         Default initializer of the "TestFunction" class.
 
         :param name: (str) the name of the function.
