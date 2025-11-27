@@ -17,7 +17,7 @@ from star_pso.population.swarm import Swarm, SwarmParticle
 from star_pso.utils.auxiliary import (time_it, nb_clip_item, SpecialMode,
                                       check_velocity_parameters, nb_cdist,
                                       linear_rank_probabilities)
-# Create a logger object for the class.
+# Create a logger object for the module.
 logger = logging.getLogger("GenericPSO")
 
 # Setup basic configuration for now.
