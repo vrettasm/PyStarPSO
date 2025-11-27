@@ -731,6 +731,9 @@ class GenericPSO(object):
         # Check if resetting the swarm is requested.
         if reset_swarm:
             self.reset_all()
+
+            # Log the reset.
+            logger.warning(f"{self.__class__.__name__} has been reset.")
         # _end_if_
 
         if options is None:
