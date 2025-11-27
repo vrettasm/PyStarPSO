@@ -771,8 +771,8 @@ class GenericPSO(object):
                 f_opt = f_new
 
                 # Display an information message.
-                print(f"{self.__class__.__name__} "
-                      "Reached the maximum number of function evaluations.")
+                print(f"{self.__class__.__name__} reached the maximum "
+                      f"number of function evaluations at iteration {i+1}")
 
                 # Exit from the loop.
                 break
