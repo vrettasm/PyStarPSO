@@ -85,7 +85,7 @@ class TestFunction(object):
         :return: numpy array with minimum values.
         """
         return self._x_min
-    # _end_def_ù
+    # _end_def_
 
     @property
     def x_max(self) -> float | np.ndarray:
