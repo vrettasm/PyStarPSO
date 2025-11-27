@@ -1,3 +1,4 @@
+import logging
 from os import cpu_count
 from copy import deepcopy
 from math import inf, isclose
@@ -16,6 +17,13 @@ from star_pso.population.swarm import Swarm, SwarmParticle
 from star_pso.utils.auxiliary import (time_it, nb_clip_item, SpecialMode,
                                       check_velocity_parameters, nb_cdist,
                                       linear_rank_probabilities)
+# Create a logger object for the class.
+logger = logging.getLogger("GenericPSO")
+
+# Setup basic configuration for now.
+logging.basicConfig(format="%(asctime)s %(levelname)s: %(message)s",
+                    datefmt="%m/%d/%Y %I:%M:%S", level=logging.INFO)
+
 # Public interface.
 __all__ = ["GenericPSO"]
 
@@ -737,8 +745,8 @@ class GenericPSO(object):
         # Get the function values before optimisation.
         f_opt, _ = self.evaluate_function(parallel)
 
-        # Display an information message.
-        print(f"Initial f_optimal = {f_opt:.4f}")
+        # Log the initial f_optimal value.
+        logger.info(f"Initial f_optimal = {f_opt:.4f}")
 
         # Local variable to display information on the screen.
         # To avoid cluttering the screen we print info only 10
@@ -761,8 +769,8 @@ class GenericPSO(object):
 
             # Check if we want to print output.
             if verbose and (i % its_time_to_print) == 0:
-                # Display an information message.
-                print(f"Iteration: {i + 1:>5} -> f_optimal = {f_new:.4f}")
+                # Log the f_optimal at the current iteration.
+                logger.info(f"Iteration: {i + 1:>5} -> f_optimal = {f_new:.4f}")
             # _end_if_
 
             # Check for the maximum function evaluations.
@@ -770,11 +778,9 @@ class GenericPSO(object):
                 # Update optimal function.
                 f_opt = f_new
 
-                # Display an information message.
-                print(f"{self.__class__.__name__} reached the maximum "
-                      f"number of function evaluations at iteration {i+1}")
-
-                # Exit from the loop.
+                # Log the exit message.
+                logger.warning(f"{self.__class__.__name__} reached the maximum "
+                               f"number of function evaluations at iteration {i + 1}")
                 break
             # _end_if_
 
@@ -783,10 +789,9 @@ class GenericPSO(object):
                 # Update optimal function.
                 f_opt = f_new
 
-                # Display a warning message.
-                print(f"{self.__class__.__name__} finished in {i + 1} iterations.")
+                # Log the warning message.
+                logger.warning(f"{self.__class__.__name__} found a solution at iteration {i + 1}")
 
-                # Exit from the loop.
                 break
             # _end_if_
 
@@ -795,8 +800,8 @@ class GenericPSO(object):
                 # Update optimal function.
                 f_opt = f_new
 
-                # Display a warning message.
-                print(f"{self.__class__.__name__} converged in {i + 1} iterations.")
+                # Log the warning message.
+                logger.warning(f"{self.__class__.__name__} converged in {i + 1} iterations")
 
                 # Exit from the loop.
                 break
