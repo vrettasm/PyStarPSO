@@ -685,6 +685,9 @@ class GenericPSO(object):
 
             # Change the return value.
             have_been_updated = True
+
+            # Log the update.
+            logger.debug(f"{self.__class__.__name__} parameters have been updated.")
         # _end_if_
 
         return have_been_updated
