@@ -189,6 +189,9 @@ class GenericPSO(object):
         """
         # Re-initialize the class variable.
         cls.rng = default_rng(seed=new_seed)
+
+        # Log the new seed event.
+        logger.debug(f"{cls.__name__} random generator has a new seed.")
     # _end_def_
 
     @property
