@@ -8,4 +8,4 @@ logging.basicConfig(format="%(asctime)s %(levelname)s: %(message)s",
                     datefmt="%m/%d/%Y %H:%M:%S", level=logging.INFO)
 
 # Public interface.
-__all__=["logger"]
+__all__ = ["logger"]
