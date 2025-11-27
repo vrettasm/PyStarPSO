@@ -1,4 +1,3 @@
-import logging
 from os import cpu_count
 from copy import deepcopy
 from math import inf, isclose
@@ -12,17 +11,12 @@ import numpy as np
 from numpy.typing import ArrayLike
 from numpy.random import default_rng, Generator
 
+from star_pso.engines import logger
 from star_pso.utils import VOptions
 from star_pso.population.swarm import Swarm, SwarmParticle
 from star_pso.utils.auxiliary import (time_it, nb_clip_item, SpecialMode,
                                       check_velocity_parameters, nb_cdist,
                                       linear_rank_probabilities)
-# Create a logger object for the module.
-logger = logging.getLogger("GenericPSO")
-
-# Setup basic configuration for now.
-logging.basicConfig(format="%(asctime)s %(levelname)s: %(message)s",
-                    datefmt="%m/%d/%Y %I:%M:%S", level=logging.INFO)
 # Public interface.
 __all__ = ["GenericPSO"]
 
