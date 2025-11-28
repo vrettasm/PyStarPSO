@@ -547,7 +547,7 @@ class GenericPSO(object):
         # Inertia weight parameter.
         w = params.w0
 
-        for i, (particle_i, c1, c2, local_i) in enumerate(zip(self.swarm.population,
+        for i, (particle_i, c1, c2, local_i) in enumerate(zip(self._swarm.population,
                                                               cogntv, social, l_best)):
             # Get the i-th particle's position.
             x_i = particle_i.position
