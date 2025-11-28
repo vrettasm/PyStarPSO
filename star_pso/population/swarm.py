@@ -2,7 +2,6 @@ from math import isnan
 from typing import Union
 from copy import deepcopy
 from operator import attrgetter
-from functools import cached_property
 
 from numpy import ndarray
 from numpy import asarray
@@ -64,7 +63,7 @@ class Swarm(object):
         # _end_if_
     # _end_def_
 
-    @cached_property
+    @property
     def size(self) -> int:
         """
         Returns the size (length) of the population.
