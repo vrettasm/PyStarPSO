@@ -644,7 +644,7 @@ class GenericPSO(object):
         # To reduce "noise effects" we allow the update only if the
         # new inertia parameter "wt" is different from ~5% from the
         # previous one "w0".
-        if abs(wt - w0) > 0.05:
+        if fabs(wt - w0) > 0.05:
             
             # Update the cognitive and social parameters.
             if wt > w0:
