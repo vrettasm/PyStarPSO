@@ -1,7 +1,7 @@
 from os import cpu_count
 from copy import deepcopy
-from math import inf, isclose
 from operator import attrgetter
+from math import inf, fabs, isclose
 from collections import deque, defaultdict
 
 from typing import Callable
