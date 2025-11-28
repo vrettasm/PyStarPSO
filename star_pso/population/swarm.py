@@ -1,8 +1,8 @@
 from math import isnan
 from typing import Union
+from copy import deepcopy
 from operator import attrgetter
 from functools import cached_property
-from dataclasses import dataclass, field
 
 from numpy import ndarray
 from numpy import asarray
@@ -19,7 +19,6 @@ SwarmParticle = Union[Particle, JatParticle]
 __all__ = ["Swarm", "SwarmParticle"]
 
 
-@dataclass(init=True, repr=True)
 class Swarm(object):
     """
     Description:
@@ -29,32 +28,40 @@ class Swarm(object):
         of the optimization problem during the optimization process.
     """
 
-    # Define the swarm as a list of particles.
-    _population: list = field(default_factory=list[SwarmParticle])
+    # Object variables.
+    __slots__ = ("_population", "_has_categorical")
 
-    # Define a flag for categorical variables.
-    _has_categorical: bool = False
-
-    def __post_init__(self) -> None:
+    def __init__(self, population: list[SwarmParticle], has_categorical: bool = False,
+                 copy: bool = False) -> None:
         """
-        The purpose of this method is to scan the swarm populations for
-        categorical data blocks and update the '_has_categorical' flag.
+        Default initializer for the Swarm class.
+
+        :param population: a list of SwarmParticles.
+
+        :param has_categorical: (bool) flag to declare if the particles have
+        categorical variables.
+
+        :param copy: (bool) if True it will create a deepcopy of the population.
 
         :return: None.
         """
-        # Early exit if the Swarm has only Particles.
-        if isinstance(self._population[0], Particle):
-            return
-        # _end_if_
 
-        # Check if any of the data blocks in the
-        # JatParticle is of type CATEGORICAL.
-        for blk in self._population[0]:
-            # If the condition is 'True'
-            # change the flag and break the loop.
-            if blk.btype == BlockType.CATEGORICAL:
-                self._has_categorical = True
-                break
+        # Assign the population list (or a deepcopy of it).
+        self._population = deepcopy(population) if copy else population
+
+        # Set the flag for categorical variables.
+        self._has_categorical = has_categorical
+
+        # This ensures that in case of JatParticles the
+        # flag will be set accurately.
+        if isinstance(self._population[0], JatParticle):
+
+            for block in self._population[0]:
+
+                if block.btype == BlockType.CATEGORICAL:
+                    self._has_categorical = True
+                    break
+        # _end_if_
     # _end_def_
 
     @cached_property
@@ -69,7 +76,7 @@ class Swarm(object):
         return len(self._population)
     # _end_def_
 
-    @cached_property
+    @property
     def has_categorical(self) -> bool:
         """
         Accessor (getter) of the 'has_categorical' flag.
