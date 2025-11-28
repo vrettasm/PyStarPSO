@@ -487,11 +487,11 @@ class GenericPSO(object):
 
     def get_local_best_positions(self, operating_mode: str = "g_best") -> np.ndarray:
         """
-        This method uses the swarm's population and the current operation mode
-        (from the VOptions tuple) to calculate the local best positions.
+        This method uses the swarm's population and the current operating mode,
+        from the VOptions tuple, to calculate the local best positions.
 
-        :param operating_mode: the operating mode of the algorithm. The default
-        value is 'g_best'.
+        :param operating_mode: the operating mode of the algorithm. The default value
+        is set to be the 'g_best', because it works with all the PSO implementations.
 
         :return: the local best positions (as numpy array).
         """
