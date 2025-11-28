@@ -495,32 +495,27 @@ class GenericPSO(object):
 
         :return: the local best positions (as numpy array).
         """
-
         # Size of the population.
         swarm_size = self.swarm.size
 
         # Get the global best.
         if operating_mode == "fipso":
-
             # Compute a weighted average from all the positions of the swarm,
             # according to their linear ranking (of fitness value).
             l_best = swarm_size * [GenericPSO.fully_informed(self.swarm.population)]
 
         elif operating_mode == "multimodal":
-
             # Get the (local) neighborhood's best particles.
             l_best = self.neighborhood_best(num_neighbors=4)
 
         elif operating_mode == "g_best":
-
             # Get the (global) swarm's best particle position.
             l_best = swarm_size * [self.swarm.best_particle().position]
+
         else:
             raise ValueError(f"Unknown operating mode: {operating_mode}."
                              f" Use 'fipso', 'multimodal' or 'g_best'")
-        # _end_if_
-
-        # Convert the result to numpy array.
+        # Convert to numpy array.
         return np.array(l_best)
     # _end_def_
 
