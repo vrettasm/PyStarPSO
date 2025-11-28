@@ -800,7 +800,6 @@ class GenericPSO(object):
                 # Log the warning message.
                 logger.warning(f"{self.__class__.__name__} converged in {i + 1} iterations")
 
-                # Exit from the loop.
                 break
             # _end_if_
 
