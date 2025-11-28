@@ -515,7 +515,7 @@ class GenericPSO(object):
         else:
             raise ValueError(f"Unknown operating mode: {operating_mode}."
                              f" Use 'fipso', 'multimodal' or 'g_best'")
-        # Convert to numpy array.
+        # Return as numpy array.
         return np.array(l_best)
     # _end_def_
 
