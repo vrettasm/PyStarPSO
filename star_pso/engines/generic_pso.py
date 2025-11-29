@@ -688,8 +688,8 @@ class GenericPSO(object):
         # _end_if_
 
         if options is None:
-            # Default values of the simplified version.
-            options = {"w0": 0.8, "c1": 2.0, "c2": 2.0,
+            # Set default values of the simplified version.
+            options = {"w0": 0.70, "c1": 1.50, "c2": 1.50,
                        "mode": "g_best"}
         else:
             # Ensure all the parameters are here.
