@@ -533,7 +533,7 @@ class GenericPSO(object):
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
 
-        # Inertia weight parameter.
+        # Pre-sample the inertia weight parameters.
         inertia = GenericPSO.rng.normal(params.w0, 0.05, size=arr_shape)
 
         # Pre-sample the cognitive coefficients.
