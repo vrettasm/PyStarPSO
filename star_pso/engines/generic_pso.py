@@ -546,15 +546,14 @@ class GenericPSO(object):
         w = params.w0
 
         # Extract the current positions.
-        x_pos = self.swarm.positions_as_array()
+        x_current = self.swarm.positions_as_array()
 
         # Extract the best (historical) positions.
         x_best = self.swarm.best_positions_as_array()
 
         # Update the new velocity equations.
         self._velocities = (w * self._velocities +
-                            cogntv * (x_best - x_pos) +
-                            social * (l_best - x_pos))
+                            cogntv * (x_best - x_current) + social * (l_best - x_current))
     # _end_def_
 
     def update_positions(self) -> None:
