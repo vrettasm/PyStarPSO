@@ -3,8 +3,7 @@ from typing import Union
 from copy import deepcopy
 from operator import attrgetter
 
-from numpy import ndarray
-from numpy import asarray
+from numpy import array, ndarray
 from numpy.typing import ArrayLike
 
 from star_pso.utils.auxiliary import BlockType
@@ -152,7 +151,7 @@ class Swarm(object):
 
         :return: A numpy array (vector) with all the values.
         """
-        return asarray([p.value for p in self._population])
+        return array([p.value for p in self._population])
     # _end_def_
 
     def value_at(self, index: int) -> float:
@@ -183,7 +182,7 @@ class Swarm(object):
 
         :return: A numpy array with all the positions.
         """
-        return asarray([p.position for p in self._population])
+        return array([p.position for p in self._population])
     # _end_def_
 
     def best_positions_as_array(self) -> ndarray:
@@ -192,7 +191,7 @@ class Swarm(object):
 
         :return: A numpy array with all the best positions.
         """
-        return asarray([p.best_position for p in self._population])
+        return array([p.best_position for p in self._population])
     # _end_def_
 
     def positions_as_list(self) -> list:
