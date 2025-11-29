@@ -232,18 +232,9 @@ class GenericPSO(object):
 
         :return: the particle positions either as list or ndarray.
         """
-        # Check if "Jack of All Trades" is enabled.
-        if self._special_mode == SpecialMode.JACK_OF_ALL_TRADES:
-
-            # Extract the positions in a list of lists.
-            positions = self._swarm.positions_as_list()
-
-            # Check if the swarm has categorical data blocks.
-            if self.swarm.has_categorical:
-                # Sample categorical variable.
-                self._items["sample_random_values"](positions)
-            # _end_if_
-        else:
+        # Check which mode is enabled.
+        if self._special_mode in (SpecialMode.NORMAL,
+                                  SpecialMode.CATEGORICAL):
             # Extract the positions in a 2D numpy array.
             positions = self._swarm.positions_as_array()
 
@@ -251,7 +242,14 @@ class GenericPSO(object):
             if self._special_mode == SpecialMode.CATEGORICAL:
                 # Sample categorical variable.
                 self._items["sample_random_values"](positions)
-            # _end_if_
+        else:
+            # Extract the positions in a list of lists.
+            positions = self._swarm.positions_as_list()
+
+            # Check if the swarm has categorical data blocks.
+            if self.swarm.has_categorical:
+                # Sample categorical variable.
+                self._items["sample_random_values"](positions)
         # _end_if_
 
         return positions
