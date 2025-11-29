@@ -1,6 +1,5 @@
 from math import inf
 from copy import deepcopy
-from functools import cached_property
 
 from numpy.typing import ArrayLike
 from numpy import copyto as copy_to
@@ -41,14 +40,10 @@ class Particle(object):
         self._value = -inf
     # _end_def_
 
-    @cached_property
+    @property
     def size(self) -> int:
         """
         Returns the size (or length) of the particle.
-
-        Since the size of the _position doesn't change
-        dynamically we can cache this value for faster
-        retrieval.
 
         :return: (int) the length of the particle.
         """
