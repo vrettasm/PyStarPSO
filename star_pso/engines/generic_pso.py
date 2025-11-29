@@ -533,6 +533,9 @@ class GenericPSO(object):
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
 
+        # Inertia weight parameter.
+        inertia = GenericPSO.rng.normal(params.w0, 0.05, size=arr_shape)
+
         # Pre-sample the cognitive coefficients.
         cogntv = GenericPSO.rng.uniform(0, params.c1, size=arr_shape)
 
@@ -542,8 +545,6 @@ class GenericPSO(object):
         # Get the local best positions (for the social attractor).
         l_best = self.get_local_best_positions(params.mode.lower())
 
-        # Inertia weight parameter.
-        w = params.w0
 
         # Extract the current positions.
         x_current = self.swarm.positions_as_array()
@@ -552,7 +553,7 @@ class GenericPSO(object):
         x_best = self.swarm.best_positions_as_array()
 
         # Update the new velocity equations.
-        self._velocities = (w * self._velocities +
+        self._velocities = (inertia * self._velocities +
                             cogntv * (x_best - x_current) + social * (l_best - x_current))
     # _end_def_
 
