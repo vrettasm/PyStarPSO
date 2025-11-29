@@ -29,15 +29,12 @@ class Swarm(object):
     # Object variables.
     __slots__ = ("_population", "_has_categorical")
 
-    def __init__(self, population: list[SwarmParticle], has_categorical: bool = False,
+    def __init__(self, population: list[SwarmParticle],
                  copy: bool = False) -> None:
         """
         Default initializer for the Swarm class.
 
         :param population: a list of SwarmParticles.
-
-        :param has_categorical: (bool) flag to declare if the particles have
-        categorical variables.
 
         :param copy: (bool) if True it will create a deepcopy of the population.
 
@@ -47,8 +44,8 @@ class Swarm(object):
         # Assign the population list (or a deepcopy of it).
         self._population = deepcopy(population) if copy else population
 
-        # Set the flag for categorical variables.
-        self._has_categorical = has_categorical
+        # Set the default value for the categorical flag.
+        self._has_categorical = False
 
         # This ensures that in case of JatParticles the
         # flag will be set accurately.
