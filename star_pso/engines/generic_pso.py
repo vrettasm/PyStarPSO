@@ -545,7 +545,6 @@ class GenericPSO(object):
         # Get the local best positions (for the social attractor).
         l_best = self.get_local_best_positions(params.mode.lower())
 
-
         # Extract the current positions.
         x_current = self.swarm.positions_as_array()
 
