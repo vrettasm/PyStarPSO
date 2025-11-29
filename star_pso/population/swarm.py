@@ -186,6 +186,15 @@ class Swarm(object):
         return asarray([p.position for p in self._population])
     # _end_def_
 
+    def best_positions_as_array(self) -> ndarray:
+        """
+        Get the particle best positions of all the swarm.
+
+        :return: A numpy array with all the best positions.
+        """
+        return asarray([p.best_position for p in self._population])
+    # _end_def_
+
     def positions_as_list(self) -> list:
         """
         Get the particle positions of all the swarm.
