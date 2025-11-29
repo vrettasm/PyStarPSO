@@ -38,8 +38,7 @@ class GenericPSO(object):
 
     # Object variables.
     __slots__ = ("_swarm", "_velocities", "objective_func", "_upper_bound", "_lower_bound", "_stats",
-                 "_items", "_f_eval", "n_cpus", "n_rows", "n_cols", "w_min", "w_max", "_special_mode",
-                 "_iteration")
+                 "_items", "_f_eval", "n_cpus", "n_rows", "n_cols", "_special_mode", "_iteration")
 
     def __init__(self, initial_swarm: Swarm, obj_func: Callable,
                  lower_bound: ArrayLike = None, upper_bound: ArrayLike = None,
@@ -105,10 +104,6 @@ class GenericPSO(object):
 
         # Set the function evaluation to zero.
         self._f_eval = 0
-
-        # Set the min/max values for the inertia parameters.
-        self.w_min = 0.0
-        self.w_max = 1.0
 
         # Set the special mode to Normal.
         self._special_mode = SpecialMode.NORMAL
@@ -574,42 +569,6 @@ class GenericPSO(object):
                                   f"You should implement this method!")
     # _end_def_
 
-    def set_inertia_min_max(self,
-                            new_min: float = None,
-                            new_max: float = None) -> None:
-        """
-        Sets the inertia minimum and maximum values. Calling
-        the function without new values it will set the w_min
-        and w_max to their default values (0 and 1).
-
-        :param new_min: Minimum value for the inertia.
-        :param new_max: Maximum value for the inertia.
-
-        :return: None.
-        """
-        # If new_min is not provided,
-        # set it to 0.0 (default value).
-        if new_min is None:
-            new_min = 0.0
-        # _end_if_
-
-        # If new_max is not provided,
-        # set it to 1.0 (default value).
-        if new_max is None:
-            new_max = 1.0
-        # _end_if_
-
-        # Make sure new_min is less than new_max.
-        if new_min >= new_max:
-            raise ValueError(f"{self.__class__.__name__}: "
-                             f"New minimum value {new_min} is larger than new maximum value {new_max}.")
-        # _end_if_
-
-        # Ensure the final values are in [0, 1].
-        self.w_min = nb_clip_item(new_min, 0.0, 1.0)
-        self.w_max = nb_clip_item(new_max, 0.0, 1.0)
-    # _end_def_
-
     def adapt_velocity_parameters(self, options: dict) -> bool:
         """
         Provides a very basic adapt mechanism for the PSO update
@@ -628,13 +587,17 @@ class GenericPSO(object):
         # values of the c1 and c2 parameters.
         c_min, c_max = 0.1, 2.5
 
+        # For the moment we hardcode the min/max
+        # values of the 'w' inertia parameters.
+        w_min, w_max = 0.0, 1.0
+
         # Get an estimate of the particles' spread,
         # ensuring its range in [0, 1].
         spread_t = nb_clip_item(self.calculate_spread(),
                                 0.0, 1.0)
 
         # Compute the new inertia weight parameter.
-        wt = self.w_max - (self.w_max - self.w_min) * (1.0 - spread_t)
+        wt = w_max - (w_max - w_min) * (1.0 - spread_t)
 
         # Get the previous values of the parameters.
         w0 = options["w0"]
