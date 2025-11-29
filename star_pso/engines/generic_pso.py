@@ -593,6 +593,7 @@ class GenericPSO(object):
                                 0.0, 1.0)
 
         # Compute the new inertia weight parameter.
+        # NOTE: THIS NEEDS TO BE REVISITED!
         wt = spread_t
 
         # Get the previous values of the parameters.
