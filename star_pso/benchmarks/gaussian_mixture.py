@@ -10,21 +10,21 @@ class GaussianMixture(TestFunction):
     This function provides a 2D Gaussian mixture model.
 
     The equations are given by the Multivariate Normal Distribution,
-    with **four** modes:
+    with four modes (2 global and 2 local):
 
     $f(x) = \sum_{i=1}^{4}{\cal N}(\mu_i, \Sigma_i)$,
 
     with mean vectors:
-    $\mu_1 = [-0.0, -1.0]$,
-    $\mu_2 = [-4.0, -6.0]$,
-    $\mu_3 = [-5.0, +1.0]$,
-    $\mu_4 = [5.0, -10.0]$,
+        1) $\mu_1 = [-0.0, -1.0]$,
+        2) $\mu_2 = [-4.0, -6.0]$,
+        3) $\mu_3 = [-5.0, +1.0]$,
+        4) $\mu_4 = [5.0, -10.0]$,
 
     and covariances:
-    $\Sigma_1 = \begin{bmatrix} 1.0 & 0.1 \\ 0.1 & 1.0\end{bmatrix}$,
-    $\Sigma_2 = \begin{bmatrix} 1.0 & 0.1 \\ 0.1 & 1.0\end{bmatrix}$,
-    $\Sigma_3 = \begin{bmatrix} 1.2 & 0.3 \\ 0.3 & 1.2\end{bmatrix}$,
-    $\Sigma_4 = \begin{bmatrix} 1.2 & 0.3 \\ 0.3 & 1.2\end{bmatrix}$.
+        1) $\Sigma_1 = \begin{bmatrix} 1.0 & 0.1 \\ 0.1 & 1.0\end{bmatrix}$,
+        2) $\Sigma_2 = \begin{bmatrix} 1.0 & 0.1 \\ 0.1 & 1.0\end{bmatrix}$,
+        3) $\Sigma_3 = \begin{bmatrix} 1.2 & 0.3 \\ 0.3 & 1.2\end{bmatrix}$,
+        4) $\Sigma_4 = \begin{bmatrix} 1.2 & 0.3 \\ 0.3 & 1.2\end{bmatrix}$.
     """
 
     # Set up the four multivariate normal distributions.
@@ -37,7 +37,7 @@ class GaussianMixture(TestFunction):
         """
         Default initializer of the GaussianMixture (2D) class.
         """
-        # Call the super initializer with the name and the limits.
+        # Call the super initializer with a name and its limits.
         super().__init__(name="GaussianMixture", n_dim=2,
                          x_min=-15.0, x_max=+15.0)
     # _end_def_
@@ -57,7 +57,7 @@ class GaussianMixture(TestFunction):
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
             # Calculate the log of the sum pdfs.
             f_value = np.log(np.sum([mvn.pdf(x_pos)
-                                     for mvn in self.MVN]))
+                                     for mvn in GaussianMixture.MVN]))
         # Return the ndarray.
         return f_value
     # _end_def_
