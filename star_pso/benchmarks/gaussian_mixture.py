@@ -1,0 +1,89 @@
+import numpy as np
+from scipy.stats import multivariate_normal
+from star_pso.population.particle import Particle
+from star_pso.benchmarks.test_function import TestFunction
+from star_pso.utils.auxiliary import identify_global_optima
+
+
+class GaussianMixture(TestFunction):
+    """
+    This function provides a 2D Gaussian mixture model.
+
+    The equations are given by the Multivariate Normal Distribution,
+    with **four** modes:
+
+    $f(x) = \sum_{i=1}^{4}{\cal N}(\mu_i, \Sigma_i)$,
+
+    with mean vectors:
+    $\mu_1 = [-0.0, -1.0]$,
+    $\mu_2 = [-4.0, -6.0]$,
+    $\mu_3 = [-5.0, +1.0]$,
+    $\mu_4 = [5.0, -10.0]$,
+
+    and covariances:
+    $\Sigma_1 = \begin{bmatrix} 1.0 & 0.1 \\ 0.1 & 1.0\end{bmatrix}$,
+    $\Sigma_2 = \begin{bmatrix} 1.0 & 0.1 \\ 0.1 & 1.0\end{bmatrix}$,
+    $\Sigma_3 = \begin{bmatrix} 1.2 & 0.3 \\ 0.3 & 1.2\end{bmatrix}$,
+    $\Sigma_4 = \begin{bmatrix} 1.2 & 0.3 \\ 0.3 & 1.2\end{bmatrix}$.
+    """
+
+    # Set up the four multivariate normal distributions.
+    MVN = (multivariate_normal([-0.0, -1.0], [[1.0, 0.1], [0.1, 1.0]]),
+           multivariate_normal([-4.0, -6.0], [[1.0, 0.1], [0.1, 1.0]]),
+           multivariate_normal([-10.0, 5.0], [[1.2, 0.3], [0.3, 1.2]]),
+           multivariate_normal([5.0, -10.0], [[1.2, 0.3], [0.3, 1.2]]))
+
+    def __init__(self) -> None:
+        """
+        Default initializer of the GaussianMixture (2D) class.
+        """
+        # Call the super initializer with the name and the limits.
+        super().__init__(name="GaussianMixture", n_dim=2,
+                         x_min=-15.0, x_max=+15.0)
+    # _end_def_
+
+    def func(self, x_pos: np.ndarray) -> np.ndarray:
+        """
+        This is 2D function with is 2 global and 2 local optima.
+
+        :param x_pos: the current position(s) of the function.
+
+        :return: the function value(s).
+        """
+        # Initialize function value to NaN.
+        f_value = np.nan
+
+        # Check the valid function range.
+        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
+            # Calculate the log of the sum pdfs.
+            f_value = np.log(np.sum([mvn.pdf(x_pos)
+                                     for mvn in self.MVN]))
+        # Return the ndarray.
+        return f_value
+    # _end_def_
+
+    def search_for_optima(self, population: list[Particle],
+                          epsilon: float = 1.0e-4) -> tuple[int, int]:
+        """
+        Searches the input population for the global optimum values
+        of the specific test function, using default (problem specific)
+        parameters.
+
+        :param population: the population to search the global optimum.
+
+        :param epsilon: accuracy level of the global optimal solution.
+
+        :return: a tuple with the number of global optima found and the
+        total number that exist.
+        """
+        # Get the global optima particles.
+        found_optima = identify_global_optima(population, epsilon=epsilon,
+                                              radius=0.5, f_opt=-1.83285)
+        # Find the number of optima.
+        num_optima = len(found_optima)
+
+        # Return the tuple (number of found, total number)
+        return num_optima, 2
+    # _end_def_
+
+# _end_class_
