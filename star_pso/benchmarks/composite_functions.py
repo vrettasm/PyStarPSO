@@ -117,11 +117,6 @@ class CompositeFunction(TestFunction):
 
         # Create a new list with basic functions.
         self.basic_f = [BASIC_FUNCTIONS[key] for key in key_list]
-
-        # Display the order of functions.
-        print("The basic functions are:")
-        for n, func in enumerate(self.basic_f):
-            print(f"{n}: {func}")
     # _end_def_
 
     def func(self, x_pos: np.ndarray,
@@ -190,4 +185,17 @@ class CompositeFunction(TestFunction):
         return num_optima, len(self.basic_f)
     # _end_def_
 
+    def __str__(self) -> str:
+        """
+        Returns a string representation of the CompositeFunction.
+        """
+        # Initialize the return string.
+        cf_str = self.name + "\n"
+
+        # Append all the basis functions.
+        for n, func in enumerate(self.basic_f):
+            cf_str += f"{n}: {func}\n"
+
+        # Return the new string.
+        return cf_str
 # _end_class_
