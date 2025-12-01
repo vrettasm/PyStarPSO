@@ -54,14 +54,6 @@ def f_rastrigin(x_pos: np.ndarray,
 # _end_def_
 
 # Basic function: 4
-def f_rosenbrock(x_pos: np.ndarray) -> np.ndarray:
-    """
-    Computes the Rosenbrock function at x_pos.
-    """
-    return (1.0 - x_pos[0]) ** 2 + 100.0 * (x_pos[1] - x_pos[0] ** 2) ** 2
-# _end_def_
-
-# Basic function: 5
 def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
                   alpha: float = 0.5, beta: int = 3) -> np.ndarray:
     """
@@ -90,11 +82,10 @@ def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
 
 
 # Define a dictionary will all the basic functions.
-basic_f: dict = {1: f_sphere,
-                 2: f_griewank,
-                 3: f_rastrigin,
-                 4: f_rosenbrock,
-                 5: f_weierstrass}
+basic_f: dict = {0: f_sphere,
+                 1: f_griewank,
+                 2: f_rastrigin,
+                 3: f_weierstrass}
 
 
 class CompositeFunction(TestFunction):
@@ -120,7 +111,7 @@ class CompositeFunction(TestFunction):
 
         # Call the super initializer.
         super().__init__(name=f"CF_{n_dim}D",
-                         n_dim=n_dim, x_min=-5.0, x_max=5.0)
+                         n_dim=n_dim, x_min=-15.0, x_max=15.0)
     # _end_def_
 
     def func(self, x_pos: np.ndarray,
@@ -142,17 +133,17 @@ class CompositeFunction(TestFunction):
 
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
+            # Get the number of basic functions.
+            n_func = len(basic_f)
+
             # Compute the weights.
-            weights = linear_rank_weights(len(basic_f))
+            weights = linear_rank_weights(n_func)
 
-            # Initialize f_total to zero.
-            f_total = 0.0
-
-            # Construct a composite function.
-            for wi, cf in zip(weights, basic_f.values()):
-                f_total += wi * cf(x_pos + i_bias)
-
-            # Add the bias t the end.
+            # Get total evaluation of the composite function.
+            f_total = np.sum([wi * (cf(x_pos) + i_bias)
+                              for wi, cf in zip(weights,
+                                                basic_f.values())])
+            # Add the bias at the end.
             f_value = f_total + f_bias
         # _end_if_
 
@@ -176,12 +167,12 @@ class CompositeFunction(TestFunction):
         """
         # Get the global optima particles.
         found_optima = identify_global_optima(population, epsilon=epsilon,
-                                              radius=1.0, f_opt=31.556770)
+                                              radius=0.1, f_opt=183.958731)
         # Find the number of optima.
         num_optima = len(found_optima)
 
         # Return the tuple (number of found, total number)
-        return num_optima, 4
+        return num_optima, len(basic_f)
     # _end_def_
 
 # _end_class_
