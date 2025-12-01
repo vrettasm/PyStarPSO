@@ -1,24 +1,7 @@
 import numpy as np
-from functools import lru_cache
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 from star_pso.utils.auxiliary import identify_global_optima
-
-
-@lru_cache(maxsize=32)
-def linear_rank_weights(p_size: int) -> np.ndarray:
-    """
-    Calculate the rank probability distribution.
-    """
-    # Calculate the sum of all the ranked swarm particles.
-    sum_ranked_values = float(0.5 * p_size * (p_size + 1))
-
-    # Calculate the linear ranked weights.
-    probs = np.arange(1, p_size + 1) / sum_ranked_values
-
-    # Return the probs.
-    return probs
-# _end_def_
 
 # Basic function: 1
 def f_sphere(x_pos: np.ndarray) -> np.ndarray:
@@ -94,14 +77,14 @@ class CompositeFunction(TestFunction):
     of basic functions, as defined in the 'basic_f' dict.
     """
 
-    def __init__(self, n_dim: int = 2, shuffle: bool = False) -> None:
+    def __init__(self, n_dim: int = 2, n_func: int = 4) -> None:
         """
         Default initializer of the CompositeFunction class.
 
         :param n_dim: (int) number of dimensions of the problem.
 
-        :param shuffle: (bool) if True it will shuffle the order
-        of the basic functions. Default is False.
+        :param n_func: (int) is the number of basic functions we
+        want to include.
 
         :return: None.
         """
@@ -110,25 +93,35 @@ class CompositeFunction(TestFunction):
 
         # Sanity check.
         if n_dim < 2:
-            raise ValueError("CF needs at least 2 dimensions.")
+            raise ValueError(f"{self.__class__.__name__}: needs at least 2 dimensions.")
+        # _end_if_
 
         # Call the super initializer.
         super().__init__(name=f"CF_{n_dim}D",
                          n_dim=n_dim, x_min=-5.0, x_max=5.0)
 
-        # Check if we want to shuffle the order of the basic functions.
-        if shuffle:
-            # Extract the keys.
-            key_list = list(BASIC_FUNCTIONS.keys())
+        # Ensure correct type.
+        n_func = int(n_func)
 
-            # Shuffle them in place.
-            self.rng.shuffle(key_list)
+        # Sanity check.
+        if n_func < 2 or n_func > 20:
+            raise ValueError(f"{self.__class__.__name__}: Number of functions is too high. "
+                             f"Choose a value in [2, 20]-")
+        # _end_if_
 
-            # Create the new dictionary.
-            self._basic_f = {key: BASIC_FUNCTIONS[key] for key in key_list}
-        else:
-            # Copy the original basic_functions.
-            self._basic_f = BASIC_FUNCTIONS.copy()
+        # Assign the value.
+        self.n_func = n_func
+
+        # Extract the keys.
+        key_list = self.rng.choice(list(BASIC_FUNCTIONS.keys()), size=self.n_func)
+
+        # Create a new list with basic functions.
+        self.basic_f = [BASIC_FUNCTIONS[key] for key in key_list]
+
+        # Display the order of functions.
+        print("The basic functions are:")
+        for n, func in enumerate(self.basic_f):
+            print(f"{n}: {func}")
     # _end_def_
 
     def func(self, x_pos: np.ndarray,
@@ -151,15 +144,20 @@ class CompositeFunction(TestFunction):
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
             # Get the number of basic functions.
-            n_func = len(self._basic_f)
+            n_func = self.n_func
 
-            # Compute the weights.
-            weights = linear_rank_weights(n_func)
+            # Square of sigma values.
+            sigma_sq = np.arange(1, n_func + 1) ** 2
+
+            # Compute the weights:
+            weights = np.exp(-0.5 * np.sum(x_pos ** 2) / (self.n_dim * sigma_sq))
+
+            # Normalize them.
+            weights /= np.sum(weights)
 
             # Get total evaluation of the composite function.
-            f_total = np.sum([wi * (cf(x_pos) + i_bias)
-                              for wi, cf in zip(weights,
-                                                self._basic_f.values())])
+            f_total = np.sum([wi * (cf(x_pos / n_func) + i_bias)
+                              for wi, cf in zip(weights, self.basic_f)])
             # Add the bias at the end.
             f_value = f_total + f_bias
         # _end_if_
@@ -184,12 +182,12 @@ class CompositeFunction(TestFunction):
         """
         # Get the global optima particles.
         found_optima = identify_global_optima(population, epsilon=epsilon,
-                                              radius=0.1, f_opt=183.958731)
+                                              radius=0.1, f_opt=0.0)
         # Find the number of optima.
         num_optima = len(found_optima)
 
         # Return the tuple (number of found, total number)
-        return num_optima, len(self._basic_f)
+        return num_optima, len(self.basic_f)
     # _end_def_
 
 # _end_class_
