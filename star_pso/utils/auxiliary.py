@@ -2,8 +2,9 @@ import time
 from enum import Enum
 from math import fabs
 from typing import Callable
-from functools import (cache, wraps, partial)
-
+from functools import (wraps,
+                       partial,
+                       lru_cache)
 import numpy as np
 from numba import njit
 from numpy.linalg import norm
@@ -52,7 +53,7 @@ def check_velocity_parameters(options: dict) -> None:
         # _end_if_
 # _end_def_
 
-@cache
+@lru_cache(maxsize=64)
 def linear_rank_probabilities(p_size: int) -> tuple[np.ndarray, float]:
     """
     Calculate the rank probability distribution over the population size.

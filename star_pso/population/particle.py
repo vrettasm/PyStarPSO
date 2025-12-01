@@ -142,7 +142,7 @@ class Particle(object):
         self._value = new_value
     # _end_def_
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self, memo) -> "Particle":
         """
         This custom method overrides the default deepcopy method.
 

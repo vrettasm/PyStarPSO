@@ -104,9 +104,9 @@ class CompositeFunction(TestFunction):
         n_func = int(n_func)
 
         # Sanity check.
-        if n_func < 2 or n_func > 20:
+        if not (2 <= n_func <= 20):
             raise ValueError(f"{self.__class__.__name__}: Number of functions is too high. "
-                             f"Choose a value in [2, 20]-")
+                             f"Choose a value in [2, 20].")
         # _end_if_
 
         # Assign the value.

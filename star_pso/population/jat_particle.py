@@ -213,7 +213,7 @@ class JatParticle(object):
         return self._container == other.container
     # _end_def_
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self, memo) -> "JatParticle":
         """
         This custom method overrides the default deepcopy method.
 

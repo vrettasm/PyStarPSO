@@ -57,12 +57,13 @@ class DataBlock(object):
         :param upper_bound: the upper bound in the search space.
         """
 
-        # Assign the data block type.
-        if isinstance(btype, BlockType):
-            self._btype = btype
-        else:
+        # Sanity check.
+        if not isinstance(btype, BlockType):
             raise TypeError(f"{self.__class__.__name__}: Unknown Block Type {btype}.")
         # _end_if_
+
+        # Assign the data block type.
+        self._btype = btype
 
         # Copy the initial position.
         if np.isscalar(position):

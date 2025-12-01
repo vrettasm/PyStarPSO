@@ -71,10 +71,10 @@ class GenericPSO(object):
         # Make sure the fitness function is indeed callable.
         if not callable(obj_func):
             raise TypeError(f"{self.__class__.__name__}: Objective function is not callable.")
-        else:
-            # Get the objective function.
-            self.objective_func = obj_func
         # _end_if_
+
+        # Get the objective function.
+        self.objective_func = obj_func
 
         # Set the upper/lower bounds of the search space.
         self._lower_bound = np.array(lower_bound)
@@ -129,14 +129,13 @@ class GenericPSO(object):
 
         :param value: (int).
         """
-        # Check for correct type and allow only
-        # the positive values.
-        if isinstance(value, int) and value >= 0:
-            # Update the iteration value.
-            self._iteration = value
-        else:
+        # Check for correct type and allow only the
+        # positive values.
+        if not isinstance(value, int) or value < 0:
             raise RuntimeError(f"{self.__class__.__name__}: "
                                f"Iteration value should be positive int: {type(value)}.")
+        # Update the iteration value.
+        self._iteration = value
     # _end_def_
 
     @property
@@ -435,7 +434,7 @@ class GenericPSO(object):
         return w_best
     # _end_def_
 
-    def neighborhood_best(self, num_neighbors: int) -> deque:
+    def neighborhood_best(self, num_neighbors: int) -> deque[np.ndarray]:
         """
         For each particle in the swarm, finds the 'n' closest neighbors
         (distance-wise) and computes the local best neighborhood position.
