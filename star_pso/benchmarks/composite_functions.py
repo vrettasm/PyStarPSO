@@ -29,9 +29,9 @@ def f_sphere(x_pos: np.ndarray) -> np.ndarray:
 # _end_def_
 
 # Basic function: 2
-def f_grienwank(x_pos: np.ndarray) -> np.ndarray:
+def f_griewank(x_pos: np.ndarray) -> np.ndarray:
     """
-    Computes the Grienwank function at x_pos.
+    Computes the Griewank function at x_pos.
     """
     # Get the size of the vector.
     n_dim = x_pos.size
@@ -84,7 +84,7 @@ def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
 
 # Define a dictionary will all the basic functions.
 basic_f: dict = {1: f_sphere,
-                 2: f_grienwank,
+                 2: f_griewank,
                  3: f_rastrigin,
                  4: f_weierstrass}
 
