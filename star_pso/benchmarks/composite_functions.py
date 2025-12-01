@@ -78,12 +78,9 @@ def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
     # Precalculate: beta^k
     beta_k = beta ** k
 
-    # Internal loop accumulating variable.
-    sum_x = 0.0
-
-    # Outer loop summation.
-    for xi in x_pos:
-        sum_x += np.sum(alpha_k * np.cos(2 * np.pi * beta_k * (xi + 0.5)))
+    # Vectorized double summation.
+    sum_x = np.sum(alpha_k[:, np.newaxis] * np.cos(2 * np.pi * beta_k[:, np.newaxis] * (x_pos + 0.5)),
+                   axis=0).sum()
 
     # Combine the final result with the last summation.
     return sum_x - n_dim * np.sum(alpha_k * np.cos(np.pi * beta_k))
