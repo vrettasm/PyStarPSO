@@ -52,6 +52,14 @@ def f_rastrigin(x_pos: np.ndarray) -> np.ndarray:
 # _end_def_
 
 # Basic function: 4
+def f_rosenbrock(x_pos: np.ndarray) -> np.ndarray:
+    """
+    Computes the Rosenbrock function at x_pos.
+    """
+    return (1.0 - x_pos[0]) ** 2 + 100.0 * (x_pos[1] - x_pos[0] ** 2) ** 2
+# _end_def_
+
+# Basic function: 5
 def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
                   alpha: float = 0.5, beta: int = 3) -> np.ndarray:
     """
