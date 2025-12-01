@@ -82,10 +82,10 @@ def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
 
 
 # Define a dictionary will all the basic functions.
-basic_f: dict = {0: f_sphere,
-                 1: f_griewank,
-                 2: f_rastrigin,
-                 3: f_weierstrass}
+BASIC_FUNCTIONS: dict = {"f_sphere": f_sphere,
+                         "f_griewank": f_griewank,
+                         "f_rastrigin": f_rastrigin,
+                         "f_weierstrass": f_weierstrass}
 
 
 class CompositeFunction(TestFunction):
@@ -94,11 +94,14 @@ class CompositeFunction(TestFunction):
     of basic functions, as defined in the 'basic_f' dict.
     """
 
-    def __init__(self, n_dim: int = 2) -> None:
+    def __init__(self, n_dim: int = 2, shuffle: bool = False) -> None:
         """
         Default initializer of the CompositeFunction class.
 
-        :param n_dim: Number of dimensions of the problem.
+        :param n_dim: (int) number of dimensions of the problem.
+
+        :param shuffle: (bool) if True it will shuffle the order
+        of the basic functions. Default is False.
 
         :return: None.
         """
@@ -111,7 +114,21 @@ class CompositeFunction(TestFunction):
 
         # Call the super initializer.
         super().__init__(name=f"CF_{n_dim}D",
-                         n_dim=n_dim, x_min=-15.0, x_max=15.0)
+                         n_dim=n_dim, x_min=-5.0, x_max=5.0)
+
+        # Check if we want to shuffle the order of the basic functions.
+        if shuffle:
+            # Extract the keys.
+            key_list = list(BASIC_FUNCTIONS.keys())
+
+            # Shuffle them in place.
+            self.rng.shuffle(key_list)
+
+            # Create the new dictionary.
+            self._basic_f = {key: BASIC_FUNCTIONS[key] for key in key_list}
+        else:
+            # Copy the original basic_functions.
+            self._basic_f = BASIC_FUNCTIONS.copy()
     # _end_def_
 
     def func(self, x_pos: np.ndarray,
@@ -134,7 +151,7 @@ class CompositeFunction(TestFunction):
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
             # Get the number of basic functions.
-            n_func = len(basic_f)
+            n_func = len(self._basic_f)
 
             # Compute the weights.
             weights = linear_rank_weights(n_func)
@@ -142,7 +159,7 @@ class CompositeFunction(TestFunction):
             # Get total evaluation of the composite function.
             f_total = np.sum([wi * (cf(x_pos) + i_bias)
                               for wi, cf in zip(weights,
-                                                basic_f.values())])
+                                                self._basic_f.values())])
             # Add the bias at the end.
             f_value = f_total + f_bias
         # _end_if_
@@ -172,7 +189,7 @@ class CompositeFunction(TestFunction):
         num_optima = len(found_optima)
 
         # Return the tuple (number of found, total number)
-        return num_optima, len(basic_f)
+        return num_optima, len(self._basic_f)
     # _end_def_
 
 # _end_class_
