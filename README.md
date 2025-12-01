@@ -8,11 +8,11 @@ This repository implements a collection of particle swarm optimization algorithm
 
 The current implementation offers the following PSO implementations:
 
-  - [StandardPSO](star_pso/engines/standard_pso.py)
-  - [BinaryPSO](star_pso/engines/binary_pso.py)
-  - [CategoricalPSO](star_pso/engines/categorical_pso.py)
-  - [IntegerPSO](star_pso/engines/integer_pso.py)
-  - [Jack of all trades-PSO](star_pso/engines/jack_of_all_trades_pso.py)
+  - [Standard](star_pso/engines/standard_pso.py)
+  - [Binary](star_pso/engines/binary_pso.py)
+  - [Categorical](star_pso/engines/categorical_pso.py)
+  - [Integer (Discrete)](star_pso/engines/integer_pso.py)
+  - [Jack of all trades](star_pso/engines/jack_of_all_trades_pso.py)
 
 All the above methods inherit from the base class [Generic](star_pso/engines/generic_pso.py) which provides some
 common functionality.
