@@ -44,11 +44,13 @@ def f_griewank(x_pos: np.ndarray) -> np.ndarray:
 # _end_def_
 
 # Basic function: 3
-def f_rastrigin(x_pos: np.ndarray) -> np.ndarray:
+def f_rastrigin(x_pos: np.ndarray,
+                kappa: float = 10.0) -> np.ndarray:
     """
-    Computes the Rastrigin function at x_pos.
+    Computes the Rastrigin function at x_pos,
+    with default kappa parameter.
     """
-    return np.sum(x_pos ** 2 - 10.0 * np.cos(2.0 * np.pi * x_pos) + 10)
+    return np.sum(x_pos ** 2 - kappa * np.cos(2.0 * np.pi * x_pos) + kappa)
 # _end_def_
 
 # Basic function: 4
@@ -63,8 +65,8 @@ def f_rosenbrock(x_pos: np.ndarray) -> np.ndarray:
 def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
                   alpha: float = 0.5, beta: int = 3) -> np.ndarray:
     """
-    Computes the Weierstrass function at x_pos, with
-    default k_max, alpha and beta parameters.
+    Computes the Weierstrass function at x_pos,
+    with default k_max, alpha and beta parameters.
     """
     # Get the size of the vector.
     n_dim = x_pos.size
@@ -91,7 +93,8 @@ def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
 basic_f: dict = {1: f_sphere,
                  2: f_griewank,
                  3: f_rastrigin,
-                 4: f_weierstrass}
+                 4: f_rosenbrock,
+                 5: f_weierstrass}
 
 
 class CompositeFunction(TestFunction):
