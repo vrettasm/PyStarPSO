@@ -17,10 +17,9 @@ class FiveUnevenPeakTrap(TestFunction):
         """
         Default initializer of the FiveUnevenPeakTrap class.
         """
-
-        # Call the super initializer with the name and the limits.
-        super().__init__(name="Five_Uneven_Peak_Trap", n_dim=1,
-                         x_min=0.0, x_max=30.0)
+        # Call the super initializer.
+        super().__init__(name="Five_Uneven_Peak_Trap",
+                         n_dim=1, x_min=0.0, x_max=30.0)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
@@ -32,27 +31,28 @@ class FiveUnevenPeakTrap(TestFunction):
         :return: the function value(s).
         """
         # Initialize function values to NaN.
-        f_value = np.nan
+        f_value = np.full_like(x_pos, np.nan, dtype=float)
 
-        # Conditions for the different ranges.
-        if (0.0 <= x_pos) & (x_pos < 2.5):
-            f_value = 80 * (2.50 - x_pos)
-        elif (2.5 <= x_pos) & (x_pos < 5.0):
-            f_value = 64 * (x_pos - 2.50)
-        elif (5.0 <= x_pos) & (x_pos < 7.5):
-            f_value = 64 * (7.50 - x_pos)
-        elif (7.5 <= x_pos) & (x_pos < 12.5):
-            f_value = 28 * (x_pos - 7.50)
-        elif (12.5 <= x_pos) & (x_pos < 17.5):
-            f_value = 28 * (17.5 - x_pos)
-        elif (17.5 <= x_pos) & (x_pos < 22.5):
-            f_value = 32 * (x_pos - 17.5)
-        elif (22.5 <= x_pos) & (x_pos < 27.5):
-            f_value = 32 * (27.5 - x_pos)
-        elif (27.5 <= x_pos) & (x_pos <= 30.0):
-            f_value = 80 * (x_pos - 27.5)
-        # _end_if_
-        
+        # Apply the conditions using boolean indexing.
+        cond_1 = (0.0 <= x_pos) & (x_pos < 2.5)
+        cond_2 = (2.5 <= x_pos) & (x_pos < 5.0)
+        cond_3 = (5.0 <= x_pos) & (x_pos < 7.5)
+        cond_4 = (7.5 <= x_pos) & (x_pos < 12.5)
+        cond_5 = (12.5 <= x_pos) & (x_pos < 17.5)
+        cond_6 = (17.5 <= x_pos) & (x_pos < 22.5)
+        cond_7 = (22.5 <= x_pos) & (x_pos < 27.5)
+        cond_8 = (27.5 <= x_pos) & (x_pos <= 30.0)
+
+        # Calculate the f_value.
+        f_value[cond_1] = 80 * (2.50 - x_pos[cond_1])
+        f_value[cond_2] = 64 * (x_pos[cond_2] - 2.50)
+        f_value[cond_3] = 64 * (7.50 - x_pos[cond_3])
+        f_value[cond_4] = 28 * (x_pos[cond_4] - 7.50)
+        f_value[cond_5] = 28 * (17.5 - x_pos[cond_5])
+        f_value[cond_6] = 32 * (x_pos[cond_6] - 17.5)
+        f_value[cond_7] = 32 * (27.5 - x_pos[cond_7])
+        f_value[cond_8] = 80 * (x_pos[cond_8] - 27.5)
+
         # Return the value.
         return f_value
     # _end_def_

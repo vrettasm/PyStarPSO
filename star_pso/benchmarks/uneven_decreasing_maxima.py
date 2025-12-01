@@ -9,7 +9,7 @@ class UnevenDecreasingMaxima(TestFunction):
     This function was originally proposed in:
 
     K. Deb, “Genetic algorithms in multimodal function optimization
-    (master thesis and tcga report no. 89002),” Ph.D. dissertation,
+    (master thesis and tcga report no. 89002)”,  Ph.D. dissertation,
     Tuscaloosa: University of Alabama, The Clearinghouse for Genetic
     Algorithms, 1989.
     """
@@ -18,9 +18,9 @@ class UnevenDecreasingMaxima(TestFunction):
         """
         Default initializer of the UnevenDecreasingMaxima class.
         """
-        # Call the super initializer with the name and the limits.
-        super().__init__(name="Uneven_Decreasing_Maxima", n_dim=1,
-                         x_min=0.0, x_max=1.0)
+        # Call the super initializer.
+        super().__init__(name="Uneven_Decreasing_Maxima",
+                         n_dim=1, x_min=0.0, x_max=1.0)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
@@ -31,13 +31,14 @@ class UnevenDecreasingMaxima(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function value to NaN.
-        f_value = np.nan
+        # Initialize function values to NaN.
+        f_value = np.full_like(x_pos, np.nan, dtype=float)
 
         # Condition for the valid range.
-        if self.x_min <= x_pos <= self.x_max:
+        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
             f_value = (np.exp(-2.0 * np.log(2.0) * ((x_pos - 0.08)/0.854)**2) *
                        np.sin(5.0 * np.pi * (x_pos**(3/4) - 0.05))**6)
+
         # Return the value.
         return f_value
     # _end_def_

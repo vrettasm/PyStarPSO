@@ -27,9 +27,9 @@ class Shubert(TestFunction):
         if n_dim < 2:
             raise ValueError("Shubert needs at least 2 dimensions.")
 
-        # Call the super initializer with the name and the limits.
-        super().__init__(name=f"Shubert_{n_dim}D", n_dim=n_dim,
-                         x_min=-10.0, x_max=+10.0)
+        # Call the super initializer.
+        super().__init__(name=f"Shubert_{n_dim}D",
+                         n_dim=n_dim, x_min=-10.0, x_max=10.0)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
@@ -41,19 +41,17 @@ class Shubert(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function value to NaN.
-        f_value = np.nan
+        # Initialize function values to NaN.
+        f_value = np.full_like(x_pos, np.nan, dtype=float)
 
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Range 1 to 5 (+1).
-            i = np.arange(1, 6)
+            # Range 1 to 5.
+            i = np.array([1, 2, 3, 4, 5])
 
             # Get the product of the sums.
             f_value = -np.prod(np.sum(i[:, np.newaxis] * np.cos((i[:, np.newaxis] + 1) * x_pos +
                                                                  i[:, np.newaxis]), axis=0))
-        # _end_if_
-
         # Return the ndarray.
         return f_value
     # _end_def_
@@ -74,7 +72,7 @@ class Shubert(TestFunction):
         """
         # Sanity check.
         if self.n_dim > 3:
-            raise ValueError(f"Unknown values for D = {self.n_dim}")
+            raise ValueError(f"Unknown 'f_opt' for D = {self.n_dim}")
         # _end_if_
 
         # Calculate the total global optima along with

@@ -1,11 +1,11 @@
 import numpy as np
-from functools import cache
+from functools import lru_cache
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 from star_pso.utils.auxiliary import identify_global_optima
 
 
-@cache
+@lru_cache(maxsize=32)
 def linear_rank_weights(p_size: int) -> np.ndarray:
     """
     Calculate the rank probability distribution.
@@ -110,9 +110,9 @@ class CompositeFunction(TestFunction):
         if n_dim < 2:
             raise ValueError("CF needs at least 2 dimensions.")
 
-        # Call the super initializer with the name and the limits.
-        super().__init__(name=f"CF_{n_dim}D", n_dim=n_dim,
-                         x_min=-5.0, x_max=+5.0)
+        # Call the super initializer.
+        super().__init__(name=f"CF_{n_dim}D",
+                         n_dim=n_dim, x_min=-5.0, x_max=5.0)
     # _end_def_
 
     def func(self, x_pos: np.ndarray,
@@ -129,16 +129,24 @@ class CompositeFunction(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function value to f_bias.
-        f_value = f_bias
+        # Initialize function value to NaN.
+        f_value = np.full_like(x_pos, np.nan, dtype=float)
 
-        # Compute the weights.
-        weights = linear_rank_weights(len(basic_f))
+        # Check the valid function range.
+        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
+            # Compute the weights.
+            weights = linear_rank_weights(len(basic_f))
 
-        # Construct a composite function.
-        for wi, cf in zip(weights, basic_f.values()):
-            f_value += wi * cf(x_pos + i_bias)
-        # _end_for_
+            # Initialize f_total to zero.
+            f_total = 0.0
+
+            # Construct a composite function.
+            for wi, cf in zip(weights, basic_f.values()):
+                f_total += wi * cf(x_pos + i_bias)
+
+            # Add the bias t the end.
+            f_value = f_total + f_bias
+        # _end_if_
 
         # Return the ndarray.
         return f_value

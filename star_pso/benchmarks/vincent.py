@@ -24,9 +24,9 @@ class Vincent(TestFunction):
         if n_dim < 2:
             raise ValueError("Vincent needs at least 2 dimensions.")
 
-        # Call the super initializer with the name and the limits.
-        super().__init__(name=f"Vincent_{n_dim}D", n_dim=n_dim,
-                         x_min=0.25, x_max=10.0)
+        # Call the super initializer.
+        super().__init__(name=f"Vincent_{n_dim}D",
+                         n_dim=n_dim, x_min=0.25, x_max=10.0)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
@@ -37,8 +37,8 @@ class Vincent(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function value to NaN.
-        f_value = np.nan
+        # Initialize function values to NaN.
+        f_value = np.full_like(x_pos, np.nan, dtype=float)
 
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):

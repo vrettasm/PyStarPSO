@@ -16,8 +16,9 @@ class SixHumpCamelBack(TestFunction):
         """
         Default initializer of the SixHumpCamelBack class.
         """
-        # Call the super initializer with the name and the limits.
-        super().__init__(name="Six_Hump_Camel_Back", n_dim=2,
+        # Call the super initializer.
+        super().__init__(name="Six_Hump_Camel_Back",
+                         n_dim=2,
                          x_min=np.array([-1.9, -1.1]),
                          x_max=np.array([+1.9, +1.1]))
     # _end_def_
@@ -30,17 +31,14 @@ class SixHumpCamelBack(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function value to NaN.
-        f_value = np.nan
+        # Initialize function values to NaN.
+        f_value = np.full_like(x_pos, np.nan, dtype=float)
 
         # Condition for the valid range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Separate the two variables.
-            x, y = x_pos
-
             # Calculate the function value.
-            f_value = -((4 - 2.1 * x**2 + (x**4)/3) * x**2 +
-                        x*y + 4*(y**2 - 1)*(y**2))
+            f_value = -((4 - 2.1 * x_pos[0]**2 + (x_pos[0]**4)/3) * x_pos[0]**2 +
+                        x_pos[0]*x_pos[1] + 4*(x_pos[1]**2 - 1.0)*(x_pos[1]**2))
 
         # Return the value.
         return f_value

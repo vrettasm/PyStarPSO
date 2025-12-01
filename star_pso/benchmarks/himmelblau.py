@@ -9,7 +9,7 @@ class Himmelblau(TestFunction):
     This function was originally proposed in:
 
     K. Deb, “Genetic algorithms in multimodal function optimization
-    (master thesis and tcga report no. 89002),” Ph.D. dissertation,
+    (master thesis and tcga report no. 89002)”,  Ph.D. dissertation,
     Tuscaloosa: University of Alabama, The Clearinghouse for Genetic
     Algorithms, 1989.
     """
@@ -18,9 +18,9 @@ class Himmelblau(TestFunction):
         """
         Default initializer of the Himmelblau class.
         """
-        # Call the super initializer with the name and the limits.
-        super().__init__(name="Himmelblau", n_dim=2,
-                         x_min=-6.0, x_max=+6.0)
+        # Call the super initializer.
+        super().__init__(name="Himmelblau",
+                         n_dim=2, x_min=-6.0, x_max=6.0)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
@@ -31,16 +31,14 @@ class Himmelblau(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function value to NaN.
-        f_value = np.nan
+        # Initialize function values to NaN.
+        f_value = np.full_like(x_pos, np.nan, dtype=float)
 
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Separate the two variables.
-            x, y = x_pos
-
             # Calculate the function value.
-            f_value = 200.0 - (x**2 + y - 11)**2 - (x + y**2 - 7)**2
+            f_value = (200.0 - (x_pos[0]**2 + x_pos[1] - 11)**2 -
+                       (x_pos[0] + x_pos[1]**2 - 7)**2)
 
         # Return the ndarray.
         return f_value

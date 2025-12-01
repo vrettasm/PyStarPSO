@@ -30,11 +30,17 @@ class Rastrigin(TestFunction):
             raise ValueError("Rastrigin needs at least 2 dimensions.")
 
         # Call the super initializer with the name and the limits.
-        super().__init__(name=f"Rastrigin_{n_dim}D", n_dim=n_dim,
-                         x_min=0.0, x_max=1.0)
+        super().__init__(name=f"Rastrigin_{n_dim}D",
+                         n_dim=n_dim, x_min=0.0, x_max=1.0)
 
-        # Placeholder for the total optimal values.
-        self.total_optima = None
+        # Set the 'kappa' coefficients (automatically).
+        # Here we set them as: [1, 2, 1, 2, ...].
+        self.kappa = np.array([1 if i % 2 != 0 else 2
+                               for i in range(1, self.n_dim + 1)])
+
+        # Compute the total number of optimal values
+        # as the product of the 'kappa' coefficients.
+        self.total_optima = np.prod(self.kappa)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
@@ -45,21 +51,14 @@ class Rastrigin(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function value to NaN.
-        f_value = np.nan
+        # Initialize function values to NaN.
+        f_value = np.full_like(x_pos, np.nan, dtype=float)
 
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Range 1 to D+1.
-            k = np.arange(1, self.n_dim + 1)
-
-            # Compute the total number of optimal values.
-            self.total_optima = np.prod(k)
-
             # Get the sum.
-            f_value = -np.sum(10.0 + 9.0 * np.cos(2.0 * np.pi * k * x_pos), axis=0)
-        # _end_if_
-
+            f_value = -np.sum(10.0 + 9.0 * np.cos(2.0 * np.pi * self.kappa * x_pos),
+                              axis=0)
         # Return the ndarray.
         return f_value
     # _end_def_
@@ -78,11 +77,6 @@ class Rastrigin(TestFunction):
         :return: a tuple with the number of global optima found and the
         total number that exist.
         """
-        # Sanity check.
-        if self.total_optima is None:
-            raise ValueError(f"Unknown optimal values.")
-        # _end_if_
-
         # Get the global optima particles.
         found_optima = identify_global_optima(population, epsilon=epsilon,
                                               radius=0.01, f_opt=-float(self.n_dim))

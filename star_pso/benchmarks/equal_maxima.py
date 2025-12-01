@@ -18,8 +18,9 @@ class EqualMaxima(TestFunction):
         """
         Default initializer of the EqualMaxima class.
         """
-        # Call the super initializer with the name and the limits.
-        super().__init__(name="Equal_Maxima", n_dim=1, x_min=0.0, x_max=1.0)
+        # Call the super initializer.
+        super().__init__(name="Equal_Maxima",
+                         n_dim=1, x_min=0.0, x_max=1.0)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
@@ -30,8 +31,8 @@ class EqualMaxima(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function value to NaN.
-        f_value = np.nan
+        # Initialize function values to NaN.
+        f_value = np.full_like(x_pos, np.nan, dtype=float)
 
         # Condition for the valid range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
