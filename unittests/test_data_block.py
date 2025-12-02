@@ -31,7 +31,6 @@ class TestDataBlock(unittest.TestCase):
                           btype="float",
                           lower_bound=-1.0,
                           upper_bound=+1.0)
-        # _end_with_
 
         # Check if the boundaries are correct.
         with self.assertRaises(ValueError):
