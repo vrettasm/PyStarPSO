@@ -126,7 +126,8 @@ class TestSwarm(unittest.TestCase):
 
     def test_best_n(self):
         """
-
+        Make sure the best_n checks all the input errors and returns
+        the individuals with the highest fitness values.
         """
         # Set a number of optimizing variables.
         n_dim = 2
