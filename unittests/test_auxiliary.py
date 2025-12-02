@@ -20,21 +20,32 @@ class TestUtilities(unittest.TestCase):
         Check for the correct options.
 
         The input dictionary MUST contain as minimum
-        the following keys: {"w0", "c1", "c2"}.
+        the following keys: {"w0", "c1", "c2", "mode"}.
 
         :return: None.
         """
-
-        # Check for the right keys.
+        # Check for the correct keys.
         with self.assertRaises(KeyError):
             # Key "w0" is missing.
-            check_velocity_parameters(options={"w_": None, "c1": None, "c2": None})
-
+            check_velocity_parameters(options={"w_": None,
+                                               "c1": None,
+                                               "c2": None,
+                                               "mode": None})
             # Key "c1" is missing.
-            check_velocity_parameters(options={"w0": None, "c_": None, "c2": None})
-
+            check_velocity_parameters(options={"w0": None,
+                                               "c_": None,
+                                               "c2": None,
+                                               "mode": None})
             # Key "c2" is missing.
-            check_velocity_parameters(options={"w0": None, "c1": None, "c_": None})
+            check_velocity_parameters(options={"w0": None,
+                                               "c1": None,
+                                               "c_": None,
+                                               "mode": None})
+            # Key "mode" is missing.
+            check_velocity_parameters(options={"w0": None,
+                                               "c1": None,
+                                               "c2": None,
+                                               "m_de": None})
         # _end_with_
     # _end_def_
 
