@@ -77,15 +77,20 @@ class CompositeFunction(TestFunction):
     of basic functions, as defined in the 'basic_f' dict.
     """
 
-    def __init__(self, n_dim: int = 2, n_func: int | list = 4) -> None:
+    def __init__(self, n_dim: int = 2, n_func: int | list = 4,
+                 x_min: float = -5.0, x_max: float = 5.0) -> None:
         """
         Default initializer of the CompositeFunction class.
 
         :param n_dim: (int) number of dimensions of the problem.
 
-        :param n_func: (int | list) is either the number of basic functions that
-        we want to include (selected at random) or a list with specific functions
-        that we will include in the given order.
+        :param n_func: (int | list) is either the number of basic functions
+        that we want to include selected at random, or a list with specific
+        functions that we will include in the given order.
+
+        :param x_min: (float) the lower bound values of the search space.
+
+        :param x_max: (float) the upper bound values of the search space.
 
         :return: None.
         """
@@ -99,7 +104,7 @@ class CompositeFunction(TestFunction):
 
         # Call the super initializer.
         super().__init__(name=f"CF_{n_dim}D",
-                         n_dim=n_dim, x_min=-5.0, x_max=5.0)
+                         n_dim=n_dim, x_min=x_min, x_max=x_max)
 
         # Ensure correct type.
         if isinstance(n_func, int) and (2 <= n_func <= 20):

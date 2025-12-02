@@ -12,15 +12,31 @@ class SixHumpCamelBack(TestFunction):
     New York: Springer-Verlag, New York, 1996.
     """
 
-    def __init__(self) -> None:
+    def __init__(self,
+                 x_min: list | np.ndarray | None = None,
+                 x_max: list | np.ndarray | None = None) -> None:
         """
         Default initializer of the SixHumpCamelBack class.
+
+        :param x_min: (float) the lower bound values of the search space.
+
+        :param x_max: (float) the upper bound values of the search space.
+
+        :return: None.
         """
+        # Here set the default lower limits.
+        if x_min is None:
+            x_min = np.array([-1.9, -1.1], dtype=float)
+
+        # Here set the default upper limits.
+        if x_max is None:
+            x_max = np.array([+1.9, +1.1], dtype=float)
+
         # Call the super initializer.
         super().__init__(name="Six_Hump_Camel_Back",
                          n_dim=2,
-                         x_min=np.array([-1.9, -1.1]),
-                         x_max=np.array([+1.9, +1.1]))
+                         x_min=np.asarray(x_min),
+                         x_max=np.asarray(x_max))
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> float | np.ndarray:

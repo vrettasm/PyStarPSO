@@ -13,9 +13,17 @@ class Vincent(TestFunction):
     (LNCS 4193). Reykjavík, Iceland: Springer, 2006, pp. 142 – 151.
     """
 
-    def __init__(self, n_dim: int = 2) -> None:
+    def __init__(self, n_dim: int = 2, x_min: float = 0.25, x_max: float = 10.0) -> None:
         """
         Default initializer of the Vincent D class.
+
+        :param n_dim: (int) the number of dimension of the input space.
+
+        :param x_min: (float) the lower bound values of the search space.
+
+        :param x_max: (float) the upper bound values of the search space.
+
+        :return: None.
         """
         # Ensure correct type.
         n_dim = int(n_dim)
@@ -26,7 +34,7 @@ class Vincent(TestFunction):
 
         # Call the super initializer.
         super().__init__(name=f"Vincent_{n_dim}D",
-                         n_dim=n_dim, x_min=0.25, x_max=10.0)
+                         n_dim=n_dim, x_min=x_min, x_max=x_max)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:

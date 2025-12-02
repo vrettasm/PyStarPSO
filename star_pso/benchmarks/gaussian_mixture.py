@@ -33,13 +33,19 @@ class GaussianMixture(TestFunction):
            multivariate_normal([-10.0, 5.0], [[1.2, 0.3], [0.3, 1.2]]),
            multivariate_normal([5.0, -10.0], [[1.2, 0.3], [0.3, 1.2]]))
 
-    def __init__(self) -> None:
+    def __init__(self, x_min: float = -15.0, x_max: float = 15.0) -> None:
         """
         Default initializer of the GaussianMixture (2D) class.
+
+        :param x_min: (float) the lower bound values of the search space.
+
+        :param x_max: (float) the upper bound values of the search space.
+
+        :return: None.
         """
         # Call the super initializer.
         super().__init__(name="GaussianMixture",
-                         n_dim=2, x_min=-15.0, x_max=15.0)
+                         n_dim=2, x_min=x_min, x_max=x_max)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:

@@ -14,13 +14,19 @@ class EqualMaxima(TestFunction):
     Algorithms, 1989.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, x_min: float = 0.0, x_max: float = 1.0) -> None:
         """
         Default initializer of the EqualMaxima class.
+
+        :param x_min: (float) the lower bound values of the search space.
+
+        :param x_max: (float) the upper bound values of the search space.
+
+        :return: None.
         """
         # Call the super initializer.
         super().__init__(name="Equal_Maxima",
-                         n_dim=1, x_min=0.0, x_max=1.0)
+                         n_dim=1, x_min=x_min, x_max=x_max)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:

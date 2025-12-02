@@ -43,8 +43,8 @@ class TestFunction(object):
         # Assign the function name.
         self._name = name
 
-        # Assign the function name.
-        self._nDim = int(n_dim)
+        # Assign the dimensions.
+        self._nDim = n_dim
 
         # Assign the minimum value(s).
         self._x_min = x_min

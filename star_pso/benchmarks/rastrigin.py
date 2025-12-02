@@ -14,11 +14,15 @@ class Rastrigin(TestFunction):
     Springer-Verlag, 2010, pp. 95–104.
     """
 
-    def __init__(self, n_dim: int = 2) -> None:
+    def __init__(self, n_dim: int = 2, x_min: float = 0.0, x_max: float = 1.0) -> None:
         """
         Default initializer of the D dimensional Rastrigin.
 
         :param n_dim: Number of dimensions of the problem.
+
+        :param x_min: (float) the lower bound values of the search space.
+
+        :param x_max: (float) the upper bound values of the search space.
 
         :return: None.
         """
@@ -31,7 +35,7 @@ class Rastrigin(TestFunction):
 
         # Call the super initializer with the name and the limits.
         super().__init__(name=f"Rastrigin_{n_dim}D",
-                         n_dim=n_dim, x_min=0.0, x_max=1.0)
+                         n_dim=n_dim, x_min=x_min, x_max=x_max)
 
         # Set the 'kappa' coefficients (automatically).
         # Here we set them as: [1, 2, 1, 2, ...].
