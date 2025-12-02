@@ -38,7 +38,6 @@ class TestDataBlock(unittest.TestCase):
                           btype=BlockType.FLOAT,
                           lower_bound=[-1.0, +2.0],
                           upper_bound=[+1.0, -2.0])
-        # _end_with_
     # _end_def_
 
     def test_position_float(self):
