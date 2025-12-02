@@ -77,14 +77,15 @@ class CompositeFunction(TestFunction):
     of basic functions, as defined in the 'basic_f' dict.
     """
 
-    def __init__(self, n_dim: int = 2, n_func: int = 4) -> None:
+    def __init__(self, n_dim: int = 2, n_func: int | list = 4) -> None:
         """
         Default initializer of the CompositeFunction class.
 
         :param n_dim: (int) number of dimensions of the problem.
 
-        :param n_func: (int) is the number of basic functions we
-        want to include.
+        :param n_func: (int | list) is either the number of basic functions that
+        we want to include (selected at random) or a list with specific functions
+        that we will include in the given order.
 
         :return: None.
         """
@@ -101,22 +102,22 @@ class CompositeFunction(TestFunction):
                          n_dim=n_dim, x_min=-5.0, x_max=5.0)
 
         # Ensure correct type.
-        n_func = int(n_func)
+        if isinstance(n_func, int) and (2 <= n_func <= 20):
+            # Extract the keys.
+            key_list = self.rng.choice(list(BASIC_FUNCTIONS.keys()), size=n_func)
 
-        # Sanity check.
-        if not (2 <= n_func <= 20):
-            raise ValueError(f"{self.__class__.__name__}: Number of functions is too high. "
-                             f"Choose a value in [2, 20].")
-        # _end_if_
+            # Create a new list with basic functions.
+            self.basic_f = [BASIC_FUNCTIONS[key] for key in key_list]
 
-        # Assign the value.
-        self.n_func = n_func
-
-        # Extract the keys.
-        key_list = self.rng.choice(list(BASIC_FUNCTIONS.keys()), size=self.n_func)
-
-        # Create a new list with basic functions.
-        self.basic_f = [BASIC_FUNCTIONS[key] for key in key_list]
+        elif isinstance(n_func, list):
+            try:
+                # Create a new list with the given basic functions.
+                self.basic_f = [BASIC_FUNCTIONS[key] for key in n_func]
+            except KeyError as ex:
+                raise KeyError(f"Unknown {ex}. "
+                               f"Valid options are: ", BASIC_FUNCTIONS.keys())
+        else:
+            raise TypeError(f"{self.__class__.__name__}: 'n_func' must either be an int in [2, 20], or a list.")
     # _end_def_
 
     def func(self, x_pos: np.ndarray,
@@ -139,19 +140,20 @@ class CompositeFunction(TestFunction):
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
             # Get the number of basic functions.
-            n_func = self.n_func
+            num_f = len(self.basic_f)
 
             # Square of sigma values.
-            sigma_sq = np.arange(1, n_func + 1) ** 2
+            # For simplicity we set them to one.
+            sigma_sq = np.ones(num_f, dtype=float)
 
-            # Compute the weights:
+            # Compute the weights.
             weights = np.exp(-0.5 * np.sum(x_pos ** 2) / (self.n_dim * sigma_sq))
 
             # Normalize them.
             weights /= np.sum(weights)
 
             # Get total evaluation of the composite function.
-            f_total = np.sum([wi * (cf(x_pos / n_func) + i_bias)
+            f_total = np.sum([wi * (cf(x_pos / num_f) + i_bias)
                               for wi, cf in zip(weights, self.basic_f)])
             # Add the bias at the end.
             f_value = f_total + f_bias
@@ -190,7 +192,7 @@ class CompositeFunction(TestFunction):
         Returns a string representation of the CompositeFunction.
         """
         # Initialize the return string.
-        cf_str = self.name + "\n"
+        cf_str = self.name + f"_F{len(self.basic_f)}\n"
 
         # Append all the basis functions.
         for n, func in enumerate(self.basic_f):
