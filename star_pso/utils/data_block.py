@@ -41,8 +41,8 @@ class DataBlock(object):
                  position: ScalarOrArray,
                  btype: BlockType,
                  valid_set: list | tuple = None,
-                 lower_bound: Number = None,
-                 upper_bound: Number = None) -> None:
+                 lower_bound: Number | None = None,
+                 upper_bound: Number | None = None) -> None:
         """
         Default initializer for the DataBlock class.
 
