@@ -7,15 +7,15 @@ from star_pso.utils.auxiliary import (nb_clip_item,
                                       linear_rank_probabilities)
 
 
-class TestUtilities(unittest.TestCase):
+class TestAuxiliary(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        print(">> TestUtilities - START -")
+        print(">> TestAuxiliary - START -")
     # _end_def_
 
     @classmethod
     def tearDownClass(cls) -> None:
-        print(">> TestUtilities - FINISH -", end='\n\n')
+        print(">> TestAuxiliary - FINISH -", end='\n\n')
     # _end_def_
 
     def test_check_params(self) -> None:
