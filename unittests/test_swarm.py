@@ -92,6 +92,38 @@ class TestSwarm(unittest.TestCase):
         self.assertEqual(j, swarm_a.global_best_index)
     # _end_def_
 
+    def test_best_particle(self):
+        """
+        Check if the best_particle returns the one with the highest value.
+
+        :return: None.
+        """
+        # Set the number of optimizing variables.
+        n_dim = 2
+
+        # Set the number of particles.
+        n_particles = 100
+
+        # Draw random samples for the initial points.
+        x_t0 = self.rng.uniform(-1.5, +1.5, size=(n_particles, n_dim))
+
+        # Initialize the particle population.
+        swarm_a = Swarm([Particle(x) for x in x_t0])
+
+        # Assign made up fitness values to the swarm.
+        for p in swarm_a.population:
+            # Random values in [0, 100).
+            p.value = 100*self.rng.random()
+        # _end_if_
+
+        # Select randomly a particle position
+        # and set manually its value to 1000.
+        swarm_a[self.rng.integers(n_particles)].value = 1000
+
+        # Check the value of the best particle.
+        self.assertEqual(1000, swarm_a.best_particle().value)
+    # _end_def_
+
 # _end_class_
 
 
