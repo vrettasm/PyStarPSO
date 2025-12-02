@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+from math import fabs
 
 from star_pso.population.swarm import Swarm
 from star_pso.population.particle import Particle
