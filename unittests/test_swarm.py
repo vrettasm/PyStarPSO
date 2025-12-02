@@ -124,6 +124,42 @@ class TestSwarm(unittest.TestCase):
         self.assertEqual(1000, swarm_a.best_particle().value)
     # _end_def_
 
+    def test_best_n(self):
+        """
+
+        """
+        # Set a number of optimizing variables.
+        n_dim = 2
+
+        # Set a number of particles.
+        n_particles = 100
+
+        # Draw random samples for the initial points.
+        x_t0 = self.rng.uniform(-1.5, +1.5, size=(n_particles, n_dim))
+
+        # Initialize the particle population.
+        swarm_a = Swarm([Particle(x) for x in x_t0])
+
+        # Assign linearly increasing fitness values.
+        for n, p in enumerate(swarm_a.population, start=1):
+            p.value = float(n)
+        # _end_if_
+
+        # Check the correct type.
+        with self.assertRaises(TypeError):
+            swarm_a.best_n(3.5)
+
+        # Check the correct value.
+        with self.assertRaises(ValueError):
+            swarm_a.best_n(1000)
+
+        # Get the f_values of the best 5.
+        best_5 = [p.value for p in swarm_a.best_n(5)]
+
+        # The top 5 must have the following fitness values.
+        self.assertTrue(best_5 == [100.0, 99.0, 98.0, 97.0, 96.0])
+    # _end_def_
+
 # _end_class_
 
 
