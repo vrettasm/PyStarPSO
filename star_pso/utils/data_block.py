@@ -82,6 +82,14 @@ class DataBlock(object):
             self._copy_best = self._copy_to_array
         # _end_if_
 
+        # Check if the lower and upper bounds are set.
+        if (lower_bound, upper_bound) != (None, None):
+            # Check if the boundaries are set correctly.
+            if np.any(np.array(lower_bound) > np.array(upper_bound)):
+                raise ValueError(f"{self.__class__.__name__}: "
+                                 f"Lower and Upper boundaries are incorrect.")
+        # _end_if_
+
         # Get the lower and upper bounds.
         self._lower_bound = lower_bound
         self._upper_bound = upper_bound
