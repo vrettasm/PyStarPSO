@@ -139,6 +139,25 @@ class TestUtilities(unittest.TestCase):
         self.assertAlmostEqual(probs_sum, 1.0, places=3)
     # _end_def_
 
+    def test_pareto_front(self) -> None:
+        """
+        Make sure that the input to the pareto_front is a 2D array.
+        """
+        # Test input is 1D.
+        with self.assertRaises(RuntimeError):
+            _ = pareto_front(np.random.randn(10))
+
+        # Test input is 3D.
+        with self.assertRaises(RuntimeError):
+            _ = pareto_front(np.random.randn(10, 5, 5))
+
+        # Test the shape of the return array.
+        x_points = pareto_front(np.random.randn(40, 3))
+
+        # Make sure the returned points have the
+        # same number of columns.
+        self.assertTrue(x_points.shape[1] == 3)
+    # _end_def_
 # _end_class_
 
 
