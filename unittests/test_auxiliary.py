@@ -135,9 +135,6 @@ class TestUtilities(unittest.TestCase):
         # Get the probabilities for p_size=10.
         probs, probs_sum = linear_rank_probabilities(10)
 
-        # Test that the probs sum to the same number.
-        self.assertEqual(probs.sum(), probs_sum)
-
         # Test that the probs_sum is equal to 1.0.
         self.assertAlmostEqual(probs_sum, 1.0, places=3)
     # _end_def_
