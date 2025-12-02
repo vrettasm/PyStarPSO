@@ -64,7 +64,7 @@ def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
 # _end_def_
 
 
-# Define a dictionary will all the basic functions.
+# Define a dictionary with all the basic functions.
 BASIC_FUNCTIONS: dict = {"f_sphere": f_sphere,
                          "f_griewank": f_griewank,
                          "f_rastrigin": f_rastrigin,
