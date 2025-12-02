@@ -113,6 +113,9 @@ class GenericPSO(object):
 
         # Set the iteration counter to zero.
         self._iteration = 0
+
+        # Log the object initialization.
+        logger.debug(f"{self.__class__.__name__} initialization complete.")
     # _end_def_
 
     @property
