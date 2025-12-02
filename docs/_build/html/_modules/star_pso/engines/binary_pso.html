@@ -1,0 +1,256 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>star_pso.engines.binary_pso &mdash; StarPSO 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            StarPSO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">star_pso</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">StarPSO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">star_pso.engines.binary_pso</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for star_pso.engines.binary_pso</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">zeros_like</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">exp</span> <span class="k">as</span> <span class="n">np_exp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">clip</span> <span class="k">as</span> <span class="n">np_clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">VOptions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.engines.generic_pso</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericPSO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="n">nb_median_hamming_distance</span>
+
+<span class="c1"># Public interface.</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BinaryPSO&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="BinaryPSO">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BinaryPSO</span><span class="p">(</span><span class="n">GenericPSO</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description:</span>
+
+<span class="sd">    This class implements the discrete binary particle swarm optimization variant</span>
+<span class="sd">    as described in:</span>
+
+<span class="sd">    Kennedy, J., and R. C. Eberhart 1997. “A Discrete Binary Version of the Particle</span>
+<span class="sd">    Swarm Algorithm.” IEEE International conference on systems, man, and cybernetics,</span>
+<span class="sd">    1997. Computational cybernetics and simulation, Vol. 5, Orlando, FL, October 12–15,</span>
+<span class="sd">    pp: 4104–4108.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_min</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">v_max</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Default initializer of the BinaryPSO class.</span>
+
+<span class="sd">        :param v_min: lower velocity bound.</span>
+
+<span class="sd">        :param v_max: upper velocity bound.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Call the super initializer with the input parameters.</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lower_bound</span><span class="o">=</span><span class="n">v_min</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="n">v_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Generate initial particle velocities.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">,</span>
+                                                  <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="BinaryPSO.update_velocities">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO.update_velocities">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">VOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs the update on the velocity equations.</span>
+
+<span class="sd">        :param params: VOptions tuple with the PSO options.</span>
+
+<span class="sd">        :return: None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Call the method of the parent class.</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update_velocities</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="c1"># We clip the velocities in [V_min, V_max].</span>
+        <span class="n">np_clip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">)</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="BinaryPSO.update_positions">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO.update_positions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the positions of the particles in the swarm.</span>
+
+<span class="sd">        :return: None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Generate random vectors in U(0, 1).</span>
+        <span class="n">r_uniform</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+                                           <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
+        <span class="c1"># Create a matrix with zeros.</span>
+        <span class="n">new_positions</span> <span class="o">=</span> <span class="n">zeros_like</span><span class="p">(</span><span class="n">r_uniform</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="c1"># Compute the logistic values.</span>
+        <span class="n">s_arr</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np_exp</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">))</span>
+
+        <span class="c1"># Where the logistic function values are</span>
+        <span class="c1"># higher than the random value set to 1.</span>
+        <span class="n">new_positions</span><span class="p">[</span><span class="n">s_arr</span> <span class="o">&gt;</span> <span class="n">r_uniform</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># Update all particle positions.</span>
+        <span class="k">for</span> <span class="n">particle</span><span class="p">,</span> <span class="n">x_new</span><span class="p">,</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
+                                    <span class="n">new_positions</span><span class="p">):</span>
+            <span class="n">particle</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">x_new</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="BinaryPSO.generate_random_positions">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO.generate_random_positions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_random_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate the population of particles positions by</span>
+<span class="sd">        sampling discrete binary random numbers within the</span>
+<span class="sd">        {0, 1} set.</span>
+
+<span class="sd">        :return: None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Generate random BINARY positions Bin(0, 1).</span>
+        <span class="n">binary_positions</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                   <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
+        <span class="c1"># Assign the new positions in the swarm.</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">x_new</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="p">,</span> <span class="n">binary_positions</span><span class="p">):</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">x_new</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="BinaryPSO.reset_all">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO.reset_all">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset_all</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets the particle positions, velocities and the statistics dictionary.</span>
+
+<span class="sd">        :return: None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Reset particle velocities.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">,</span>
+                                                  <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
+        <span class="c1"># Generate random binary positions.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_positions</span><span class="p">()</span>
+
+        <span class="c1"># Clear all the internal bookkeeping.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_all</span><span class="p">()</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="BinaryPSO.calculate_spread">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO.calculate_spread">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_spread</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates a spread measure for the particle positions</span>
+<span class="sd">        using the normalized median Hamming distance.</span>
+
+<span class="sd">        A value close to &#39;0&#39; indicates the swarm is converging</span>
+<span class="sd">        to a single value. On the contrary a value close to &#39;1&#39;</span>
+<span class="sd">        indicates the swarm is still spread around the search</span>
+<span class="sd">        space.</span>
+
+<span class="sd">        :return: an estimated measure (float) for the spread of</span>
+<span class="sd">        the particles.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Extract the positions in a 2D numpy array.</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">positions_as_array</span><span class="p">()</span>
+
+        <span class="c1"># Normalized median Hamming distance.</span>
+        <span class="k">return</span> <span class="n">nb_median_hamming_distance</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">normal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+</div>
+
+    <span class="c1"># _end_def_</span>
+
+<span class="c1"># _end_class_</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Michail D. Vrettas.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

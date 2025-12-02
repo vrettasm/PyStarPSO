@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>star_pso.population.swarm &mdash; StarPSO 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            StarPSO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">star_pso</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">StarPSO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">star_pso.population.swarm</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for star_pso.population.swarm</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">isnan</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">attrgetter</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">ndarray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="n">BlockType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.population.particle</span><span class="w"> </span><span class="kn">import</span> <span class="n">Particle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.population.jat_particle</span><span class="w"> </span><span class="kn">import</span> <span class="n">JatParticle</span>
+
+<span class="c1"># Make a type alias for the particles types.</span>
+<span class="n">SwarmParticle</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">Particle</span><span class="p">,</span> <span class="n">JatParticle</span><span class="p">]</span>
+
+<span class="c1"># Public interface.</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Swarm&quot;</span><span class="p">,</span> <span class="s2">&quot;SwarmParticle&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Swarm">
+<a class="viewcode-back" href="../../../star_pso.population.html#star_pso.population.swarm.Swarm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Swarm</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description:</span>
+
+<span class="sd">        Implements a dataclass for the Swarm entity. This class is responsible</span>
+<span class="sd">        for holding and organizing the individual solutions (i.e. particles),</span>
+<span class="sd">        of the optimization problem during the optimization process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Object variables.</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_population&quot;</span><span class="p">,</span> <span class="s2">&quot;_has_categorical&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SwarmParticle</span><span class="p">],</span>
+                 <span class="n">copy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Default initializer for the Swarm class.</span>
+
+<span class="sd">        :param population: a list of SwarmParticles.</span>
+
+<span class="sd">        :param copy: (bool) if True it will create a deepcopy of the population.</span>
+
+<span class="sd">        :return: None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Assign the population list (or a deepcopy of it).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_population</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">population</span><span class="p">)</span> <span class="k">if</span> <span class="n">copy</span> <span class="k">else</span> <span class="n">population</span>
+
+        <span class="c1"># Set the default value for the categorical flag.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_categorical</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># This ensures that in case of JatParticles the</span>
+        <span class="c1"># flag will be set accurately.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">JatParticle</span><span class="p">):</span>
+
+            <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+
+                <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">btype</span> <span class="o">==</span> <span class="n">BlockType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_has_categorical</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+        <span class="c1"># _end_if_</span>
+    <span class="c1"># _end_def_</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the size (length) of the population.</span>
+<span class="sd">        Note that the size of the population is not</span>
+<span class="sd">        expected to change during the optimization.</span>
+
+<span class="sd">        :return: (int) the length of the population.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">)</span>
+    <span class="c1"># _end_def_</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_categorical</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accessor (getter) of the &#39;has_categorical&#39; flag.</span>
+
+<span class="sd">        :return: true if the data block is CATEGORICAL.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_categorical</span>
+    <span class="c1"># _end_def_</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">global_best_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accessor of the global best index.</span>
+
+<span class="sd">        :return: the index (int) of the best.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">best_particle</span><span class="p">())</span>
+    <span class="c1"># _end_def_</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">population</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SwarmParticle</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accessor of the population list of the swarm.</span>
+
+<span class="sd">        :return: the list (of particles) of the swarm.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span>
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="Swarm.best_particle">
+<a class="viewcode-back" href="../../../star_pso.population.html#star_pso.population.swarm.Swarm.best_particle">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">best_particle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SwarmParticle</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Auxiliary method that returns the particle with the</span>
+<span class="sd">        highest function value. Safeguard with ignoring NaNs.</span>
+
+<span class="sd">        :return: Return the particle with the highest value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">([</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">isnan</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">value</span><span class="p">)],</span>
+                   <span class="n">key</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="Swarm.best_n">
+<a class="viewcode-back" href="../../../star_pso.population.html#star_pso.population.swarm.Swarm.best_n">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">best_n</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SwarmParticle</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Auxiliary method that returns the best &#39;n&#39; particles</span>
+<span class="sd">        with the highest objective function value.</span>
+
+<span class="sd">        :param n: the number of the best chromosomes.</span>
+
+<span class="sd">        :return: Return a list with the &#39;n&#39; top particles.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Make sure &#39;n&#39; is positive integer.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;Input must be a positive integer.&quot;</span><span class="p">)</span>
+        <span class="c1"># _end_if_</span>
+
+        <span class="c1"># Ensure the number of return particles do not exceed</span>
+        <span class="c1"># the size of the swarm.</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;Best </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> exceeds swarm size.&quot;</span><span class="p">)</span>
+        <span class="c1"># _end_if_</span>
+
+        <span class="c1"># Sort the swarm in descending order.</span>
+        <span class="n">sorted_swarm</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">isnan</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">value</span><span class="p">)],</span>
+                              <span class="n">key</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Return the best &#39;n&#39; particles.</span>
+        <span class="k">return</span> <span class="n">sorted_swarm</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">]</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="Swarm.function_values">
+<a class="viewcode-back" href="../../../star_pso.population.html#star_pso.population.swarm.Swarm.function_values">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">function_values</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the objectives function values of all the swarm.</span>
+
+<span class="sd">        :return: A numpy array (vector) with all the values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">array</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">])</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="Swarm.value_at">
+<a class="viewcode-back" href="../../../star_pso.population.html#star_pso.population.swarm.Swarm.value_at">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">value_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the function value of an individual particle of the swarm.</span>
+
+<span class="sd">        :param index: Position of the individual in the population.</span>
+
+<span class="sd">        :return: The function value (float).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">value</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="Swarm.position_at">
+<a class="viewcode-back" href="../../../star_pso.population.html#star_pso.population.swarm.Swarm.position_at">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">position_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the position vector of an individual particle of the swarm.</span>
+
+<span class="sd">        :param index: Position of the individual in the population.</span>
+
+<span class="sd">        :return: The position vector (array).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">position</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="Swarm.positions_as_array">
+<a class="viewcode-back" href="../../../star_pso.population.html#star_pso.population.swarm.Swarm.positions_as_array">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">positions_as_array</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the particle positions of all the swarm.</span>
+
+<span class="sd">        :return: A numpy array with all the positions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">array</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">position</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">])</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="Swarm.best_positions_as_array">
+<a class="viewcode-back" href="../../../star_pso.population.html#star_pso.population.swarm.Swarm.best_positions_as_array">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">best_positions_as_array</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the particle best positions of all the swarm.</span>
+
+<span class="sd">        :return: A numpy array with all the best positions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">array</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">best_position</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">])</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="Swarm.positions_as_list">
+<a class="viewcode-back" href="../../../star_pso.population.html#star_pso.population.swarm.Swarm.positions_as_list">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">positions_as_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the particle positions of all the swarm.</span>
+
+<span class="sd">        :return: A list with all the positions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">position</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">]</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="Swarm.update_local_best">
+<a class="viewcode-back" href="../../../star_pso.population.html#star_pso.population.swarm.Swarm.update_local_best">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_local_best</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the particles in the swarm to</span>
+<span class="sd">        their local best values and positions.</span>
+
+<span class="sd">        :return: None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Go through all particles.</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">:</span>
+
+            <span class="c1"># If the current best value is</span>
+            <span class="c1"># higher than make the updates.</span>
+            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">best_value</span><span class="p">:</span>
+
+                <span class="c1"># Simple copy of the function value.</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">best_value</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">value</span>
+
+                <span class="c1"># Copy of the current position.</span>
+                <span class="c1"># NOTE: &#39;best_position&#39; handles</span>
+                <span class="c1">#       the copy internally.</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">best_position</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">position</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accessor of the total size of the population.</span>
+
+<span class="sd">        :return: the length (int) of the swarm.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">)</span>
+    <span class="c1"># _end_def_</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SwarmParticle</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the item at position &#39;index&#39;.</span>
+
+<span class="sd">        :param index: (int) the position that we want to return.</span>
+
+<span class="sd">        :return: the reference to a Particle.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    <span class="c1"># _end_def_</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">SwarmParticle</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the &#39;item&#39; at position &#39;index&#39;.</span>
+
+<span class="sd">        :param index: (int) the position that we want to access.</span>
+
+<span class="sd">        :param item: (Particle) object we want to assign in the population.</span>
+
+<span class="sd">        :return: None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+    <span class="c1"># _end_def_</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">SwarmParticle</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check for membership.</span>
+
+<span class="sd">        :param item: an input particle that we want to check.</span>
+
+<span class="sd">        :return: true if the &#39;item&#39; belongs in the swarm population.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<span class="c1"># _end_class_</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Michail D. Vrettas.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

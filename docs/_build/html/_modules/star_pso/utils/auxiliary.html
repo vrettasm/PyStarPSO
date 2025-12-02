@@ -1,0 +1,733 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>star_pso.utils.auxiliary &mdash; StarPSO 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            StarPSO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">star_pso</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">StarPSO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../utils.html">star_pso.utils</a></li>
+      <li class="breadcrumb-item active">star_pso.utils.auxiliary</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for star_pso.utils.auxiliary</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">fabs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">wraps</span><span class="p">,</span>
+                       <span class="n">partial</span><span class="p">,</span>
+                       <span class="n">lru_cache</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">njit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.population.particle</span><span class="w"> </span><span class="kn">import</span> <span class="n">Particle</span>
+
+
+<div class="viewcode-block" id="BlockType">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.BlockType">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BlockType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description:</span>
+<span class="sd">        BlockType enumeration defines the types that a data block can take.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">FLOAT</span><span class="p">,</span> <span class="n">INTEGER</span><span class="p">,</span> <span class="n">BINARY</span><span class="p">,</span> <span class="n">CATEGORICAL</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span></div>
+
+<span class="c1"># _end_class_</span>
+
+<div class="viewcode-block" id="SpecialMode">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.SpecialMode">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SpecialMode</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Description:</span>
+<span class="sd">        SpecialMode enumeration defines specific modes that the GenericPSO</span>
+<span class="sd">        can accommodate. These are handled internally (i.e. NOT by the end</span>
+<span class="sd">        user) to call the evaluate_function methods and perform operations</span>
+<span class="sd">        directly related to the specific versions of PSO method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NORMAL</span><span class="p">,</span> <span class="n">CATEGORICAL</span><span class="p">,</span> <span class="n">JACK_OF_ALL_TRADES</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span></div>
+
+<span class="c1"># _end_class_</span>
+
+<div class="viewcode-block" id="check_velocity_parameters">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.check_velocity_parameters">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_velocity_parameters</span><span class="p">(</span><span class="n">options</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks that the options dictionary has all the additional</span>
+<span class="sd">    parameters to estimate the velocities of the optimization</span>
+<span class="sd">    algorithm.</span>
+<span class="sd">        1) &#39;w0&#39;: inertia weight</span>
+<span class="sd">        2) &#39;c1&#39;: cognitive coefficient</span>
+<span class="sd">        3) &#39;c2&#39;: social coefficient</span>
+<span class="sd">        4) &#39;mode&#39;: mode of operation</span>
+
+<span class="sd">    :param options: dictionary to check for missing parameters.</span>
+
+<span class="sd">    :return: None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sanity check.</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;w0&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;mode&quot;</span><span class="p">}:</span>
+        <span class="c1"># Make sure the right keys exist.</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Option &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; is missing.&quot;</span><span class="p">)</span></div>
+
+        <span class="c1"># _end_if_</span>
+<span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="linear_rank_probabilities">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.linear_rank_probabilities">[docs]</a>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">linear_rank_probabilities</span><span class="p">(</span><span class="n">p_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the rank probability distribution over the population size.</span>
+<span class="sd">    The function is cached so repeated calls with the same input should</span>
+<span class="sd">    not recompute the same array since the population size of the swarm</span>
+<span class="sd">    is not expected to change.</span>
+
+<span class="sd">    NOTE: Probabilities are returned in ascending order.</span>
+
+<span class="sd">    :param p_size: (int) population size.</span>
+
+<span class="sd">    :return: (array, float) rank probability distribution in ascending</span>
+<span class="sd">    order along with their sum. Note: The sum should be one but due to</span>
+<span class="sd">    small errors it might be less.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sanity check.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p_size</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;p_size&#39; must be an integer number.&quot;</span><span class="p">)</span>
+    <span class="c1"># _end_if_</span>
+
+    <span class="c1"># Sanity check.</span>
+    <span class="k">if</span> <span class="n">p_size</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;p_size&#39; must be a positive number.&quot;</span><span class="p">)</span>
+    <span class="c1"># _end_if_</span>
+
+    <span class="c1"># Calculate the sum of all the ranked swarm particles.</span>
+    <span class="n">sum_ranked_values</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">p_size</span> <span class="o">*</span> <span class="p">(</span><span class="n">p_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Calculate the linear ranked probabilities of each</span>
+    <span class="c1"># particle in the swarm using their ranking position.</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">sum_ranked_values</span>
+
+    <span class="c1"># Return the probs and their sum.</span>
+    <span class="k">return</span> <span class="n">probs</span><span class="p">,</span> <span class="n">probs</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+
+<span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="kl_divergence_item">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.kl_divergence_item">[docs]</a>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">kl_divergence_item</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the Kullback-Leibler divergence between two distributions.</span>
+<span class="sd">    Note that KL divergence is not symmetric, thus KL(p, q) != KL(q, p).</span>
+
+<span class="sd">    NOTE: Both distributions &#39;p&#39; and &#39;q&#39; should already be normalized to</span>
+<span class="sd">    sum to one.</span>
+
+<span class="sd">    This method is equivalent to entropy(p, q) from scipy_stats, only it&#39;s</span>
+<span class="sd">    around 10x faster.</span>
+
+<span class="sd">    :param p: (np.array) probability distribution.</span>
+<span class="sd">    :param q: (np.array) probability distribution.</span>
+
+<span class="sd">    :return: (float) Kullback-Leibler divergence.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">,</span>
+                           <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">q</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">,</span>
+                                    <span class="n">p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p</span> <span class="o">/</span> <span class="n">q</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+
+<span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="kl_divergence_array">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.kl_divergence_array">[docs]</a>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">kl_divergence_array</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the Kullback-Leibler divergence between two distributions.</span>
+<span class="sd">    Note that KL divergence is not symmetric, thus KL(p, q) != KL(q, p).</span>
+
+<span class="sd">    NOTE: Both distributions &#39;p&#39; and &#39;q&#39; should already be normalized to</span>
+<span class="sd">    sum to one.</span>
+
+<span class="sd">    This method is equivalent to entropy(p, q, axis=1) from scipy_stats,</span>
+<span class="sd">    only it&#39;s around 10x faster.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    # Create a random array.</span>
+<span class="sd">    x = np.random.rand(10, 4)</span>
+
+<span class="sd">    # Normalize to sum to 1.0.</span>
+<span class="sd">    x /= np.sum(x, axis=1).reshape(-1, 1)</span>
+
+<span class="sd">    # Entropy (from scipy.stats).</span>
+<span class="sd">    entropy(x[0], x[1:], axis=1)</span>
+<span class="sd">    &gt; array([0.12405413, 0.79411391, 0.5340511 , 0.13075877, 0.77733431,</span>
+<span class="sd">    &gt;        0.04979758, 0.34470209, 0.83185617, 0.29883382])</span>
+
+<span class="sd">    # This (numba optimized) method.</span>
+<span class="sd">    kl_divergence_array(x[0], x[1:])</span>
+<span class="sd">    &gt; array([0.12405413, 0.79411391, 0.5340511 , 0.13075877, 0.77733431,</span>
+<span class="sd">    &gt;        0.04979758, 0.34470209, 0.83185617, 0.29883382])</span>
+
+<span class="sd">    :param p: (np.array) probability distribution.</span>
+<span class="sd">    :param q: (np.array) probability distribution.</span>
+
+<span class="sd">    :return: (np.array) Kullback-Leibler divergence.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">,</span>
+                           <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">q</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">,</span>
+                                    <span class="n">p</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p</span> <span class="o">/</span> <span class="n">q</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+<span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="nb_median_hamming_distance">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_median_hamming_distance">[docs]</a>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_median_hamming_distance</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                               <span class="n">normal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the median Hamming distance of the input array.</span>
+<span class="sd">    It is assumed that the input &#39;x_pos&#39;, represents the 2D</span>
+<span class="sd">    array of particle binary positions {0, 1}.</span>
+
+<span class="sd">    :param x_pos: a 2D array with the particle positions.</span>
+
+<span class="sd">    :param normal: whether to compute the normalized average</span>
+<span class="sd">    Hamming distance. This will yield a value between 0 and 1.</span>
+<span class="sd">    * A value of &#39;0&#39; indicates that all rows are identical.</span>
+<span class="sd">    * A value of &#39;1&#39; indicates that all rows are completely</span>
+<span class="sd">    different across all positions.</span>
+
+<span class="sd">    The normalization provides a clearer understanding of the</span>
+<span class="sd">    diversity of the binary strings in relation to their length.</span>
+
+<span class="sd">    :return: the (normalized) median Hamming distance value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the columns size.</span>
+    <span class="n">n_cols</span> <span class="o">=</span> <span class="n">x_pos</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Initialize the counter.</span>
+    <span class="n">total_diff</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Count the non-identical positions.</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x_pos</span><span class="p">):</span>
+        <span class="n">total_diff</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="n">x_pos</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="c1"># _end_for_</span>
+
+    <span class="c1"># Convert the list to an array of floats.</span>
+    <span class="n">x_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">total_diff</span><span class="p">])</span>
+
+    <span class="c1"># Check for normalization.</span>
+    <span class="k">if</span> <span class="n">normal</span><span class="p">:</span>
+        <span class="c1"># In this case the number of columns represents</span>
+        <span class="c1"># the  maximum  hamming  distance where all the</span>
+        <span class="c1"># positions between two particles are different.</span>
+        <span class="n">x_diff</span> <span class="o">/=</span> <span class="n">n_cols</span>
+    <span class="c1"># _end_if_</span>
+
+    <span class="c1"># Return the median value.</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">x_diff</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+
+<span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="nb_median_euclidean_distance">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_median_euclidean_distance">[docs]</a>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_median_euclidean_distance</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                                 <span class="n">normal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates a measure of the particles spread, when their position</span>
+<span class="sd">    is defined by continuous variables in &#39;R&#39;. First we calculate the</span>
+<span class="sd">    centroid position of the swarm, and then  we compute its distance</span>
+<span class="sd">    from all the particles. To get an estimate in [0,1] we can divide</span>
+<span class="sd">    them with the maximum distance (optional).</span>
+
+<span class="sd">    :param x_pos: (np.ndarray) A 2D array of shape (n_particles,</span>
+<span class="sd">    n_features) representing the positions of the swarm.</span>
+
+<span class="sd">    :param normal: (bool) if &quot;True&quot;, normalize the distances by their</span>
+<span class="sd">    maximum distance.</span>
+
+<span class="sd">    :return: the median Euclidean distance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Calculate the centroid.</span>
+    <span class="c1"># NOTE: We use this instead of x_pos.mean(axis=0) because in</span>
+    <span class="c1"># &#39;no python mode&#39; numba does not support the &#39;axis&#39; option.</span>
+    <span class="n">x_centroid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_pos</span><span class="p">)</span>
+
+    <span class="c1"># Get the distances from their centroid.</span>
+    <span class="n">x_dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x_centroid</span> <span class="o">-</span> <span class="n">x_pos</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># Find the maximum distance.</span>
+    <span class="n">d_max</span> <span class="o">=</span> <span class="n">x_dist</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+    <span class="c1"># Normalize the distances with d_max.</span>
+    <span class="k">if</span> <span class="n">normal</span> <span class="ow">and</span> <span class="n">d_max</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">x_dist</span> <span class="o">/=</span> <span class="n">d_max</span>
+    <span class="c1"># _end_if_</span>
+
+    <span class="c1"># Return the median value.</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">x_dist</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+
+<span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="nb_median_taxicab_distance">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_median_taxicab_distance">[docs]</a>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_median_taxicab_distance</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                               <span class="n">normal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates a measure of the particles spread, when their position</span>
+<span class="sd">    is defined by integer variables in &#39;Z&#39;. First we calculate the</span>
+<span class="sd">    centroid position of the swarm, and then we compute its distance</span>
+<span class="sd">    from all the particles. To get an estimate in [0,1] we can divide</span>
+<span class="sd">    them with the maximum distance (optional).</span>
+
+<span class="sd">    :param x_pos: (array) A 2D numpy array (n_particles, n_features)</span>
+<span class="sd">    representing the positions of the swarm.</span>
+
+<span class="sd">    :param normal: (bool) if &quot;True&quot;, normalize the distances by their</span>
+<span class="sd">    maximum distance.</span>
+
+<span class="sd">    :return: the median TaxiCab (Manhattan) distance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Calculate the centroid.</span>
+    <span class="c1"># NOTE: We use this instead of x_pos.mean(axis=0) because in</span>
+    <span class="c1"># &#39;no python mode&#39; numba does not support the &#39;axis&#39; option.</span>
+    <span class="n">x_centroid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_pos</span><span class="p">)</span>
+
+    <span class="c1"># Get the distances from their centroid.</span>
+    <span class="n">x_dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_centroid</span> <span class="o">-</span> <span class="n">x_pos</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Find the maximum distance.</span>
+    <span class="n">d_max</span> <span class="o">=</span> <span class="n">x_dist</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+    <span class="c1"># Normalize the distances with d_max.</span>
+    <span class="k">if</span> <span class="n">normal</span> <span class="ow">and</span> <span class="n">d_max</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">x_dist</span> <span class="o">/=</span> <span class="n">d_max</span>
+    <span class="c1"># _end_if_</span>
+
+    <span class="c1"># Return the median value.</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">x_dist</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+
+<span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="nb_median_kl_divergence">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_median_kl_divergence">[docs]</a>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_median_kl_divergence</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                            <span class="n">normal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the &#39;median KL divergence&#39; value of the input array.</span>
+<span class="sd">    It is assumed that each row is a distribution (i.e. sum to 1).</span>
+
+<span class="sd">    :param x_pos: 2D array where each column.</span>
+
+<span class="sd">    :param normal: If enabled the KL values will be normalized using</span>
+<span class="sd">    the maximum KL divergence from the data.</span>
+
+<span class="sd">    :return: The median KL divergence of the swarm positions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the number of rows.</span>
+    <span class="n">n_rows</span> <span class="o">=</span> <span class="n">x_pos</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Compute the &quot;centroid&quot; distribution.</span>
+    <span class="n">x_centroid</span> <span class="o">=</span> <span class="n">x_pos</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_rows</span>
+
+    <span class="c1"># Normalize to 1.0.</span>
+    <span class="n">x_centroid</span> <span class="o">/=</span> <span class="n">x_centroid</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="c1"># Compute the distances from the centroid.</span>
+    <span class="n">kl_dist</span> <span class="o">=</span> <span class="n">kl_divergence_array</span><span class="p">(</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">x_centroid</span><span class="p">)</span>
+
+    <span class="c1"># Find the maximum KL.</span>
+    <span class="n">kl_max</span> <span class="o">=</span> <span class="n">kl_dist</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+    <span class="c1"># Check for normalization.</span>
+    <span class="k">if</span> <span class="n">normal</span> <span class="ow">and</span> <span class="n">kl_max</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">kl_dist</span> <span class="o">/=</span> <span class="n">kl_max</span>
+    <span class="c1"># _end_if_</span>
+
+    <span class="c1"># Return the median value.</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">kl_dist</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+
+<span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="nb_clip_array">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_clip_array">[docs]</a>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_array</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">lower_limit</span><span class="p">,</span> <span class="n">upper_limit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Local version of numba clip which limits the values of an array.</span>
+<span class="sd">    Given an interval values outside the interval are clipped to the</span>
+<span class="sd">    interval edges.</span>
+
+<span class="sd">    :param x_new: array values to be clipped.</span>
+
+<span class="sd">    :param lower_limit: lower limit.</span>
+
+<span class="sd">    :param upper_limit: upper limit.</span>
+
+<span class="sd">    :return: the clipped array values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">lower_limit</span><span class="p">),</span>
+                      <span class="n">upper_limit</span><span class="p">)</span></div>
+
+<span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="nb_clip_item">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_clip_item">[docs]</a>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_item</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">lower_limit</span><span class="p">,</span> <span class="n">upper_limit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Local version of numba clip which limits the values of a scalar.</span>
+<span class="sd">    Given an interval values outside the interval are clipped to the</span>
+<span class="sd">    interval edges. The final value is returned with item().</span>
+
+<span class="sd">    :param x_new: scalar value to be clipped.</span>
+
+<span class="sd">    :param lower_limit: lower limit.</span>
+
+<span class="sd">    :param upper_limit: upper limit.</span>
+
+<span class="sd">    :return: the clipped item value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">lower_limit</span><span class="p">),</span>
+                      <span class="n">upper_limit</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+
+<span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="time_it">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.time_it">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">time_it</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Timing decorator function.</span>
+
+<span class="sd">    :param func: the function we want to time.</span>
+
+<span class="sd">    :return: the time wrapper method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">time_it_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wrapper function that times the execution of the input function.</span>
+
+<span class="sd">        :param args: function positional arguments.</span>
+
+<span class="sd">        :param kwargs: function keywords arguments.</span>
+
+<span class="sd">        :return: the output of the wrapper function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initial time instant.</span>
+        <span class="n">time_t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+        <span class="c1"># Run the function we want to time.</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Final time instant.</span>
+        <span class="n">time_tf</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+        <span class="c1"># Print final duration in seconds.</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="w"> </span><span class="si">}</span><span class="s2">: &quot;</span>
+              <span class="sa">f</span><span class="s2">&quot;elapsed time = </span><span class="si">{</span><span class="p">(</span><span class="n">time_tf</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">time_t0</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="c1"># _end_def_</span>
+    <span class="k">return</span> <span class="n">time_it_wrapper</span></div>
+
+<span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="pareto_front">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.pareto_front">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pareto_front</span><span class="p">(</span><span class="n">points</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple function that calculates the pareto (optimal)</span>
+<span class="sd">    front points from a given input points numpy array.</span>
+
+<span class="sd">    :param points: array of points [(fx1, fx2, ..., fxn),</span>
+<span class="sd">                                    (fy1, fy2, ..., fyn),</span>
+<span class="sd">                                    ....................,</span>
+<span class="sd">                                    (fk1, fk2, ..., fkn)]</span>
+
+<span class="sd">    :return: array of points that lie on the pareto front.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sanity check.</span>
+    <span class="k">if</span> <span class="n">points</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Points must be a 2-D array.&quot;</span><span class="p">)</span>
+    <span class="c1"># _end_if_</span>
+
+    <span class="c1"># Get the number of points.</span>
+    <span class="n">num_points</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Create a boolean array to track Pareto optimal points.</span>
+    <span class="n">is_pareto_optimal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>
+        <span class="c1"># Compare point i-th with all other points.</span>
+        <span class="n">is_dominated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">points</span> <span class="o">&lt;=</span> <span class="n">point_i</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span>
+                              <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">points</span> <span class="o">&lt;</span> <span class="n">point_i</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># Set the flag appropriately.</span>
+        <span class="n">is_pareto_optimal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">is_dominated</span>
+    <span class="c1"># _end_for_</span>
+
+    <span class="c1"># Return only the unique Pareto optimal points.</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">is_pareto_optimal</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+<span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="cost_function">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.cost_function">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cost_function</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">minimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator for the function we want to optimize. The default</span>
+<span class="sd">    setting is maximization.</span>
+
+<span class="sd">    :param func: the function to be optimized.</span>
+
+<span class="sd">    :param minimize: if True it will return the negative function</span>
+<span class="sd">    value to allow for the minimization. Default is False.</span>
+
+<span class="sd">    :return: the &#39;function_wrapper&#39; method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># This allows the decorator to be called with</span>
+    <span class="c1"># parenthesis and using the default parameters.</span>
+    <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">partial</span><span class="p">(</span><span class="n">cost_function</span><span class="p">,</span> <span class="n">minimize</span><span class="o">=</span><span class="n">minimize</span><span class="p">)</span>
+    <span class="c1"># _end_if_</span>
+
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">function_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Internal function wrapper.</span>
+
+<span class="sd">        :param args: function positional arguments.</span>
+
+<span class="sd">        :param kwargs: function keywords arguments.</span>
+
+<span class="sd">        :return: a dictionary with two key-values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Run the function we want to optimize.</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Check if the function returns a tuple (with two values)</span>
+        <span class="c1"># or a single output parameter. In the former, the second</span>
+        <span class="c1"># value should be boolean to signal that the solution meets</span>
+        <span class="c1"># the termination requirements.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+
+            <span class="n">f_value</span><span class="p">,</span> <span class="n">solution_is_found</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">bool</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">f_value</span><span class="p">,</span> <span class="n">solution_is_found</span> <span class="o">=</span> <span class="n">result</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="c1"># _end_if_</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;f_value&quot;</span><span class="p">:</span> <span class="o">-</span><span class="n">f_value</span> <span class="k">if</span> <span class="n">minimize</span> <span class="k">else</span> <span class="n">f_value</span><span class="p">,</span>
+                <span class="s2">&quot;solution_is_found&quot;</span><span class="p">:</span> <span class="n">solution_is_found</span><span class="p">}</span>
+    <span class="c1"># _end_def_</span>
+
+    <span class="k">return</span> <span class="n">function_wrapper</span></div>
+
+<span class="c1"># _end_def_</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Create a dictionary with block types as keys and their</span>
+<span class="sd">corresponding spread estimation methods as values.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">spread_methods</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">BlockType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">:</span> <span class="n">nb_median_euclidean_distance</span><span class="p">,</span>
+                        <span class="n">BlockType</span><span class="o">.</span><span class="n">BINARY</span><span class="p">:</span> <span class="n">nb_median_hamming_distance</span><span class="p">,</span>
+                        <span class="n">BlockType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">:</span> <span class="n">nb_median_taxicab_distance</span><span class="p">,</span>
+                        <span class="n">BlockType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">:</span> <span class="n">nb_median_kl_divergence</span><span class="p">}</span>
+
+<div class="viewcode-block" id="nb_cdist">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_cdist">[docs]</a>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_cdist</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scaled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is equivalent to the scipy.spatial.distance.cdist method</span>
+<span class="sd">    with Euclidean distance metric. It is a tailored version for</span>
+<span class="sd">    the purposes of the multimodal operation mode.</span>
+
+<span class="sd">    :param x_pos: a numpy array of positions. The dimensions of the</span>
+<span class="sd">    input array should [n_rows, n_cols], where n_rows is the number</span>
+<span class="sd">    of particles and n_cols are the number of positions.</span>
+
+<span class="sd">    :param scaled: boolean flag that allows the input array to be</span>
+<span class="sd">    scaled, using the MaxAbsScaler, before computing the distances.</span>
+
+<span class="sd">    :return: a square [n_rows, n_rows] numpy array of distances.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Get the number of rows/cols.</span>
+    <span class="n">n_rows</span><span class="p">,</span> <span class="n">n_cols</span> <span class="o">=</span> <span class="n">x_pos</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Check if we want the input data to be scaled.</span>
+    <span class="k">if</span> <span class="n">scaled</span><span class="p">:</span>
+        <span class="c1"># Get the absolute values first.</span>
+        <span class="n">x_abs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_pos</span><span class="p">)</span>
+
+        <span class="c1"># Scale with the max(abs(x_pos)).</span>
+        <span class="n">x_pos</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x_abs</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_cols</span><span class="p">)])</span>
+    <span class="c1"># _end_if_</span>
+
+    <span class="c1"># Create a square matrix with zeros.</span>
+    <span class="n">dist_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">n_rows</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="c1"># Iterate through all vectors.</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_rows</span><span class="p">):</span>
+        <span class="c1"># Compute the Euclidean norm of the &#39;i-th&#39; element with the rest of them.</span>
+        <span class="n">dist_x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_pos</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># Since the array is symmetric store the result in the &#39;i-th&#39; column too.</span>
+        <span class="n">dist_x</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist_x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="c1"># _end_for_</span>
+    <span class="k">return</span> <span class="n">dist_x</span></div>
+
+<span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="identify_global_optima">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.identify_global_optima">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">identify_global_optima</span><span class="p">(</span><span class="n">swarm_population</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Particle</span><span class="p">],</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-5</span><span class="p">,</span>
+                           <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-1</span><span class="p">,</span> <span class="n">f_opt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This auxiliary method will search if the global optimal solution(s)</span>
+<span class="sd">    are found in the swarm population.</span>
+
+<span class="sd">    :param swarm_population: a list[Particle] of potential solutions.</span>
+
+<span class="sd">    :param epsilon: accuracy level of the global optimal solution.</span>
+
+<span class="sd">    :param radius: niche radius of the distance between two particles.</span>
+
+<span class="sd">    :param f_opt: function value for the global optimal solution.</span>
+
+<span class="sd">    :return: a list of best-fit individuals identified as solutions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Define a return list that will contain the</span>
+    <span class="c1"># particles that are on the global solutions.</span>
+    <span class="n">optima_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Check all the particles.</span>
+    <span class="k">for</span> <span class="n">px</span> <span class="ow">in</span> <span class="n">swarm_population</span><span class="p">:</span>
+
+        <span class="c1"># Reset the exist flag.</span>
+        <span class="n">already_exists</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Check if the fitness is near the global</span>
+        <span class="c1"># optimal value (within error - epsilon).</span>
+        <span class="k">if</span> <span class="n">fabs</span><span class="p">(</span><span class="n">f_opt</span> <span class="o">-</span> <span class="n">px</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">epsilon</span><span class="p">:</span>
+
+            <span class="c1"># Check if the particle is already</span>
+            <span class="c1"># in the optimal particles list.</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">optima_list</span><span class="p">:</span>
+
+                <span class="c1"># Check if the two particles are close to each other.</span>
+                <span class="k">if</span> <span class="n">norm</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">px</span><span class="o">.</span><span class="n">position</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">radius</span><span class="p">:</span>
+                    <span class="n">already_exists</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+            <span class="c1"># Add the particle only if it doesn&#39;t</span>
+            <span class="c1"># already exist in the list.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">already_exists</span><span class="p">:</span>
+                <span class="n">optima_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">px</span><span class="p">)</span>
+    <span class="c1"># _end_for_</span>
+
+    <span class="c1"># Return the list.</span>
+    <span class="k">return</span> <span class="n">optima_list</span></div>
+
+<span class="c1"># _end_def_</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Michail D. Vrettas.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1099 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>star_pso.engines package &mdash; StarPSO 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="star_pso.population package" href="star_pso.population.html" />
+    <link rel="prev" title="star_pso.benchmarks package" href="star_pso.benchmarks.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            StarPSO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">star_pso</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="star_pso.html">star_pso package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="star_pso.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="star_pso.benchmarks.html">star_pso.benchmarks package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">star_pso.engines package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="star_pso.population.html">star_pso.population package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="star_pso.utils.html">star_pso.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="star_pso.html#module-star_pso">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">StarPSO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">star_pso</a></li>
+          <li class="breadcrumb-item"><a href="star_pso.html">star_pso package</a></li>
+      <li class="breadcrumb-item active">star_pso.engines package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/star_pso.engines.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="star-pso-engines-package">
+<h1>star_pso.engines package<a class="headerlink" href="#star-pso-engines-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-star_pso.engines.binary_pso">
+<span id="star-pso-engines-binary-pso-module"></span><h2>star_pso.engines.binary_pso module<a class="headerlink" href="#module-star_pso.engines.binary_pso" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="star_pso.engines.binary_pso.BinaryPSO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.binary_pso.</span></span><span class="sig-name descname"><span class="pre">BinaryPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/binary_pso.html#BinaryPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#star_pso.engines.generic_pso.GenericPSO" title="star_pso.engines.generic_pso.GenericPSO"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericPSO</span></code></a></p>
+<p>Description:</p>
+<p>This class implements the discrete binary particle swarm optimization variant
+as described in:</p>
+<p>Kennedy, J., and R. C. Eberhart 1997. “A Discrete Binary Version of the Particle
+Swarm Algorithm.” IEEE International conference on systems, man, and cybernetics,
+1997. Computational cybernetics and simulation, Vol. 5, Orlando, FL, October 12–15,
+pp: 4104–4108.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.binary_pso.BinaryPSO.calculate_spread">
+<span class="sig-name descname"><span class="pre">calculate_spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/star_pso/engines/binary_pso.html#BinaryPSO.calculate_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO.calculate_spread" title="Link to this definition"></a></dt>
+<dd><p>Calculates a spread measure for the particle positions
+using the normalized median Hamming distance.</p>
+<p>A value close to ‘0’ indicates the swarm is converging
+to a single value. On the contrary a value close to ‘1’
+indicates the swarm is still spread around the search
+space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an estimated measure (float) for the spread of</p>
+</dd>
+</dl>
+<p>the particles.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.binary_pso.BinaryPSO.generate_random_positions">
+<span class="sig-name descname"><span class="pre">generate_random_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/binary_pso.html#BinaryPSO.generate_random_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO.generate_random_positions" title="Link to this definition"></a></dt>
+<dd><p>Generate the population of particles positions by
+sampling discrete binary random numbers within the
+{0, 1} set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.binary_pso.BinaryPSO.n_cols">
+<span class="sig-name descname"><span class="pre">n_cols</span></span><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO.n_cols" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.binary_pso.BinaryPSO.n_cpus">
+<span class="sig-name descname"><span class="pre">n_cpus</span></span><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO.n_cpus" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.binary_pso.BinaryPSO.n_rows">
+<span class="sig-name descname"><span class="pre">n_rows</span></span><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO.n_rows" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.binary_pso.BinaryPSO.objective_func">
+<span class="sig-name descname"><span class="pre">objective_func</span></span><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO.objective_func" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.binary_pso.BinaryPSO.reset_all">
+<span class="sig-name descname"><span class="pre">reset_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/binary_pso.html#BinaryPSO.reset_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO.reset_all" title="Link to this definition"></a></dt>
+<dd><p>Resets the particle positions, velocities and the statistics dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.binary_pso.BinaryPSO.update_positions">
+<span class="sig-name descname"><span class="pre">update_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/binary_pso.html#BinaryPSO.update_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO.update_positions" title="Link to this definition"></a></dt>
+<dd><p>Updates the positions of the particles in the swarm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.binary_pso.BinaryPSO.update_velocities">
+<span class="sig-name descname"><span class="pre">update_velocities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="star_pso.utils.html#star_pso.utils.VOptions" title="star_pso.utils.VOptions"><span class="pre">VOptions</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/binary_pso.html#BinaryPSO.update_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO.update_velocities" title="Link to this definition"></a></dt>
+<dd><p>Performs the update on the velocity equations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> – VOptions tuple with the PSO options.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-star_pso.engines.categorical_pso">
+<span id="star-pso-engines-categorical-pso-module"></span><h2>star_pso.engines.categorical_pso module<a class="headerlink" href="#module-star_pso.engines.categorical_pso" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.categorical_pso.</span></span><span class="sig-name descname"><span class="pre">CategoricalPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable_sets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permutation_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/categorical_pso.html#CategoricalPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#star_pso.engines.generic_pso.GenericPSO" title="star_pso.engines.generic_pso.GenericPSO"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericPSO</span></code></a></p>
+<p>Description:</p>
+<p>This implements a simplified variant of the original ICPSO algorithm as described in:</p>
+<p>Strasser, S., Goodman, R., Sheppard, J., et al. “A new discrete particle swarm optimization
+algorithm”, Proceedings of 2016 Genetic and Evolutionary Computation Conference (GECCO) 16,
+ACM Press, Denver, Colorado, USA, pp. 53-60.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.calculate_spread">
+<span class="sig-name descname"><span class="pre">calculate_spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/star_pso/engines/categorical_pso.html#CategoricalPSO.calculate_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.calculate_spread" title="Link to this definition"></a></dt>
+<dd><p>Calculates a spread measure for the particle positions
+using the (normalized) median KL divergence.</p>
+<p>A value close to ‘0’ indicates the swarm is converging
+to a single value. On the contrary a value close to ‘1’
+indicates the swarm is still spread around the search
+space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an estimated measure (float) for the spread of</p>
+</dd>
+</dl>
+<p>the particles.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.generate_random_positions">
+<span class="sig-name descname"><span class="pre">generate_random_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/categorical_pso.html#CategoricalPSO.generate_random_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.generate_random_positions" title="Link to this definition"></a></dt>
+<dd><p>Generate the population of particles positions setting
+their probabilities to 1/L (for all possible L states).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.generate_uniform_velocities">
+<span class="sig-name descname"><span class="pre">generate_uniform_velocities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/categorical_pso.html#CategoricalPSO.generate_uniform_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.generate_uniform_velocities" title="Link to this definition"></a></dt>
+<dd><p>Generates random uniform velocities for the
+categorical variable positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.n_cols">
+<span class="sig-name descname"><span class="pre">n_cols</span></span><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.n_cols" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.n_cpus">
+<span class="sig-name descname"><span class="pre">n_cpus</span></span><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.n_cpus" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.n_rows">
+<span class="sig-name descname"><span class="pre">n_rows</span></span><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.n_rows" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.objective_func">
+<span class="sig-name descname"><span class="pre">objective_func</span></span><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.objective_func" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.reset_all">
+<span class="sig-name descname"><span class="pre">reset_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/categorical_pso.html#CategoricalPSO.reset_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.reset_all" title="Link to this definition"></a></dt>
+<dd><p>Resets the particle positions, velocities and the statistics dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.sample_categorical_values">
+<span class="sig-name descname"><span class="pre">sample_categorical_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/categorical_pso.html#CategoricalPSO.sample_categorical_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.sample_categorical_values" title="Link to this definition"></a></dt>
+<dd><p>Samples an actual categorical position based on
+particle’s probabilities and valid set for each
+particle position in the swarm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.sample_permutation_values">
+<span class="sig-name descname"><span class="pre">sample_permutation_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/categorical_pso.html#CategoricalPSO.sample_permutation_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.sample_permutation_values" title="Link to this definition"></a></dt>
+<dd><p>Samples a permutation from a given set of variables.
+It is used in problems like the ‘Traveling Salesman’.</p>
+<p>It is assumed that all particle variables have the
+same valid set of values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.size_of_sets">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size_of_sets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.size_of_sets" title="Link to this definition"></a></dt>
+<dd><p>Compile a list with the sizes of the valid sets.
+To avoid recomputing the list over and over again
+we decorate it with &#64;cached_property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a list with the sizes of the valid sets.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.update_positions">
+<span class="sig-name descname"><span class="pre">update_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/categorical_pso.html#CategoricalPSO.update_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.update_positions" title="Link to this definition"></a></dt>
+<dd><p>Updates the positions of the particles in the swarm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.update_velocities">
+<span class="sig-name descname"><span class="pre">update_velocities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="star_pso.utils.html#star_pso.utils.VOptions" title="star_pso.utils.VOptions"><span class="pre">VOptions</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/categorical_pso.html#CategoricalPSO.update_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.update_velocities" title="Link to this definition"></a></dt>
+<dd><p>Performs the update on the velocity equations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> – VOptions tuple with the PSO options.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-star_pso.engines.generic_pso">
+<span id="star-pso-engines-generic-pso-module"></span><h2>star_pso.engines.generic_pso module<a class="headerlink" href="#module-star_pso.engines.generic_pso" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.generic_pso.</span></span><span class="sig-name descname"><span class="pre">GenericPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_swarm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="star_pso.population.html#star_pso.population.swarm.Swarm" title="star_pso.population.swarm.Swarm"><span class="pre">Swarm</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Description:</p>
+<blockquote>
+<div><p>GenericPSO class models the interface of a specific particle swarm
+optimization model or engine. It provides the common variables and
+functionalities that all PSO models should share.</p>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.MAX_CPUs">
+<span class="sig-name descname"><span class="pre">MAX_CPUs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.MAX_CPUs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.adapt_velocity_parameters">
+<span class="sig-name descname"><span class="pre">adapt_velocity_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.adapt_velocity_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.adapt_velocity_parameters" title="Link to this definition"></a></dt>
+<dd><p>Provides a very basic adapt mechanism for the PSO update
+velocity parameters. It can be used as a placeholder for
+more advanced techniques.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>options</strong> – (dict) contains the previous estimates of</p>
+</dd>
+</dl>
+<p>the PSO parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the update happened, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.calculate_spread">
+<span class="sig-name descname"><span class="pre">calculate_spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.calculate_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.calculate_spread" title="Link to this definition"></a></dt>
+<dd><p>Calculates a measure of how spread are the particle
+positions, according to the specific type of PSO.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.clear_all">
+<span class="sig-name descname"><span class="pre">clear_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.clear_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.clear_all" title="Link to this definition"></a></dt>
+<dd><p>Clears the stats dictionary and the f_eval counter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.evaluate_function">
+<span class="sig-name descname"><span class="pre">evaluate_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parallel_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'threads'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.evaluate_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.evaluate_function" title="Link to this definition"></a></dt>
+<dd><p>Evaluate all the particles of the input list with the custom objective
+function. The parallel_mode is optional.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parallel_mode</strong> – (bool) enables parallel computation of the objective</p>
+</dd>
+</dl>
+<p>function. Default is False (serial execution).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>backend</strong> – backend for the parallel Joblib (‘threads’ or ‘processes’).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the max function value and the found solution flag.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.f_eval">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">f_eval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.f_eval" title="Link to this definition"></a></dt>
+<dd><p>Accessor method that returns the value of the f_eval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(int) the counted number of function evaluations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.fully_informed">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fully_informed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="star_pso.population.html#star_pso.population.particle.Particle" title="star_pso.population.particle.Particle"><span class="pre">Particle</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="star_pso.population.html#star_pso.population.jat_particle.JatParticle" title="star_pso.population.jat_particle.JatParticle"><span class="pre">JatParticle</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_best</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.fully_informed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.fully_informed" title="Link to this definition"></a></dt>
+<dd><p>Uses the input population and computes a weighted average position according to
+the linear ranking of the particles. Those with higher function value also have
+bigger weight in the calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>population</strong> – list of particles which we want to consider in the calculation</p>
+</dd>
+</dl>
+<p>of the fully informed best position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>use_best</strong> – if True it will use the best_position of each particle to estimate</p>
+</dd>
+</dl>
+<p>the new weighted best position. Default is False, which means that only the current
+position is used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the weighted best position ‘w_best’ (as numpy array).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.generate_random_positions">
+<span class="sig-name descname"><span class="pre">generate_random_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.generate_random_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.generate_random_positions" title="Link to this definition"></a></dt>
+<dd><p>Generate a population of particles with random positions.
+Each different class that inherits from here should know
+how to implement it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.get_local_best_positions">
+<span class="sig-name descname"><span class="pre">get_local_best_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operating_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'g_best'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.get_local_best_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.get_local_best_positions" title="Link to this definition"></a></dt>
+<dd><p>This method uses the swarm’s population and the current operating mode,
+from the VOptions tuple, to calculate the local best positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>operating_mode</strong> – the operating mode of the algorithm. The default value</p>
+</dd>
+</dl>
+<p>is set to be the ‘g_best’, because it works with all the PSO implementations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the local best positions (as numpy array).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.get_optimal_values">
+<span class="sig-name descname"><span class="pre">get_optimal_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.get_optimal_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.get_optimal_values" title="Link to this definition"></a></dt>
+<dd><p>Iterates through the stats to find the best recorded
+position from all the iterations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a tuple with the optimal particle position,
+its function value and the iteration it was
+found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.items">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">items</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.items" title="Link to this definition"></a></dt>
+<dd><p>Accessor (getter) of the _items placeholder container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_items (if any).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.iteration">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">iteration</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.iteration" title="Link to this definition"></a></dt>
+<dd><p>Accessor (getter) of the iteration parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the iteration value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.lower_bound">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lower_bound</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.lower_bound" title="Link to this definition"></a></dt>
+<dd><p>Accessor method that returns the lower bound value(s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(numpy array).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.n_cols">
+<span class="sig-name descname"><span class="pre">n_cols</span></span><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.n_cols" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.n_cpus">
+<span class="sig-name descname"><span class="pre">n_cpus</span></span><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.n_cpus" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.n_rows">
+<span class="sig-name descname"><span class="pre">n_rows</span></span><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.n_rows" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.neighborhood_best">
+<span class="sig-name descname"><span class="pre">neighborhood_best</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_neighbors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">deque</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.neighborhood_best"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.neighborhood_best" title="Link to this definition"></a></dt>
+<dd><p>For each particle in the swarm, finds the ‘n’ closest neighbors
+(distance-wise) and computes the local best neighborhood position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>num_neighbors</strong> – number of neighbors to consider.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a container (deque) with the neighborhood best positions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.objective_func">
+<span class="sig-name descname"><span class="pre">objective_func</span></span><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.objective_func" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.reset_all">
+<span class="sig-name descname"><span class="pre">reset_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.reset_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.reset_all" title="Link to this definition"></a></dt>
+<dd><p>Resets the particle positions, velocities
+and the  statistics dictionary. Since the
+various implementations vary  this method
+should be implemented separately.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.rng">
+<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x1485D3CA0</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_it</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reset_swarm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_max_eval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adapt_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.run" title="Link to this definition"></a></dt>
+<dd><p>Main method of the GenericPSO class that implements the optimization routine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_it</strong> – (int) maximum number of iterations in the optimization loop.</p></li>
+<li><p><strong>f_tol</strong> – (float) tolerance in the difference between the optimal function</p></li>
+</ul>
+</dd>
+</dl>
+<p>value of two consecutive iterations. It is used to determine the convergence of
+the swarm. If this value is None (default) the algorithm will terminate using
+the max_it value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>options</strong> – dictionary with update equations options (‘w’: inertia weight,</p>
+</dd>
+</dl>
+<p>‘c1’: cognitive coefficient, ‘c2’: social coefficient, ‘mode’: operation mode).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parallel</strong> – (bool) flag that enables parallel computation of the objective</p>
+</dd>
+</dl>
+<p>function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reset_swarm</strong> – (bool) if True it will reset the positions of the swarm to</p>
+</dd>
+</dl>
+<p>uniformly random respecting the boundaries of each space dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>f_max_eval</strong> – (int) it sets an upper limit of function evaluations. If the</p>
+</dd>
+</dl>
+<p>number is exceeded the algorithm stops.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>adapt_params</strong> – (bool) If set to “True” it will allow the inertia, cognitive</p>
+</dd>
+</dl>
+<p>and social parameters to adapt according to the convergence of the swarm population
+to a single solution. Default is set to “False”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>verbose</strong> – (bool) if True it will display periodically information about the</p>
+</dd>
+</dl>
+<p>current optimal function values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.set_seed">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_seed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.set_seed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.set_seed" title="Link to this definition"></a></dt>
+<dd><p>Sets a new seed for the random number generator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_seed</strong> – New seed value (default=None).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.stats">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stats</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.stats" title="Link to this definition"></a></dt>
+<dd><p>Accessor method that returns the ‘stats’ dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the dictionary with the statistics from the run.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.swarm">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">swarm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="star_pso.population.html#star_pso.population.swarm.Swarm" title="star_pso.population.swarm.Swarm"><span class="pre">Swarm</span></a></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.swarm" title="Link to this definition"></a></dt>
+<dd><p>Accessor of the swarm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the reference the swarm.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.update_positions">
+<span class="sig-name descname"><span class="pre">update_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.update_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.update_positions" title="Link to this definition"></a></dt>
+<dd><p>Updates the positions of the particles in the swarm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.update_velocities">
+<span class="sig-name descname"><span class="pre">update_velocities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="star_pso.utils.html#star_pso.utils.VOptions" title="star_pso.utils.VOptions"><span class="pre">VOptions</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.update_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.update_velocities" title="Link to this definition"></a></dt>
+<dd><p>Performs the update on the velocity equations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> – VOptions tuple with the PSO options.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.upper_bound">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">upper_bound</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.upper_bound" title="Link to this definition"></a></dt>
+<dd><p>Accessor method that returns the upper bound value(s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(numpy array).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.velocities">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">velocities</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.velocities" title="Link to this definition"></a></dt>
+<dd><p>Accessor method that returns the velocity values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(numpy array).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-star_pso.engines.integer_pso">
+<span id="star-pso-engines-integer-pso-module"></span><h2>star_pso.engines.integer_pso module<a class="headerlink" href="#module-star_pso.engines.integer_pso" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="star_pso.engines.integer_pso.IntegerPSO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.integer_pso.</span></span><span class="sig-name descname"><span class="pre">IntegerPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/integer_pso.html#IntegerPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.integer_pso.IntegerPSO" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#star_pso.engines.generic_pso.GenericPSO" title="star_pso.engines.generic_pso.GenericPSO"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericPSO</span></code></a></p>
+<p>Description:</p>
+<p>This implements an Integer variant of the original PSO algorithm that operates
+similarly to the StandardPSO, but rounds the positions to the nearest integer.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.integer_pso.IntegerPSO.calculate_spread">
+<span class="sig-name descname"><span class="pre">calculate_spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/star_pso/engines/integer_pso.html#IntegerPSO.calculate_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.integer_pso.IntegerPSO.calculate_spread" title="Link to this definition"></a></dt>
+<dd><p>Calculates a spread measure for the particle positions
+using the normalized median Taxi-Cab distance.</p>
+<p>A value close to ‘0’ indicates the swarm is converging
+to a single value. On the contrary a value close to ‘1’
+indicates the swarm is still spread around the search space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an estimated measure (float) for the spread of</p>
+</dd>
+</dl>
+<p>the particles.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.integer_pso.IntegerPSO.generate_random_positions">
+<span class="sig-name descname"><span class="pre">generate_random_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/integer_pso.html#IntegerPSO.generate_random_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.integer_pso.IntegerPSO.generate_random_positions" title="Link to this definition"></a></dt>
+<dd><p>Generate the population of particles positions by sampling
+uniformly random integer numbers within the [x_min, x_max]
+bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.integer_pso.IntegerPSO.n_cols">
+<span class="sig-name descname"><span class="pre">n_cols</span></span><a class="headerlink" href="#star_pso.engines.integer_pso.IntegerPSO.n_cols" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.integer_pso.IntegerPSO.n_cpus">
+<span class="sig-name descname"><span class="pre">n_cpus</span></span><a class="headerlink" href="#star_pso.engines.integer_pso.IntegerPSO.n_cpus" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.integer_pso.IntegerPSO.n_rows">
+<span class="sig-name descname"><span class="pre">n_rows</span></span><a class="headerlink" href="#star_pso.engines.integer_pso.IntegerPSO.n_rows" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.integer_pso.IntegerPSO.objective_func">
+<span class="sig-name descname"><span class="pre">objective_func</span></span><a class="headerlink" href="#star_pso.engines.integer_pso.IntegerPSO.objective_func" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.integer_pso.IntegerPSO.reset_all">
+<span class="sig-name descname"><span class="pre">reset_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/integer_pso.html#IntegerPSO.reset_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.integer_pso.IntegerPSO.reset_all" title="Link to this definition"></a></dt>
+<dd><p>Resets the particle positions, velocities and the statistics dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.integer_pso.IntegerPSO.update_positions">
+<span class="sig-name descname"><span class="pre">update_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/integer_pso.html#IntegerPSO.update_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.integer_pso.IntegerPSO.update_positions" title="Link to this definition"></a></dt>
+<dd><p>Updates the positions of the particles in the swarm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-star_pso.engines.jack_of_all_trades_pso">
+<span id="star-pso-engines-jack-of-all-trades-pso-module"></span><h2>star_pso.engines.jack_of_all_trades_pso module<a class="headerlink" href="#module-star_pso.engines.jack_of_all_trades_pso" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.jack_of_all_trades_pso.</span></span><span class="sig-name descname"><span class="pre">JackOfAllTradesPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">permutation_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/jack_of_all_trades_pso.html#JackOfAllTradesPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#star_pso.engines.generic_pso.GenericPSO" title="star_pso.engines.generic_pso.GenericPSO"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericPSO</span></code></a></p>
+<p>Description:</p>
+<blockquote>
+<div><p>JackOfAllTradesPSO class  is an implementation  of the  PSO algorithm that
+can deal with mixed types  of optimization variables.  The supported types
+are: i) float (continuous), ii) integer (discrete), iii) binary (discrete)
+and iv) categorical (discrete).</p>
+<p>The fundamental building block of the algorithm is the ‘DataBlock’ which
+encapsulates the data and the functionality of each variable type.</p>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.calculate_spread">
+<span class="sig-name descname"><span class="pre">calculate_spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/star_pso/engines/jack_of_all_trades_pso.html#JackOfAllTradesPSO.calculate_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.calculate_spread" title="Link to this definition"></a></dt>
+<dd><p>Calculates a spread measure for the particle positions.</p>
+<p>A value close to ‘0’ indicates the swarm is converging to a single value.
+On the contrary a value close to ‘1’ indicates the swarm is still spread
+around the search space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an estimated measure (float) for the spread of the particles.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.generate_random_positions">
+<span class="sig-name descname"><span class="pre">generate_random_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/jack_of_all_trades_pso.html#JackOfAllTradesPSO.generate_random_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.generate_random_positions" title="Link to this definition"></a></dt>
+<dd><p>Generate random positions for the population
+of particles, by calling the btype dependent
+reset methods of each data block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.generate_uniform_velocities">
+<span class="sig-name descname"><span class="pre">generate_uniform_velocities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/jack_of_all_trades_pso.html#JackOfAllTradesPSO.generate_uniform_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.generate_uniform_velocities" title="Link to this definition"></a></dt>
+<dd><p>Generates random uniform velocities for the data blocks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.n_cols">
+<span class="sig-name descname"><span class="pre">n_cols</span></span><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.n_cols" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.n_cpus">
+<span class="sig-name descname"><span class="pre">n_cpus</span></span><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.n_cpus" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.n_rows">
+<span class="sig-name descname"><span class="pre">n_rows</span></span><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.n_rows" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.objective_func">
+<span class="sig-name descname"><span class="pre">objective_func</span></span><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.objective_func" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.reset_all">
+<span class="sig-name descname"><span class="pre">reset_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/jack_of_all_trades_pso.html#JackOfAllTradesPSO.reset_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.reset_all" title="Link to this definition"></a></dt>
+<dd><p>Resets the particle positions, velocities and the statistics dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.sample_categorical_values">
+<span class="sig-name descname"><span class="pre">sample_categorical_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/jack_of_all_trades_pso.html#JackOfAllTradesPSO.sample_categorical_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.sample_categorical_values" title="Link to this definition"></a></dt>
+<dd><p>Samples the actual position based on particles probabilities and
+valid sets for each data block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>positions</strong> – the container with the lists of probabilities</p>
+</dd>
+</dl>
+<p>(one list for each position).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.sample_permutation_values">
+<span class="sig-name descname"><span class="pre">sample_permutation_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/jack_of_all_trades_pso.html#JackOfAllTradesPSO.sample_permutation_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.sample_permutation_values" title="Link to this definition"></a></dt>
+<dd><p>Samples a permutation from a given set of variables.
+It is used in problems like the ‘Traveling Salesman’.</p>
+<p>It is assumed that all data blocks are CATEGORICAL
+and that they have the same valid set of values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>positions</strong> – the container with the lists of probabilities</p>
+</dd>
+</dl>
+<p>(one list for each position).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.update_positions">
+<span class="sig-name descname"><span class="pre">update_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/jack_of_all_trades_pso.html#JackOfAllTradesPSO.update_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.update_positions" title="Link to this definition"></a></dt>
+<dd><p>Updates the positions of the particles in the swarm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.update_velocities">
+<span class="sig-name descname"><span class="pre">update_velocities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="star_pso.utils.html#star_pso.utils.VOptions" title="star_pso.utils.VOptions"><span class="pre">VOptions</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/jack_of_all_trades_pso.html#JackOfAllTradesPSO.update_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.update_velocities" title="Link to this definition"></a></dt>
+<dd><p>Performs the update on the velocity equations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> – VOptions tuple with the PSO options.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-star_pso.engines.standard_pso">
+<span id="star-pso-engines-standard-pso-module"></span><h2>star_pso.engines.standard_pso module<a class="headerlink" href="#module-star_pso.engines.standard_pso" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="star_pso.engines.standard_pso.StandardPSO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.standard_pso.</span></span><span class="sig-name descname"><span class="pre">StandardPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/standard_pso.html#StandardPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.standard_pso.StandardPSO" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#star_pso.engines.generic_pso.GenericPSO" title="star_pso.engines.generic_pso.GenericPSO"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericPSO</span></code></a></p>
+<p>Description:</p>
+<p>This implements a basic variant of the original PSO algorithm as
+described in:</p>
+<p>Kennedy, J. and Eberhart, R. (1995). “Particle Swarm Optimization”.
+In Proceedings of IEEE International Conference on Neural Networks.
+Vol. IV. pp. 1942–1948. doi:10.1109/ICNN.1995.488968.</p>
+<p>Shi, Y. and Eberhart, R. (1998). “A modified particle swarm optimizer”.
+In Proceedings of the IEEE World Congress on Computational Intelligence,
+Anchorage, AK, USA, 4–9 May 1998; pp. 69–73.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.standard_pso.StandardPSO.calculate_spread">
+<span class="sig-name descname"><span class="pre">calculate_spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/star_pso/engines/standard_pso.html#StandardPSO.calculate_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.standard_pso.StandardPSO.calculate_spread" title="Link to this definition"></a></dt>
+<dd><p>Calculates a spread measure for the particle positions
+using the normalized median Euclidean distance.</p>
+<p>A value close to ‘0’ indicates the swarm is converging
+to a single value. On the contrary a value close to ‘1’
+indicates the swarm is still  spread around the search
+space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an estimated measure (float) for the spread of</p>
+</dd>
+</dl>
+<p>the particles.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.standard_pso.StandardPSO.generate_random_positions">
+<span class="sig-name descname"><span class="pre">generate_random_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/standard_pso.html#StandardPSO.generate_random_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.standard_pso.StandardPSO.generate_random_positions" title="Link to this definition"></a></dt>
+<dd><p>Generate the population of particles positions by sampling
+uniformly random numbers within the [x_min, x_max] bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.standard_pso.StandardPSO.n_cols">
+<span class="sig-name descname"><span class="pre">n_cols</span></span><a class="headerlink" href="#star_pso.engines.standard_pso.StandardPSO.n_cols" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.standard_pso.StandardPSO.n_cpus">
+<span class="sig-name descname"><span class="pre">n_cpus</span></span><a class="headerlink" href="#star_pso.engines.standard_pso.StandardPSO.n_cpus" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.standard_pso.StandardPSO.n_rows">
+<span class="sig-name descname"><span class="pre">n_rows</span></span><a class="headerlink" href="#star_pso.engines.standard_pso.StandardPSO.n_rows" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.standard_pso.StandardPSO.objective_func">
+<span class="sig-name descname"><span class="pre">objective_func</span></span><a class="headerlink" href="#star_pso.engines.standard_pso.StandardPSO.objective_func" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.standard_pso.StandardPSO.reset_all">
+<span class="sig-name descname"><span class="pre">reset_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/standard_pso.html#StandardPSO.reset_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.standard_pso.StandardPSO.reset_all" title="Link to this definition"></a></dt>
+<dd><p>Resets the particle positions, velocities and the statistics dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.standard_pso.StandardPSO.update_positions">
+<span class="sig-name descname"><span class="pre">update_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/standard_pso.html#StandardPSO.update_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.standard_pso.StandardPSO.update_positions" title="Link to this definition"></a></dt>
+<dd><p>Updates the positions of the particles in the swarm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-star_pso.engines">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-star_pso.engines" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="star_pso.benchmarks.html" class="btn btn-neutral float-left" title="star_pso.benchmarks package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="star_pso.population.html" class="btn btn-neutral float-right" title="star_pso.population package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Michail D. Vrettas.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
