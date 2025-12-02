@@ -192,11 +192,11 @@ class CompositeFunction(TestFunction):
         Returns a string representation of the CompositeFunction.
         """
         # Initialize the return string.
-        cf_str = self.name + f"_F{len(self.basic_f)}\n"
+        cf_str = f"{self.name}(x_min={self.x_min}, x_max={self.x_max})\n"
 
         # Append all the basis functions.
         for n, func in enumerate(self.basic_f):
-            cf_str += f"{n}: {func.__name__}\n"
+            cf_str += f"F{n} -> {func.__name__}\n"
 
         # Return the new string.
         return cf_str
