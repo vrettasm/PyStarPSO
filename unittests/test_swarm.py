@@ -20,9 +20,10 @@ class TestSwarm(unittest.TestCase):
         print(">> TestSwarm - FINISH -", end='\n\n')
     # _end_def_
 
-    def test_post_init(self):
+    def test_init(self):
         """
-        Check if the __post_init__ method works correctly.
+        Check if the __init__ method handles the
+        '_has_categorical' variable correctly.
 
         :return: None.
         """
@@ -41,14 +42,14 @@ class TestSwarm(unittest.TestCase):
         # Check if it has categorical variables.
         self.assertFalse(swarm_a.has_categorical)
 
-        # Define the variable set for the categorical
+        # Set the variables for the categorical
         # optimization variable.
         var_set = ["a", "b", "c"]
 
-        # Define the number of categorical variables.
-        n_dim = 3
+        # Set the number of categorical variables.
+        n_dim = len(var_set)
 
-        # Define the number of particles.
+        # Set the number of particles.
         n_particles = 10
 
         # Initialize the JAT particle population.
