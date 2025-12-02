@@ -74,7 +74,7 @@ BASIC_FUNCTIONS: dict = {"f_sphere": f_sphere,
 class CompositeFunction(TestFunction):
     """
     Generates a Composite Function using a weighting average
-    of basic functions, as defined in the 'basic_f' dict.
+    of basic functions, as defined in the 'basic_f' list.
     """
 
     def __init__(self, n_dim: int = 2, n_func: int | list = 4,
