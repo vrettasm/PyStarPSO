@@ -32,6 +32,14 @@ class TestDataBlock(unittest.TestCase):
                           lower_bound=-1.0,
                           upper_bound=+1.0)
         # _end_with_
+
+        # Check if the boundaries are correct.
+        with self.assertRaises(ValueError):
+            _ = DataBlock(position=0.01,
+                          btype=BlockType.FLOAT,
+                          lower_bound=[-1.0, +2.0],
+                          upper_bound=[+1.0, -2.0])
+        # _end_with_
     # _end_def_
 
     def test_position_float(self):
