@@ -11,16 +11,14 @@ class TestParticle(unittest.TestCase):
     def setUpClass(cls) -> None:
         print(">> TestParticle - START -")
         cls.rng = np.random.default_rng()
-
     # _end_def_
 
     @classmethod
     def tearDownClass(cls) -> None:
         print(">> TestParticle - FINISH -", end='\n\n')
-
     # _end_def_
 
-    def test_equals(self):
+    def test_equals(self) -> None:
         """
         Tests the __eq__ method of the Particle class.
 
@@ -56,7 +54,7 @@ class TestParticle(unittest.TestCase):
 
     # _end_def_
 
-    def test_best_position(self):
+    def test_best_position(self) -> None:
         """
         Tests the best_position method. It should assign
         a copy of the input vector.
