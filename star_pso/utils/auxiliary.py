@@ -74,7 +74,7 @@ def linear_rank_probabilities(p_size: int) -> tuple[np.ndarray, float]:
         raise TypeError("'p_size' must be an integer number.")
     # _end_if_
 
-    # Sanity check #2.
+    # Sanity check.
     if p_size <= 0:
         raise ValueError("'p_size' must be a positive number.")
     # _end_if_
