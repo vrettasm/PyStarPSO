@@ -51,7 +51,6 @@ class TestParticle(unittest.TestCase):
 
         # Should be FALSE.
         self.assertFalse(p1 == p3)
-
     # _end_def_
 
     def test_best_position(self) -> None:
