@@ -21,7 +21,7 @@ class TestSwarm(unittest.TestCase):
         print(">> TestSwarm - FINISH -", end='\n\n')
     # _end_def_
 
-    def test_init(self):
+    def test_init(self) -> None:
         """
         Check if the __init__ method handles the
         '_has_categorical' variable correctly.
@@ -65,7 +65,7 @@ class TestSwarm(unittest.TestCase):
         self.assertTrue(swarm_b.has_categorical)
     # _end_def_
 
-    def test_global_best_index(self):
+    def test_global_best_index(self) -> None:
         """
         Check if the global_best_index returns the right index.
 
@@ -93,7 +93,7 @@ class TestSwarm(unittest.TestCase):
         self.assertEqual(j, swarm_a.global_best_index)
     # _end_def_
 
-    def test_best_particle(self):
+    def test_best_particle(self) -> None:
         """
         Check if the best_particle returns the one with the highest value.
 
@@ -125,7 +125,7 @@ class TestSwarm(unittest.TestCase):
         self.assertEqual(1000, swarm_a.best_particle().value)
     # _end_def_
 
-    def test_best_n(self):
+    def test_best_n(self) -> None:
         """
         Make sure the best_n checks all the input errors and returns
         the individuals with the highest fitness values.
