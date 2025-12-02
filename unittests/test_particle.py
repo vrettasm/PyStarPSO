@@ -32,6 +32,12 @@ class TestParticle(unittest.TestCase):
         # Should be TRUE.
         self.assertTrue(p1 == p1)
 
+        # Make a new reference of the p1.
+        p0 = p1
+
+        # Should be TRUE (p0 is p1).
+        self.assertTrue(p0 == p1)
+
         # Particle 2 (identical to p1).
         # Initial position is given as 'list'.
         p2 = Particle([1, 2, 3])
