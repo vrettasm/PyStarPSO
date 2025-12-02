@@ -196,7 +196,7 @@ class CompositeFunction(TestFunction):
 
         # Append all the basis functions.
         for n, func in enumerate(self.basic_f):
-            cf_str += f"{n}: {func}\n"
+            cf_str += f"{n}: {func.__name__}\n"
 
         # Return the new string.
         return cf_str
