@@ -20,7 +20,7 @@ class TestJatParticle(unittest.TestCase):
         print(">> TestJatParticle - FINISH -", end='\n\n')
     # _end_def_
 
-    def test_equals(self):
+    def test_equals(self) -> None:
         """
         Tests the __eq__ method of the JatParticle class.
 
@@ -86,7 +86,7 @@ class TestJatParticle(unittest.TestCase):
         self.assertFalse(p1 == p3)
     # _end_def_
 
-    def test_best_position(self):
+    def test_best_position(self) -> None:
         """
         Tests the best_position method. It should assign
         a copy of the input vector.
