@@ -161,6 +161,38 @@ class TestSwarm(unittest.TestCase):
         self.assertTrue(best_5 == [100.0, 99.0, 98.0, 97.0, 96.0])
     # _end_def_
 
+    def test_update_local_best(self) -> None:
+        """
+        Make sure the update of local best values is done properly.
+        """
+        # Set a number of optimizing variables.
+        n_dim = 2
+
+        # Set a number of particles.
+        n_particles = 20
+
+        # Draw random samples for the initial points.
+        x_t0 = self.rng.uniform(-1.5, +1.5, size=(n_particles, n_dim))
+
+        # Initialize the particle population.
+        swarm_a = Swarm([Particle(x) for x in x_t0])
+
+        # Assign random fitness values.
+        for p in swarm_a.population:
+            p.value = self.rng.random()
+        # _end_if_
+
+        # Update the local best values.
+        swarm_a.update_local_best()
+
+        # Compute the difference between best_value and value.
+        diffs = [fabs(p.value - p.best_value) for p in swarm_a]
+
+        # The sum of all diffs must be zero
+        # (to some minor floating point errors).
+        self.assertAlmostEqual(np.sum(diffs), 0.0)
+    # _end_def_
+
 # _end_class_
 
 
