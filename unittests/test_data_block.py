@@ -40,6 +40,40 @@ class TestDataBlock(unittest.TestCase):
                           upper_bound=[+1.0, -2.0])
     # _end_def_
 
+    def test_set_seed(self):
+        """
+        Test the (re)-setting of the random number generator.
+        """
+        # Create a test data block (FLOAT).
+        blk = DataBlock(position=self.rng.random(),
+                        btype=BlockType.FLOAT,
+                        lower_bound=0.0,
+                        upper_bound=1.0)
+        # Set the seed.
+        blk.set_seed(100)
+
+        # Get a random number.
+        x1 = blk.rng.random()
+
+        # Change the seed.
+        blk.set_seed(101)
+
+        # Get a new random number.
+        x2 = blk.rng.random()
+
+        # These numbers should NOT BE equal.
+        self.assertNotEqual(x1, x2)
+
+        # Change the seed back to 100.
+        blk.set_seed(100)
+
+        # Get a new random number.
+        x3 = blk.rng.random()
+
+        # These numbers should BE equal.
+        self.assertEqual(x1, x3)
+    # _end_def_
+
     def test_position_float(self):
         """
         Test whether the upd_float() returns a float variable.
