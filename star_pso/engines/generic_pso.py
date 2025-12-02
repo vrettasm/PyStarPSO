@@ -351,6 +351,9 @@ class GenericPSO(object):
         """
         self._stats.clear()
         self._f_eval = 0
+
+        # Log the clearing.
+        logger.debug(f"{self.__class__.__name__} 'f_eval' and 'stats' have been cleared.")
     # _end_def_
 
     def get_optimal_values(self) -> tuple:
