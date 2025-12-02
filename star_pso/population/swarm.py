@@ -123,15 +123,15 @@ class Swarm(object):
         """
         # Make sure 'n' is positive integer.
         if not isinstance(n, int) or n <= 0:
-            raise ValueError(f"{self.__class__.__name__}: "
+            raise TypeError(f"{self.__class__.__name__}: "
                              f"Input must be a positive integer.")
         # _end_if_
 
         # Ensure the number of return particles do not exceed
         # the size of the swarm.
         if n > len(self._population):
-            raise RuntimeError(f"{self.__class__.__name__}: "
-                               f"Best {n} exceeds swarm size.")
+            raise ValueError(f"{self.__class__.__name__}: "
+                             f"Best {n} exceeds swarm size.")
         # _end_if_
 
         # Sort the swarm in descending order.
