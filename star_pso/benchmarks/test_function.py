@@ -166,4 +166,11 @@ class TestFunction(object):
                                   f"You should implement this method!")
     # _end_def_
 
+    def __str__(self) -> str:
+        """
+        Returns a string representation of the TestFunction.
+        """
+        return f"{self._name}(x_min={self._x_min}, x_max={self._x_max})"
+    # _end_def_
+
 # _end_class_
