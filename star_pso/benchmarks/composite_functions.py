@@ -153,8 +153,8 @@ class CompositeFunction(TestFunction):
             weights /= np.sum(weights)
 
             # Get total evaluation of the composite function.
-            f_total = np.sum([wi * (cf(x_pos / num_f) + i_bias)
-                              for wi, cf in zip(weights, self.basic_f)])
+            f_total = np.sum([wi * (fi(x_pos / num_f) + i_bias)
+                              for wi, fi in zip(weights, self.basic_f)])
             # Add the bias at the end.
             f_value = f_total + f_bias
         # _end_if_
