@@ -148,7 +148,7 @@ class CompositeFunction(TestFunction):
             num_f = len(self.basic_f)
 
             # Square of sigma values.
-            # For simplicity we set them to one.
+            # For simplicity, we set them to one.
             sigma_sq = np.ones(num_f, dtype=float)
 
             # Compute the weights.
