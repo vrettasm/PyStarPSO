@@ -250,10 +250,13 @@ class JackOfAllTradesPSO(GenericPSO):
 
             # Update all velocity values.
             for j, (xk, vk) in enumerate(zip(x_old, self._velocities[i])):
-                # Apply the update equations.
-                self._velocities[i][j] = (w * vk +
-                                          c1[j] * np_subtract(p_best[j], xk) +
-                                          c2[j] * np_subtract(g_best[j], xk))
+                # NOTE: Because 'vk' is passed by reference,
+                # updating the equations in three steps will
+                # not create a new array thus all operations
+                # will happen in place.
+                vk *= w
+                vk += c1[j] * np_subtract(p_best[j], xk)
+                vk += c2[j] * np_subtract(g_best[j], xk)
     # _end_def_
 
     def update_positions(self) -> None:
