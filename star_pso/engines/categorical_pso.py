@@ -256,7 +256,7 @@ class CategoricalPSO(GenericPSO):
                       c2[j] * np_subtract(g_best[j], xk))
 
                 # Ensure the velocities are within limits.
-                np_clip(vk, -0.5, +0.5, out=vk)
+                clip_inplace(vk, -0.5, +0.5)
             # _end_for_
         # _end_for_
     # _end_def_
