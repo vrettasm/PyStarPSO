@@ -11,6 +11,21 @@ from star_pso.engines.generic_pso import GenericPSO
 from star_pso.utils.auxiliary import (BlockType,
                                       linear_rank_probabilities,
                                       SpecialMode, spread_methods)
+# Local fast version of sum method.
+@njit
+def fast_sum(x: np.ndarray) -> np.ndarray:
+    """
+    Local auxiliary function that is used
+    to sum the values of input array 'x'.
+
+    :param x: the numpy array we want to sum.
+
+    :return: the sum(x).
+    """
+    return np.sum(x)
+# _end_def_
+
+
 # Public interface.
 __all__ = ["JackOfAllTradesPSO"]
 
