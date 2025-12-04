@@ -93,7 +93,6 @@ class JackOfAllTradesPSO(GenericPSO):
                 # Generate the velocities randomly.
                 self._velocities[i, j] = JackOfAllTradesPSO.rng.uniform(-1.0, +1.0,
                                                                         size=n_vars)
-        # _end_for_
     # _end_def_
 
     def generate_random_positions(self) -> None:
