@@ -277,8 +277,8 @@ class CategoricalPSO(GenericPSO):
                 # Update j-th position.
                 x_j += v_j
 
-                # Ensure they stay within limits.
-                np_clip(x_j, 0.0, 1.0, out=x_j)
+                # Ensure the values stay within limits.
+                clip_inplace(x_j, 0.0, 1.0)
 
                 # Ensure there will be at least one
                 # element with positive probability.
