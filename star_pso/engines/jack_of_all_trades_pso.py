@@ -262,7 +262,6 @@ class JackOfAllTradesPSO(GenericPSO):
 
         :return: None.
         """
-
         # Evaluates all the particles.
         for particle, velocity in zip(self.swarm.population,
                                       self._velocities):
