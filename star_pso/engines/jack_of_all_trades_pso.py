@@ -133,7 +133,6 @@ class JackOfAllTradesPSO(GenericPSO):
                     positions[i][j] = JackOfAllTradesPSO.rng.choice(blk.valid_set,
                                                                     shuffle=False,
                                                                     p=positions[i][j])
-            # _end_for_
     # _end_def_
 
     def sample_permutation_values(self, positions: list[list]) -> None:
