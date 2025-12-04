@@ -42,7 +42,7 @@ def clip_inplace(x, x_min, x_max) -> None:
 
 
 # Public interface.
-__all__ = ["CategoricalPSO"]
+__all__ = ["CategoricalPSO", "clip_inplace", "fast_sum"]
 
 
 class CategoricalPSO(GenericPSO):
