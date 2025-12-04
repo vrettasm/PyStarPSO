@@ -287,7 +287,9 @@ class CategoricalPSO(GenericPSO):
 
             # Process each position separately.
             for k, (x_j, v_j) in enumerate(zip(particle.position, v_upd)):
-                # Update j-th position.
+                # NOTE:  All operations happen inplace to avoid
+                # reallocating memory and provide some speed up
+                # to the update process.
                 x_j += v_j
 
                 # Ensure the values stay within limits.
