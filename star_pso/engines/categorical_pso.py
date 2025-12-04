@@ -117,7 +117,6 @@ class CategoricalPSO(GenericPSO):
 
                 # Set the variables uniformly.
                 self.swarm[i][j] = np.ones(size_j)/size_j
-        # _end_for_
     # _end_def_
 
     def sample_categorical_values(self, positions) -> None:
