@@ -2,7 +2,7 @@ from operator import attrgetter
 from collections import defaultdict
 
 import numpy as np
-from numpy import sum as np_sum
+from numba import njit
 from numpy import isscalar as np_isscalar
 from numpy import subtract as np_subtract
 
