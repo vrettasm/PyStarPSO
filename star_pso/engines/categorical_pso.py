@@ -286,8 +286,8 @@ class CategoricalPSO(GenericPSO):
                     x_j[GenericPSO.rng.integers(len(x_j))] = 1.0
                 # _end_if_
 
-                # Normalize (to account for probabilities).
-                x_j /= np_sum(x_j, dtype=float)
+                # Normalize to account for probabilities.
+                x_j /= fast_sum(x_j)
         # _end_for_
     # _end_def_
 
