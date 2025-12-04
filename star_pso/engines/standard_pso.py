@@ -1,4 +1,3 @@
-from numpy import clip as np_clip
 from numpy.typing import ArrayLike
 
 from star_pso.engines.generic_pso import GenericPSO
