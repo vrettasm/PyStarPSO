@@ -3,6 +3,7 @@ from collections import defaultdict
 
 import numpy as np
 from numba import njit
+from numpy import array as np_array
 from numpy import isscalar as np_isscalar
 from numpy import subtract as np_subtract
 
@@ -226,7 +227,7 @@ class JackOfAllTradesPSO(GenericPSO):
             for i in range(self.n_cols):
                 # Avoid errors with scalar values.
                 if not np_isscalar(g_best[i]):
-                    g_best[i] /= fast_sum(np.array(g_best[i]))
+                    g_best[i] /= fast_sum(np_array(g_best[i]))
 
         elif params.mode.lower() == "g_best":
 
