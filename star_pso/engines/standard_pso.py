@@ -66,8 +66,10 @@ class StandardPSO(GenericPSO):
         :return: None.
         """
         # Generate uniform FLOAT positions U(x_min, x_max).
-        uniform_positions = GenericPSO.rng.uniform(self.lower_bound, self.upper_bound,
-                                                   size=(self.n_rows, self.n_cols))
+        uniform_positions = GenericPSO.rng.uniform(self.lower_bound,
+                                                   self.upper_bound,
+                                                   size=(self.n_rows,
+                                                         self.n_cols))
         # Assign the new positions in the swarm.
         for p, x_new in zip(self._swarm, uniform_positions):
             p.position = x_new
