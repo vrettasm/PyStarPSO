@@ -226,7 +226,7 @@ class JackOfAllTradesPSO(GenericPSO):
             for i in range(self.n_cols):
                 # Avoid errors with scalar values.
                 if not np_isscalar(g_best[i]):
-                    g_best[i] /= fast_sum(g_best[i])
+                    g_best[i] /= fast_sum(np.array(g_best[i]))
 
         elif params.mode.lower() == "g_best":
 
