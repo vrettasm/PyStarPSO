@@ -120,7 +120,7 @@ class CompositeFunction(TestFunction):
                 self.basic_f = [BASIC_FUNCTIONS[key] for key in n_func]
             except KeyError as ex:
                 raise KeyError("Unknown basic function. Valid options are: ",
-                               BASIC_FUNCTIONS.keys()) from ex
+                               list(BASIC_FUNCTIONS.keys())) from ex
         else:
             raise TypeError(f"{self.__class__.__name__}: 'n_func' must either be an int in [2, 20], or a list.")
     # _end_def_
