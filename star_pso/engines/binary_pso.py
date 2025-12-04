@@ -1,15 +1,9 @@
 import numpy as np
 from numba import njit
 
-from numpy import zeros_like
-from numpy import exp as np_exp
-
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
 from star_pso.utils.auxiliary import nb_median_hamming_distance
-
-# Public interface.
-__all__ = ["BinaryPSO"]
 
 # Define a local auxiliary function.
 @njit
@@ -28,6 +22,21 @@ def clip_inplace(x, x_min, x_max) -> None:
     np.clip(x, x_min, x_max, out=x)
 # _end_def_
 
+@njit
+def logistic(x) -> np.ndarray:
+    """
+    Local auxiliary function that is used to compute
+    the logistic values of input array 'x'.
+
+    :param x: the numpy array we want to get the logistic values.
+    """
+    return 1.0 / (1.0 + np.exp(-x))
+# _end_def_
+
+
+# Public interface.
+__all__ = ["BinaryPSO", "clip_inplace", "logistic"]
+
 
 class BinaryPSO(GenericPSO):
     """
@@ -42,21 +51,18 @@ class BinaryPSO(GenericPSO):
     pp: 4104–4108.
     """
 
-    def __init__(self, v_min: ArrayLike, v_max: ArrayLike, **kwargs) -> None:
+    def __init__(self, **kwargs) -> None:
         """
         Default initializer of the BinaryPSO class.
-
-        :param v_min: lower velocity bound.
-
-        :param v_max: upper velocity bound.
         """
 
-        # Call the super initializer with the input parameters.
-        super().__init__(lower_bound=v_min, upper_bound=v_max, **kwargs)
+        # Call the super initializer with default parameters.
+        super().__init__(lower_bound=-10.0,
+                         upper_bound=+10.0, **kwargs)
 
         # Generate initial particle velocities.
-        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
-                                                  size=(self.n_rows, self.n_cols))
+        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0, size=(self.n_rows,
+                                                                    self.n_cols))
     # _end_def_
 
     def update_velocities(self, params: VOptions) -> None:
@@ -83,17 +89,17 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Generate random vectors in U(0, 1).
-        r_uniform = GenericPSO.rng.uniform(0, 1,
-                                           size=(self.n_rows, self.n_cols))
+        r_uniform = GenericPSO.rng.random(size=(self.n_rows, self.n_cols),
+                                          dtype=float)
         # Create a matrix with zeros.
-        new_positions = zeros_like(r_uniform, dtype=int)
+        new_positions = np.zeros_like(r_uniform, dtype=int)
 
         # Compute the logistic values.
-        s_arr = 1.0 / (1.0 + np_exp(-self._velocities))
+        logistic_array = logistic(self._velocities)
 
         # Where the logistic function values are
-        # higher than the random value set to 1.
-        new_positions[s_arr > r_uniform] = 1
+        # higher than the random values set to one.
+        new_positions[logistic_array > r_uniform] = 1
 
         # Update all particle positions.
         for particle, x_new, in zip(self._swarm.population,
@@ -110,8 +116,10 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Generate random BINARY positions Bin(0, 1).
-        binary_positions = GenericPSO.rng.integers(0, 1, endpoint=True,
-                                                   size=(self.n_rows, self.n_cols))
+        binary_positions = GenericPSO.rng.integers(0, 1,
+                                                   endpoint=True,
+                                                   size=(self.n_rows,
+                                                         self.n_cols))
         # Assign the new positions in the swarm.
         for p, x_new in zip(self._swarm, binary_positions):
             p.position = x_new
@@ -124,8 +132,8 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Reset particle velocities.
-        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
-                                                  size=(self.n_rows, self.n_cols))
+        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0, size=(self.n_rows,
+                                                                    self.n_cols))
         # Generate random binary positions.
         self.generate_random_positions()
 
