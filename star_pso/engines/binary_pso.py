@@ -69,9 +69,10 @@ class BinaryPSO(GenericPSO):
         # Call the method of the parent class.
         super().update_velocities(params)
 
-        # We clip the velocities in [V_min, V_max].
-        np_clip(self._velocities, self.lower_bound,
-                self.upper_bound, out=self._velocities)
+        # Clip velocities in [v_min, v_max].
+        clip_inplace(self._velocities,
+                     self.lower_bound,
+                     self.upper_bound)
     # _end_def_
 
     def update_positions(self) -> None:
