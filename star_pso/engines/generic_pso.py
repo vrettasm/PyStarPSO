@@ -139,7 +139,7 @@ class GenericPSO(object):
         # positive values.
         if not isinstance(value, int) or value < 0:
             raise RuntimeError(f"{self.__class__.__name__}: "
-                               f"Iteration value should be positive int: {type(value)}.")
+                               f"Iteration value should be positive int: {value}.")
         # Update the iteration value.
         self._iteration = value
     # _end_def_
