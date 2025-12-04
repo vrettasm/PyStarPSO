@@ -263,7 +263,6 @@ class CategoricalPSO(GenericPSO):
 
             # Update all velocities.
             for j, (xk, vk) in enumerate(zip(x_i, self._velocities[i])):
-
                 # Apply the update equations.
                 vk = (w * vk +
                       c1[j] * np_subtract(p_best[j], xk) +
