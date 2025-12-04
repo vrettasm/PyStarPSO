@@ -245,7 +245,7 @@ class JackOfAllTradesPSO(GenericPSO):
 
         for i, (particle_i, c1, c2) in enumerate(zip(self.swarm.population,
                                                      cogntv, social)):
-            # Get the (old) position of the i-th particle (as list).
+            # Get the old position (as list).
             x_old = particle_i.position
 
             # Get the personal best position.
