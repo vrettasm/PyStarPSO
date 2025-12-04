@@ -50,8 +50,7 @@ class StandardPSO(GenericPSO):
         new_positions = self.swarm.positions_as_array() + self._velocities
 
         # Ensure the particle stays within bounds.
-        np_clip(new_positions, self.lower_bound, self.upper_bound,
-                out=new_positions)
+        clip_inplace(new_positions, self.lower_bound, self.upper_bound)
 
         # Update all particle positions.
         for particle, x_new in zip(self.swarm.population,
