@@ -10,6 +10,23 @@ from star_pso.utils.auxiliary import nb_median_hamming_distance
 # Public interface.
 __all__ = ["BinaryPSO"]
 
+# Define a local auxiliary function.
+@njit
+def clip_inplace(x, x_min, x_max) -> None:
+    """
+    Local auxiliary function that is used to clip the values of
+    input array 'x' to [x_min, x_max] range, and put the output
+    inplace.
+
+    :param x: the numpy array we want to clip its values.
+
+    :param x_min: the minimum (lower bound).
+
+    :param x_max: the maximum (upper bound).
+    """
+    np.clip(x, x_min, x_max, out=x)
+# _end_def_
+
 
 class BinaryPSO(GenericPSO):
     """
