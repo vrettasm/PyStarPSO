@@ -271,6 +271,9 @@ class CategoricalPSO(GenericPSO):
 
                 # Ensure the velocities are within limits.
                 clip_inplace(vk, -0.5, +0.5)
+
+                # Assign the vector back to the velocities.
+                self._velocities[i, j] = vk
     # _end_def_
 
     def update_positions(self) -> None:
