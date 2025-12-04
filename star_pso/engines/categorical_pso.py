@@ -224,7 +224,7 @@ class CategoricalPSO(GenericPSO):
             # Finally normalize them to
             # account for probabilities.
             for i in range(self.n_cols):
-                g_best[i] /= np_sum(g_best[i], dtype=float)
+                g_best[i] /= fast_sum(g_best[i])
             # _end_for_
 
         elif params.mode.lower() == "g_best":
