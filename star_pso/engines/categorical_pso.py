@@ -142,7 +142,6 @@ class CategoricalPSO(GenericPSO):
                 x_pos[j] = GenericPSO.rng.choice(set_j,
                                                  p=probs_j,
                                                  shuffle=False)
-        # _end_for_
     # _end_def_
 
     def sample_permutation_values(self, positions) -> None:
