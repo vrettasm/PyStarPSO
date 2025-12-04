@@ -3,8 +3,6 @@ from numba import njit
 
 from numpy import zeros_like
 from numpy import exp as np_exp
-from numpy import clip as np_clip
-from numpy.typing import ArrayLike
 
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
