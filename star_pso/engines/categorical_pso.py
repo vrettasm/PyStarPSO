@@ -263,10 +263,13 @@ class CategoricalPSO(GenericPSO):
 
             # Update all velocities.
             for j, (xk, vk) in enumerate(zip(x_i, self._velocities[i])):
-                # Apply the update equations.
-                vk = (w * vk +
-                      c1[j] * np_subtract(p_best[j], xk) +
-                      c2[j] * np_subtract(g_best[j], xk))
+                # NOTE: Because 'vk' is passed by reference,
+                # updating the equations in three steps will
+                # not create a new array thus all operations
+                # will happen in place.
+                vk *= w
+                vk += c1[j] * np_subtract(p_best[j], xk)
+                vk += c2[j] * np_subtract(g_best[j], xk)
 
                 # Ensure the velocities are within limits.
                 clip_inplace(vk, -0.5, +0.5)
