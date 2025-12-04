@@ -1,8 +1,8 @@
 from numpy.typing import ArrayLike
 
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import nb_median_euclidean_distance
-
+from star_pso.utils.auxiliary import (clip_inplace,
+                                      nb_median_euclidean_distance)
 # Public interface.
 __all__ = ["StandardPSO"]
 
