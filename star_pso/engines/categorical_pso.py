@@ -232,8 +232,8 @@ class CategoricalPSO(GenericPSO):
             # Get the (global) swarm's best particle position.
             g_best = self.swarm.best_particle().position
         else:
-            raise ValueError(f"Unknown operating mode: {params.mode}."
-                             f" Use 'fipso' or 'g_best'")
+            raise ValueError(f"Unknown operating mode: {params.mode}. "
+                             f"Use 'fipso' or 'g_best'")
         # _end_if_
 
         # Inertia weight parameter.
