@@ -268,8 +268,10 @@ class JackOfAllTradesPSO(GenericPSO):
         # Evaluates all the particles.
         for particle, velocity in zip(self.swarm.population,
                                       self._velocities):
-            # This calls internally the update method
-            # for each data block.
+            # NOTE:  This calls internally the correct
+            # update method for each data block so the
+            # positions are updated according to their
+            # type.
             particle.position = velocity
     # _end_def_
 
