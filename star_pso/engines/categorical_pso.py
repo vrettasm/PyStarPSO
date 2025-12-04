@@ -240,7 +240,6 @@ class CategoricalPSO(GenericPSO):
             # account for probabilities.
             for i in range(self.n_cols):
                 g_best[i] /= fast_sum(g_best[i])
-            # _end_for_
 
         elif params.mode.lower() == "g_best":
 
@@ -272,8 +271,6 @@ class CategoricalPSO(GenericPSO):
 
                 # Ensure the velocities are within limits.
                 clip_inplace(vk, -0.5, +0.5)
-            # _end_for_
-        # _end_for_
     # _end_def_
 
     def update_positions(self) -> None:
@@ -308,7 +305,8 @@ class CategoricalPSO(GenericPSO):
 
     def reset_all(self) -> None:
         """
-        Resets the particle positions, velocities and the statistics dictionary.
+        Resets the particle positions, velocities
+        and clear all the statistics dictionary.
 
         :return: None.
         """

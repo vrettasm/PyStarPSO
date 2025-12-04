@@ -110,7 +110,8 @@ class BinaryPSO(GenericPSO):
 
     def reset_all(self) -> None:
         """
-        Resets the particle positions, velocities and the statistics dictionary.
+        Resets the particle positions, velocities
+        and clear all the statistics dictionary.
 
         :return: None.
         """

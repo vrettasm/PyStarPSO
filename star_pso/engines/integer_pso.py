@@ -1,10 +1,9 @@
-from numpy import clip as np_clip
 from numpy import rint as np_rint
 from numpy.typing import ArrayLike
 
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import nb_median_taxicab_distance
-
+from star_pso.utils.auxiliary import (clip_inplace,
+                                      nb_median_taxicab_distance)
 
 # Public interface.
 __all__ = ["IntegerPSO"]
@@ -31,8 +30,8 @@ class IntegerPSO(GenericPSO):
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
         # Generate initial particle velocities.
-        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
-                                                  size=(self.n_rows, self.n_cols))
+        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0, size=(self.n_rows,
+                                                                    self.n_cols))
     # _end_def_
 
     def update_positions(self) -> None:
@@ -46,8 +45,9 @@ class IntegerPSO(GenericPSO):
                                 self._velocities).astype(int)
 
         # Ensure the particle stays within bounds.
-        np_clip(new_positions, self.lower_bound, self.upper_bound,
-                out=new_positions)
+        clip_inplace(new_positions,
+                     self.lower_bound,
+                     self.upper_bound)
 
         # Update all particle positions.
         for particle, x_new in zip(self._swarm.population,
@@ -67,7 +67,8 @@ class IntegerPSO(GenericPSO):
         integer_positions = GenericPSO.rng.integers(self.lower_bound,
                                                     self.upper_bound,
                                                     endpoint=True,
-                                                    size=(self.n_rows, self.n_cols))
+                                                    size=(self.n_rows,
+                                                          self.n_cols))
         # Assign the new positions in the swarm.
         for p, x_new in zip(self._swarm, integer_positions):
             p.position = x_new
@@ -75,13 +76,15 @@ class IntegerPSO(GenericPSO):
 
     def reset_all(self) -> None:
         """
-        Resets the particle positions, velocities and the statistics dictionary.
+        Resets the particle positions, velocities
+        and clear all the statistics dictionary.
 
         :return: None.
         """
         # Reset particle velocities.
         self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
-                                                  size=(self.n_rows, self.n_cols))
+                                                  size=(self.n_rows,
+                                                        self.n_cols))
         # Generate random integer positions.
         self.generate_random_positions()
 
