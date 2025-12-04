@@ -137,7 +137,7 @@ class CategoricalPSO(GenericPSO):
             # particle probabilities and its valid set.
             for j, (set_j, probs_j) in enumerate(zip(local_sets, x_pos)):
 
-                # Sample an item according to its probabilities.
+                # Sample an item according to its probability.
                 # WARNING: shuffle option MUST be set to False!
                 x_pos[j] = GenericPSO.rng.choice(set_j,
                                                  p=probs_j,
