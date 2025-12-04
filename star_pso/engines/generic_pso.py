@@ -38,7 +38,7 @@ class GenericPSO(object):
 
     # Object variables.
     __slots__ = ("_swarm", "_velocities", "objective_func", "_upper_bound", "_lower_bound", "_stats",
-                 "_items", "_f_eval_counter", "n_cpus", "n_rows", "n_cols", "_special_mode", "_iteration")
+                 "_items", "_f_evals", "n_cpus", "n_rows", "n_cols", "_special_mode", "_iteration")
 
     def __init__(self, initial_swarm: Swarm, obj_func: Callable,
                  lower_bound: ArrayLike = None, upper_bound: ArrayLike = None,
@@ -106,7 +106,7 @@ class GenericPSO(object):
         self._velocities = None
 
         # Set the function evaluation counter to zero.
-        self._f_eval_counter = 0
+        self._f_evals = 0
 
         # Set the special mode to Normal.
         self._special_mode = SpecialMode.NORMAL
@@ -191,13 +191,13 @@ class GenericPSO(object):
     # _end_def_
 
     @property
-    def f_eval(self) -> int:
+    def f_evals(self) -> int:
         """
         Accessor method that returns the value of the f_eval.
 
         :return: (int) the counted number of function evaluations.
         """
-        return self._f_eval_counter
+        return self._f_evals
     # _end_def_
 
     @property
@@ -334,7 +334,7 @@ class GenericPSO(object):
         self._stats["f_opt"].append(f_max)
 
         # Update the counter of function evaluations.
-        self._f_eval_counter += self._swarm.size
+        self._f_evals += self._swarm.size
 
         # Update local best for consistent results.
         self._swarm.update_local_best()
@@ -350,7 +350,7 @@ class GenericPSO(object):
         :return: None.
         """
         self._stats.clear()
-        self._f_eval_counter = 0
+        self._f_evals = 0
 
         # Log the clearing.
         logger.debug(f"{self.__class__.__name__} "
@@ -739,7 +739,7 @@ class GenericPSO(object):
             # _end_if_
 
             # Check for the maximum function evaluations.
-            if f_max_eval and self._f_eval_counter >= f_max_eval:
+            if f_max_eval and self._f_evals >= f_max_eval:
                 # Update optimal function.
                 f_opt = f_new
 
