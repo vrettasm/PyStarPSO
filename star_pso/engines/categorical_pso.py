@@ -8,6 +8,7 @@ from numpy import subtract as np_subtract
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
 from star_pso.utils.auxiliary import (SpecialMode,
+                                      clip_inplace,
                                       nb_median_kl_divergence)
 # Local fast version of sum method.
 @njit
@@ -23,26 +24,9 @@ def fast_sum(x: np.ndarray) -> np.ndarray:
     return np.sum(x)
 # _end_def_
 
-# Define a local auxiliary function.
-@njit
-def clip_inplace(x, x_min, x_max) -> None:
-    """
-    Local auxiliary function that is used to clip the values of
-    input array 'x' to [x_min, x_max] range, and put the output
-    inplace.
-
-    :param x: the numpy array we want to clip its values.
-
-    :param x_min: the minimum (lower bound).
-
-    :param x_max: the maximum (upper bound).
-    """
-    np.clip(x, x_min, x_max, out=x)
-# _end_def_
-
 
 # Public interface.
-__all__ = ["CategoricalPSO", "clip_inplace", "fast_sum"]
+__all__ = ["CategoricalPSO", "fast_sum"]
 
 
 class CategoricalPSO(GenericPSO):

@@ -3,25 +3,8 @@ from numba import njit
 
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import nb_median_hamming_distance
-
-# Define a local auxiliary function.
-@njit
-def clip_inplace(x, x_min, x_max) -> None:
-    """
-    Local auxiliary function that is used to clip the values of
-    input array 'x' to [x_min, x_max] range, and put the output
-    inplace.
-
-    :param x: the numpy array we want to clip its values.
-
-    :param x_min: the minimum (lower bound).
-
-    :param x_max: the maximum (upper bound).
-    """
-    np.clip(x, x_min, x_max, out=x)
-# _end_def_
-
+from star_pso.utils.auxiliary import (clip_inplace,
+                                      nb_median_hamming_distance)
 @njit
 def logistic(x) -> np.ndarray:
     """
@@ -35,7 +18,7 @@ def logistic(x) -> np.ndarray:
 
 
 # Public interface.
-__all__ = ["BinaryPSO", "clip_inplace", "logistic"]
+__all__ = ["BinaryPSO", "logistic"]
 
 
 class BinaryPSO(GenericPSO):
