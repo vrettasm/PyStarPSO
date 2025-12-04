@@ -2,8 +2,7 @@ from collections import defaultdict
 from functools import cached_property
 
 import numpy as np
-from numpy import sum as np_sum
-from numpy import clip as np_clip
+from numba import njit
 from numpy import subtract as np_subtract
 
 from star_pso.utils import VOptions
