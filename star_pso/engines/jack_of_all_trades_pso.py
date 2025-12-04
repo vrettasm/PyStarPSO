@@ -256,7 +256,6 @@ class JackOfAllTradesPSO(GenericPSO):
                 self._velocities[i][j] = (w * vk +
                                           c1[j] * np_subtract(p_best[j], xk) +
                                           c2[j] * np_subtract(g_best[j], xk))
-        # _end_for_
     # _end_def_
 
     def update_positions(self) -> None:
