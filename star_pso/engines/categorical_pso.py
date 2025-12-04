@@ -82,8 +82,8 @@ class CategoricalPSO(GenericPSO):
 
     def generate_uniform_velocities(self) -> None:
         """
-        Generates random uniform velocities for the
-        categorical variable positions.
+        Generates random uniform velocities
+        for the categorical variable positions.
 
         :return: None.
         """
