@@ -97,7 +97,6 @@ class CategoricalPSO(GenericPSO):
             for j in range(self.n_cols):
                 self._velocities[i, j] = GenericPSO.rng.uniform(-0.1, +0.1,
                                                                 size=size_k[j])
-        # _end_for_
     # _end_def_
 
     def generate_random_positions(self) -> None:
