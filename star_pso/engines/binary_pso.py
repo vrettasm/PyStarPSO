@@ -78,19 +78,19 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Generate random vectors in U(0, 1).
-        r_uniform = GenericPSO.rng.random(size=(self.n_rows, self.n_cols),
-                                          dtype=float)
+        uniform_values = GenericPSO.rng.random(size=(self.n_rows, self.n_cols),
+                                               dtype=float)
         # Create a matrix with zeros.
-        new_positions = np.zeros_like(r_uniform, dtype=int)
+        new_positions = np.zeros_like(uniform_values, dtype=int)
 
         # Compute the logistic values.
-        logistic_array = logistic(self._velocities)
+        logistic_values = logistic(self._velocities)
 
-        # Where the logistic function values are
-        # higher than the random values set to one.
-        new_positions[logistic_array > r_uniform] = 1
+        # Where the logistic function values are higher
+        # than the random values set to one.
+        new_positions[logistic_values > uniform_values] = 1
 
-        # Update all particle positions.
+        # Update all particle new positions.
         for particle, x_new, in zip(self._swarm.population,
                                     new_positions):
             particle.position = x_new
