@@ -34,18 +34,25 @@ class BinaryPSO(GenericPSO):
     pp: 4104–4108.
     """
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, v_min: float = -10.0, v_max: float = 10.0, **kwargs) -> None:
         """
         Default initializer of the BinaryPSO class.
-        """
 
+        :param v_min: (float) minimum value for the velocity parameter.
+
+        :param v_max: (float) maximum value for the velocity parameter.
+
+        :return: None.
+        """
         # Call the super initializer with default parameters.
-        super().__init__(lower_bound=-10.0,
-                         upper_bound=+10.0, **kwargs)
+        super().__init__(lower_bound=v_min,
+                         upper_bound=v_max, **kwargs)
 
         # Generate initial particle velocities.
-        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0, size=(self.n_rows,
-                                                                    self.n_cols))
+        self._velocities = GenericPSO.rng.uniform(self.lower_bound,
+                                                  self.upper_bound,
+                                                  size=(self.n_rows,
+                                                        self.n_cols))
     # _end_def_
 
     def update_velocities(self, params: VOptions) -> None:
@@ -116,8 +123,10 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Reset particle velocities.
-        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0, size=(self.n_rows,
-                                                                    self.n_cols))
+        self._velocities = GenericPSO.rng.uniform(self.lower_bound,
+                                                  self.upper_bound,
+                                                  size=(self.n_rows,
+                                                        self.n_cols))
         # Generate random binary positions.
         self.generate_random_positions()
 
