@@ -752,7 +752,7 @@ class GenericPSO(object):
             # _end_if_
 
             # Check for the maximum function evaluations.
-            if f_max_eval and self._f_evals >= f_max_eval:
+            if f_max_eval is not None and self._f_evals >= f_max_eval:
                 # Update optimal function.
                 f_opt = f_new
 
@@ -774,7 +774,7 @@ class GenericPSO(object):
             # _end_if_
 
             # Check for convergence.
-            if f_tol and isclose(f_new, f_opt, abs_tol=f_tol):
+            if f_tol is not None and isclose(f_new, f_opt, abs_tol=f_tol):
                 # Update optimal function.
                 f_opt = f_new
 
