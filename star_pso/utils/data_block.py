@@ -83,16 +83,20 @@ class DataBlock(object):
         # _end_if_
 
         # Check if the lower and upper bounds are set.
-        if (lower_bound, upper_bound) != (None, None):
-            # Check if the boundaries are set correctly.
-            if np.any(np.array(lower_bound) > np.array(upper_bound)):
-                raise ValueError(f"{self.__class__.__name__}: "
-                                 f"Lower and Upper boundaries are incorrect.")
-        # _end_if_
+        if (lower_bound is not None) and (upper_bound is not None):
+            # Make sure they are numpy arrays.
+            self._lower_bound = np.array(lower_bound)
+            self._upper_bound = np.array(upper_bound)
 
-        # Get the lower and upper bounds.
-        self._lower_bound = lower_bound
-        self._upper_bound = upper_bound
+            # Check if the boundaries are set correctly.
+            if np.any(self._lower_bound > self._upper_bound):
+                raise ValueError(f"{self.__class__.__name__}: "
+                                 f"Lower and Upper boundaries are set incorrectly.")
+        else:
+            # Set them to default.
+            self._lower_bound = None
+            self._upper_bound = None
+        # _end_if_
 
         # Get the valid set (categorical variables).
         self._valid_set = valid_set

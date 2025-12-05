@@ -70,19 +70,27 @@ class GenericPSO(object):
 
         # Make sure the fitness function is indeed callable.
         if not callable(obj_func):
-            raise TypeError(f"{self.__class__.__name__}: Objective function is not callable.")
+            raise TypeError(f"{self.__class__.__name__}: "
+                            f"Objective function is not callable.")
         # _end_if_
 
         # Get the objective function.
         self.objective_func = obj_func
 
-        # Set the upper/lower bounds of the search space.
-        self._lower_bound = np.array(lower_bound)
-        self._upper_bound = np.array(upper_bound)
+        # Check if the lower and upper bounds are set.
+        if (lower_bound is not None) and (upper_bound is not None):
+            # Make sure they are numpy arrays.
+            self._lower_bound = np.array(lower_bound)
+            self._upper_bound = np.array(upper_bound)
 
-        # Sanity check.
-        if np.any(self._lower_bound > self._upper_bound):
-            raise ValueError(f"{self.__class__.__name__}: Lower/Upper bounds are set incorrectly.")
+            # Check if the boundaries are set correctly.
+            if np.any(self._lower_bound > self._upper_bound):
+                raise ValueError(f"{self.__class__.__name__}: "
+                                 f"Lower and Upper bounds are set incorrectly.")
+        else:
+            # Set them to default.
+            self._lower_bound = None
+            self._upper_bound = None
         # _end_if_
 
         # Get the number of requested CPUs.
