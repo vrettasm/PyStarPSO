@@ -253,7 +253,7 @@ class CategoricalPSO(GenericPSO):
         # Inertia weight parameter.
         w = params.w0
 
-        for i, (particle_i, c1, c2) in enumerate(zip(self.swarm.population,
+        for i, (particle_i, c1, c2) in enumerate(zip(self.swarm,
                                                      cogntv, social)):
             # Get the i-th particle's position.
             x_i = particle_i.position
@@ -282,8 +282,7 @@ class CategoricalPSO(GenericPSO):
         :return: None.
         """
         # Update all particle positions.
-        for particle, v_upd in zip(self._swarm.population,
-                                   self._velocities):
+        for particle, v_upd in zip(self.swarm, self._velocities):
 
             # Process each position separately.
             for k, (x_j, v_j) in enumerate(zip(particle.position, v_upd)):

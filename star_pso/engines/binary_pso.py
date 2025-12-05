@@ -91,8 +91,7 @@ class BinaryPSO(GenericPSO):
         new_positions[logistic_values > uniform_values] = 1
 
         # Update all particle new positions.
-        for particle, x_new, in zip(self._swarm.population,
-                                    new_positions):
+        for particle, x_new, in zip(self.swarm, new_positions):
             particle.position = x_new
     # _end_def_
 
@@ -110,7 +109,7 @@ class BinaryPSO(GenericPSO):
                                                    size=(self.n_rows,
                                                          self.n_cols))
         # Assign the new positions in the swarm.
-        for p, x_new in zip(self._swarm, binary_positions):
+        for p, x_new in zip(self.swarm, binary_positions):
             p.position = x_new
     # _end_def_
 

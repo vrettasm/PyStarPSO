@@ -241,7 +241,7 @@ class JackOfAllTradesPSO(GenericPSO):
         # Inertia weight parameter.
         w = params.w0
 
-        for i, (particle_i, c1, c2) in enumerate(zip(self.swarm.population,
+        for i, (particle_i, c1, c2) in enumerate(zip(self.swarm,
                                                      cogntv, social)):
             # Get the old position (as list).
             x_old = particle_i.position
@@ -267,7 +267,7 @@ class JackOfAllTradesPSO(GenericPSO):
         :return: None.
         """
         # Evaluates all the particles.
-        for particle, velocity in zip(self.swarm.population,
+        for particle, velocity in zip(self.swarm,
                                       self._velocities):
             # NOTE:  This calls internally the correct
             # update method for each data block so the
