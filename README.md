@@ -13,6 +13,7 @@ The current implementation offers the following PSO implementations:
   - [Categorical](star_pso/engines/categorical_pso.py)
   - [Integer (Discrete)](star_pso/engines/integer_pso.py)
   - [Jack of all trades](star_pso/engines/jack_of_all_trades_pso.py)
+  - [Quantum](star_pso/engines/quantum_pso.py)
 
 All the above methods inherit from the base class [Generic](star_pso/engines/generic_pso.py) which provides some
 common functionality.
@@ -28,7 +29,7 @@ We have implemented the following benchmark functions:
 | [Himmelbleau](star_pso/benchmarks/himmelblau.py)                            |       2       |         4         |
 | [Gaussian Mixture](star_pso/benchmarks/gaussian_mixture.py)                 |       2       |         2         |
 | [Six Hump Camel Back](star_pso/benchmarks/six_hump_camel_back.py)           |       2       |         2         |
-| [Rastriging](star_pso/benchmarks/rastrigin.py)                              |       D       |         K         |
+| [Rastrigin](star_pso/benchmarks/rastrigin.py)                              |       D       |         K         |
 | [Shubert](star_pso/benchmarks/shubert.py)                                   |       D       |      $D*3^D$      |
 | [Vincent](star_pso/benchmarks/vincent.py)                                   |       D       |       $6^D$       |
 
