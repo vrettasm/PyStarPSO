@@ -80,6 +80,11 @@ class GenericPSO(object):
         self._lower_bound = np.array(lower_bound)
         self._upper_bound = np.array(upper_bound)
 
+        # Sanity check.
+        if np.any(self._lower_bound > self._upper_bound):
+            raise ValueError(f"{self.__class__.__name__}: Lower/Upper bounds are set incorrectly.")
+        # _end_if_
+
         # Get the number of requested CPUs.
         if n_cpus is None:
 
