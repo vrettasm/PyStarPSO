@@ -45,8 +45,7 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Call the super initializer with default parameters.
-        super().__init__(lower_bound=v_min,
-                         upper_bound=v_max, **kwargs)
+        super().__init__(lower_bound=v_min, upper_bound=v_max, **kwargs)
 
         # Generate initial particle velocities.
         self._velocities = GenericPSO.rng.uniform(self.lower_bound,
