@@ -33,14 +33,16 @@ class QuantumPSO(GenericPSO):
         # Call the super initializer with the input parameters.
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
-        # Generate initial particle velocities.
-        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
-                                                  size=(self.n_rows, self.n_cols))
+        # Generate initial particle "velocities".
+        self._velocities = GenericPSO.rng.uniform(self.lower_bound,
+                                                  self.upper_bound,
+                                                  size=(self.n_rows,
+                                                        self.n_cols))
     # _end_def_
 
     def update_velocities(self, params: VOptions) -> None:
         """
-        Performs the update on the velocity equations.
+        Performs the update on the "velocity" equations.
 
         :param params: VOptions tuple with the PSO options.
 
@@ -72,7 +74,7 @@ class QuantumPSO(GenericPSO):
         p_best += (1.0 - param_phi) * g_best
 
         # Compute the offset.
-        offset = param_beta * (m_best - x_current) * log(1.0 / param_u)
+        offset = - param_beta * (m_best - x_current) * log(param_u)
 
         # Switch randomly.
         if param_lambda > 0.5:
