@@ -1,4 +1,4 @@
-from numpy import log
+from numpy import log, tile
 from numpy.typing import ArrayLike
 
 from star_pso.utils import VOptions
@@ -74,7 +74,7 @@ class QuantumPSO(GenericPSO):
 
         # Construct the 'p_best'.
         p_best *= param_phi
-        p_best += (1.0 - param_phi) * g_best
+        p_best += (1.0 - param_phi) * tile(g_best, (self.n_rows, 1))
 
         # Compute the offset.
         offset = - beta_coeff * (m_best - x_current) * log(param_u)
@@ -102,8 +102,7 @@ class QuantumPSO(GenericPSO):
         :return: None.
         """
         # Update all particle positions.
-        for particle, x_new in zip(self.swarm.population,
-                                   self._velocities):
+        for particle, x_new in zip(self.swarm, self._velocities):
             particle.position = x_new
     # _end_def_
 
@@ -116,13 +115,12 @@ class QuantumPSO(GenericPSO):
         :return: None.
         """
         # Generate uniform FLOAT positions U(x_min, x_max).
-        uniform_positions = GenericPSO.rng.uniform(self.lower_bound,
-                                                   self.upper_bound,
-                                                   size=(self.n_rows,
-                                                         self.n_cols))
-        # Assign the new positions in the swarm.
-        for p, x_new in zip(self._swarm, uniform_positions):
-            p.position = x_new
+        self._velocities = GenericPSO.rng.uniform(self.lower_bound,
+                                                  self.upper_bound,
+                                                  size=(self.n_rows,
+                                                        self.n_cols))
+        # Assign the new positions.
+        self.update_positions()
     # _end_def_
 
     def reset_all(self) -> None:
@@ -132,13 +130,8 @@ class QuantumPSO(GenericPSO):
 
         :return: None.
         """
-        # Reset particle velocities.
-        self._velocities = GenericPSO.rng.uniform(self.lower_bound,
-                                                  self.upper_bound,
-                                                  size=(self.n_rows,
-                                                        self.n_cols))
-        # Update the positions.
-        self.update_positions()
+        # Generate random the positions.
+        self.generate_random_positions()
 
         # Clear all the internal bookkeeping.
         self.clear_all()
