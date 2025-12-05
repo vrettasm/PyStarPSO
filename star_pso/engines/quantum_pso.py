@@ -137,8 +137,8 @@ class QuantumPSO(GenericPSO):
                                                   self.upper_bound,
                                                   size=(self.n_rows,
                                                         self.n_cols))
-        # Generate random binary positions.
-        self.generate_random_positions()
+        # Update the positions.
+        self.update_positions()
 
         # Clear all the internal bookkeeping.
         self.clear_all()
