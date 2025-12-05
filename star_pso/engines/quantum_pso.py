@@ -48,16 +48,19 @@ class QuantumPSO(GenericPSO):
 
         :return: None.
         """
-        # Hardcode the contraction / expansion parameter.
-        param_beta = 0.5
+        # Hardcode the contraction / expansion coefficient.
+        beta_coeff = 0.5
 
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
 
-        # Sample 'phi' and 'u' and 'lambda' parameters.
-        param_phi, param_u, param_lambda = self.rng.random(3)
+        # Pre-sample the 'phi' parameters.
+        param_phi = GenericPSO.rng.random(size=arr_shape)
 
-        # Get the local best positions (for the social attractor).
+        # Pre-sample the 'u' parameters.
+        param_u = GenericPSO.rng.random(size=arr_shape)
+
+        # Get the (Global / Local / FIPSO) best positions.
         m_best = self.get_local_best_positions(params.mode.lower())
 
         # Extract the current positions.
@@ -74,10 +77,10 @@ class QuantumPSO(GenericPSO):
         p_best += (1.0 - param_phi) * g_best
 
         # Compute the offset.
-        offset = - param_beta * (m_best - x_current) * log(param_u)
+        offset = - beta_coeff * (m_best - x_current) * log(param_u)
 
         # Switch randomly.
-        if param_lambda > 0.5:
+        if self.rng.random() > 0.5:
             p_best += offset
         else:
             p_best -= offset
