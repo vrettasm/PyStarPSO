@@ -72,7 +72,7 @@ class Shubert(TestFunction):
         :param epsilon: accuracy level of the global optimal solution.
 
         :return: a tuple with the number of global optima found and the
-        total number that exist.
+                 total number that exist.
         """
         # Sanity check.
         if self.n_dim > 3:

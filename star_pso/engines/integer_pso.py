@@ -103,7 +103,7 @@ class IntegerPSO(GenericPSO):
         indicates the swarm is still spread around the search space.
 
         :return: an estimated measure (float) for the spread of
-        the particles.
+                 the particles.
         """
         # Extract the positions in a 2D numpy array.
         positions = self.swarm.positions_as_array()

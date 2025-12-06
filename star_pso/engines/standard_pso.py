@@ -103,7 +103,7 @@ class StandardPSO(GenericPSO):
         space.
 
         :return: an estimated measure (float) for the spread of
-        the particles.
+                 the particles.
         """
         # Extract the positions in a 2D numpy array.
         positions = self.swarm.positions_as_array()

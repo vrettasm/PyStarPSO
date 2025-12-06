@@ -46,13 +46,10 @@ class CategoricalPSO(GenericPSO):
         Default initializer of the CategoricalPSO class.
 
         :param variable_sets: this is list with the sets
-        (one for each optimization variable).
+                              (one for each optimization variable).
 
         :param permutation_mode: (bool) if True it will sample
-        permutations of the valid sets.
-
-        :param kwargs: these are the default parameters for the
-        GenericPSO.
+                                 permutations of the valid sets.
         """
 
         # First call the super initializer.
@@ -333,7 +330,7 @@ class CategoricalPSO(GenericPSO):
         space.
 
         :return: an estimated measure (float) for the spread of
-        the particles.
+                 the particles.
         """
         # Extract the positions in a 2D numpy array.
         positions = self.swarm.positions_as_array()

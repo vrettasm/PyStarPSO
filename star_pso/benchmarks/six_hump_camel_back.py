@@ -72,7 +72,7 @@ class SixHumpCamelBack(TestFunction):
         :param epsilon: accuracy level of the global optimal solution.
 
         :return: a tuple with the number of global optima found and the
-        total number that exist.
+                 total number that exist.
         """
         # Get the global optima particles.
         found_optima = identify_global_optima(population, epsilon=epsilon,

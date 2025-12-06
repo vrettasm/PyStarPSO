@@ -1,6 +1,5 @@
 from math import inf
 from copy import deepcopy
-from dataclasses import dataclass, field
 
 from star_pso.utils.data_block import DataBlock
 
@@ -8,7 +7,6 @@ from star_pso.utils.data_block import DataBlock
 __all__ = ["JatParticle"]
 
 
-@dataclass(init=True, repr=True)
 class JatParticle(object):
     """
     Description:
@@ -18,14 +16,23 @@ class JatParticle(object):
         the rest of the information is held in its data blocks.
     """
 
-    # Define the particle as a list of DataBlocks.
-    _container: list = field(default_factory=list[DataBlock])
+    # Object variables.
+    __slots__ = ("_container", "_value", "_best_value")
 
-    # Initially the function value is set to -Inf.
-    _value: float = -inf
+    def __init__(self, container: list[DataBlock], value: float = -inf,
+                 best_value: float = -inf) -> None:
+        """
+        Default constructor of the JatParticle class.
+        """
+        # Define the particle as a list of DataBlocks.
+        self._container = container
 
-    # Initialize the best (historical) value to -Inf.
-    _best_value: float = -inf
+        # Initially the function value is set to -Inf.
+        self._value = value
+
+        # Initialize the best (historical) value to -Inf.
+        self._best_value = best_value
+    # ___
 
     @property
     def container(self) -> list[DataBlock]:
@@ -173,7 +180,7 @@ class JatParticle(object):
         :param index: (int) the position that we want to access.
 
         :param item: (DataBlock) object we want to assign in the
-        particle.
+                     particle.
 
         :return: None.
         """
@@ -197,7 +204,7 @@ class JatParticle(object):
         :param other: jat_particle to compare.
 
         :return: True if their containers have the same data
-        blocks.
+                 blocks.
         """
         # Check if they are the same instance.
         if self is other:
@@ -218,7 +225,7 @@ class JatParticle(object):
         This custom method overrides the default deepcopy method.
 
         :param memo: dictionary of objects already copied during
-        the current copying pass.
+                     the current copying pass.
 
         :return: a new identical "clone" of the self object.
         """

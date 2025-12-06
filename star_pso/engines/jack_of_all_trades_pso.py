@@ -49,7 +49,7 @@ class JackOfAllTradesPSO(GenericPSO):
         Default initializer of the JackOfAllTradesPSO class.
 
         :param permutation_mode: (bool) if True it will sample
-        permutations of the valid sets.
+                                 permutations of the valid sets.
         """
 
         # Call the super initializer.
@@ -115,7 +115,7 @@ class JackOfAllTradesPSO(GenericPSO):
         valid sets for each data block.
 
         :param positions: the container with the lists of probabilities
-        (one list for each position).
+                          (one list for each position).
 
         :return: None.
         """
@@ -145,7 +145,7 @@ class JackOfAllTradesPSO(GenericPSO):
         and that they have the same valid set of values.
 
         :param positions: the container with the lists of probabilities
-        (one list for each position).
+                          (one list for each position).
 
         :return: None.
         """

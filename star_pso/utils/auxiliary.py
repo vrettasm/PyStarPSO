@@ -35,11 +35,11 @@ def check_velocity_parameters(options: dict) -> None:
     """
     Checks that the options dictionary has all the additional
     parameters to estimate the velocities of the optimization
-    algorithm.
-        1) 'w0': inertia weight
-        2) 'c1': cognitive coefficient
-        3) 'c2': social coefficient
-        4) 'mode': mode of operation
+    algorithm:
+    1) 'w0': inertia weight
+    2) 'c1': cognitive coefficient
+    3) 'c2': social coefficient
+    4) 'mode': mode of operation
 
     :param options: dictionary to check for missing parameters.
 
@@ -66,8 +66,8 @@ def linear_rank_probabilities(p_size: int) -> tuple[np.ndarray, float]:
     :param p_size: (int) population size.
 
     :return: (array, float) rank probability distribution in ascending
-    order along with their sum. Note: The sum should be one but due to
-    small errors it might be less.
+             order along with their sum. Note: The sum should be one
+             but due to small errors it might be less.
     """
     # Sanity check.
     if not isinstance(p_size, int):
@@ -103,6 +103,7 @@ def kl_divergence_item(p: np.ndarray, q: np.ndarray) -> float:
     around 10x faster.
 
     :param p: (np.array) probability distribution.
+
     :param q: (np.array) probability distribution.
 
     :return: (float) Kullback-Leibler divergence.
@@ -142,6 +143,7 @@ def kl_divergence_array(p: np.ndarray, q: np.ndarray) -> np.ndarray:
     >        0.04979758, 0.34470209, 0.83185617, 0.29883382])
 
     :param p: (np.array) probability distribution.
+
     :param q: (np.array) probability distribution.
 
     :return: (np.array) Kullback-Leibler divergence.
@@ -162,10 +164,11 @@ def nb_median_hamming_distance(x_pos: np.ndarray,
     :param x_pos: a 2D array with the particle positions.
 
     :param normal: whether to compute the normalized average
-    Hamming distance. This will yield a value between 0 and 1.
-    * A value of '0' indicates that all rows are identical.
-    * A value of '1' indicates that all rows are completely
-    different across all positions.
+                   Hamming distance. This will yield a value
+                   between 0 and 1. A value of '0' indicates
+                   that all rows are identical. On the contrary
+                   a value of '1' indicates that all rows are
+                   completely different across all positions.
 
     The normalization provides a clearer understanding of the
     diversity of the binary strings in relation to their length.
@@ -209,10 +212,10 @@ def nb_median_euclidean_distance(x_pos: np.ndarray,
     them with the maximum distance (optional).
 
     :param x_pos: (np.ndarray) A 2D array of shape (n_particles,
-    n_features) representing the positions of the swarm.
+                  n_features) representing the positions of the swarm.
 
     :param normal: (bool) if "True", normalize the distances by their
-    maximum distance.
+                   maximum distance.
 
     :return: the median Euclidean distance.
     """
@@ -248,10 +251,10 @@ def nb_median_taxicab_distance(x_pos: np.ndarray,
     them with the maximum distance (optional).
 
     :param x_pos: (array) A 2D numpy array (n_particles, n_features)
-    representing the positions of the swarm.
+                  representing the positions of the swarm.
 
     :param normal: (bool) if "True", normalize the distances by their
-    maximum distance.
+                   maximum distance.
 
     :return: the median TaxiCab (Manhattan) distance.
     """
@@ -286,7 +289,7 @@ def nb_median_kl_divergence(x_pos: np.ndarray,
     :param x_pos: 2D array where each column.
 
     :param normal: If enabled the KL values will be normalized using
-    the maximum KL divergence from the data.
+                   the maximum KL divergence from the data.
 
     :return: The median KL divergence of the swarm positions.
     """
@@ -450,7 +453,7 @@ def cost_function(func: Callable = None, minimize: bool = False):
     :param func: the function to be optimized.
 
     :param minimize: if True it will return the negative function
-    value to allow for the minimization. Default is False.
+                     value to allow for the minimization. Default is False.
 
     :return: the 'function_wrapper' method.
     """
@@ -513,11 +516,13 @@ def nb_cdist(x_pos: np.ndarray, scaled: bool = False) -> np.ndarray:
     the purposes of the multimodal operation mode.
 
     :param x_pos: a numpy array of positions. The dimensions of the
-    input array should [n_rows, n_cols], where n_rows is the number
-    of particles and n_cols are the number of positions.
+                  input array should [n_rows, n_cols], where n_rows
+                  is the number of particles and n_cols are the number
+                  of positions.
 
     :param scaled: boolean flag that allows the input array to be
-    scaled, using the MaxAbsScaler, before computing the distances.
+                   scaled, using the MaxAbsScaler, before computing
+                   the distances.
 
     :return: a square [n_rows, n_rows] numpy array of distances.
     """

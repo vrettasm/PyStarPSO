@@ -69,7 +69,7 @@ class Vincent(TestFunction):
         :param epsilon: accuracy level of the global optimal solution.
 
         :return: a tuple with the number of global optima found and the
-        total number that exist.
+                 total number that exist.
         """
         # Calculate the total global optima along with
         # the f_opt for the given number of dimensions.

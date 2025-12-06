@@ -280,7 +280,7 @@ class GenericPSO(object):
         function. The parallel_mode is optional.
 
         :param parallel_mode: (bool) enables parallel computation of the objective
-        function. Default is False (serial execution).
+                              function. Default is False (serial execution).
 
         :param backend: backend for the parallel Joblib ('threads' or 'processes').
 
@@ -427,11 +427,11 @@ class GenericPSO(object):
         bigger weight in the calculation.
 
         :param population: list of particles which we want to consider in the calculation
-        of the fully informed best position.
+                           of the fully informed best position.
 
         :param use_best: if True it will use the best_position of each particle to estimate
-        the new weighted best position. Default is False, which means that only the current
-        position is used.
+                         the new weighted best position. Default is False, which means that
+                         only the current position is used.
 
         :return: the weighted best position 'w_best' (as numpy array).
         """
@@ -509,7 +509,8 @@ class GenericPSO(object):
         from the VOptions tuple, to calculate the local best positions.
 
         :param operating_mode: the operating mode of the algorithm. The default value
-        is set to be the 'g_best', because it works with all the PSO implementations.
+                               is set to be the 'g_best' because it works with all the
+                               PSO implementations.
 
         :return: the local best positions (as numpy array).
         """
@@ -597,7 +598,7 @@ class GenericPSO(object):
         more advanced techniques.
 
         :param options: (dict) contains the previous estimates of
-        the PSO parameters.
+                        the PSO parameters.
 
         :return: True if the update happened, False otherwise.
         """
@@ -675,28 +676,30 @@ class GenericPSO(object):
         :param max_it: (int) maximum number of iterations in the optimization loop.
 
         :param f_tol: (float) tolerance in the difference between the optimal function
-        value of two consecutive iterations. It is used to determine the convergence of
-        the swarm. If this value is None (default) the algorithm will terminate using
-        the max_it value.
+                       value of two consecutive iterations. It is used to determine the
+                       convergence of the swarm. If this value is None (default) the
+                       algorithm will terminate using the max_it value.
 
         :param options: dictionary with update equations options ('w': inertia weight,
-        'c1': cognitive coefficient, 'c2': social coefficient, 'mode': operation mode).
+                        'c1': cognitive coefficient, 'c2': social coefficient, 'mode':
+                        operation mode).
 
         :param parallel: (bool) flag that enables parallel computation of the objective
-        function.
+                         function.
 
         :param reset_swarm: (bool) if True it will reset the positions of the swarm to
-        uniformly random respecting the boundaries of each space dimension.
+                            uniformly random respecting the boundaries of each space dimension.
 
         :param f_max_eval: (int) it sets an upper limit of function evaluations. If the
-        number is exceeded the algorithm stops.
+                            number is exceeded the algorithm stops.
 
         :param adapt_params: (bool) If set to "True" it will allow the inertia, cognitive
-        and social parameters to adapt according to the convergence of the swarm population
-        to a single solution. Default is set to "False".
+                             and social parameters to adapt according to the convergence
+                             of the swarm population to a single solution. Default is set
+                             to "False".
 
         :param verbose: (bool) if True it will display periodically information about the
-        current optimal function values.
+                        current optimal function values.
 
         :return: None.
         """

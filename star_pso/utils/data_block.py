@@ -156,7 +156,7 @@ class DataBlock(object):
         'float' data blocks.
 
         :param params: tuple which contains the parameters
-        for the update equation.
+                       for the update equation.
 
         :return: a new (float) position.
         """
@@ -169,11 +169,11 @@ class DataBlock(object):
     @staticmethod
     def upd_integer(params: Params) -> int:
         """
-        It is used to update the positions of discrete
-        'int' data blocks.
+        It is used to update the positions of discrete 'int'
+        data blocks.
 
         :param params: tuple which contains the parameters
-        for the update equation.
+                       for the update equation.
 
         :return: a new (int) position.
         """
@@ -191,7 +191,7 @@ class DataBlock(object):
         'binary' data blocks.
 
         :param params: tuple which contains the parameters
-        for the update equation.
+                       for the update equation.
 
         :return: a new (binary) position.
         """
@@ -212,7 +212,7 @@ class DataBlock(object):
         'categorical' data blocks.
 
         :param params: tuple which contains the parameters
-        for the update equation.
+                       for the update equation.
 
         :return: a new array like with probabilities.
         """
@@ -240,7 +240,7 @@ class DataBlock(object):
         and their corresponding update methods as values.
 
         :return: a (cached) dictionary with functions
-        that correspond to the correct block types.
+                 that correspond to the correct block types.
         """
         return {BlockType.FLOAT: DataBlock.upd_float,
                 BlockType.BINARY: DataBlock.upd_binary,
@@ -318,12 +318,11 @@ class DataBlock(object):
     @cache
     def init_methods() -> dict:
         """
-        Create a dictionary with method names as keys
-        and their corresponding initialization methods
-        as values.
+        Create a dictionary with method names as keys and their
+        corresponding initialization methods as values.
 
-        :return: a (cached) dictionary with functions
-        that correspond to the correct block types.
+        :return: a (cached) dictionary with functions that
+                 correspond to the correct block types.
         """
         return {BlockType.FLOAT: DataBlock.init_float,
                 BlockType.BINARY: DataBlock.init_binary,
@@ -386,11 +385,9 @@ class DataBlock(object):
     @property
     def best_position(self) -> ScalarOrArray:
         """
-        Accessor (getter) of the data block's
-        best position.
+        Accessor (getter) of the data block's best position.
 
-        :return: the best recorded position
-        value of the data block.
+        :return: the best recorded position value of the data block.
         """
         return self._best_position
     # _end_def_
@@ -398,8 +395,8 @@ class DataBlock(object):
     @best_position.setter
     def best_position(self, new_value: ScalarOrArray) -> None:
         """
-        This method provides the public interface for
-        setting the new best position of data block.
+        This method provides the public interface for setting
+        the new best position of data block.
 
         :param new_value: new best position value.
 
@@ -425,8 +422,7 @@ class DataBlock(object):
 
         :param other: data block to compare.
 
-        :return: True if the data blocks are identical else
-        False.
+        :return: True if the data blocks are identical else False.
         """
         # Check if they are the same instance.
         if self is other:
@@ -471,7 +467,7 @@ class DataBlock(object):
         This custom method overrides the default deepcopy method.
 
         :param memo: Dictionary of objects already copied during
-        the current copying pass.
+                     the current copying pass.
 
         :return: a new identical "clone" of the self object.
         """

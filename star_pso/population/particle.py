@@ -147,7 +147,7 @@ class Particle(object):
         This custom method overrides the default deepcopy method.
 
         :param memo: dictionary of objects already copied during
-        the current copying pass.
+                     the current copying pass.
 
         :return: a new identical "clone" of the self object.
         """

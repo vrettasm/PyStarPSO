@@ -160,7 +160,7 @@ class TestFunction(object):
         :param epsilon: accuracy level of the global optimal solution.
 
         :return: a tuple with the number of global optima found and the
-        total number that exist.
+                 total number that exist.
         """
         raise NotImplementedError(f"{self.__class__.__name__}: "
                                   f"You should implement this method!")

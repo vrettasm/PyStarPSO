@@ -85,8 +85,9 @@ class CompositeFunction(TestFunction):
         :param n_dim: (int) number of dimensions of the problem.
 
         :param n_func: (int | list) is either the number of basic functions
-        that we want to include selected at random, or a list with specific
-        functions that we will include in the given order.
+                       that we want to include selected at random, or a list
+                       with specific functions that we will include in the
+                       given order.
 
         :param x_min: (float) the lower bound values of the search space.
 
@@ -180,7 +181,7 @@ class CompositeFunction(TestFunction):
         :param epsilon: accuracy level of the global optimal solution.
 
         :return: a tuple with the number of global optima found and the
-        total number that exist.
+                 total number that exist.
         """
         # Get the global optima particles.
         found_optima = identify_global_optima(population, epsilon=epsilon,
