@@ -157,16 +157,20 @@
         <span class="c1"># _end_if_</span>
 
         <span class="c1"># Check if the lower and upper bounds are set.</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="c1"># Check if the boundaries are set correctly.</span>
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">)):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &quot;</span>
-                                 <span class="sa">f</span><span class="s2">&quot;Lower and Upper boundaries are incorrect.&quot;</span><span class="p">)</span>
-        <span class="c1"># _end_if_</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">lower_bound</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">upper_bound</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># Make sure they are numpy arrays.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">)</span>
 
-        <span class="c1"># Get the lower and upper bounds.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">=</span> <span class="n">lower_bound</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span> <span class="o">=</span> <span class="n">upper_bound</span>
+            <span class="c1"># Check if the boundaries are set correctly.</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;Lower and Upper boundaries are set incorrectly.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Set them to default.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># _end_if_</span>
 
         <span class="c1"># Get the valid set (categorical variables).</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_valid_set</span> <span class="o">=</span> <span class="n">valid_set</span>
@@ -231,7 +235,7 @@
 <span class="sd">        &#39;float&#39; data blocks.</span>
 
 <span class="sd">        :param params: tuple which contains the parameters</span>
-<span class="sd">        for the update equation.</span>
+<span class="sd">                       for the update equation.</span>
 
 <span class="sd">        :return: a new (float) position.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -247,11 +251,11 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">upd_integer</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">Params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        It is used to update the positions of discrete</span>
-<span class="sd">        &#39;int&#39; data blocks.</span>
+<span class="sd">        It is used to update the positions of discrete &#39;int&#39;</span>
+<span class="sd">        data blocks.</span>
 
 <span class="sd">        :param params: tuple which contains the parameters</span>
-<span class="sd">        for the update equation.</span>
+<span class="sd">                       for the update equation.</span>
 
 <span class="sd">        :return: a new (int) position.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -272,7 +276,7 @@
 <span class="sd">        &#39;binary&#39; data blocks.</span>
 
 <span class="sd">        :param params: tuple which contains the parameters</span>
-<span class="sd">        for the update equation.</span>
+<span class="sd">                       for the update equation.</span>
 
 <span class="sd">        :return: a new (binary) position.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -296,7 +300,7 @@
 <span class="sd">        &#39;categorical&#39; data blocks.</span>
 
 <span class="sd">        :param params: tuple which contains the parameters</span>
-<span class="sd">        for the update equation.</span>
+<span class="sd">                       for the update equation.</span>
 
 <span class="sd">        :return: a new array like with probabilities.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -327,7 +331,7 @@
 <span class="sd">        and their corresponding update methods as values.</span>
 
 <span class="sd">        :return: a (cached) dictionary with functions</span>
-<span class="sd">        that correspond to the correct block types.</span>
+<span class="sd">                 that correspond to the correct block types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">BlockType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">upd_float</span><span class="p">,</span>
                 <span class="n">BlockType</span><span class="o">.</span><span class="n">BINARY</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">upd_binary</span><span class="p">,</span>
@@ -420,12 +424,11 @@
     <span class="nd">@cache</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">init_methods</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a dictionary with method names as keys</span>
-<span class="sd">        and their corresponding initialization methods</span>
-<span class="sd">        as values.</span>
+<span class="sd">        Create a dictionary with method names as keys and their</span>
+<span class="sd">        corresponding initialization methods as values.</span>
 
-<span class="sd">        :return: a (cached) dictionary with functions</span>
-<span class="sd">        that correspond to the correct block types.</span>
+<span class="sd">        :return: a (cached) dictionary with functions that</span>
+<span class="sd">                 correspond to the correct block types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">BlockType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">init_float</span><span class="p">,</span>
                 <span class="n">BlockType</span><span class="o">.</span><span class="n">BINARY</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">init_binary</span><span class="p">,</span>
@@ -492,11 +495,9 @@
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">best_position</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScalarOrArray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Accessor (getter) of the data block&#39;s</span>
-<span class="sd">        best position.</span>
+<span class="sd">        Accessor (getter) of the data block&#39;s best position.</span>
 
-<span class="sd">        :return: the best recorded position</span>
-<span class="sd">        value of the data block.</span>
+<span class="sd">        :return: the best recorded position value of the data block.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_position</span>
     <span class="c1"># _end_def_</span>
@@ -504,8 +505,8 @@
     <span class="nd">@best_position</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">best_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">:</span> <span class="n">ScalarOrArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This method provides the public interface for</span>
-<span class="sd">        setting the new best position of data block.</span>
+<span class="sd">        This method provides the public interface for setting</span>
+<span class="sd">        the new best position of data block.</span>
 
 <span class="sd">        :param new_value: new best position value.</span>
 
@@ -531,8 +532,7 @@
 
 <span class="sd">        :param other: data block to compare.</span>
 
-<span class="sd">        :return: True if the data blocks are identical else</span>
-<span class="sd">        False.</span>
+<span class="sd">        :return: True if the data blocks are identical else False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Check if they are the same instance.</span>
         <span class="k">if</span> <span class="bp">self</span> <span class="ow">is</span> <span class="n">other</span><span class="p">:</span>
@@ -577,7 +577,7 @@
 <span class="sd">        This custom method overrides the default deepcopy method.</span>
 
 <span class="sd">        :param memo: Dictionary of objects already copied during</span>
-<span class="sd">        the current copying pass.</span>
+<span class="sd">                     the current copying pass.</span>
 
 <span class="sd">        :return: a new identical &quot;clone&quot; of the self object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

@@ -73,16 +73,34 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="nb">sum</span> <span class="k">as</span> <span class="n">np_sum</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">clip</span> <span class="k">as</span> <span class="n">np_clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">njit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">subtract</span> <span class="k">as</span> <span class="n">np_subtract</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">VOptions</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.engines.generic_pso</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericPSO</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">SpecialMode</span><span class="p">,</span>
+                                      <span class="n">clip_inplace</span><span class="p">,</span>
                                       <span class="n">nb_median_kl_divergence</span><span class="p">)</span>
+<span class="c1"># Local fast version of sum method.</span>
+<div class="viewcode-block" id="fast_sum">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.categorical_pso.fast_sum">[docs]</a>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fast_sum</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Local auxiliary function that is used</span>
+<span class="sd">    to sum the values of input array &#39;x&#39;.</span>
+
+<span class="sd">    :param x: the numpy array we want to sum.</span>
+
+<span class="sd">    :return: the sum(x).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+
+<span class="c1"># _end_def_</span>
+
+
 <span class="c1"># Public interface.</span>
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CategoricalPSO&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CategoricalPSO&quot;</span><span class="p">,</span> <span class="s2">&quot;fast_sum&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="CategoricalPSO">
@@ -104,13 +122,10 @@
 <span class="sd">        Default initializer of the CategoricalPSO class.</span>
 
 <span class="sd">        :param variable_sets: this is list with the sets</span>
-<span class="sd">        (one for each optimization variable).</span>
+<span class="sd">                              (one for each optimization variable).</span>
 
 <span class="sd">        :param permutation_mode: (bool) if True it will sample</span>
-<span class="sd">        permutations of the valid sets.</span>
-
-<span class="sd">        :param kwargs: these are the default parameters for the</span>
-<span class="sd">        GenericPSO.</span>
+<span class="sd">                                 permutations of the valid sets.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># First call the super initializer.</span>
@@ -157,8 +172,8 @@
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.categorical_pso.CategoricalPSO.generate_uniform_velocities">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">generate_uniform_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generates random uniform velocities for the</span>
-<span class="sd">        categorical variable positions.</span>
+<span class="sd">        Generates random uniform velocities</span>
+<span class="sd">        for the categorical variable positions.</span>
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -173,7 +188,6 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.1</span><span class="p">,</span>
                                                                 <span class="n">size</span><span class="o">=</span><span class="n">size_k</span><span class="p">[</span><span class="n">j</span><span class="p">])</span></div>
 
-        <span class="c1"># _end_for_</span>
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="CategoricalPSO.generate_random_positions">
@@ -195,9 +209,8 @@
                 <span class="n">size_j</span> <span class="o">=</span> <span class="n">size_k</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
 
                 <span class="c1"># Set the variables uniformly.</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size_j</span><span class="p">)</span><span class="o">/</span><span class="n">size_j</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">size_j</span><span class="p">)</span> <span class="o">/</span> <span class="n">size_j</span></div>
 
-        <span class="c1"># _end_for_</span>
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="CategoricalPSO.sample_categorical_values">
@@ -220,13 +233,12 @@
             <span class="c1"># particle probabilities and its valid set.</span>
             <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">set_j</span><span class="p">,</span> <span class="n">probs_j</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">local_sets</span><span class="p">,</span> <span class="n">x_pos</span><span class="p">)):</span>
 
-                <span class="c1"># Sample an item according to its probabilities.</span>
+                <span class="c1"># Sample an item according to its probability.</span>
                 <span class="c1"># WARNING: shuffle option MUST be set to False!</span>
                 <span class="n">x_pos</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">set_j</span><span class="p">,</span>
                                                  <span class="n">p</span><span class="o">=</span><span class="n">probs_j</span><span class="p">,</span>
                                                  <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
-        <span class="c1"># _end_for_</span>
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="CategoricalPSO.sample_permutation_values">
@@ -314,16 +326,15 @@
             <span class="c1"># Finally normalize them to</span>
             <span class="c1"># account for probabilities.</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">):</span>
-                <span class="n">g_best</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np_sum</span><span class="p">(</span><span class="n">g_best</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-            <span class="c1"># _end_for_</span>
+                <span class="n">g_best</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">fast_sum</span><span class="p">(</span><span class="n">g_best</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
         <span class="k">elif</span> <span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;g_best&quot;</span><span class="p">:</span>
 
             <span class="c1"># Get the (global) swarm&#39;s best particle position.</span>
             <span class="n">g_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">best_particle</span><span class="p">()</span><span class="o">.</span><span class="n">position</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown operating mode: </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="si">}</span><span class="s2">.&quot;</span>
-                             <span class="sa">f</span><span class="s2">&quot; Use &#39;fipso&#39; or &#39;g_best&#39;&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown operating mode: </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="si">}</span><span class="s2">. &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;Use &#39;fipso&#39; or &#39;g_best&#39;&quot;</span><span class="p">)</span>
         <span class="c1"># _end_if_</span>
 
         <span class="c1"># Inertia weight parameter.</span>
@@ -339,17 +350,17 @@
 
             <span class="c1"># Update all velocities.</span>
             <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">xk</span><span class="p">,</span> <span class="n">vk</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x_i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
-
-                <span class="c1"># Apply the update equations.</span>
-                <span class="n">vk</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">vk</span> <span class="o">+</span>
-                      <span class="n">c1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">np_subtract</span><span class="p">(</span><span class="n">p_best</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">xk</span><span class="p">)</span> <span class="o">+</span>
-                      <span class="n">c2</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">np_subtract</span><span class="p">(</span><span class="n">g_best</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">xk</span><span class="p">))</span>
+                <span class="c1"># NOTE: Because &#39;vk&#39; is passed by reference,</span>
+                <span class="c1"># updating the equations in three steps will</span>
+                <span class="c1"># not create a new array thus all operations</span>
+                <span class="c1"># will happen in place.</span>
+                <span class="n">vk</span> <span class="o">*=</span> <span class="n">w</span>
+                <span class="n">vk</span> <span class="o">+=</span> <span class="n">c1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">np_subtract</span><span class="p">(</span><span class="n">p_best</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">xk</span><span class="p">)</span>
+                <span class="n">vk</span> <span class="o">+=</span> <span class="n">c2</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">np_subtract</span><span class="p">(</span><span class="n">g_best</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">xk</span><span class="p">)</span>
 
                 <span class="c1"># Ensure the velocities are within limits.</span>
-                <span class="n">np_clip</span><span class="p">(</span><span class="n">vk</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">vk</span><span class="p">)</span></div>
+                <span class="n">clip_inplace</span><span class="p">(</span><span class="n">vk</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.5</span><span class="p">)</span></div>
 
-            <span class="c1"># _end_for_</span>
-        <span class="c1"># _end_for_</span>
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="CategoricalPSO.update_positions">
@@ -361,26 +372,26 @@
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Update all particle positions.</span>
-        <span class="k">for</span> <span class="n">particle</span><span class="p">,</span> <span class="n">v_upd</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
+        <span class="k">for</span> <span class="n">particle</span><span class="p">,</span> <span class="n">v_upd</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
                                    <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">):</span>
-
             <span class="c1"># Process each position separately.</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">x_j</span><span class="p">,</span> <span class="n">v_j</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">particle</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">v_upd</span><span class="p">)):</span>
-
-                <span class="c1"># Update j-th position.</span>
+                <span class="c1"># NOTE:  All operations happen inplace to avoid</span>
+                <span class="c1"># reallocating memory and provide some speed up</span>
+                <span class="c1"># to the update process.</span>
                 <span class="n">x_j</span> <span class="o">+=</span> <span class="n">v_j</span>
 
-                <span class="c1"># Ensure they stay within limits.</span>
-                <span class="n">np_clip</span><span class="p">(</span><span class="n">x_j</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">x_j</span><span class="p">)</span>
+                <span class="c1"># Ensure the values stay within limits.</span>
+                <span class="n">clip_inplace</span><span class="p">(</span><span class="n">x_j</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 
                 <span class="c1"># Ensure there will be at least one</span>
                 <span class="c1"># element with positive probability.</span>
-                <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x_j</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x_j</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)):</span>
                     <span class="n">x_j</span><span class="p">[</span><span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_j</span><span class="p">))]</span> <span class="o">=</span> <span class="mf">1.0</span>
                 <span class="c1"># _end_if_</span>
 
-                <span class="c1"># Normalize (to account for probabilities).</span>
-                <span class="n">x_j</span> <span class="o">/=</span> <span class="n">np_sum</span><span class="p">(</span><span class="n">x_j</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span></div>
+                <span class="c1"># Normalize to account for probabilities.</span>
+                <span class="n">x_j</span> <span class="o">/=</span> <span class="n">fast_sum</span><span class="p">(</span><span class="n">x_j</span><span class="p">)</span></div>
 
         <span class="c1"># _end_for_</span>
     <span class="c1"># _end_def_</span>
@@ -389,7 +400,8 @@
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.categorical_pso.CategoricalPSO.reset_all">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">reset_all</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Resets the particle positions, velocities and the statistics dictionary.</span>
+<span class="sd">        Resets the particle positions, velocities</span>
+<span class="sd">        and clear all the statistics dictionary.</span>
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -417,7 +429,7 @@
 <span class="sd">        space.</span>
 
 <span class="sd">        :return: an estimated measure (float) for the spread of</span>
-<span class="sd">        the particles.</span>
+<span class="sd">                 the particles.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Extract the positions in a 2D numpy array.</span>
         <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">positions_as_array</span><span class="p">()</span>

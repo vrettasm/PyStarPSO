@@ -73,7 +73,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="nb">sum</span> <span class="k">as</span> <span class="n">np_sum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">njit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">array</span> <span class="k">as</span> <span class="n">np_array</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">isscalar</span> <span class="k">as</span> <span class="n">np_isscalar</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">subtract</span> <span class="k">as</span> <span class="n">np_subtract</span>
 
@@ -82,6 +83,21 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">BlockType</span><span class="p">,</span>
                                       <span class="n">linear_rank_probabilities</span><span class="p">,</span>
                                       <span class="n">SpecialMode</span><span class="p">,</span> <span class="n">spread_methods</span><span class="p">)</span>
+<span class="c1"># Local fast version of sum method.</span>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fast_sum</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Local auxiliary function that is used</span>
+<span class="sd">    to sum the values of input array &#39;x&#39;.</span>
+
+<span class="sd">    :param x: the numpy array we want to sum.</span>
+
+<span class="sd">    :return: the sum(x).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="c1"># _end_def_</span>
+
+
 <span class="c1"># Public interface.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;JackOfAllTradesPSO&quot;</span><span class="p">]</span>
 
@@ -106,7 +122,7 @@
 <span class="sd">        Default initializer of the JackOfAllTradesPSO class.</span>
 
 <span class="sd">        :param permutation_mode: (bool) if True it will sample</span>
-<span class="sd">        permutations of the valid sets.</span>
+<span class="sd">                                 permutations of the valid sets.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Call the super initializer.</span>
@@ -154,7 +170,6 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">JackOfAllTradesPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">,</span>
                                                                         <span class="n">size</span><span class="o">=</span><span class="n">n_vars</span><span class="p">)</span></div>
 
-        <span class="c1"># _end_for_</span>
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="JackOfAllTradesPSO.generate_random_positions">
@@ -181,7 +196,7 @@
 <span class="sd">        valid sets for each data block.</span>
 
 <span class="sd">        :param positions: the container with the lists of probabilities</span>
-<span class="sd">        (one list for each position).</span>
+<span class="sd">                          (one list for each position).</span>
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -201,7 +216,6 @@
                                                                     <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                                                     <span class="n">p</span><span class="o">=</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span></div>
 
-            <span class="c1"># _end_for_</span>
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="JackOfAllTradesPSO.sample_permutation_values">
@@ -215,7 +229,7 @@
 <span class="sd">        and that they have the same valid set of values.</span>
 
 <span class="sd">        :param positions: the container with the lists of probabilities</span>
-<span class="sd">        (one list for each position).</span>
+<span class="sd">                          (one list for each position).</span>
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -300,8 +314,7 @@
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">):</span>
                 <span class="c1"># Avoid errors with scalar values.</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">np_isscalar</span><span class="p">(</span><span class="n">g_best</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
-                    <span class="n">g_best</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np_sum</span><span class="p">(</span><span class="n">g_best</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-            <span class="c1"># _end_for_</span>
+                    <span class="n">g_best</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">fast_sum</span><span class="p">(</span><span class="n">np_array</span><span class="p">(</span><span class="n">g_best</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
 
         <span class="k">elif</span> <span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;g_best&quot;</span><span class="p">:</span>
 
@@ -317,7 +330,7 @@
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">particle_i</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
                                                      <span class="n">cogntv</span><span class="p">,</span> <span class="n">social</span><span class="p">)):</span>
-            <span class="c1"># Get the (old) position of the i-th particle (as list).</span>
+            <span class="c1"># Get the old position (as list).</span>
             <span class="n">x_old</span> <span class="o">=</span> <span class="n">particle_i</span><span class="o">.</span><span class="n">position</span>
 
             <span class="c1"># Get the personal best position.</span>
@@ -325,12 +338,14 @@
 
             <span class="c1"># Update all velocity values.</span>
             <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">xk</span><span class="p">,</span> <span class="n">vk</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x_old</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
-                <span class="c1"># Apply the update equations.</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">vk</span> <span class="o">+</span>
-                                          <span class="n">c1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">np_subtract</span><span class="p">(</span><span class="n">p_best</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">xk</span><span class="p">)</span> <span class="o">+</span>
-                                          <span class="n">c2</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">np_subtract</span><span class="p">(</span><span class="n">g_best</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">xk</span><span class="p">))</span></div>
+                <span class="c1"># NOTE: Because &#39;vk&#39; is passed by reference,</span>
+                <span class="c1"># updating the equations in three steps will</span>
+                <span class="c1"># not create a new array thus all operations</span>
+                <span class="c1"># will happen in place.</span>
+                <span class="n">vk</span> <span class="o">*=</span> <span class="n">w</span>
+                <span class="n">vk</span> <span class="o">+=</span> <span class="n">c1</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">np_subtract</span><span class="p">(</span><span class="n">p_best</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">xk</span><span class="p">)</span>
+                <span class="n">vk</span> <span class="o">+=</span> <span class="n">c2</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">np_subtract</span><span class="p">(</span><span class="n">g_best</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">xk</span><span class="p">)</span></div>
 
-        <span class="c1"># _end_for_</span>
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="JackOfAllTradesPSO.update_positions">
@@ -341,12 +356,13 @@
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="c1"># Evaluates all the particles.</span>
         <span class="k">for</span> <span class="n">particle</span><span class="p">,</span> <span class="n">velocity</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
                                       <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">):</span>
-            <span class="c1"># This calls internally the update method</span>
-            <span class="c1"># for each data block.</span>
+            <span class="c1"># NOTE:  This calls internally the correct</span>
+            <span class="c1"># update method for each data block so the</span>
+            <span class="c1"># positions are updated according to their</span>
+            <span class="c1"># type.</span>
             <span class="n">particle</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">velocity</span></div>
 
     <span class="c1"># _end_def_</span>
@@ -355,7 +371,8 @@
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.reset_all">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">reset_all</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Resets the particle positions, velocities and the statistics dictionary.</span>
+<span class="sd">        Resets the particle positions, velocities</span>
+<span class="sd">        and clear all the statistics dictionary.</span>
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

@@ -69,17 +69,30 @@
            <div itemprop="articleBody">
              
   <h1>Source code for star_pso.engines.binary_pso</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">zeros_like</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">exp</span> <span class="k">as</span> <span class="n">np_exp</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">clip</span> <span class="k">as</span> <span class="n">np_clip</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">njit</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">VOptions</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.engines.generic_pso</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericPSO</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="n">nb_median_hamming_distance</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">clip_inplace</span><span class="p">,</span>
+                                      <span class="n">nb_median_hamming_distance</span><span class="p">)</span>
+<div class="viewcode-block" id="logistic">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.binary_pso.logistic">[docs]</a>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">logistic</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Local auxiliary function that is used to compute</span>
+<span class="sd">    the logistic values of input array &#39;x&#39;.</span>
+
+<span class="sd">    :param x: the numpy array we want to get the logistic values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span></div>
+
+<span class="c1"># _end_def_</span>
+
 
 <span class="c1"># Public interface.</span>
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BinaryPSO&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BinaryPSO&quot;</span><span class="p">,</span> <span class="s2">&quot;logistic&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="BinaryPSO">
@@ -97,21 +110,24 @@
 <span class="sd">    pp: 4104–4108.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_min</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">v_max</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">v_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Default initializer of the BinaryPSO class.</span>
 
-<span class="sd">        :param v_min: lower velocity bound.</span>
+<span class="sd">        :param v_min: (float) minimum value for the velocity parameter.</span>
 
-<span class="sd">        :param v_max: upper velocity bound.</span>
+<span class="sd">        :param v_max: (float) maximum value for the velocity parameter.</span>
+
+<span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># Call the super initializer with the input parameters.</span>
+        <span class="c1"># Call the super initializer with default parameters.</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lower_bound</span><span class="o">=</span><span class="n">v_min</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="n">v_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Generate initial particle velocities.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">,</span>
-                                                  <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span>
+                                                  <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">,</span>
+                                                  <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="BinaryPSO.update_velocities">
@@ -127,9 +143,10 @@
         <span class="c1"># Call the method of the parent class.</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update_velocities</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
-        <span class="c1"># We clip the velocities in [V_min, V_max].</span>
-        <span class="n">np_clip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">)</span></div>
+        <span class="c1"># Clip velocities in [v_min, v_max].</span>
+        <span class="n">clip_inplace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">)</span></div>
 
     <span class="c1"># _end_def_</span>
 
@@ -142,20 +159,20 @@
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Generate random vectors in U(0, 1).</span>
-        <span class="n">r_uniform</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
-                                           <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
+        <span class="n">uniform_values</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">),</span>
+                                               <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="c1"># Create a matrix with zeros.</span>
-        <span class="n">new_positions</span> <span class="o">=</span> <span class="n">zeros_like</span><span class="p">(</span><span class="n">r_uniform</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">new_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">uniform_values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
         <span class="c1"># Compute the logistic values.</span>
-        <span class="n">s_arr</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np_exp</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">))</span>
+        <span class="n">logistic_values</span> <span class="o">=</span> <span class="n">logistic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">)</span>
 
-        <span class="c1"># Where the logistic function values are</span>
-        <span class="c1"># higher than the random value set to 1.</span>
-        <span class="n">new_positions</span><span class="p">[</span><span class="n">s_arr</span> <span class="o">&gt;</span> <span class="n">r_uniform</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># Where the logistic function values are higher</span>
+        <span class="c1"># than the random values set to one.</span>
+        <span class="n">new_positions</span><span class="p">[</span><span class="n">logistic_values</span> <span class="o">&gt;</span> <span class="n">uniform_values</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 
-        <span class="c1"># Update all particle positions.</span>
-        <span class="k">for</span> <span class="n">particle</span><span class="p">,</span> <span class="n">x_new</span><span class="p">,</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
+        <span class="c1"># Update all particle new positions.</span>
+        <span class="k">for</span> <span class="n">particle</span><span class="p">,</span> <span class="n">x_new</span><span class="p">,</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
                                     <span class="n">new_positions</span><span class="p">):</span>
             <span class="n">particle</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">x_new</span></div>
 
@@ -172,10 +189,13 @@
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Generate random BINARY positions Bin(0, 1).</span>
-        <span class="n">binary_positions</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                   <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
+        <span class="n">binary_positions</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+                                                   <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                   <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span>
+                                                         <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
         <span class="c1"># Assign the new positions in the swarm.</span>
-        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">x_new</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="p">,</span> <span class="n">binary_positions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">x_new</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
+                            <span class="n">binary_positions</span><span class="p">):</span>
             <span class="n">p</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">x_new</span></div>
 
     <span class="c1"># _end_def_</span>
@@ -184,13 +204,16 @@
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO.reset_all">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">reset_all</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Resets the particle positions, velocities and the statistics dictionary.</span>
+<span class="sd">        Resets the particle positions, velocities</span>
+<span class="sd">        and clear all the statistics dictionary.</span>
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Reset particle velocities.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">,</span>
-                                                  <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span>
+                                                  <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">,</span>
+                                                  <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
         <span class="c1"># Generate random binary positions.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_positions</span><span class="p">()</span>
 
@@ -212,7 +235,7 @@
 <span class="sd">        space.</span>
 
 <span class="sd">        :return: an estimated measure (float) for the spread of</span>
-<span class="sd">        the particles.</span>
+<span class="sd">                 the particles.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Extract the positions in a 2D numpy array.</span>
         <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">positions_as_array</span><span class="p">()</span>

@@ -147,7 +147,7 @@
 <span class="c1"># _end_def_</span>
 
 
-<span class="c1"># Define a dictionary will all the basic functions.</span>
+<span class="c1"># Define a dictionary with all the basic functions.</span>
 <span class="n">BASIC_FUNCTIONS</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;f_sphere&quot;</span><span class="p">:</span> <span class="n">f_sphere</span><span class="p">,</span>
                          <span class="s2">&quot;f_griewank&quot;</span><span class="p">:</span> <span class="n">f_griewank</span><span class="p">,</span>
                          <span class="s2">&quot;f_rastrigin&quot;</span><span class="p">:</span> <span class="n">f_rastrigin</span><span class="p">,</span>
@@ -159,7 +159,7 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">CompositeFunction</span><span class="p">(</span><span class="n">TestFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates a Composite Function using a weighting average</span>
-<span class="sd">    of basic functions, as defined in the &#39;basic_f&#39; dict.</span>
+<span class="sd">    of basic functions, as defined in the &#39;basic_f&#39; list.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_func</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">list</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
@@ -170,8 +170,9 @@
 <span class="sd">        :param n_dim: (int) number of dimensions of the problem.</span>
 
 <span class="sd">        :param n_func: (int | list) is either the number of basic functions</span>
-<span class="sd">        that we want to include selected at random, or a list with specific</span>
-<span class="sd">        functions that we will include in the given order.</span>
+<span class="sd">                       that we want to include selected at random, or a list</span>
+<span class="sd">                       with specific functions that we will include in the</span>
+<span class="sd">                       given order.</span>
 
 <span class="sd">        :param x_min: (float) the lower bound values of the search space.</span>
 
@@ -204,8 +205,8 @@
                 <span class="c1"># Create a new list with the given basic functions.</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">basic_f</span> <span class="o">=</span> <span class="p">[</span><span class="n">BASIC_FUNCTIONS</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">n_func</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">. &quot;</span>
-                               <span class="sa">f</span><span class="s2">&quot;Valid options are: &quot;</span><span class="p">,</span> <span class="n">BASIC_FUNCTIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown basic function. &quot;</span>
+                               <span class="sa">f</span><span class="s2">&quot;Valid options are: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">BASIC_FUNCTIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &#39;n_func&#39; must either be an int in [2, 20], or a list.&quot;</span><span class="p">)</span>
     <span class="c1"># _end_def_</span>
@@ -235,7 +236,7 @@
             <span class="n">num_f</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_f</span><span class="p">)</span>
 
             <span class="c1"># Square of sigma values.</span>
-            <span class="c1"># For simplicity we set them to one.</span>
+            <span class="c1"># For simplicity, we set them to one.</span>
             <span class="n">sigma_sq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_f</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
             <span class="c1"># Compute the weights.</span>
@@ -270,7 +271,7 @@
 <span class="sd">        :param epsilon: accuracy level of the global optimal solution.</span>
 
 <span class="sd">        :return: a tuple with the number of global optima found and the</span>
-<span class="sd">        total number that exist.</span>
+<span class="sd">                 total number that exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Get the global optima particles.</span>
         <span class="n">found_optima</span> <span class="o">=</span> <span class="n">identify_global_optima</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span>

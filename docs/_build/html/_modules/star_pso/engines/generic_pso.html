@@ -111,7 +111,7 @@
 
     <span class="c1"># Object variables.</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_swarm&quot;</span><span class="p">,</span> <span class="s2">&quot;_velocities&quot;</span><span class="p">,</span> <span class="s2">&quot;objective_func&quot;</span><span class="p">,</span> <span class="s2">&quot;_upper_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_lower_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_stats&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;_items&quot;</span><span class="p">,</span> <span class="s2">&quot;_f_eval&quot;</span><span class="p">,</span> <span class="s2">&quot;n_cpus&quot;</span><span class="p">,</span> <span class="s2">&quot;n_rows&quot;</span><span class="p">,</span> <span class="s2">&quot;n_cols&quot;</span><span class="p">,</span> <span class="s2">&quot;_special_mode&quot;</span><span class="p">,</span> <span class="s2">&quot;_iteration&quot;</span><span class="p">)</span>
+                 <span class="s2">&quot;_items&quot;</span><span class="p">,</span> <span class="s2">&quot;_f_evals&quot;</span><span class="p">,</span> <span class="s2">&quot;n_cpus&quot;</span><span class="p">,</span> <span class="s2">&quot;n_rows&quot;</span><span class="p">,</span> <span class="s2">&quot;n_cols&quot;</span><span class="p">,</span> <span class="s2">&quot;_special_mode&quot;</span><span class="p">,</span> <span class="s2">&quot;_iteration&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_swarm</span><span class="p">:</span> <span class="n">Swarm</span><span class="p">,</span> <span class="n">obj_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
                  <span class="n">lower_bound</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -143,15 +143,28 @@
 
         <span class="c1"># Make sure the fitness function is indeed callable.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj_func</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: Objective function is not callable.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;Objective function is not callable.&quot;</span><span class="p">)</span>
         <span class="c1"># _end_if_</span>
 
         <span class="c1"># Get the objective function.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">objective_func</span> <span class="o">=</span> <span class="n">obj_func</span>
 
-        <span class="c1"># Set the upper/lower bounds of the search space.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">)</span>
+        <span class="c1"># Check if the lower and upper bounds are set.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">lower_bound</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">upper_bound</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># Make sure they are numpy arrays.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">)</span>
+
+            <span class="c1"># Check if the boundaries are set correctly.</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;Lower and Upper bounds are set incorrectly.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Set them to default.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># _end_if_</span>
 
         <span class="c1"># Get the number of requested CPUs.</span>
         <span class="k">if</span> <span class="n">n_cpus</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -166,6 +179,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">n_cpus</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">GenericPSO</span><span class="o">.</span><span class="n">MAX_CPUs</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_cpus</span><span class="p">)))</span>
         <span class="c1"># _end_if_</span>
 
+        <span class="c1"># Log the number of CPUs.</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> uses </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_cpus</span><span class="si">}</span><span class="s2"> CPUs.&quot;</span><span class="p">)</span>
+
         <span class="c1"># Dictionary with statistics.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
 
@@ -175,14 +191,17 @@
         <span class="c1"># Set velocities to None.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c1"># Set the function evaluation to zero.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_f_eval</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Set the function evaluation counter to zero.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_f_evals</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># Set the special mode to Normal.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_special_mode</span> <span class="o">=</span> <span class="n">SpecialMode</span><span class="o">.</span><span class="n">NORMAL</span>
 
         <span class="c1"># Set the iteration counter to zero.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_iteration</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Log the object initialization.</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> initialization complete.&quot;</span><span class="p">)</span>
     <span class="c1"># _end_def_</span>
 
     <span class="nd">@property</span>
@@ -206,7 +225,7 @@
         <span class="c1"># positive values.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &quot;</span>
-                               <span class="sa">f</span><span class="s2">&quot;Iteration value should be positive int: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                               <span class="sa">f</span><span class="s2">&quot;Iteration value should be positive int: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="c1"># Update the iteration value.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_iteration</span> <span class="o">=</span> <span class="n">value</span>
     <span class="c1"># _end_def_</span>
@@ -261,13 +280,13 @@
     <span class="c1"># _end_def_</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">f_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f_evals</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Accessor method that returns the value of the f_eval.</span>
 
 <span class="sd">        :return: (int) the counted number of function evaluations.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f_eval</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f_evals</span>
     <span class="c1"># _end_def_</span>
 
     <span class="nd">@property</span>
@@ -339,7 +358,7 @@
 <span class="sd">        function. The parallel_mode is optional.</span>
 
 <span class="sd">        :param parallel_mode: (bool) enables parallel computation of the objective</span>
-<span class="sd">        function. Default is False (serial execution).</span>
+<span class="sd">                              function. Default is False (serial execution).</span>
 
 <span class="sd">        :param backend: backend for the parallel Joblib (&#39;threads&#39; or &#39;processes&#39;).</span>
 
@@ -406,7 +425,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;f_opt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_max</span><span class="p">)</span>
 
         <span class="c1"># Update the counter of function evaluations.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_f_eval</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="o">.</span><span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_f_evals</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="o">.</span><span class="n">size</span>
 
         <span class="c1"># Update local best for consistent results.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="o">.</span><span class="n">update_local_best</span><span class="p">()</span>
@@ -425,7 +444,11 @@
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_f_eval</span> <span class="o">=</span> <span class="mi">0</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_f_evals</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Log the clearing.</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> &quot;</span>
+                     <span class="sa">f</span><span class="s2">&quot;&#39;f_eval_counter&#39; and &#39;stats&#39; dictionary have been cleared.&quot;</span><span class="p">)</span></div>
 
     <span class="c1"># _end_def_</span>
 
@@ -497,11 +520,11 @@
 <span class="sd">        bigger weight in the calculation.</span>
 
 <span class="sd">        :param population: list of particles which we want to consider in the calculation</span>
-<span class="sd">        of the fully informed best position.</span>
+<span class="sd">                           of the fully informed best position.</span>
 
 <span class="sd">        :param use_best: if True it will use the best_position of each particle to estimate</span>
-<span class="sd">        the new weighted best position. Default is False, which means that only the current</span>
-<span class="sd">        position is used.</span>
+<span class="sd">                         the new weighted best position. Default is False, which means that</span>
+<span class="sd">                         only the current position is used.</span>
 
 <span class="sd">        :return: the weighted best position &#39;w_best&#39; (as numpy array).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -585,7 +608,8 @@
 <span class="sd">        from the VOptions tuple, to calculate the local best positions.</span>
 
 <span class="sd">        :param operating_mode: the operating mode of the algorithm. The default value</span>
-<span class="sd">        is set to be the &#39;g_best&#39;, because it works with all the PSO implementations.</span>
+<span class="sd">                               is set to be the &#39;g_best&#39; because it works with all the</span>
+<span class="sd">                               PSO implementations.</span>
 
 <span class="sd">        :return: the local best positions (as numpy array).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -642,9 +666,10 @@
         <span class="c1"># Extract the best (historical) positions.</span>
         <span class="n">x_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">best_positions_as_array</span><span class="p">()</span>
 
-        <span class="c1"># Update the new velocity equations.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">w0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">+</span>
-                            <span class="n">cogntv</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_best</span> <span class="o">-</span> <span class="n">x_current</span><span class="p">)</span> <span class="o">+</span> <span class="n">social</span> <span class="o">*</span> <span class="p">(</span><span class="n">l_best</span> <span class="o">-</span> <span class="n">x_current</span><span class="p">))</span></div>
+        <span class="c1"># Update the new velocity equations (inplace).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">*=</span> <span class="n">params</span><span class="o">.</span><span class="n">w0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">+=</span> <span class="n">cogntv</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_best</span> <span class="o">-</span> <span class="n">x_current</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">+=</span> <span class="n">social</span> <span class="o">*</span> <span class="p">(</span><span class="n">l_best</span> <span class="o">-</span> <span class="n">x_current</span><span class="p">)</span></div>
 
     <span class="c1"># _end_def_</span>
 
@@ -684,7 +709,7 @@
 <span class="sd">        more advanced techniques.</span>
 
 <span class="sd">        :param options: (dict) contains the previous estimates of</span>
-<span class="sd">        the PSO parameters.</span>
+<span class="sd">                        the PSO parameters.</span>
 
 <span class="sd">        :return: True if the update happened, False otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -765,28 +790,30 @@
 <span class="sd">        :param max_it: (int) maximum number of iterations in the optimization loop.</span>
 
 <span class="sd">        :param f_tol: (float) tolerance in the difference between the optimal function</span>
-<span class="sd">        value of two consecutive iterations. It is used to determine the convergence of</span>
-<span class="sd">        the swarm. If this value is None (default) the algorithm will terminate using</span>
-<span class="sd">        the max_it value.</span>
+<span class="sd">                       value of two consecutive iterations. It is used to determine the</span>
+<span class="sd">                       convergence of the swarm. If this value is None (default) the</span>
+<span class="sd">                       algorithm will terminate using the max_it value.</span>
 
 <span class="sd">        :param options: dictionary with update equations options (&#39;w&#39;: inertia weight,</span>
-<span class="sd">        &#39;c1&#39;: cognitive coefficient, &#39;c2&#39;: social coefficient, &#39;mode&#39;: operation mode).</span>
+<span class="sd">                        &#39;c1&#39;: cognitive coefficient, &#39;c2&#39;: social coefficient, &#39;mode&#39;:</span>
+<span class="sd">                        operation mode).</span>
 
 <span class="sd">        :param parallel: (bool) flag that enables parallel computation of the objective</span>
-<span class="sd">        function.</span>
+<span class="sd">                         function.</span>
 
 <span class="sd">        :param reset_swarm: (bool) if True it will reset the positions of the swarm to</span>
-<span class="sd">        uniformly random respecting the boundaries of each space dimension.</span>
+<span class="sd">                            uniformly random respecting the boundaries of each space dimension.</span>
 
 <span class="sd">        :param f_max_eval: (int) it sets an upper limit of function evaluations. If the</span>
-<span class="sd">        number is exceeded the algorithm stops.</span>
+<span class="sd">                            number is exceeded the algorithm stops.</span>
 
 <span class="sd">        :param adapt_params: (bool) If set to &quot;True&quot; it will allow the inertia, cognitive</span>
-<span class="sd">        and social parameters to adapt according to the convergence of the swarm population</span>
-<span class="sd">        to a single solution. Default is set to &quot;False&quot;.</span>
+<span class="sd">                             and social parameters to adapt according to the convergence</span>
+<span class="sd">                             of the swarm population to a single solution. Default is set</span>
+<span class="sd">                             to &quot;False&quot;.</span>
 
 <span class="sd">        :param verbose: (bool) if True it will display periodically information about the</span>
-<span class="sd">        current optimal function values.</span>
+<span class="sd">                        current optimal function values.</span>
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -842,7 +869,7 @@
             <span class="c1"># _end_if_</span>
 
             <span class="c1"># Check for the maximum function evaluations.</span>
-            <span class="k">if</span> <span class="n">f_max_eval</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f_eval</span> <span class="o">&gt;=</span> <span class="n">f_max_eval</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">f_max_eval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f_evals</span> <span class="o">&gt;=</span> <span class="n">f_max_eval</span><span class="p">:</span>
                 <span class="c1"># Update optimal function.</span>
                 <span class="n">f_opt</span> <span class="o">=</span> <span class="n">f_new</span>
 
@@ -864,7 +891,7 @@
             <span class="c1"># _end_if_</span>
 
             <span class="c1"># Check for convergence.</span>
-            <span class="k">if</span> <span class="n">f_tol</span> <span class="ow">and</span> <span class="n">isclose</span><span class="p">(</span><span class="n">f_new</span><span class="p">,</span> <span class="n">f_opt</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="n">f_tol</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">f_tol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">isclose</span><span class="p">(</span><span class="n">f_new</span><span class="p">,</span> <span class="n">f_opt</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="n">f_tol</span><span class="p">):</span>
                 <span class="c1"># Update optimal function.</span>
                 <span class="n">f_opt</span> <span class="o">=</span> <span class="n">f_new</span>
 

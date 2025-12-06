@@ -12,6 +12,14 @@ star_pso.engines.binary\_pso module
    :undoc-members:
    :show-inheritance:
 
+star_pso.engines.quantum\_pso module
+------------------------------------
+
+.. automodule:: star_pso.engines.quantum_pso
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 star_pso.engines.categorical\_pso module
 ----------------------------------------
 

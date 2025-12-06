@@ -69,13 +69,12 @@
            <div itemprop="articleBody">
              
   <h1>Source code for star_pso.engines.integer_pso</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">clip</span> <span class="k">as</span> <span class="n">np_clip</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">rint</span> <span class="k">as</span> <span class="n">np_rint</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">rint</span> <span class="k">as</span> <span class="n">np_rint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.engines.generic_pso</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericPSO</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="n">nb_median_taxicab_distance</span>
-
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">clip_inplace</span><span class="p">,</span>
+                                      <span class="n">nb_median_taxicab_distance</span><span class="p">)</span>
 
 <span class="c1"># Public interface.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;IntegerPSO&quot;</span><span class="p">]</span>
@@ -104,8 +103,8 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lower_bound</span><span class="o">=</span><span class="n">x_min</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="n">x_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Generate initial particle velocities.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">,</span>
-                                                  <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span>
+                                                                    <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="IntegerPSO.update_positions">
@@ -121,11 +120,12 @@
                                 <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
         <span class="c1"># Ensure the particle stays within bounds.</span>
-        <span class="n">np_clip</span><span class="p">(</span><span class="n">new_positions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">,</span>
-                <span class="n">out</span><span class="o">=</span><span class="n">new_positions</span><span class="p">)</span>
+        <span class="n">clip_inplace</span><span class="p">(</span><span class="n">new_positions</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">)</span>
 
         <span class="c1"># Update all particle positions.</span>
-        <span class="k">for</span> <span class="n">particle</span><span class="p">,</span> <span class="n">x_new</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
+        <span class="k">for</span> <span class="n">particle</span><span class="p">,</span> <span class="n">x_new</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
                                    <span class="n">new_positions</span><span class="p">):</span>
             <span class="n">particle</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">x_new</span></div>
 
@@ -145,9 +145,11 @@
         <span class="n">integer_positions</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span>
                                                     <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">,</span>
                                                     <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                    <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
+                                                    <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
         <span class="c1"># Assign the new positions in the swarm.</span>
-        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">x_new</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="p">,</span> <span class="n">integer_positions</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">x_new</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
+                            <span class="n">integer_positions</span><span class="p">):</span>
             <span class="n">p</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">x_new</span></div>
 
     <span class="c1"># _end_def_</span>
@@ -156,13 +158,15 @@
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.integer_pso.IntegerPSO.reset_all">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">reset_all</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Resets the particle positions, velocities and the statistics dictionary.</span>
+<span class="sd">        Resets the particle positions, velocities</span>
+<span class="sd">        and clear all the statistics dictionary.</span>
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Reset particle velocities.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">,</span>
-                                                  <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
+                                                  <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span>
         <span class="c1"># Generate random integer positions.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_positions</span><span class="p">()</span>
 
@@ -183,7 +187,7 @@
 <span class="sd">        indicates the swarm is still spread around the search space.</span>
 
 <span class="sd">        :return: an estimated measure (float) for the spread of</span>
-<span class="sd">        the particles.</span>
+<span class="sd">                 the particles.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Extract the positions in a 2D numpy array.</span>
         <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">positions_as_array</span><span class="p">()</span>
