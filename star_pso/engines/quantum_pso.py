@@ -110,8 +110,7 @@ class QuantumPSO(GenericPSO):
     def generate_random_positions(self) -> None:
         """
         Generate the population of particles positions by
-        sampling discrete binary random numbers within the
-        {0, 1} set.
+        sampling uniform random numbers within the limits.
 
         :return: None.
         """
