@@ -49,7 +49,7 @@ class QuantumPSO(GenericPSO):
         :return: None.
         """
         # Hardcode the contraction / expansion coefficient.
-        beta_coeff = 0.5
+        beta_coefficient = 0.5
 
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
@@ -77,7 +77,7 @@ class QuantumPSO(GenericPSO):
         p_best += (1.0 - param_phi) * tile(g_best, (self.n_rows, 1))
 
         # Compute the offset.
-        offset = - beta_coeff * (m_best - x_current) * log(param_u)
+        offset = - beta_coefficient * (m_best - x_current) * log(param_u)
 
         # Switch randomly.
         if self.rng.random() > 0.5:
@@ -102,7 +102,8 @@ class QuantumPSO(GenericPSO):
         :return: None.
         """
         # Update all particle positions.
-        for particle, x_new in zip(self.swarm, self._velocities):
+        for particle, x_new in zip(self.swarm.population,
+                                   self._velocities):
             particle.position = x_new
     # _end_def_
 

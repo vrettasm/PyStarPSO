@@ -53,7 +53,8 @@ class StandardPSO(GenericPSO):
         clip_inplace(new_positions, self.lower_bound, self.upper_bound)
 
         # Update all particle positions.
-        for particle, x_new in zip(self.swarm, new_positions):
+        for particle, x_new in zip(self.swarm.population,
+                                   new_positions):
             particle.position = x_new
     # _end_def_
 
@@ -70,7 +71,8 @@ class StandardPSO(GenericPSO):
                                                    size=(self.n_rows,
                                                          self.n_cols))
         # Assign the new positions in the swarm.
-        for p, x_new in zip(self.swarm, uniform_positions):
+        for p, x_new in zip(self.swarm.population,
+                            uniform_positions):
             p.position = x_new
     # _end_def_
 

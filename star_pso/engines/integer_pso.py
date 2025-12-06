@@ -50,7 +50,8 @@ class IntegerPSO(GenericPSO):
                      self.upper_bound)
 
         # Update all particle positions.
-        for particle, x_new in zip(self.swarm, new_positions):
+        for particle, x_new in zip(self.swarm.population,
+                                   new_positions):
             particle.position = x_new
     # _end_def_
 
@@ -69,7 +70,8 @@ class IntegerPSO(GenericPSO):
                                                     size=(self.n_rows,
                                                           self.n_cols))
         # Assign the new positions in the swarm.
-        for p, x_new in zip(self.swarm, integer_positions):
+        for p, x_new in zip(self.swarm.population,
+                            integer_positions):
             p.position = x_new
     # _end_def_
 
