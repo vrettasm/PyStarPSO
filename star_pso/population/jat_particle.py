@@ -27,12 +27,22 @@ class JatParticle(object):
         # Define the particle as a list of DataBlocks.
         self._container = container
 
-        # Initially the function value is set to -Inf.
+        # Make sure it's the correct type.
+        if not isinstance(value, float):
+            raise TypeError(f"{self.__class__.__name__}: Value must be a float")
+        # _end_if_
+
+        # Assign the initial value.
         self._value = value
 
-        # Initialize the best (historical) value to -Inf.
+        # Make sure it's the correct type.
+        if not isinstance(best_value, float):
+            raise TypeError(f"{self.__class__.__name__}: Best value must be a float")
+        # _end_if_
+
+        # Assign the initial best value.
         self._best_value = best_value
-    # ___
+    # _end_def_
 
     @property
     def container(self) -> list[DataBlock]:
