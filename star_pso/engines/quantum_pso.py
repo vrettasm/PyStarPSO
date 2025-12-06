@@ -77,13 +77,13 @@ class QuantumPSO(GenericPSO):
         p_best += (1.0 - param_phi) * tile(g_best, (self.n_rows, 1))
 
         # Compute the offset.
-        offset = - beta_coefficient * (m_best - x_current) * log(param_u)
+        p_offset = - beta_coefficient * (m_best - x_current) * log(param_u)
 
         # Switch randomly.
         if self.rng.random() > 0.5:
-            p_best += offset
+            p_best += p_offset
         else:
-            p_best -= offset
+            p_best -= p_offset
         # _end_if_
 
         # Ensure we stay within limits.
