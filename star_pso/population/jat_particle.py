@@ -11,7 +11,7 @@ class JatParticle(object):
     """
     Description:
 
-        Implements a dataclass for the 'jack of all trades' particle.
+        Implements a dataclass for the 'Jack of all trades' particle.
         This dataclass maintains a container (list of data blocks) and
         the rest of the information is held in its data blocks.
     """
