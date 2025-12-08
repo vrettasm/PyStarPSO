@@ -453,7 +453,8 @@ def cost_function(func: Callable = None, minimize: bool = False):
     :param func: the function to be optimized.
 
     :param minimize: if True it will return the negative function
-                     value to allow for the minimization. Default is False.
+                     value to allow for the minimization. Default
+                     is False.
 
     :return: the 'function_wrapper' method.
     """
