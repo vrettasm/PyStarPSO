@@ -35,9 +35,9 @@ class CategoricalPSO(GenericPSO):
 
     This implements a simplified variant of the original ICPSO algorithm as described in:
 
-    Strasser, S., Goodman, R., Sheppard, J., et al. "A new discrete particle swarm optimization
-    algorithm", Proceedings of 2016 Genetic and Evolutionary Computation Conference (GECCO) 16,
-    ACM Press, Denver, Colorado, USA, pp. 53-60.
+    Strasser, S., Goodman, R., Sheppard, J., et al. "A new discrete particle swarm
+    optimization algorithm", Proceedings of 2016 Genetic and Evolutionary Computation
+    Conference (GECCO) 16, ACM Press, Denver, Colorado, USA, pp. 53-60.
     """
 
     def __init__(self, variable_sets: list, permutation_mode: bool = False,
