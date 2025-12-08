@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "StarPSO"
+version = "0.1.0"
+description = "Particle Swarm Optimization algorithms toolbox in Python3"
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.10"
+license = { text = "GPL-3.0" }
+authors = [
+    { name = "Michalis Vrettas, PhD", email = "michail.vrettas@gmail.com" }
+]
+keywords = ["optimization", "particle swarm inteligence", "algorithms"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GPL-3.0 License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy",
+    "numba",
+    "scipy",
+    "joblib",
+]
