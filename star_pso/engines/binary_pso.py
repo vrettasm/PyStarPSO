@@ -6,19 +6,19 @@ from star_pso.engines.generic_pso import GenericPSO
 from star_pso.utils.auxiliary import (clip_inplace,
                                       nb_median_hamming_distance)
 @njit
-def logistic(x) -> np.ndarray:
+def fast_logistic(x: np.ndarray) -> np.ndarray:
     """
     Local auxiliary function that is used to compute
     the logistic values of input array 'x'.
 
-    :param x: the numpy array we want to get the logistic values.
+    :param x: the numpy array with the logistic values.
     """
     return 1.0 / (1.0 + np.exp(-x))
 # _end_def_
 
 
 # Public interface.
-__all__ = ["BinaryPSO", "logistic"]
+__all__ = ["BinaryPSO", "fast_logistic"]
 
 
 class BinaryPSO(GenericPSO):
@@ -84,7 +84,7 @@ class BinaryPSO(GenericPSO):
         new_positions = np.zeros_like(uniform_values, dtype=int)
 
         # Compute the logistic values.
-        logistic_values = logistic(self._velocities)
+        logistic_values = fast_logistic(self._velocities)
 
         # Where the logistic function values are higher
         # than the random values set to one.
