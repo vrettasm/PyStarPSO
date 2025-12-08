@@ -1,3 +1,4 @@
 ./idea/
 ./venv/
 ./examples/.ipynb_checkpoints/
+./experiments/.ipynb_checkpoints/
