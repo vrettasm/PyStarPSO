@@ -29,13 +29,13 @@ We have implemented the following benchmark functions:
 | [Himmelbleau](star_pso/benchmarks/himmelblau.py)                            |       2       |         4         |
 | [Gaussian Mixture](star_pso/benchmarks/gaussian_mixture.py)                 |       2       |         2         |
 | [Six Hump Camel Back](star_pso/benchmarks/six_hump_camel_back.py)           |       2       |         2         |
-| [Rastrigin](star_pso/benchmarks/rastrigin.py)                              |       D       |         K         |
+| [Rastrigin](star_pso/benchmarks/rastrigin.py)                               |       D       |         K         |
 | [Shubert](star_pso/benchmarks/shubert.py)                                   |       D       |      $D*3^D$      |
 | [Vincent](star_pso/benchmarks/vincent.py)                                   |       D       |       $6^D$       |
 
 NOTE: The "Shubert" and "Vincent" functions were tested with D = 2, 3 (for simplicity). The code however
-is generalized and can solve any number of dimensions. Also the "Rastrigin" function was tested for D = 2, 4
-and K = 6 and 12 respectively.
+is generalized and can solve any number of dimensions. Also, the "Rastrigin" function was tested for D = 2,
+4 and K = 6 and 12 respectively.
 
 ## Examples
 
