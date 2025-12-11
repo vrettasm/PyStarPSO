@@ -201,8 +201,8 @@ class DataBlock(object):
         # Compute the sigmoid function value.
         threshold = 1.0 / (1.0 + np.exp(-params.v_new))
 
-        # Assign the binary value.
-        return 1 if threshold > random_01 else 0
+        # Assign the binary value using U(0,1).
+        return 1 if threshold > cls.rng.random() else 0
     # _end_def_
 
     @classmethod
