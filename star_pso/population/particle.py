@@ -2,8 +2,8 @@ from math import inf
 from copy import deepcopy
 
 from numpy.typing import ArrayLike
+from numpy import array, asarray
 from numpy import copyto as copy_to
-from numpy import (array, array_equal, asarray)
 from star_pso.utils import ScalarOrArray
 
 # Public interface.
@@ -225,8 +225,8 @@ class Particle(object):
             return NotImplemented
         # _end_if_
 
-        # Compare directly their two position arrays.
-        return array_equal(self._position, other.position)
+        # Compare directly the two position arrays.
+        return all(self._position == other.position)
     # _end_def_
 
     def __str__(self) -> str:
