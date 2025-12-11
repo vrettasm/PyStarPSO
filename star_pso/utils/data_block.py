@@ -431,7 +431,7 @@ class DataBlock(object):
             return NotImplemented
         # _end_if_
 
-        # Check their block type.
+        # First check their block type.
         if self._btype == other._btype:
 
             # Check the positions.
