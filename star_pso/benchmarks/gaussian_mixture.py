@@ -61,7 +61,7 @@ class GaussianMixture(TestFunction):
 
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Calculate the log of the sum pdfs.
+            # Calculate the log of the sum.
             f_value = np.log(np.sum([mvn.pdf(x_pos)
                                      for mvn in GaussianMixture.MVN]))
         # Return the ndarray.
