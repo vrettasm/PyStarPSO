@@ -723,7 +723,7 @@ class GenericPSO(object):
         # Convert options dict to VOptions.
         params = VOptions(**options)
 
-        # Get the function values before optimisation.
+        # Get the function values before optimization.
         f_opt, _ = self.evaluate_function(parallel)
 
         # Log the initial f_optimal value.
