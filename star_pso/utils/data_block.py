@@ -195,9 +195,6 @@ class DataBlock(object):
 
         :return: a new (binary) position.
         """
-        # Draw a random value in (0, 1).
-        random_01 = cls.rng.random()
-
         # Compute the sigmoid function value.
         threshold = 1.0 / (1.0 + np.exp(-params.v_new))
 
