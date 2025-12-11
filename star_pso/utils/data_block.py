@@ -442,14 +442,23 @@ class DataBlock(object):
             # Check valid sets.
             valid_sets_are_equal = (True if self._valid_set is None
                                     else self._valid_set == other._valid_set)
-            # Check lower bounds.
-            lower_bounds_are_equal = (True if self._lower_bound is None
-                                      else all(self._lower_bound == other._lower_bound))
-            # Check upper bounds.
-            upper_bounds_are_equal = (True if self._upper_bound is None
-                                      else all(self._upper_bound == other._upper_bound))
 
-            # Return the logical AND condition.
+            # If the bounds are not given (None) we set the conditions to True.
+            if (self._lower_bound is not None) and (self._upper_bound is not None):
+                # Check lower bounds.
+                lower_condition = self._lower_bound == other._lower_bound
+                lower_bounds_are_equal = all(lower_condition) if isinstance(lower_condition,
+                                                                            Iterable) else lower_condition
+                # Check upper bounds.
+                upper_condition = self._upper_bound == other._upper_bound
+                upper_bounds_are_equal = all(upper_condition) if isinstance(upper_condition,
+                                                                            Iterable) else upper_condition
+            else:
+                lower_bounds_are_equal = True
+                upper_bounds_are_equal = True
+            # _end_if_
+
+            # Return the logical AND from all conditions.
             return (positions_are_equal and valid_sets_are_equal and
                     lower_bounds_are_equal and upper_bounds_are_equal)
         else:
