@@ -50,7 +50,7 @@ class TestParticle(unittest.TestCase):
 
         # Particle 3.
         # Initial position is given as 'np.ndarray'.
-        p3 = Particle(np.array([1, 2, 3, 4]))
+        p3 = Particle(np.array([2, 3, 4]))
 
         # Should be TRUE.
         self.assertTrue(p3 == p3)
