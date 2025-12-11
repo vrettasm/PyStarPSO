@@ -605,7 +605,7 @@ class GenericPSO(object):
         # Default return parameter.
         have_been_updated = False
 
-        # For the moment we hardcode the min/max
+        # For the moment hardcode the min/max
         # values of the c1 and c2 parameters.
         c_min, c_max = 0.1, 2.5
 
