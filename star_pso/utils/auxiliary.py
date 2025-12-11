@@ -317,7 +317,6 @@ def nb_median_kl_divergence(x_pos: np.ndarray,
     return np.median(kl_dist).item()
 # _end_def_
 
-# Define a local auxiliary function.
 @njit
 def clip_inplace(x, x_min, x_max) -> None:
     """
