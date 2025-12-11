@@ -226,7 +226,7 @@ class Particle(object):
         # _end_if_
 
         # Compare directly the two position arrays.
-        return all(self._position == other.position)
+        return all(other.position == self._position)
     # _end_def_
 
     def __str__(self) -> str:
