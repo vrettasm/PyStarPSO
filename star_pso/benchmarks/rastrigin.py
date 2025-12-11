@@ -44,7 +44,7 @@ class Rastrigin(TestFunction):
 
         # Compute the total number of optimal values
         # as the product of the 'kappa' coefficients.
-        self.total_optima = np.prod(self.kappa)
+        self.total_optima = np.prod(self.kappa, dtype=int)
     # _end_def_
 
     def func(self, x_pos: np.ndarray) -> np.ndarray:
