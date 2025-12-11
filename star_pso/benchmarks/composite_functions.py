@@ -8,7 +8,7 @@ def f_sphere(x_pos: np.ndarray) -> np.ndarray:
     """
     Computes the sphere function at x_pos.
     """
-    return np.sum(x_pos ** 2)
+    return np.sum(x_pos ** 2, dtype=float)
 # _end_def_
 
 # Basic function: 2
@@ -20,10 +20,11 @@ def f_griewank(x_pos: np.ndarray) -> np.ndarray:
     n_dim = x_pos.size
 
     # Compute the sqrt[i], {1, 2, ..., D}.
-    sqrt_i = np.sqrt(np.arange(1, n_dim + 1))
+    sqrt_i = np.sqrt(np.arange(1, n_dim + 1), dtype=float)
 
     # Get the final value.
-    return np.sum(x_pos ** 2) / 4000 - np.prod(np.cos(x_pos / sqrt_i)) + 1
+    return np.sum(x_pos ** 2, dtype=float) / 4000 - np.prod(np.cos(x_pos / sqrt_i),
+                                                            dtype=float) + 1
 # _end_def_
 
 # Basic function: 3
@@ -206,4 +207,6 @@ class CompositeFunction(TestFunction):
 
         # Return the new string.
         return cf_str
+    # _end_def_
+
 # _end_class_
