@@ -2,10 +2,11 @@ from copy import deepcopy
 from numbers import Number
 from functools import cache
 from collections import namedtuple
+from collections.abc import Iterable
 
 import numpy as np
+from numpy import array
 from numpy.typing import ArrayLike
-from numpy import (array, array_equal)
 from numpy.random import (default_rng, Generator)
 
 from star_pso.utils import ScalarOrArray
@@ -40,7 +41,7 @@ class DataBlock(object):
     def __init__(self,
                  position: ScalarOrArray,
                  btype: BlockType,
-                 valid_set: list | tuple = None,
+                 valid_set: list | tuple | None = None,
                  lower_bound: Number | None = None,
                  upper_bound: Number | None = None) -> None:
         """
@@ -435,22 +436,18 @@ class DataBlock(object):
         if self._btype == other._btype:
 
             # Check the positions.
-            if np.isscalar(self._position) and np.isscalar(other._position):
-                positions_are_equal = (self._position == other._position)
-            else:
-                positions_are_equal = array_equal(self._position,
-                                                  other._position)
-            # _end_if_
-
+            condition = self._position == other._position
+            positions_are_equal = all(condition) if isinstance(condition,
+                                                               Iterable) else condition
             # Check valid sets.
-            valid_sets_are_equal = (True if not self._valid_set
+            valid_sets_are_equal = (True if self._valid_set is None
                                     else self._valid_set == other._valid_set)
             # Check lower bounds.
-            lower_bounds_are_equal = (True if not self._lower_bound
-                                      else self._lower_bound == other._lower_bound)
+            lower_bounds_are_equal = (True if self._lower_bound is None
+                                      else all(self._lower_bound == other._lower_bound))
             # Check upper bounds.
-            upper_bounds_are_equal = (True if not self._upper_bound
-                                      else self._upper_bound == other._upper_bound)
+            upper_bounds_are_equal = (True if self._upper_bound is None
+                                      else all(self._upper_bound == other._upper_bound))
 
             # Return the logical AND condition.
             return (positions_are_equal and valid_sets_are_equal and
