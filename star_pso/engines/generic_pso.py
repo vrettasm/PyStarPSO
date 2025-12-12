@@ -131,6 +131,60 @@ class GenericPSO(object):
         logger.debug(f"{self.__class__.__name__} initialization complete.")
     # _end_def_
 
+    @classmethod
+    def set_seed(cls, new_seed=None) -> None:
+        """
+        Sets a new seed for the random number generator.
+
+        :param new_seed: New seed value (default=None).
+
+        :return: None.
+        """
+        # Re-initialize the class variable.
+        cls.rng = default_rng(seed=new_seed)
+
+        # Log the new seed event.
+        logger.debug(f"{cls.__name__} random generator has a new seed.")
+    # _end_def_
+
+    @staticmethod
+    def fully_informed(population: list[SwarmParticle], use_best: bool = False) -> np.ndarray:
+        """
+        Uses the input population and computes a weighted average position according to
+        the linear ranking of the particles. Those with higher function value also have
+        bigger weight in the calculation.
+
+        :param population: list of particles which we want to consider in the calculation
+                           of the fully informed best position.
+
+        :param use_best: if True it will use the best_position of each particle to estimate
+                         the new weighted best position. Default is False, which means that
+                         only the current position is used.
+
+        :return: the weighted best position 'w_best' (as numpy array).
+        """
+
+        if use_best:
+            # Extract the best positions and convert to numpy array.
+            all_positions = np.array([item.best_position for item in sorted(population,
+                                                                            key=attrgetter("best_value"))])
+        else:
+            # Extract the positions and convert to numpy array.
+            all_positions = np.array([item.position for item in sorted(population,
+                                                                       key=attrgetter("value"))])
+        # _end_if_
+
+        # Compute the probabilities.
+        p_weights, p_weights_sum = linear_rank_probabilities(len(all_positions))
+
+        # Take a "weighted average" from all the positions of the swarm.
+        w_best = np.multiply(all_positions,
+                             p_weights[:, np.newaxis]).sum(axis=0) / p_weights_sum
+
+        # Return the weighted best position.
+        return w_best
+    # _end_def_
+
     @property
     def iteration(self) -> int:
         """
@@ -185,22 +239,6 @@ class GenericPSO(object):
         :return: (numpy array).
         """
         return self._velocities
-    # _end_def_
-
-    @classmethod
-    def set_seed(cls, new_seed=None) -> None:
-        """
-        Sets a new seed for the random number generator.
-
-        :param new_seed: New seed value (default=None).
-
-        :return: None.
-        """
-        # Re-initialize the class variable.
-        cls.rng = default_rng(seed=new_seed)
-
-        # Log the new seed event.
-        logger.debug(f"{cls.__name__} random generator has a new seed.")
     # _end_def_
 
     @property
@@ -419,44 +457,6 @@ class GenericPSO(object):
                                   f"You should implement this method!")
     # _end_def_
 
-    @staticmethod
-    def fully_informed(population: list[SwarmParticle], use_best: bool = False) -> np.ndarray:
-        """
-        Uses the input population and computes a weighted average position according to
-        the linear ranking of the particles. Those with higher function value also have
-        bigger weight in the calculation.
-
-        :param population: list of particles which we want to consider in the calculation
-                           of the fully informed best position.
-
-        :param use_best: if True it will use the best_position of each particle to estimate
-                         the new weighted best position. Default is False, which means that
-                         only the current position is used.
-
-        :return: the weighted best position 'w_best' (as numpy array).
-        """
-
-        if use_best:
-            # Extract the best positions and convert to numpy array.
-            all_positions = np.array([item.best_position for item in sorted(population,
-                                                                            key=attrgetter("best_value"))])
-        else:
-            # Extract the positions and convert to numpy array.
-            all_positions = np.array([item.position for item in sorted(population,
-                                                                       key=attrgetter("value"))])
-        # _end_if_
-
-        # Compute the probabilities.
-        p_weights, p_weights_sum = linear_rank_probabilities(len(all_positions))
-
-        # Take a "weighted average" from all the positions of the swarm.
-        w_best = np.multiply(all_positions,
-                             p_weights[:, np.newaxis]).sum(axis=0) / p_weights_sum
-
-        # Return the weighted best position.
-        return w_best
-    # _end_def_
-
     def neighborhood_best(self, num_neighbors: int) -> deque[np.ndarray]:
         """
         For each particle in the swarm, finds the 'n' closest neighbors
@@ -502,6 +502,7 @@ class GenericPSO(object):
 
         # Return the container.
         return l_best
+    # _end_def_
 
     def get_local_best_positions(self, operating_mode: str = "g_best") -> np.ndarray:
         """
