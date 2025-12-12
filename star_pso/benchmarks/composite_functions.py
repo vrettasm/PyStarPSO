@@ -154,6 +154,7 @@ class CompositeFunction(TestFunction):
 
         # Finally return the normalized values.
         return weights / np.sum(weights)
+    # _end_def_
 
     def func(self, x_pos: np.ndarray,
              i_bias: float = 0.0, f_bias: float = 0.0) -> float | np.ndarray:
