@@ -1,17 +1,20 @@
 import numpy as np
+from numba import njit
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 from star_pso.utils.auxiliary import identify_global_optima
 
 # Basic function: 1
+@njit(fastmath=True)
 def f_sphere(x_pos: np.ndarray) -> np.ndarray:
     """
     Computes the sphere function at x_pos.
     """
-    return np.sum(x_pos ** 2, dtype=float)
+    return np.sum(x_pos ** 2)
 # _end_def_
 
 # Basic function: 2
+@njit(fastmath=True)
 def f_griewank(x_pos: np.ndarray) -> np.ndarray:
     """
     Computes the Griewank function at x_pos.
@@ -20,29 +23,30 @@ def f_griewank(x_pos: np.ndarray) -> np.ndarray:
     n_dim = x_pos.size
 
     # Compute the sqrt[i], {1, 2, ..., D}.
-    sqrt_i = np.sqrt(np.arange(1, n_dim + 1), dtype=float)
+    sqrt_i = np.sqrt(np.arange(1, n_dim + 1))
 
     # Get the final value.
-    return np.sum(x_pos ** 2, dtype=float) / 4000 - np.prod(np.cos(x_pos / sqrt_i),
-                                                            dtype=float) + 1
+    return np.sum(x_pos ** 2) / 4000 - float(np.prod(np.cos(x_pos / sqrt_i))) + 1.0
 # _end_def_
 
 # Basic function: 3
+@njit(fastmath=True)
 def f_rastrigin(x_pos: np.ndarray,
                 kappa: float = 10.0) -> np.ndarray:
-    """
-    Computes the shifted Rastrigin function
-    at x_pos, with default kappa parameter.
+    """U
+    Computes the shifted Rastrigin function at x_pos,
+    with default kappa parameter.
     """
     return np.sum(x_pos ** 2 - kappa * np.cos(2.0 * np.pi * x_pos) + kappa)
 # _end_def_
 
 # Basic function: 4
+@njit(fastmath=True)
 def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
                   alpha: float = 0.5, beta: int = 3) -> np.ndarray:
     """
-    Computes the Weierstrass function at x_pos,
-    with default k_max, alpha and beta parameters.
+    Computes the Weierstrass function at x_pos, with default k_max,
+    alpha and beta parameters.
     """
     # Get the size of the vector.
     n_dim = x_pos.size
@@ -178,15 +182,11 @@ class CompositeFunction(TestFunction):
             # Get the number of basic functions.
             num_f = len(self.basic_f)
 
-            # Square of sigma values.
-            # For simplicity, we set them to one.
-            sigma_sq = np.ones(num_f, dtype=float)
+            # Sigma values for simplicity are set to one.
+            sigma = np.ones(num_f, dtype=float)
 
-            # Compute the weights.
-            weights = np.exp(-0.5 * np.sum(x_pos ** 2) / (self.n_dim * sigma_sq))
-
-            # Normalize them.
-            weights /= np.sum(weights)
+            # Calculate the weights of the functions.
+            weights = CompositeFunction.compute_weights(x_pos, sigma)
 
             # Get total evaluation of the composite function.
             f_total = np.sum([wi * (fi(x_pos / num_f) + i_bias)
