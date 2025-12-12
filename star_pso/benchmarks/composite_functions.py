@@ -68,9 +68,28 @@ def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
     return sum_x - n_dim * np.sum(alpha_k * np.cos(np.pi * beta_k))
 # _end_def_
 
+# Basic function: 5
+@njit(fastmath=True)
+def f_ackley(x_pos: np.ndarray) -> np.ndarray:
+    """
+    Computes the Ackley function at x_pos.
+    """
+    # Get the size of the vector.
+    n_dim = x_pos.size
+
+    # Compute the first part of the equation.
+    f_total = -20.0 * np.exp(-0.2 * np.sqrt(np.sum(x_pos ** 2) / n_dim))
+
+    # Update it with the second part.
+    f_total -= np.exp(np.sum(np.cos(2.0 * np.pi * x_pos)) / n_dim)
+
+    # Return final result.
+    return f_total + 20.0 + np.e
+# _end_def_
 
 # Define a dictionary with all the basic functions.
-BASIC_FUNCTIONS: dict = {"f_sphere": f_sphere,
+BASIC_FUNCTIONS: dict = {"f_ackley": f_ackley,
+                         "f_sphere": f_sphere,
                          "f_griewank": f_griewank,
                          "f_rastrigin": f_rastrigin,
                          "f_weierstrass": f_weierstrass}
