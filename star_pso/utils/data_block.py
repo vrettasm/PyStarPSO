@@ -465,7 +465,7 @@ class DataBlock(object):
             return False
     # _end_def_
 
-    def __deepcopy__(self, memo) -> "DataBlock":
+    def __deepcopy__(self, memo: dict) -> "DataBlock":
         """
         This custom method overrides the default deepcopy method.
 
