@@ -116,7 +116,6 @@ class JackOfAllTradesPSO(GenericPSO):
 
         :param positions: the container with the lists of probabilities
                           (one list for each position).
-
         :return: None.
         """
 
