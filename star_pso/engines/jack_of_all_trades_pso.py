@@ -297,9 +297,11 @@ class JackOfAllTradesPSO(GenericPSO):
 
         A value close to '0' indicates the swarm is converging
         to a single value. On the contrary a value close to '1'
-        indicates the swarm is still spread around the search space.
+        indicates the swarm is still spread around the search
+        space.
 
-        :return: an estimated measure (float) for the spread of the particles.
+        :return: an estimated measure (float) for the spread of
+                 the particles.
         """
         # Extract the particle positions as a list.
         positions = self.swarm.positions_as_list()
