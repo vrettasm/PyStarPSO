@@ -99,8 +99,8 @@ BASIC_FUNCTIONS: dict = {"f_ackley": f_ackley,
 
 class CompositeFunction(TestFunction):
     """
-    Generates a Composite Function using a weighting average
-    of basic functions, as defined in the 'basic_f' list.
+    Generates a Composite Function using a weighted average of basic
+    functions, as defined in the 'BASIC_FUNCTIONS' dictionary.
     """
 
     def __init__(self, n_dim: int = 2, n_func: int | list = 4,
