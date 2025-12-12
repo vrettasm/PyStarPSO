@@ -127,6 +127,34 @@ class CompositeFunction(TestFunction):
             raise TypeError(f"{self.__class__.__name__}: 'n_func' must either be an int in [2, 20], or a list.")
     # _end_def_
 
+    @staticmethod
+    @njit
+    def compute_weights(x_pos: np.ndarray, sigma: np.ndarray) -> np.ndarray:
+        """
+        Calculates a set of weights (one for each function).
+
+        :param x_pos: (ndarray) the position that we are evaluating the functions.
+
+        :param sigma: (ndarray) are used to control each function's range.
+                      a small value gives a narrow range for the function.
+
+        :return: a (ndarray) of normalized weights.
+        """
+        # Initialize the weights array.
+        weights = np.exp(-0.5 * np.sum(x_pos ** 2) / (x_pos.size * sigma**2))
+
+        # Find the maximum among them.
+        w_max = np.max(weights)
+
+        # Raise w_max to the power of 10.
+        w_max_power_10 = w_max ** 10
+
+        # Update the weights.
+        weights[weights != w_max] *= (1.0 - w_max_power_10)
+
+        # Finally return the normalized values.
+        return weights / np.sum(weights)
+
     def func(self, x_pos: np.ndarray,
              i_bias: float = 0.0, f_bias: float = 0.0) -> float | np.ndarray:
         """
