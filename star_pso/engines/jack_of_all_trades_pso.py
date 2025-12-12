@@ -295,9 +295,9 @@ class JackOfAllTradesPSO(GenericPSO):
         """
         Calculates a spread measure for the particle positions.
 
-        A value close to '0' indicates the swarm is converging to a single value.
-        On the contrary a value close to '1' indicates the swarm is still spread
-        around the search space.
+        A value close to '0' indicates the swarm is converging
+        to a single value. On the contrary a value close to '1'
+        indicates the swarm is still spread around the search space.
 
         :return: an estimated measure (float) for the spread of the particles.
         """
