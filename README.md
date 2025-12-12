@@ -1,6 +1,6 @@
 # PyStarPSO: Particle swarm optimization algorithms made easy.
 
-![Logo](./logo/main_logo.jpg)
+![Logo](./logo/main_logo.png)
 
 ## Algorithms
 
@@ -36,8 +36,6 @@ We have implemented the following benchmark functions:
 NOTE: The "Shubert" and "Vincent" functions were tested with D = 2, 3 (for simplicity). The code however
 is generalized and can solve any number of dimensions. Also, the "Rastrigin" function was tested for D = 2,
 4 and K = 6 and 12 respectively.
-
-## Examples
 
 ### Contact
 
