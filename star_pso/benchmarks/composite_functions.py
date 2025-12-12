@@ -70,21 +70,23 @@ def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
 
 # Basic function: 5
 @njit(fastmath=True)
-def f_ackley(x_pos: np.ndarray) -> np.ndarray:
+def f_ackley(x_pos: np.ndarray, alpha: float = 20.0,
+             beta: float = 0.2) -> np.ndarray:
     """
-    Computes the Ackley function at x_pos.
+    Computes the Ackley function at x_pos,
+    with default alpha and beta parameters.
     """
     # Get the size of the vector.
     n_dim = x_pos.size
 
     # Compute the first part of the equation.
-    f_total = -20.0 * np.exp(-0.2 * np.sqrt(np.sum(x_pos ** 2) / n_dim))
+    f_total = -alpha * np.exp(-beta * np.sqrt(np.sum(x_pos ** 2) / n_dim))
 
     # Update it with the second part.
     f_total -= np.exp(np.sum(np.cos(2.0 * np.pi * x_pos)) / n_dim)
 
     # Return final result.
-    return f_total + 20.0 + np.e
+    return f_total + alpha + np.e
 # _end_def_
 
 # Define a dictionary with all the basic functions.
