@@ -508,9 +508,9 @@ class GenericPSO(object):
         This method uses the swarm's population and the current operating mode,
         from the VOptions tuple, to calculate the local best positions.
 
-        :param operating_mode: the operating mode of the algorithm. The default value
-                               is set to be the 'g_best' because it works with all the
-                               PSO implementations.
+        :param operating_mode: the operating mode of the algorithm. The default
+                               value is set to be the 'g_best' because it works
+                               with all the PSO implementations.
 
         :return: the local best positions (as numpy array).
         """
