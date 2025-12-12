@@ -31,8 +31,8 @@ def f_griewank(x_pos: np.ndarray) -> np.ndarray:
 def f_rastrigin(x_pos: np.ndarray,
                 kappa: float = 10.0) -> np.ndarray:
     """
-    Computes the Rastrigin function at x_pos,
-    with default kappa parameter.
+    Computes the shifted Rastrigin function
+    at x_pos, with default kappa parameter.
     """
     return np.sum(x_pos ** 2 - kappa * np.cos(2.0 * np.pi * x_pos) + kappa)
 # _end_def_
