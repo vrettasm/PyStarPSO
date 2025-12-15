@@ -13,7 +13,7 @@ from star_pso.utils.auxiliary import (BlockType,
                                       linear_rank_probabilities,
                                       SpecialMode, spread_methods)
 # Local fast version of sum method.
-@njit
+@njit(fastmath=True)
 def fast_sum(x: np.ndarray) -> np.ndarray:
     """
     Local auxiliary function that is used
