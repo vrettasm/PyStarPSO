@@ -84,7 +84,7 @@ class TestSwarm(unittest.TestCase):
         swarm_a = Swarm([Particle(x) for x in x_t0])
 
         # Select randomly a particle position.
-        j = self.rng.integers(n_particles)
+        j = self.rng.integers(n_particles, dtype=int)
 
         # Manually change its f_value.
         swarm_a[j].value = 1000
@@ -119,7 +119,7 @@ class TestSwarm(unittest.TestCase):
 
         # Select randomly a particle position
         # and set manually its value to 1000.
-        swarm_a[self.rng.integers(n_particles)].value = 1000
+        swarm_a[self.rng.integers(n_particles, dtype=int)].value = 1000
 
         # Check the value of the best particle.
         self.assertEqual(1000, swarm_a.best_particle().value)
