@@ -11,7 +11,7 @@ from star_pso.utils.auxiliary import (SpecialMode,
                                       clip_inplace,
                                       nb_median_kl_divergence)
 # Local fast version of sum method.
-@njit
+@njit(fastmath=True)
 def fast_sum(x: np.ndarray) -> np.ndarray:
     """
     Local auxiliary function that is used
