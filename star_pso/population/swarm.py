@@ -108,7 +108,7 @@ class Swarm(object):
 
         :return: Return the particle with the highest value.
         """
-        return max((p for p in self._population if not isnan(p.value)),
+        return max([p for p in self._population if not isnan(p.value)],
                    key=attrgetter("value"), default=None)
     # _end_def_
 
@@ -148,7 +148,7 @@ class Swarm(object):
 
         :return: A numpy array (vector) with all the values.
         """
-        return array((p.value for p in self._population))
+        return array([p.value for p in self._population])
     # _end_def_
 
     def value_at(self, index: int) -> float:
@@ -179,7 +179,7 @@ class Swarm(object):
 
         :return: A numpy array with all the positions.
         """
-        return array((p.position for p in self._population))
+        return array([p.position for p in self._population])
     # _end_def_
 
     def best_positions_as_array(self) -> ndarray:
@@ -188,7 +188,7 @@ class Swarm(object):
 
         :return: A numpy array with all the best positions.
         """
-        return array((p.best_position for p in self._population))
+        return array([p.best_position for p in self._population])
     # _end_def_
 
     def positions_as_list(self) -> list:
