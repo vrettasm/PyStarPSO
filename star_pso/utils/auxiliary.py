@@ -53,6 +53,181 @@ def check_velocity_parameters(options: dict) -> None:
         # _end_if_
 # _end_def_
 
+def time_it(func):
+    """
+    Timing decorator function.
+
+    :param func: the function we want to time.
+
+    :return: the time wrapper method.
+    """
+
+    @wraps(func)
+    def time_it_wrapper(*args, **kwargs):
+        """
+        Wrapper function that times the execution of the input function.
+
+        :param args: function positional arguments.
+
+        :param kwargs: function keywords arguments.
+
+        :return: the output of the wrapper function.
+        """
+        # Initial time instant.
+        time_t0 = time.perf_counter()
+
+        # Run the function we want to time.
+        result = func(*args, **kwargs)
+
+        # Final time instant.
+        time_tf = time.perf_counter()
+
+        # Print final duration in seconds.
+        print(f"{func.__name__ }: "
+              f"elapsed time = {(time_tf - time_t0):.3f} seconds.")
+
+        return result
+    # _end_def_
+    return time_it_wrapper
+# _end_def_
+
+def pareto_front(points: np.ndarray) -> np.ndarray:
+    """
+    Simple function that calculates the pareto (optimal)
+    front points from a given input points numpy array.
+
+    :param points: array of points [(fx1, fx2, ..., fxn),
+                                    (fy1, fy2, ..., fyn),
+                                    ....................,
+                                    (fk1, fk2, ..., fkn)]
+
+    :return: array of points that lie on the pareto front.
+    """
+    # Sanity check.
+    if points.ndim != 2:
+        raise RuntimeError("Points must be a 2-D array.")
+    # _end_if_
+
+    # Get the number of points.
+    num_points = points.shape[0]
+
+    # Create a boolean array to track Pareto optimal points.
+    is_pareto_optimal = np.ones(num_points, dtype=bool)
+
+    for i, point_i in enumerate(points):
+        # Compare point i-th with all other points.
+        is_dominated = np.any(np.all(points <= point_i, axis=1) &
+                              np.any(points < point_i, axis=1))
+        # Set the flag appropriately.
+        is_pareto_optimal[i] = not is_dominated
+    # _end_for_
+
+    # Return only the unique Pareto optimal points.
+    return np.unique(points[is_pareto_optimal], axis=0)
+# _end_def_
+
+def cost_function(func: Callable = None, minimize: bool = False):
+    """
+    Decorator for the function we want to optimize. The default
+    setting is maximization.
+
+    :param func: the function to be optimized.
+
+    :param minimize: if True it will return the negative function
+                     value to allow for the minimization. Default
+                     is False.
+
+    :return: the 'function_wrapper' method.
+    """
+
+    # This allows the decorator to be called with
+    # parenthesis and using the default parameters.
+    if func is None:
+        return partial(cost_function, minimize=minimize)
+    # _end_if_
+
+    @wraps(func)
+    def function_wrapper(*args, **kwargs) -> dict:
+        """
+        Internal function wrapper.
+
+        :param args: function positional arguments.
+
+        :param kwargs: function keywords arguments.
+
+        :return: a dictionary with two key-values.
+        """
+
+        # Run the function we want to optimize.
+        result = func(*args, **kwargs)
+
+        # Check if the function returns a tuple (with two values)
+        # or a single output parameter. In the former, the second
+        # value should be boolean to signal that the solution meets
+        # the termination requirements.
+        if isinstance(result, tuple) and len(result) == 2:
+
+            f_value, solution_is_found = result[0], bool(result[1])
+        else:
+
+            f_value, solution_is_found = result, False
+        # _end_if_
+
+        return {"f_value": -f_value if minimize else f_value,
+                "solution_is_found": solution_is_found}
+    # _end_def_
+
+    return function_wrapper
+# _end_def_
+
+def identify_global_optima(swarm_population: list[Particle], epsilon: float = 1.0e-5,
+                           radius: float = 1.0e-1, f_opt: float | None = None) -> list:
+    """
+    This auxiliary method will search if the global optimal solution(s)
+    are found in the swarm population.
+
+    :param swarm_population: a list[Particle] of potential solutions.
+
+    :param epsilon: accuracy level of the global optimal solution.
+
+    :param radius: niche radius of the distance between two particles.
+
+    :param f_opt: function value for the global optimal solution.
+
+    :return: a list of best-fit individuals identified as solutions.
+    """
+    # Define a return list that will contain the
+    # particles that are on the global solutions.
+    optima_list = []
+
+    # Check all the particles.
+    for px in swarm_population:
+
+        # Reset the exist flag.
+        already_exists = False
+
+        # Check if the fitness is near the global
+        # optimal value (within error - epsilon).
+        if fabs(f_opt - px.value) <= epsilon:
+
+            # Check if the particle is already
+            # in the optimal particles list.
+            for k in optima_list:
+
+                # Check if the two particles are close to each other.
+                if norm(k.position - px.position) <= radius:
+                    already_exists = True
+                    break
+            # Add the particle only if it doesn't
+            # already exist in the list.
+            if not already_exists:
+                optima_list.append(px)
+    # _end_for_
+
+    # Return the list.
+    return optima_list
+# _end_def_
+
 @lru_cache(maxsize=64)
 def linear_rank_probabilities(p_size: int) -> tuple[np.ndarray, float]:
     """
@@ -371,134 +546,6 @@ def nb_clip_item(x_new, lower_limit, upper_limit) -> int | float:
                       upper_limit).item()
 # _end_def_
 
-def time_it(func):
-    """
-    Timing decorator function.
-
-    :param func: the function we want to time.
-
-    :return: the time wrapper method.
-    """
-
-    @wraps(func)
-    def time_it_wrapper(*args, **kwargs):
-        """
-        Wrapper function that times the execution of the input function.
-
-        :param args: function positional arguments.
-
-        :param kwargs: function keywords arguments.
-
-        :return: the output of the wrapper function.
-        """
-        # Initial time instant.
-        time_t0 = time.perf_counter()
-
-        # Run the function we want to time.
-        result = func(*args, **kwargs)
-
-        # Final time instant.
-        time_tf = time.perf_counter()
-
-        # Print final duration in seconds.
-        print(f"{func.__name__ }: "
-              f"elapsed time = {(time_tf - time_t0):.3f} seconds.")
-
-        return result
-    # _end_def_
-    return time_it_wrapper
-# _end_def_
-
-def pareto_front(points: np.ndarray) -> np.ndarray:
-    """
-    Simple function that calculates the pareto (optimal)
-    front points from a given input points numpy array.
-
-    :param points: array of points [(fx1, fx2, ..., fxn),
-                                    (fy1, fy2, ..., fyn),
-                                    ....................,
-                                    (fk1, fk2, ..., fkn)]
-
-    :return: array of points that lie on the pareto front.
-    """
-    # Sanity check.
-    if points.ndim != 2:
-        raise RuntimeError("Points must be a 2-D array.")
-    # _end_if_
-
-    # Get the number of points.
-    num_points = points.shape[0]
-
-    # Create a boolean array to track Pareto optimal points.
-    is_pareto_optimal = np.ones(num_points, dtype=bool)
-
-    for i, point_i in enumerate(points):
-        # Compare point i-th with all other points.
-        is_dominated = np.any(np.all(points <= point_i, axis=1) &
-                              np.any(points < point_i, axis=1))
-        # Set the flag appropriately.
-        is_pareto_optimal[i] = not is_dominated
-    # _end_for_
-
-    # Return only the unique Pareto optimal points.
-    return np.unique(points[is_pareto_optimal], axis=0)
-# _end_def_
-
-def cost_function(func: Callable = None, minimize: bool = False):
-    """
-    Decorator for the function we want to optimize. The default
-    setting is maximization.
-
-    :param func: the function to be optimized.
-
-    :param minimize: if True it will return the negative function
-                     value to allow for the minimization. Default
-                     is False.
-
-    :return: the 'function_wrapper' method.
-    """
-
-    # This allows the decorator to be called with
-    # parenthesis and using the default parameters.
-    if func is None:
-        return partial(cost_function, minimize=minimize)
-    # _end_if_
-
-    @wraps(func)
-    def function_wrapper(*args, **kwargs) -> dict:
-        """
-        Internal function wrapper.
-
-        :param args: function positional arguments.
-
-        :param kwargs: function keywords arguments.
-
-        :return: a dictionary with two key-values.
-        """
-
-        # Run the function we want to optimize.
-        result = func(*args, **kwargs)
-
-        # Check if the function returns a tuple (with two values)
-        # or a single output parameter. In the former, the second
-        # value should be boolean to signal that the solution meets
-        # the termination requirements.
-        if isinstance(result, tuple) and len(result) == 2:
-
-            f_value, solution_is_found = result[0], bool(result[1])
-        else:
-
-            f_value, solution_is_found = result, False
-        # _end_if_
-
-        return {"f_value": -f_value if minimize else f_value,
-                "solution_is_found": solution_is_found}
-    # _end_def_
-
-    return function_wrapper
-# _end_def_
-
-
 """
 Create a dictionary with block types as keys and their
 corresponding spread estimation methods as values.
@@ -551,52 +598,4 @@ def nb_cdist(x_pos: np.ndarray, scaled: bool = False) -> np.ndarray:
         dist_x[:, i] = dist_x[i, :]
     # _end_for_
     return dist_x
-# _end_def_
-
-def identify_global_optima(swarm_population: list[Particle], epsilon: float = 1.0e-5,
-                           radius: float = 1.0e-1, f_opt: float | None = None) -> list:
-    """
-    This auxiliary method will search if the global optimal solution(s)
-    are found in the swarm population.
-
-    :param swarm_population: a list[Particle] of potential solutions.
-
-    :param epsilon: accuracy level of the global optimal solution.
-
-    :param radius: niche radius of the distance between two particles.
-
-    :param f_opt: function value for the global optimal solution.
-
-    :return: a list of best-fit individuals identified as solutions.
-    """
-    # Define a return list that will contain the
-    # particles that are on the global solutions.
-    optima_list = []
-
-    # Check all the particles.
-    for px in swarm_population:
-
-        # Reset the exist flag.
-        already_exists = False
-
-        # Check if the fitness is near the global
-        # optimal value (within error - epsilon).
-        if fabs(f_opt - px.value) <= epsilon:
-
-            # Check if the particle is already
-            # in the optimal particles list.
-            for k in optima_list:
-
-                # Check if the two particles are close to each other.
-                if norm(k.position - px.position) <= radius:
-                    already_exists = True
-                    break
-            # Add the particle only if it doesn't
-            # already exist in the list.
-            if not already_exists:
-                optima_list.append(px)
-    # _end_for_
-
-    # Return the list.
-    return optima_list
 # _end_def_
