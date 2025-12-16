@@ -53,7 +53,7 @@ class Swarm(object):
 
             for block in self._population[0]:
 
-                if block.btype == BlockType.CATEGORICAL:
+                if block.block_t == BlockType.CATEGORICAL:
                     self._has_categorical = True
                     break
         # _end_if_

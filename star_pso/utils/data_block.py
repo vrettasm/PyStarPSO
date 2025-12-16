@@ -404,7 +404,7 @@ class DataBlock(object):
     # _end_def_
 
     @property
-    def btype(self) -> BlockType:
+    def block_t(self) -> BlockType:
         """
         Accessor (getter) of the data block's type.
 

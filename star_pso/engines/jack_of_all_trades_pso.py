@@ -126,7 +126,7 @@ class JackOfAllTradesPSO(GenericPSO):
             for j, blk in enumerate(particle.container):
 
                 # If the data block is categorical.
-                if blk.btype == BlockType.CATEGORICAL:
+                if blk.block_t == BlockType.CATEGORICAL:
 
                     # Replace the probabilities with an actual sample.
                     # WARNING: 'shuffle' option MUST be set to False!
@@ -324,7 +324,7 @@ class JackOfAllTradesPSO(GenericPSO):
 
             # The Block type will determine which
             # method we will use for the spread.
-            b_type = self.swarm[0][n].btype
+            b_type = self.swarm[0][n].block_t
 
             # Convert the data to array.
             data_arr = np.array(data)
