@@ -71,9 +71,9 @@ class StandardPSO(GenericPSO):
                                                    size=(self.n_rows,
                                                          self.n_cols))
         # Assign the new positions in the swarm.
-        for p, x_new in zip(self.swarm.population,
-                            uniform_positions):
-            p.position = x_new
+        for particle, x_new in zip(self.swarm.population,
+                                   uniform_positions):
+            particle.position = x_new
     # _end_def_
 
     def reset_all(self) -> None:

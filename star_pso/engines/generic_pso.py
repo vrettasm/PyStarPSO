@@ -80,8 +80,8 @@ class GenericPSO(object):
         # Check if the lower and upper bounds are set.
         if (lower_bound is not None) and (upper_bound is not None):
             # Make sure they are numpy arrays.
-            self._lower_bound = np.array(lower_bound)
-            self._upper_bound = np.array(upper_bound)
+            self._lower_bound = np.asarray(lower_bound)
+            self._upper_bound = np.asarray(upper_bound)
 
             # Check if the boundaries are set correctly.
             if np.any(self._lower_bound > self._upper_bound):

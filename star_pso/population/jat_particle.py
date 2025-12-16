@@ -88,10 +88,10 @@ class JatParticle(object):
 
         :return: None.
         """
-        for blk, v in zip(self._container, v_new):
+        for block, v in zip(self._container, v_new):
             # This calls internally the 'right'
             # method to update each block type.
-            blk.position = v
+            block.position = v
     # _end_def_
 
     @property
@@ -101,7 +101,7 @@ class JatParticle(object):
 
         :return: a list with each data block best position.
         """
-        return [blk.best_position for blk in self._container]
+        return [block.best_position for block in self._container]
     # _end_def_
 
     @best_position.setter
@@ -113,8 +113,8 @@ class JatParticle(object):
 
         :return: None.
         """
-        for blk, new_best in zip(self._container, new_vector):
-            blk.best_position = new_best
+        for block, new_best in zip(self._container, new_vector):
+            block.best_position = new_best
     # _end_def_
 
     @property
@@ -168,8 +168,8 @@ class JatParticle(object):
 
         :return: None.
         """
-        for blk in self._container:
-            blk.reset_position()
+        for block in self._container:
+            block.reset_position()
     # _end_def_
 
     def __getitem__(self, index: int) -> DataBlock:

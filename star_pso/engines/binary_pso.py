@@ -5,7 +5,8 @@ from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
 from star_pso.utils.auxiliary import (clip_inplace,
                                       nb_median_hamming_distance)
-@njit
+
+@njit(fastmath=True)
 def fast_logistic(x: np.ndarray) -> np.ndarray:
     """
     Local auxiliary function that is used to compute
@@ -110,9 +111,9 @@ class BinaryPSO(GenericPSO):
                                                    size=(self.n_rows,
                                                          self.n_cols))
         # Assign the new positions in the swarm.
-        for p, x_new in zip(self.swarm.population,
-                            binary_positions):
-            p.position = x_new
+        for particle, x_new in zip(self.swarm.population,
+                                   binary_positions):
+            particle.position = x_new
     # _end_def_
 
     def reset_all(self) -> None:

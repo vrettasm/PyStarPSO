@@ -86,10 +86,10 @@ class JackOfAllTradesPSO(GenericPSO):
 
         # Here we generate the random velocities.
         for i, particle in enumerate(self.swarm.population):
-            for j, blk in enumerate(particle.container):
+            for j, block in enumerate(particle.container):
                 # If the block is CATEGORICAL we
                 # will use it's valid set length.
-                n_vars = len(blk.valid_set) if blk.valid_set else 1
+                n_vars = len(block.valid_set) if block.valid_set else 1
 
                 # Generate the velocities randomly.
                 self._velocities[i, j] = JackOfAllTradesPSO.rng.uniform(-1.0, +1.0,
@@ -123,14 +123,14 @@ class JackOfAllTradesPSO(GenericPSO):
         for i, particle in enumerate(self.swarm.population):
 
             # Check all data blocks in the particle.
-            for j, blk in enumerate(particle.container):
+            for j, block in enumerate(particle.container):
 
                 # If the data block is categorical.
-                if blk.block_t == BlockType.CATEGORICAL:
+                if block.block_t == BlockType.CATEGORICAL:
 
                     # Replace the probabilities with an actual sample.
                     # WARNING: 'shuffle' option MUST be set to False!
-                    positions[i][j] = JackOfAllTradesPSO.rng.choice(blk.valid_set,
+                    positions[i][j] = JackOfAllTradesPSO.rng.choice(block.valid_set,
                                                                     shuffle=False,
                                                                     p=positions[i][j])
     # _end_def_
@@ -166,7 +166,7 @@ class JackOfAllTradesPSO(GenericPSO):
             # using the randomized index.
             for j in random_index:
                 # Get the j-th data block.
-                blk = particle[j]
+                block = particle[j]
 
                 # Extract the probability values.
                 xj = positions[i][j]
@@ -177,7 +177,7 @@ class JackOfAllTradesPSO(GenericPSO):
                     # unused element of the valid set.
                     if k not in exclude_idx:
                         # Assign the element in the right position.
-                        positions[i][j] = blk.valid_set[k]
+                        positions[i][j] = block.valid_set[k]
 
                         # Update the set() with
                         # the excluded indexes.
@@ -312,8 +312,8 @@ class JackOfAllTradesPSO(GenericPSO):
         # Extract the data for each
         # feature block separately.
         for particle in positions:
-            for i, data_block in enumerate(particle):
-                field[i].append(data_block)
+            for i, block in enumerate(particle):
+                field[i].append(block)
         # _end_for_
 
         # Preallocate a vector (one for each field).
