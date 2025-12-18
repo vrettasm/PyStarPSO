@@ -6,17 +6,28 @@
 
 This repository implements a collection of particle swarm optimization algorithms in Python3 programming language.
 
-The current implementation offers the following PSO implementations:
+The current toolkit offers the following PSO implementations (with supported options):
 
-  - [Standard](star_pso/engines/standard_pso.py)
-  - [Binary](star_pso/engines/binary_pso.py)
-  - [Categorical](star_pso/engines/categorical_pso.py)
-  - [Integer (Discrete)](star_pso/engines/integer_pso.py)
-  - [Jack of all trades](star_pso/engines/jack_of_all_trades_pso.py)
-  - [Quantum](star_pso/engines/quantum_pso.py)
+| **Algorithm**                                                    | **Var. Type(s)** | **Adapt parameters** | **G_best** | **FIPSO** | **Multimodal** | **Parallel** |
+|:-----------------------------------------------------------------|:----------------:|:--------------------:|:----------:|:---------:|:--------------:|:------------:|
+| [Standard](star_pso/engines/standard_pso.py)                     |      Float       |         Yes          |    Yes     |    Yes    |      Yes       |     Yes      |
+| [Binary](star_pso/engines/binary_pso.py)                         |   Int. (0, 1)    |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
+| [Categorical](star_pso/engines/categorical_pso.py)               |   Categorical    |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
+| [Integer](star_pso/engines/integer_pso.py)                       |     Integer      |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
+| [Jack of all trades](star_pso/engines/jack_of_all_trades_pso.py) |      Mixed       |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
+| [Quantum](star_pso/engines/quantum_pso.py)                       |      Float       |         Yes          |    Yes     |    Yes    |      Yes       |     Yes      |
 
-All the above methods inherit from the base class [Generic](star_pso/engines/generic_pso.py) which provides some
-common functionality.
+
+All the above methods inherit from the base class [Generic](star_pso/engines/generic_pso.py) which provides some common functionality.
+
+Adding new algorithms **MUST** inherit from the base class.
+
+Adapting parameters is supported in the Base class (**GenericPSO**), hence is inherited by all algorithms. However,
+since the current adapting algorithm is checking for convergence of the population to a single solution, using it
+with the *multimodal* option would not make much sense and in fact it will mess up the results. In addition, the *Parallel*
+option is supported only in the evaluation of the objective (or fitness) function. Therefore, it is beneficial only in
+cases where the objective function is "heavy" computationally or has many I/Os. In most cases setting this option to the
+default (False), will have the best results.
 
 ## Examples
 Some optimization examples on how to use these algorithms:
@@ -31,11 +42,11 @@ Some optimization examples on how to use these algorithms:
 | [Tanaka](examples/tanaka_multiobjective.ipynb)             |    M (=2)     |       2        |        2        |
 | [Shubert](examples/shubert_2D.ipynb)                       |    M (=2)     |       1        |       no        |
 | [Gaussian Mixture](examples/gaussian_mixture_2D.ipynb)     |    M (=2)     |       1        |       no        |
-| [Test Binary](examples/test_binary_pso.ipynb)              |       X       |       X        |        X        |
-| [Test Integer](examples/test_integer_pso.ipynb)            |       X       |       X        |        X        |
-| [Test JAT](examples/test_jack_of_all_trades.ipynb)         |       X       |       X        |        X        |
-| [Test Categorical](examples/test_categorical_pso.ipynb)    |       X       |       X        |        X        |
-| [Test Benchmark](examples/test_benchmark.ipynb)            |       X       |       X        |        X        |
+| [Test Binary](examples/test_binary_pso.ipynb)              |    M (=30)    |       1        |       no        |
+| [Test Integer](examples/test_integer_pso.ipynb)            |    M (=15)    |       1        |       no        |
+| [Test JAT](examples/test_jack_of_all_trades.ipynb)         |    M (=3)     |       1        |       no        |
+| [Test Categorical](examples/test_categorical_pso.ipynb)    |    M (=4)     |       1        |       no        |
+| [Test Benchmark](examples/test_benchmark.ipynb)            |       M       |       1        |       no        |
 
 ## Benchmarks
 We have implemented the following benchmarks of **multimodal** functions:
