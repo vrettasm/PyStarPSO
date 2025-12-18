@@ -23,8 +23,8 @@ All the above methods inherit from the base class [Generic](star_pso/engines/gen
 Adding new algorithms **MUST** inherit from the base class.
 
 Adapting parameters is supported in the Base class (**GenericPSO**), hence is inherited by all algorithms. However,
-since the current adapting algorithm is checking for convergence of the population to a single solution, using it
-with the *multimodal* option would not make much sense and in fact it will mess up the results. In addition, the *Parallel*
+since the current adapting algorithm version is checking for convergence of the population to a single solution, using
+it with the *multimodal* option would not make much sense and in fact it will mess up the results. Moreover, the *Parallel*
 option is supported only in the evaluation of the objective (or fitness) function. Therefore, it is beneficial only in
 cases where the objective function is "heavy" computationally or has many I/Os. In most cases setting this option to the
 default (False), will have the best results.
