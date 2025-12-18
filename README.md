@@ -66,6 +66,9 @@ We have implemented the following benchmarks of **multimodal** functions:
 | [Shubert](star_pso/benchmarks/shubert.py)                                   |       D       |      $D*3^D$      |
 | [Vincent](star_pso/benchmarks/vincent.py)                                   |       D       |       $6^D$       |
 
+All the above benchmarks inherit from the base class [TestFunction](star_pso/benchmarks/test_function.py) which provides
+some common functionality.  Adding new algorithms **MUST** inherit from the base class.
+
 NOTE: The "Shubert" and "Vincent" functions were tested with D = 2, 3 (for simplicity). The code however
 is generalized and can solve any number of dimensions. Also, the "Rastrigin" function was tested for D = 2,
 4 and K = 6 and 12 respectively.
