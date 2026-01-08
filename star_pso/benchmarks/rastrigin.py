@@ -9,7 +9,7 @@ class Rastrigin(TestFunction):
     This function was originally proposed in:
 
     - A. Saha and K. Deb, “A bi-criterion approach to multimodal optimization:
-      self-adaptive approach,” in Proceedings of the 8th international conference
+      self-adaptive approach”, in Proceedings of the 8th international conference
       on Simulated evolution and learning, ser. SEAL-10. Berlin, Heidelberg:
       Springer-Verlag, 2010, pp. 95–104.
     """
