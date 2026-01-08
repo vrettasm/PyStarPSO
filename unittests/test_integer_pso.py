@@ -23,6 +23,7 @@ def fun_sum_abs(x: np.ndarray, **kwargs) -> tuple[float, bool]:
     f_value = np.sum(np.abs(x))
 
     # Condition for termination.
+    # If the sum of all elements is '0' we stop.
     solution_found = f_value == 0.0
 
     # Return the solution tuple.
