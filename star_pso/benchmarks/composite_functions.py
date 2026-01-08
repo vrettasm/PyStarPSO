@@ -95,6 +95,15 @@ BASIC_FUNCTIONS: dict = {"f_ackley": f_ackley,
                          "f_griewank": f_griewank,
                          "f_rastrigin": f_rastrigin,
                          "f_weierstrass": f_weierstrass}
+"""
+Define a dictionary with all the basic functions:
+
+    - Ackley
+    - Sphere
+    - Griewank
+    - Rastrigin
+    - Weierstrass
+"""
 
 
 class CompositeFunction(TestFunction):
