@@ -30,11 +30,15 @@ class GenericPSO(object):
         functionalities that all PSO models should share.
     """
 
-    # Make a random number generator.
     rng: Generator = default_rng()
+    """
+    Random Number Generator for the whole class.
+    """
 
-    # Set the maximum number of CPUs (at least one).
     MAX_CPUs: int = 1 if not cpu_count() else cpu_count()
+    """
+    Set the maximum number of CPUs (at least one).
+    """
 
     # Object variables.
     __slots__ = ("_swarm", "_velocities", "objective_func", "_upper_bound", "_lower_bound", "_stats",
