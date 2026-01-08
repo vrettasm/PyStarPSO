@@ -17,9 +17,9 @@ class QuantumPSO(GenericPSO):
     This class implements a variant of the quantum particle swarm optimization
     as described in:
 
-    M. Xi, J. Sun, W. Xu, An improved quantum-behaved particle swarm optimization
-    algorithm with weighted mean best position, Applied Mathematics and Computation
-    205 (2008) 751–759,
+    - M. Xi, J. Sun, W. Xu, An improved quantum-behaved particle swarm optimization
+      algorithm with weighted mean best position, Applied Mathematics and Computation
+      205 (2008) 751–759,
     """
 
     def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs) -> None:
