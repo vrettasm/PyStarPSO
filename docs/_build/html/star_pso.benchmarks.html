@@ -16,6 +16,7 @@
       <script src="_static/documentation_options.js?v=01f34227"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -93,6 +94,19 @@
 </section>
 <section id="module-star_pso.benchmarks.composite_functions">
 <span id="star-pso-benchmarks-composite-functions-module"></span><h2>star_pso.benchmarks.composite_functions module<a class="headerlink" href="#module-star_pso.benchmarks.composite_functions" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="star_pso.benchmarks.composite_functions.BASIC_FUNCTIONS">
+<span class="sig-prename descclassname"><span class="pre">star_pso.benchmarks.composite_functions.</span></span><span class="sig-name descname"><span class="pre">BASIC_FUNCTIONS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'f_ackley':</span> <span class="pre">CPUDispatcher(&lt;function</span> <span class="pre">f_ackley&gt;),</span> <span class="pre">'f_griewank':</span> <span class="pre">CPUDispatcher(&lt;function</span> <span class="pre">f_griewank&gt;),</span> <span class="pre">'f_rastrigin':</span> <span class="pre">CPUDispatcher(&lt;function</span> <span class="pre">f_rastrigin&gt;),</span> <span class="pre">'f_sphere':</span> <span class="pre">CPUDispatcher(&lt;function</span> <span class="pre">f_sphere&gt;),</span> <span class="pre">'f_weierstrass':</span> <span class="pre">CPUDispatcher(&lt;function</span> <span class="pre">f_weierstrass&gt;)}</span></em><a class="headerlink" href="#star_pso.benchmarks.composite_functions.BASIC_FUNCTIONS" title="Link to this definition"></a></dt>
+<dd><p>Define a dictionary with all the basic functions:</p>
+<ul class="simple">
+<li><p>Ackley</p></li>
+<li><p>Sphere</p></li>
+<li><p>Griewank</p></li>
+<li><p>Rastrigin</p></li>
+<li><p>Weierstrass</p></li>
+</ul>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="star_pso.benchmarks.composite_functions.CompositeFunction">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.benchmarks.composite_functions.</span></span><span class="sig-name descname"><span class="pre">CompositeFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/benchmarks/composite_functions.html#CompositeFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.composite_functions.CompositeFunction" title="Link to this definition"></a></dt>
@@ -199,10 +213,12 @@ alpha and beta parameters.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.benchmarks.equal_maxima.</span></span><span class="sig-name descname"><span class="pre">EqualMaxima</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/benchmarks/equal_maxima.html#EqualMaxima"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.equal_maxima.EqualMaxima" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#star_pso.benchmarks.test_function.TestFunction" title="star_pso.benchmarks.test_function.TestFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestFunction</span></code></a></p>
 <p>This function was originally proposed in:</p>
-<p>K. Deb, “Genetic algorithms in multimodal function optimization
+<ul class="simple">
+<li><p>K. Deb, “Genetic algorithms in multimodal function optimization
 (master thesis and tcga report no. 89002),” Ph.D. dissertation,
 Tuscaloosa: University of Alabama, The Clearinghouse for Genetic
-Algorithms, 1989.</p>
+Algorithms, 1989.</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.benchmarks.equal_maxima.EqualMaxima.func">
 <span class="sig-name descname"><span class="pre">func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/star_pso/benchmarks/equal_maxima.html#EqualMaxima.func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.equal_maxima.EqualMaxima.func" title="Link to this definition"></a></dt>
@@ -247,9 +263,11 @@ total number that exist.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.benchmarks.five_uneven_peak_trap.</span></span><span class="sig-name descname"><span class="pre">FiveUnevenPeakTrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/benchmarks/five_uneven_peak_trap.html#FiveUnevenPeakTrap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.five_uneven_peak_trap.FiveUnevenPeakTrap" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#star_pso.benchmarks.test_function.TestFunction" title="star_pso.benchmarks.test_function.TestFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestFunction</span></code></a></p>
 <p>This function was originally proposed in:</p>
-<p>J.-P. Li, M. E. Balazs, G. T. Parks, and P. J. Clarkson,
+<ul class="simple">
+<li><p>J.-P. Li, M. E. Balazs, G. T. Parks, and P. J. Clarkson,
 “A species conserving genetic algorithm for multimodal function optimization”
-Evolutionary Computation, vol. 10, no. 3, pp. 207–234, 2002.</p>
+Evolutionary Computation, vol. 10, no. 3, pp. 207–234, 2002.</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.benchmarks.five_uneven_peak_trap.FiveUnevenPeakTrap.func">
 <span class="sig-name descname"><span class="pre">func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/star_pso/benchmarks/five_uneven_peak_trap.html#FiveUnevenPeakTrap.func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.five_uneven_peak_trap.FiveUnevenPeakTrap.func" title="Link to this definition"></a></dt>
@@ -296,27 +314,19 @@ total number that exist.</p>
 <p>This function provides a 2D Gaussian mixture model.</p>
 <p>The equations are given by the Multivariate Normal Distribution,
 with four modes (2 global and 2 local):</p>
-<p>$f(x) = sum_{i=1}^{4}{cal N}(mu_i, Sigma_i)$,</p>
-<dl class="simple">
-<dt>with mean vectors:</dt><dd><ol class="arabic simple">
-<li><p>$mu_1 = [-0.0, -1.0]$,</p></li>
-<li><p>$mu_2 = [-4.0, -6.0]$,</p></li>
-<li><p>$mu_3 = [-5.0, +1.0]$,</p></li>
-<li><p>$mu_4 = [5.0, -10.0]$,</p></li>
-</ol>
-</dd>
-<dt>and covariances:</dt><dd><ol class="arabic simple">
-<li><p>$Sigma_1 = egin{bmatrix} 1.0 &amp; 0.1 0.1 &amp; 1.0end{bmatrix}$,</p></li>
-<li><p>$Sigma_2 = egin{bmatrix} 1.0 &amp; 0.1 0.1 &amp; 1.0end{bmatrix}$,</p></li>
-<li><p>$Sigma_3 = egin{bmatrix} 1.2 &amp; 0.3 0.3 &amp; 1.2end{bmatrix}$,</p></li>
-<li><p>$Sigma_4 = egin{bmatrix} 1.2 &amp; 0.3 0.3 &amp; 1.2end{bmatrix}$.</p></li>
-</ol>
-</dd>
-</dl>
+<div class="math notranslate nohighlight">
+\[f(x) = \sum_{i=1}^{4} \mathcal{N}(\mu_i, \Sigma_i)\]</div>
+<p>with mean vectors:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\mu_1 = [-0.0, -1.0]\\\mu_2 = [-4.0, -6.0]\\\mu_3 = [-5.0, +1.0]\\\mu_4 = [5.0, -10.0]\end{aligned}\end{align} \]</div>
+<p>and covariances:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\Sigma_1 = [ [ 1.0, 0.1 ], [ 0.1, 1.0 ] ]\\\Sigma_2 = [ [ 1.0, 0.1 ], [ 0.1, 1.0 ] ]\\\Sigma_3 = [ [ 1.2, 0.3 ], [ 0.3, 1.2 ] ]\\\Sigma_4 = [ [ 1.2, 0.3 ], [ 0.3, 1.2 ] ]\end{aligned}\end{align} \]</div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="star_pso.benchmarks.gaussian_mixture.GaussianMixture.MVN">
 <span class="sig-name descname"><span class="pre">MVN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(&lt;scipy.stats._multivariate.multivariate_normal_frozen</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;scipy.stats._multivariate.multivariate_normal_frozen</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;scipy.stats._multivariate.multivariate_normal_frozen</span> <span class="pre">object&gt;,</span> <span class="pre">&lt;scipy.stats._multivariate.multivariate_normal_frozen</span> <span class="pre">object&gt;)</span></em><a class="headerlink" href="#star_pso.benchmarks.gaussian_mixture.GaussianMixture.MVN" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Set up four multivariate normal distributions.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.benchmarks.gaussian_mixture.GaussianMixture.func">
@@ -362,10 +372,12 @@ total number that exist.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.benchmarks.himmelblau.</span></span><span class="sig-name descname"><span class="pre">Himmelblau</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-6.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/benchmarks/himmelblau.html#Himmelblau"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.himmelblau.Himmelblau" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#star_pso.benchmarks.test_function.TestFunction" title="star_pso.benchmarks.test_function.TestFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestFunction</span></code></a></p>
 <p>This function was originally proposed in:</p>
-<p>K. Deb, “Genetic algorithms in multimodal function optimization
+<ul class="simple">
+<li><p>K. Deb, “Genetic algorithms in multimodal function optimization
 (master thesis and tcga report no. 89002)”,  Ph.D. dissertation,
 Tuscaloosa: University of Alabama, The Clearinghouse for Genetic
-Algorithms, 1989.</p>
+Algorithms, 1989.</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.benchmarks.himmelblau.Himmelblau.func">
 <span class="sig-name descname"><span class="pre">func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/star_pso/benchmarks/himmelblau.html#Himmelblau.func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.himmelblau.Himmelblau.func" title="Link to this definition"></a></dt>
@@ -410,10 +422,12 @@ total number that exist.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.benchmarks.rastrigin.</span></span><span class="sig-name descname"><span class="pre">Rastrigin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/benchmarks/rastrigin.html#Rastrigin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.rastrigin.Rastrigin" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#star_pso.benchmarks.test_function.TestFunction" title="star_pso.benchmarks.test_function.TestFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestFunction</span></code></a></p>
 <p>This function was originally proposed in:</p>
-<p>A. Saha and K. Deb, “A bi-criterion approach to multimodal optimization:
+<ul class="simple">
+<li><p>A. Saha and K. Deb, “A bi-criterion approach to multimodal optimization:
 self-adaptive approach,” in Proceedings of the 8th international conference
 on Simulated evolution and learning, ser. SEAL-10. Berlin, Heidelberg:
-Springer-Verlag, 2010, pp. 95–104.</p>
+Springer-Verlag, 2010, pp. 95–104.</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.benchmarks.rastrigin.Rastrigin.func">
 <span class="sig-name descname"><span class="pre">func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/star_pso/benchmarks/rastrigin.html#Rastrigin.func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.rastrigin.Rastrigin.func" title="Link to this definition"></a></dt>
@@ -458,8 +472,10 @@ total number that exist.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.benchmarks.shubert.</span></span><span class="sig-name descname"><span class="pre">Shubert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/benchmarks/shubert.html#Shubert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.shubert.Shubert" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#star_pso.benchmarks.test_function.TestFunction" title="star_pso.benchmarks.test_function.TestFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestFunction</span></code></a></p>
 <p>This function was originally proposed in:</p>
-<p>Z. Michalewicz, Genetic Algorithms + Data Structures = Evolution Programs.
-New York: Springer-Verlag, New York, 1996.</p>
+<ul class="simple">
+<li><p>Z. Michalewicz, Genetic Algorithms + Data Structures = Evolution Programs.
+New York: Springer-Verlag, New York, 1996.</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.benchmarks.shubert.Shubert.func">
 <span class="sig-name descname"><span class="pre">func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/star_pso/benchmarks/shubert.html#Shubert.func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.shubert.Shubert.func" title="Link to this definition"></a></dt>
@@ -505,9 +521,11 @@ total number that exist.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.benchmarks.vincent.</span></span><span class="sig-name descname"><span class="pre">Vincent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/benchmarks/vincent.html#Vincent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.vincent.Vincent" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#star_pso.benchmarks.test_function.TestFunction" title="star_pso.benchmarks.test_function.TestFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestFunction</span></code></a></p>
 <p>This function was originally proposed in:</p>
-<p>O. Shir and T. Back, “Niche radius adaptation in the cms-es niching algorithm”,
+<ul class="simple">
+<li><p>O. Shir and T. Back, “Niche radius adaptation in the cms-es niching algorithm”,
 in Parallel Problem-Solving from Nature - PPSN IX, 9th International Conference
-(LNCS 4193). Reykjavík, Iceland: Springer, 2006, pp. 142 – 151.</p>
+(LNCS 4193). Reykjavík, Iceland: Springer, 2006, pp. 142 – 151.</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.benchmarks.vincent.Vincent.func">
 <span class="sig-name descname"><span class="pre">func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/star_pso/benchmarks/vincent.html#Vincent.func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.vincent.Vincent.func" title="Link to this definition"></a></dt>
@@ -552,8 +570,10 @@ total number that exist.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.benchmarks.six_hump_camel_back.</span></span><span class="sig-name descname"><span class="pre">SixHumpCamelBack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/benchmarks/six_hump_camel_back.html#SixHumpCamelBack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.six_hump_camel_back.SixHumpCamelBack" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#star_pso.benchmarks.test_function.TestFunction" title="star_pso.benchmarks.test_function.TestFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestFunction</span></code></a></p>
 <p>This function was originally proposed in:</p>
-<p>Z. Michalewicz, Genetic Algorithms + Data Structures = Evolution Programs.
-New York: Springer-Verlag, New York, 1996.</p>
+<ul class="simple">
+<li><p>Z. Michalewicz, Genetic Algorithms + Data Structures = Evolution Programs.
+New York: Springer-Verlag, New York, 1996.</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.benchmarks.six_hump_camel_back.SixHumpCamelBack.func">
 <span class="sig-name descname"><span class="pre">func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/star_pso/benchmarks/six_hump_camel_back.html#SixHumpCamelBack.func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.six_hump_camel_back.SixHumpCamelBack.func" title="Link to this definition"></a></dt>
@@ -637,8 +657,9 @@ Here is provided the interface for all the test problems.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="star_pso.benchmarks.test_function.TestFunction.rng">
-<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x154D13D80</span></em><a class="headerlink" href="#star_pso.benchmarks.test_function.TestFunction.rng" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x15312BD80</span></em><a class="headerlink" href="#star_pso.benchmarks.test_function.TestFunction.rng" title="Link to this definition"></a></dt>
+<dd><p>Random number generator for the whole class.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.benchmarks.test_function.TestFunction.sample_random_positions">
@@ -667,8 +688,8 @@ parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>population</strong> – the population to search the global optimum.</p></li>
-<li><p><strong>epsilon</strong> – accuracy level of the global optimal solution.</p></li>
+<li><p><strong>population</strong> – a list of Particles to search the global optimum.</p></li>
+<li><p><strong>epsilon</strong> – (float) accuracy level of the global optimal solution.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -724,10 +745,12 @@ total number that exist.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.benchmarks.uneven_decreasing_maxima.</span></span><span class="sig-name descname"><span class="pre">UnevenDecreasingMaxima</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/benchmarks/uneven_decreasing_maxima.html#UnevenDecreasingMaxima"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.uneven_decreasing_maxima.UnevenDecreasingMaxima" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#star_pso.benchmarks.test_function.TestFunction" title="star_pso.benchmarks.test_function.TestFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestFunction</span></code></a></p>
 <p>This function was originally proposed in:</p>
-<p>K. Deb, “Genetic algorithms in multimodal function optimization
+<ul class="simple">
+<li><p>K. Deb, “Genetic algorithms in multimodal function optimization
 (master thesis and tcga report no. 89002)”,  Ph.D. dissertation,
 Tuscaloosa: University of Alabama, The Clearinghouse for Genetic
-Algorithms, 1989.</p>
+Algorithms, 1989.</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.benchmarks.uneven_decreasing_maxima.UnevenDecreasingMaxima.func">
 <span class="sig-name descname"><span class="pre">func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/star_pso/benchmarks/uneven_decreasing_maxima.html#UnevenDecreasingMaxima.func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.benchmarks.uneven_decreasing_maxima.UnevenDecreasingMaxima.func" title="Link to this definition"></a></dt>

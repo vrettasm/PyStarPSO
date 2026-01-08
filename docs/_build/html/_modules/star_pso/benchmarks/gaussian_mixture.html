@@ -85,26 +85,40 @@
 <span class="sd">    The equations are given by the Multivariate Normal Distribution,</span>
 <span class="sd">    with four modes (2 global and 2 local):</span>
 
-<span class="sd">    $f(x) = \sum_{i=1}^{4}{\cal N}(\mu_i, \Sigma_i)$,</span>
+<span class="sd">    .. math::</span>
+<span class="sd">        f(x) = \sum_{i=1}^{4} \mathcal{N}(\mu_i, \Sigma_i)</span>
 
 <span class="sd">    with mean vectors:</span>
-<span class="sd">        1) $\mu_1 = [-0.0, -1.0]$,</span>
-<span class="sd">        2) $\mu_2 = [-4.0, -6.0]$,</span>
-<span class="sd">        3) $\mu_3 = [-5.0, +1.0]$,</span>
-<span class="sd">        4) $\mu_4 = [5.0, -10.0]$,</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \mu_1 = [-0.0, -1.0]</span>
+
+<span class="sd">        \mu_2 = [-4.0, -6.0]</span>
+
+<span class="sd">        \mu_3 = [-5.0, +1.0]</span>
+
+<span class="sd">        \mu_4 = [5.0, -10.0]</span>
 
 <span class="sd">    and covariances:</span>
-<span class="sd">        1) $\Sigma_1 = \begin{bmatrix} 1.0 &amp; 0.1 \\ 0.1 &amp; 1.0\end{bmatrix}$,</span>
-<span class="sd">        2) $\Sigma_2 = \begin{bmatrix} 1.0 &amp; 0.1 \\ 0.1 &amp; 1.0\end{bmatrix}$,</span>
-<span class="sd">        3) $\Sigma_3 = \begin{bmatrix} 1.2 &amp; 0.3 \\ 0.3 &amp; 1.2\end{bmatrix}$,</span>
-<span class="sd">        4) $\Sigma_4 = \begin{bmatrix} 1.2 &amp; 0.3 \\ 0.3 &amp; 1.2\end{bmatrix}$.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \Sigma_1 = [ [ 1.0, 0.1 ], [ 0.1, 1.0 ] ]</span>
+
+<span class="sd">        \Sigma_2 = [ [ 1.0, 0.1 ], [ 0.1, 1.0 ] ]</span>
+
+<span class="sd">        \Sigma_3 = [ [ 1.2, 0.3 ], [ 0.3, 1.2 ] ]</span>
+
+<span class="sd">        \Sigma_4 = [ [ 1.2, 0.3 ], [ 0.3, 1.2 ] ]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Set up the four multivariate normal distributions.</span>
+    <span class="c1"># Auxiliary (class-level) tuple.</span>
     <span class="n">MVN</span> <span class="o">=</span> <span class="p">(</span><span class="n">multivariate_normal</span><span class="p">([</span><span class="o">-</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]),</span>
            <span class="n">multivariate_normal</span><span class="p">([</span><span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.0</span><span class="p">],</span> <span class="p">[[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]),</span>
            <span class="n">multivariate_normal</span><span class="p">([</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">],</span> <span class="p">[[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">]]),</span>
            <span class="n">multivariate_normal</span><span class="p">([</span><span class="mf">5.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.0</span><span class="p">],</span> <span class="p">[[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">]]))</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set up four multivariate normal distributions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">15.0</span><span class="p">,</span> <span class="n">x_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">15.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
