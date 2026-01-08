@@ -26,13 +26,13 @@ class BinaryPSO(GenericPSO):
     """
     Description:
 
-    This class implements the discrete binary particle swarm optimization variant
+    This class implements the (discrete) binary particle swarm optimization variant
     as described in:
 
-    Kennedy, J., and R. C. Eberhart 1997. “A Discrete Binary Version of the Particle
-    Swarm Algorithm.” IEEE International conference on systems, man, and cybernetics,
-    1997. Computational cybernetics and simulation, Vol. 5, Orlando, FL, October 12–15,
-    pp: 4104–4108.
+    - Kennedy, J., and R. C. Eberhart 1997. “A Discrete Binary Version of the Particle
+      Swarm Algorithm.” IEEE International conference on systems, man, and cybernetics,
+      1997. Computational cybernetics and simulation, Vol. 5, Orlando, FL, October 12–15,
+      pp: 4104–4108.
     """
 
     def __init__(self, v_min: float = -10.0, v_max: float = 10.0, **kwargs) -> None:
