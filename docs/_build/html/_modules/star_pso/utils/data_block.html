@@ -89,6 +89,15 @@
 <span class="c1"># Create a tuple to pack some inputs.</span>
 <span class="n">Params</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Params&quot;</span><span class="p">,</span>
                     <span class="p">[</span><span class="s2">&quot;v_new&quot;</span><span class="p">,</span> <span class="s2">&quot;x_old&quot;</span><span class="p">,</span> <span class="s2">&quot;lower_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;upper_bound&quot;</span><span class="p">])</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a tuple to pack some input parameters:</span>
+<span class="sd">    </span>
+<span class="sd">    - v_new: new velocity</span>
+<span class="sd">    - x_old: old position</span>
+<span class="sd">    - lower_bound: lower bounds for position (or velocity)</span>
+<span class="sd">    - upper_bound: upper bounds for position (or velocity)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="c1"># Public interface.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DataBlock&quot;</span><span class="p">]</span>
 

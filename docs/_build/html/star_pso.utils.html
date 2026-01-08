@@ -470,6 +470,13 @@ front points from a given input points numpy array.</p>
 </dl>
 </dd></dl>
 
+<dl class="py data">
+<dt class="sig sig-object py" id="star_pso.utils.auxiliary.spread_methods">
+<span class="sig-prename descclassname"><span class="pre">star_pso.utils.auxiliary.</span></span><span class="sig-name descname"><span class="pre">spread_methods</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{BlockType.BINARY:</span> <span class="pre">CPUDispatcher(&lt;function</span> <span class="pre">nb_median_hamming_distance&gt;),</span> <span class="pre">BlockType.CATEGORICAL:</span> <span class="pre">CPUDispatcher(&lt;function</span> <span class="pre">nb_median_kl_divergence&gt;),</span> <span class="pre">BlockType.FLOAT:</span> <span class="pre">CPUDispatcher(&lt;function</span> <span class="pre">nb_median_euclidean_distance&gt;),</span> <span class="pre">BlockType.INTEGER:</span> <span class="pre">CPUDispatcher(&lt;function</span> <span class="pre">nb_median_taxicab_distance&gt;)}</span></em><a class="headerlink" href="#star_pso.utils.auxiliary.spread_methods" title="Link to this definition"></a></dt>
+<dd><p>Create a dictionary with block types as keys and their corresponding
+spread estimation methods as values.</p>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="star_pso.utils.auxiliary.time_it">
 <span class="sig-prename descclassname"><span class="pre">star_pso.utils.auxiliary.</span></span><span class="sig-name descname"><span class="pre">time_it</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/utils/auxiliary.html#time_it"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.utils.auxiliary.time_it" title="Link to this definition"></a></dt>
@@ -618,7 +625,7 @@ of the new positions, for all types of data blocks.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="star_pso.utils.data_block.DataBlock.rng">
-<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x150D58740</span></em><a class="headerlink" href="#star_pso.utils.data_block.DataBlock.rng" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x14E368660</span></em><a class="headerlink" href="#star_pso.utils.data_block.DataBlock.rng" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -728,10 +735,27 @@ that correspond to the correct block types.</p>
 </section>
 <section id="module-star_pso.utils">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-star_pso.utils" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="star_pso.utils.ScalarOrArray">
+<span class="sig-prename descclassname"><span class="pre">star_pso.utils.</span></span><span class="sig-name descname"><span class="pre">ScalarOrArray</span></span><a class="headerlink" href="#star_pso.utils.ScalarOrArray" title="Link to this definition"></a></dt>
+<dd><p>Make a type alias for the position’s type.</p>
+<p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">_Buffer</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">_SupportsArray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code>]] | <code class="xref py py-class docutils literal notranslate"><span class="pre">_NestedSequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">_SupportsArray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code>]]] | <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">complex</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">_NestedSequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">complex</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code>]</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="star_pso.utils.VOptions">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.utils.</span></span><span class="sig-name descname"><span class="pre">VOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#star_pso.utils.VOptions" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.utils.</span></span><span class="sig-name descname"><span class="pre">VOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#star_pso.utils.VOptions" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<p>Declare a named tuple with the parameters
+we want to use in the velocity equations:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>“w0”: inertia weight</p></li>
+<li><p>“c1”: cognitive coefficient</p></li>
+<li><p>“c2”: social coefficient</p></li>
+<li><p>“mode”: “fipso”, “g_best”, “multimodal”.</p></li>
+</ul>
+</div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="star_pso.utils.VOptions.c1">
 <span class="sig-name descname"><span class="pre">c1</span></span><a class="headerlink" href="#star_pso.utils.VOptions.c1" title="Link to this definition"></a></dt>

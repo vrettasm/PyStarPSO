@@ -73,17 +73,25 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 
-<span class="c1"># Make a type alias for the position&#39;s type.</span>
 <span class="n">ScalarOrArray</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Make a type alias for the position&#39;s type.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
-<span class="c1"># Declare a named tuple with the parameters</span>
-<span class="c1"># we want to use in the velocity equations:</span>
-<span class="c1"># 1) &quot;w0&quot;: inertia weight</span>
-<span class="c1"># 2) &quot;c1&quot;: cognitive coefficient</span>
-<span class="c1"># 3) &quot;c2&quot;: social coefficient</span>
-<span class="c1"># 4) &quot;mode&quot;: &quot;fipso&quot;, &quot;g_best&quot;, &quot;multimodal&quot;.</span>
 <span class="n">VOptions</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;VOptions&quot;</span><span class="p">,</span>
                       <span class="p">[</span><span class="s2">&quot;w0&quot;</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">,</span> <span class="s2">&quot;mode&quot;</span><span class="p">],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">])</span>
+
+<span class="c1"># Add documentation to VOptions.</span>
+<span class="n">VOptions</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                   Declare a named tuple with the parameters</span>
+<span class="s2">                   we want to use in the velocity equations:</span>
+
+<span class="s2">                    - &quot;w0&quot;: inertia weight</span>
+<span class="s2">                    - &quot;c1&quot;: cognitive coefficient</span>
+<span class="s2">                    - &quot;c2&quot;: social coefficient</span>
+<span class="s2">                    - &quot;mode&quot;: &quot;fipso&quot;, &quot;g_best&quot;, &quot;multimodal&quot;.</span>
+<span class="s2">                   &quot;&quot;&quot;</span>
+<span class="c1"># _end_file_</span>
 </pre></div>
 
            </div>

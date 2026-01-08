@@ -655,14 +655,15 @@
 
 <span class="c1"># _end_def_</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Create a dictionary with block types as keys and their</span>
-<span class="sd">corresponding spread estimation methods as values.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># Dictionary with block types.</span>
 <span class="n">spread_methods</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">BlockType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">:</span> <span class="n">nb_median_euclidean_distance</span><span class="p">,</span>
                         <span class="n">BlockType</span><span class="o">.</span><span class="n">BINARY</span><span class="p">:</span> <span class="n">nb_median_hamming_distance</span><span class="p">,</span>
                         <span class="n">BlockType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">:</span> <span class="n">nb_median_taxicab_distance</span><span class="p">,</span>
                         <span class="n">BlockType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">:</span> <span class="n">nb_median_kl_divergence</span><span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Create a dictionary with block types as keys and their corresponding</span>
+<span class="sd">spread estimation methods as values.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="nb_cdist">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_cdist">[docs]</a>
