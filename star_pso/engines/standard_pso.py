@@ -14,13 +14,13 @@ class StandardPSO(GenericPSO):
     This implements a basic variant of the original PSO algorithm as
     described in:
 
-    Kennedy, J. and Eberhart, R. (1995). "Particle Swarm Optimization".
-    In Proceedings of IEEE International Conference on Neural Networks.
-    Vol. IV. pp. 1942–1948. doi:10.1109/ICNN.1995.488968.
+    - Kennedy, J. and Eberhart, R. (1995). "Particle Swarm Optimization".
+      In Proceedings of IEEE International Conference on Neural Networks.
+      Vol. IV. pp. 1942–1948. doi:10.1109/ICNN.1995.488968.
 
-    Shi, Y. and Eberhart, R. (1998). "A modified particle swarm optimizer".
-    In Proceedings of the IEEE World Congress on Computational Intelligence,
-    Anchorage, AK, USA, 4–9 May 1998; pp. 69–73.
+    - Shi, Y. and Eberhart, R. (1998). "A modified particle swarm optimizer".
+      In Proceedings of the IEEE World Congress on Computational Intelligence,
+      Anchorage, AK, USA, 4–9 May 1998; pp. 69–73.
     """
 
     def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs) -> None:
