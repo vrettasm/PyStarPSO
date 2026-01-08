@@ -532,14 +532,15 @@ def nb_clip_item(x_new, lower_limit, upper_limit) -> int | float:
                       upper_limit).item()
 # _end_def_
 
-"""
-Create a dictionary with block types as keys and their
-corresponding spread estimation methods as values.
-"""
+# Dictionary with block types.
 spread_methods: dict = {BlockType.FLOAT: nb_median_euclidean_distance,
                         BlockType.BINARY: nb_median_hamming_distance,
                         BlockType.INTEGER: nb_median_taxicab_distance,
                         BlockType.CATEGORICAL: nb_median_kl_divergence}
+"""
+Create a dictionary with block types as keys and their corresponding
+spread estimation methods as values.
+"""
 
 @njit(fastmath=True)
 def nb_cdist(x_pos: np.ndarray, scaled: bool = False) -> np.ndarray:
