@@ -35,21 +35,21 @@ setting this option to the default (False), will have the best results.
 ## Examples
 Some optimization examples on how to use these algorithms:
 
-| **Problem**                                                | **Variables** | **Objectives** | **Constraints** |
-|:-----------------------------------------------------------|:-------------:|:--------------:|:---------------:|
-| [Sphere](examples/sphere.ipynb)                            |    M (=5)     |       1        |       no        |
-| [Rosenbrock](examples/rosenbrock_on_a_disk.ipynb)          |    M (=2)     |       1        |        1        |
-| [Binh & Korn](examples/binh_and_korn_multiobjective.ipynb) |    M (=2)     |       2        |        2        |
-| [Traveling Salesman](examples/tsp.ipynb)                   |    M (=10)    |       1        |       yes       |
-| [Zakharov](examples/zakharov.ipynb)                        |    M (=8)     |       1        |       no        |
-| [Tanaka](examples/tanaka_multiobjective.ipynb)             |    M (=2)     |       2        |        2        |
-| [Shubert](examples/shubert_2D.ipynb)                       |    M (=2)     |       1        |       no        |
-| [Gaussian Mixture](examples/gaussian_mixture_2D.ipynb)     |    M (=2)     |       1        |       no        |
-| [Test Binary](examples/test_binary_pso.ipynb)              |    M (=30)    |       1        |       no        |
-| [Test Integer](examples/test_integer_pso.ipynb)            |    M (=15)    |       1        |       no        |
-| [Test JAT](examples/test_jack_of_all_trades.ipynb)         |    M (=3)     |       1        |       no        |
-| [Test Categorical](examples/test_categorical_pso.ipynb)    |    M (=4)     |       1        |       no        |
-| [Test Benchmark](examples/test_benchmark.ipynb)            |       M       |       1        |       no        |
+| **Problem**                                               | **Variables** | **Objectives** | **Constraints** |
+|:----------------------------------------------------------|:-------------:|:--------------:|:---------------:|
+| [Sphere](examples/sphere.ipynb)                           |    M (=5)     |       1        |       no        |
+| [Rosenbrock](examples/rosenbrock_on_a_disk.ipynb)         |    M (=2)     |       1        |        1        |
+| [Binh & Korn](examples/binh_and_korn.ipynb)               |    M (=2)     |       2        |        2        |
+| [Traveling Salesman](examples/tsp.ipynb)                  |    M (=10)    |       1        |       yes       |
+| [Zakharov](examples/zakharov.ipynb)                       |    M (=8)     |       1        |       no        |
+| [Tanaka](examples/tanaka.ipynb)                           |    M (=2)     |       2        |        2        |
+| [Shubert](examples/shubert_2D.ipynb)                      |    M (=2)     |       1        |       no        |
+| [Gaussian Mixture](examples/gaussian_mixture_2D.ipynb)    |    M (=2)     |       1        |       no        |
+| [OneMax](examples/one_max.ipynb)                          |    M (=30)    |       1        |       no        |
+| [SumAbs](examples/sum_abs.ipynb)                          |    M (=15)    |       1        |       no        |
+| [JackofAllTrades](examples/jack_of_all_trades.ipynb)      |    M (=3)     |       1        |       no        |
+| [Categorical PSO](examples/categorical_pso.ipynb)         |    M (=4)     |       1        |       no        |
+| [Benchmark Functions](examples/benchmark_functions.ipynb) |       M       |       1        |       no        |
 
 ## Benchmarks
 We have implemented the following benchmarks of **multimodal** functions:
