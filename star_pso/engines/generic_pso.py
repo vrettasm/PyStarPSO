@@ -41,8 +41,8 @@ class GenericPSO(object):
     """
 
     # Object variables.
-    __slots__ = ("_swarm", "_velocities", "objective_func", "_upper_bound", "_lower_bound", "_stats",
-                 "_items", "_f_evals", "n_cpus", "n_rows", "n_cols", "_special_mode", "_iteration")
+    __slots__ = ("_swarm", "_velocities", "_objective_func", "_upper_bound", "_lower_bound", "_stats",
+                 "_items", "_f_evals", "_n_cpus", "_n_rows", "_n_cols", "_special_mode", "_iteration")
 
     def __init__(self, initial_swarm: Swarm, obj_func: Callable,
                  lower_bound: ArrayLike = None, upper_bound: ArrayLike = None,
@@ -67,10 +67,10 @@ class GenericPSO(object):
         self._swarm = deepcopy(initial_swarm) if copy else initial_swarm
 
         # Number of particles.
-        self.n_rows = len(self._swarm)
+        self._n_rows = len(self._swarm)
 
         # Size (length) of particle.
-        self.n_cols = len(self._swarm[0])
+        self._n_cols = len(self._swarm[0])
 
         # Make sure the fitness function is indeed callable.
         if not callable(obj_func):
@@ -79,7 +79,7 @@ class GenericPSO(object):
         # _end_if_
 
         # Get the objective function.
-        self.objective_func = obj_func
+        self._objective_func = obj_func
 
         # Check if the lower and upper bounds are set.
         if (lower_bound is not None) and (upper_bound is not None):
@@ -101,13 +101,13 @@ class GenericPSO(object):
         if n_cpus is None:
 
             # This is the default option.
-            self.n_cpus = max(1, GenericPSO.MAX_CPUs-1)
+            self._n_cpus = max(1, GenericPSO.MAX_CPUs-1)
         else:
 
             # Assign the  requested number, making sure we have
             # enough CPUs and the value entered has the correct
             # type.
-            self.n_cpus = max(1, min(GenericPSO.MAX_CPUs-1, int(n_cpus)))
+            self._n_cpus = max(1, min(GenericPSO.MAX_CPUs-1, int(n_cpus)))
         # _end_if_
 
         # Log the number of CPUs.
@@ -133,6 +133,38 @@ class GenericPSO(object):
 
         # Log the object initialization.
         logger.debug(f"{self.__class__.__name__} initialization complete.")
+    # _end_def_
+
+    @property
+    def n_cols(self) -> int:
+        """
+        Accessor (getter) of the number of columns of the swarm matrix
+        (i.e. size of particle).
+
+        :return: the n_cols value.
+        """
+        return self._n_cols
+    # _end_def_
+
+    @property
+    def n_rows(self) -> int:
+        """
+        Accessor (getter) of the number of rows of the swarm matrix
+        (i.e. number of particles).
+
+        :return: the n_rows value.
+        """
+        return self._n_rows
+    # _end_def_
+
+    @property
+    def n_cpus(self) -> int:
+        """
+        Accessor (getter) of the number of CPUs we will use.
+
+        :return: the n_cpus value.
+        """
+        return self._n_cpus
     # _end_def_
 
     @classmethod
@@ -332,7 +364,7 @@ class GenericPSO(object):
         positions = self._get_typed_positions()
 
         # Get a local copy of the objective function.
-        func = self.objective_func
+        func = self._objective_func
 
         # Check the 'parallel_mode' flag.
         if parallel_mode:
