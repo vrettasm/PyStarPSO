@@ -108,10 +108,14 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description:</span>
 
-<span class="sd">        JackOfAllTradesPSO class  is an implementation  of the  PSO algorithm that</span>
-<span class="sd">        can deal with mixed types  of optimization variables.  The supported types</span>
-<span class="sd">        are: i) float (continuous), ii) integer (discrete), iii) binary (discrete)</span>
-<span class="sd">        and iv) categorical (discrete).</span>
+<span class="sd">        JackOfAllTradesPSO class is an implementation of the PSO algorithm that</span>
+<span class="sd">        can deal with mixed types of optimization variables. The supported types</span>
+<span class="sd">        are:</span>
+
+<span class="sd">        - float (continuous)</span>
+<span class="sd">        - integer (discrete)</span>
+<span class="sd">        - binary  (discrete)</span>
+<span class="sd">        - categorical (discrete)</span>
 
 <span class="sd">        The fundamental building block of the algorithm is the &#39;DataBlock&#39; which</span>
 <span class="sd">        encapsulates the data and the functionality of each variable type.</span>
@@ -192,10 +196,10 @@
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.sample_categorical_values">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sample_categorical_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Samples the actual position based on particles probabilities and</span>
-<span class="sd">        valid sets for each data block.</span>
+<span class="sd">        Samples the actual position based on particles probabilities</span>
+<span class="sd">        and valid sets for each data block.</span>
 
-<span class="sd">        :param positions: the container with the lists of probabilities</span>
+<span class="sd">        :param positions: container with the lists of probabilities</span>
 <span class="sd">                          (one list for each position).</span>
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -227,7 +231,7 @@
 <span class="sd">        It is assumed that all data blocks are CATEGORICAL</span>
 <span class="sd">        and that they have the same valid set of values.</span>
 
-<span class="sd">        :param positions: the container with the lists of probabilities</span>
+<span class="sd">        :param positions: container with the lists of probabilities</span>
 <span class="sd">                          (one list for each position).</span>
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

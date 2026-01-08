@@ -98,12 +98,14 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.binary_pso.</span></span><span class="sig-name descname"><span class="pre">BinaryPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/binary_pso.html#BinaryPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#star_pso.engines.generic_pso.GenericPSO" title="star_pso.engines.generic_pso.GenericPSO"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericPSO</span></code></a></p>
 <p>Description:</p>
-<p>This class implements the discrete binary particle swarm optimization variant
+<p>This class implements the (discrete) binary particle swarm optimization variant
 as described in:</p>
-<p>Kennedy, J., and R. C. Eberhart 1997. “A Discrete Binary Version of the Particle
+<ul class="simple">
+<li><p>Kennedy, J., and R. C. Eberhart 1997. “A Discrete Binary Version of the Particle
 Swarm Algorithm.” IEEE International conference on systems, man, and cybernetics,
 1997. Computational cybernetics and simulation, Vol. 5, Orlando, FL, October 12–15,
-pp: 4104–4108.</p>
+pp: 4104–4108.</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.engines.binary_pso.BinaryPSO.calculate_spread">
 <span class="sig-name descname"><span class="pre">calculate_spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/star_pso/engines/binary_pso.html#BinaryPSO.calculate_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO.calculate_spread" title="Link to this definition"></a></dt>
@@ -195,9 +197,11 @@ the logistic values of input array ‘x’.</p>
 <p>Description:</p>
 <p>This class implements a variant of the quantum particle swarm optimization
 as described in:</p>
-<p>M. Xi, J. Sun, W. Xu, An improved quantum-behaved particle swarm optimization
+<ul class="simple">
+<li><p>M. Xi, J. Sun, W. Xu, An improved quantum-behaved particle swarm optimization
 algorithm with weighted mean best position, Applied Mathematics and Computation
-205 (2008) 751–759,</p>
+205 (2008) 751–759,</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.engines.quantum_pso.QuantumPSO.calculate_spread">
 <span class="sig-name descname"><span class="pre">calculate_spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/star_pso/engines/quantum_pso.html#QuantumPSO.calculate_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.quantum_pso.QuantumPSO.calculate_spread" title="Link to this definition"></a></dt>
@@ -275,9 +279,11 @@ and clear all the statistics dictionary.</p>
 <dd><p>Bases: <a class="reference internal" href="#star_pso.engines.generic_pso.GenericPSO" title="star_pso.engines.generic_pso.GenericPSO"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericPSO</span></code></a></p>
 <p>Description:</p>
 <p>This implements a simplified variant of the original ICPSO algorithm as described in:</p>
-<p>Strasser, S., Goodman, R., Sheppard, J., et al. “A new discrete particle swarm
+<ul class="simple">
+<li><p>Strasser, S., Goodman, R., Sheppard, J., et al. “A new discrete particle swarm
 optimization algorithm”, Proceedings of 2016 Genetic and Evolutionary Computation
-Conference (GECCO) 16, ACM Press, Denver, Colorado, USA, pp. 53-60.</p>
+Conference (GECCO) 16, ACM Press, Denver, Colorado, USA, pp. 53-60.</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.calculate_spread">
 <span class="sig-name descname"><span class="pre">calculate_spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/star_pso/engines/categorical_pso.html#CategoricalPSO.calculate_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.calculate_spread" title="Link to this definition"></a></dt>
@@ -667,7 +673,7 @@ should be implemented separately.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.rng">
-<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x14E3683C0</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x1556843C0</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
 <dd><p>Random Number Generator for the whole class.</p>
 </dd></dl>
 
@@ -864,10 +870,15 @@ and clear all the statistics dictionary.</p>
 <dd><p>Bases: <a class="reference internal" href="#star_pso.engines.generic_pso.GenericPSO" title="star_pso.engines.generic_pso.GenericPSO"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericPSO</span></code></a></p>
 <p>Description:</p>
 <blockquote>
-<div><p>JackOfAllTradesPSO class  is an implementation  of the  PSO algorithm that
-can deal with mixed types  of optimization variables.  The supported types
-are: i) float (continuous), ii) integer (discrete), iii) binary (discrete)
-and iv) categorical (discrete).</p>
+<div><p>JackOfAllTradesPSO class is an implementation of the PSO algorithm that
+can deal with mixed types of optimization variables. The supported types
+are:</p>
+<ul class="simple">
+<li><p>float (continuous)</p></li>
+<li><p>integer (discrete)</p></li>
+<li><p>binary  (discrete)</p></li>
+<li><p>categorical (discrete)</p></li>
+</ul>
 <p>The fundamental building block of the algorithm is the ‘DataBlock’ which
 encapsulates the data and the functionality of each variable type.</p>
 </div></blockquote>
@@ -926,11 +937,11 @@ and clear all the statistics dictionary.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.sample_categorical_values">
 <span class="sig-name descname"><span class="pre">sample_categorical_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/jack_of_all_trades_pso.html#JackOfAllTradesPSO.sample_categorical_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.sample_categorical_values" title="Link to this definition"></a></dt>
-<dd><p>Samples the actual position based on particles probabilities and
-valid sets for each data block.</p>
+<dd><p>Samples the actual position based on particles probabilities
+and valid sets for each data block.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>positions</strong> – the container with the lists of probabilities
+<dd class="field-odd"><p><strong>positions</strong> – container with the lists of probabilities
 (one list for each position).</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -948,7 +959,7 @@ It is used in problems like the ‘Traveling Salesman’.</p>
 and that they have the same valid set of values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>positions</strong> – the container with the lists of probabilities
+<dd class="field-odd"><p><strong>positions</strong> – container with the lists of probabilities
 (one list for each position).</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -994,12 +1005,14 @@ and that they have the same valid set of values.</p>
 <p>Description:</p>
 <p>This implements a basic variant of the original PSO algorithm as
 described in:</p>
-<p>Kennedy, J. and Eberhart, R. (1995). “Particle Swarm Optimization”.
+<ul class="simple">
+<li><p>Kennedy, J. and Eberhart, R. (1995). “Particle Swarm Optimization”.
 In Proceedings of IEEE International Conference on Neural Networks.
-Vol. IV. pp. 1942–1948. doi:10.1109/ICNN.1995.488968.</p>
-<p>Shi, Y. and Eberhart, R. (1998). “A modified particle swarm optimizer”.
+Vol. IV. pp. 1942–1948. doi:10.1109/ICNN.1995.488968.</p></li>
+<li><p>Shi, Y. and Eberhart, R. (1998). “A modified particle swarm optimizer”.
 In Proceedings of the IEEE World Congress on Computational Intelligence,
-Anchorage, AK, USA, 4–9 May 1998; pp. 69–73.</p>
+Anchorage, AK, USA, 4–9 May 1998; pp. 69–73.</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.engines.standard_pso.StandardPSO.calculate_spread">
 <span class="sig-name descname"><span class="pre">calculate_spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/star_pso/engines/standard_pso.html#StandardPSO.calculate_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.standard_pso.StandardPSO.calculate_spread" title="Link to this definition"></a></dt>
