@@ -17,16 +17,14 @@ from star_pso.utils.auxiliary import (BlockType,
 # Create a tuple to pack some inputs.
 Params = namedtuple("Params",
                     ["v_new", "x_old", "lower_bound", "upper_bound"])
-
-# Add documentation to Params.
-Params.__doc__ = """
-                    Create a tuple to pack some input parameters:
-                    
-                    - v_new: new velocity
-                    - x_old: old position
-                    - lower_bound: lower bounds for position (or velocity)
-                    - upper_bound: upper bounds for position (or velocity)
-                 """
+"""
+    Create a tuple to pack some input parameters:
+    
+    - v_new: new velocity
+    - x_old: old position
+    - lower_bound: lower bounds for position (or velocity)
+    - upper_bound: upper bounds for position (or velocity)
+"""
 
 # Public interface.
 __all__ = ["DataBlock"]
