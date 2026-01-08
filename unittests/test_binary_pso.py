@@ -10,16 +10,24 @@ from star_pso.utils.auxiliary import cost_function
 @cost_function
 def fun_one_max(x: np.ndarray, **kwargs) -> tuple[float, bool]:
     """
-    Cost function to test the Binary_PSO algorithm.
+    The cost function to test the Binary_PSO algorithm is
+    simply the OneMax that sums the numbers of '1' in the
+    input vector (array).
+
+    :param x: the input array we want to test.
+
+    CAUTION: The 'kwargs' is added for compatibility.
+             The code will fail if it is removed.
     """
     # Compute the function value.
-    f_val = np.sum(x)
+    f_value = np.sum(x)
 
     # Condition for termination.
-    solution_found = f_val == len(x)
+    # If all elements are '1' we stop.
+    solution_found = f_value == len(x)
 
     # Return the solution tuple.
-    return f_val, solution_found
+    return f_value, solution_found
 # _end_def_
 
 
