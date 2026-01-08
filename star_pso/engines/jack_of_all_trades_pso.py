@@ -38,10 +38,11 @@ class JackOfAllTradesPSO(GenericPSO):
         JackOfAllTradesPSO class is an implementation of the PSO algorithm that
         can deal with mixed types of optimization variables. The supported types
         are:
-            - float (continuous)
-            - integer (discrete)
-            - binary  (discrete)
-            - categorical (discrete)
+
+        - float (continuous)
+        - integer (discrete)
+        - binary  (discrete)
+        - categorical (discrete)
 
         The fundamental building block of the algorithm is the 'DataBlock' which
         encapsulates the data and the functionality of each variable type.
