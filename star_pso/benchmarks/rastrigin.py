@@ -8,10 +8,10 @@ class Rastrigin(TestFunction):
     """
     This function was originally proposed in:
 
-    A. Saha and K. Deb, “A bi-criterion approach to multimodal optimization:
-    self-adaptive approach,” in Proceedings of the 8th international conference
-    on Simulated evolution and learning, ser. SEAL-10. Berlin, Heidelberg:
-    Springer-Verlag, 2010, pp. 95–104.
+    - A. Saha and K. Deb, “A bi-criterion approach to multimodal optimization:
+      self-adaptive approach,” in Proceedings of the 8th international conference
+      on Simulated evolution and learning, ser. SEAL-10. Berlin, Heidelberg:
+      Springer-Verlag, 2010, pp. 95–104.
     """
 
     def __init__(self, n_dim: int = 2, x_min: float = 0.0, x_max: float = 1.0) -> None:

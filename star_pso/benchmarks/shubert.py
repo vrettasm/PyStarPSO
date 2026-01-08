@@ -8,8 +8,8 @@ class Shubert(TestFunction):
     """
     This function was originally proposed in:
 
-    Z. Michalewicz, Genetic Algorithms + Data Structures = Evolution Programs.
-    New York: Springer-Verlag, New York, 1996.
+    - Z. Michalewicz, Genetic Algorithms + Data Structures = Evolution Programs.
+      New York: Springer-Verlag, New York, 1996.
     """
 
     def __init__(self, n_dim: int = 2, x_min: float = -10.0, x_max: float = 10.0) -> None:

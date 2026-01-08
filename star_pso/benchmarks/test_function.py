@@ -16,6 +16,9 @@ class TestFunction(object):
 
     # Make a random number generator.
     rng: Generator = default_rng()
+    """
+    Random number generator for the whole class.
+    """
 
     # Object variables.
     __slots__ = ("_name", "_nDim", "_x_min", "_x_max", "_lhc")
@@ -155,9 +158,9 @@ class TestFunction(object):
         of the specific test function, using default (problem specific)
         parameters.
 
-        :param population: the population to search the global optimum.
+        :param population: a list of Particles to search the global optimum.
 
-        :param epsilon: accuracy level of the global optimal solution.
+        :param epsilon: (float) accuracy level of the global optimal solution.
 
         :return: a tuple with the number of global optima found and the
                  total number that exist.

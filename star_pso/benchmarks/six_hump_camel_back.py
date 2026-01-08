@@ -8,8 +8,8 @@ class SixHumpCamelBack(TestFunction):
     """
     This function was originally proposed in:
 
-    Z. Michalewicz, Genetic Algorithms + Data Structures = Evolution Programs.
-    New York: Springer-Verlag, New York, 1996.
+    - Z. Michalewicz, Genetic Algorithms + Data Structures = Evolution Programs.
+      New York: Springer-Verlag, New York, 1996.
     """
 
     def __init__(self,
