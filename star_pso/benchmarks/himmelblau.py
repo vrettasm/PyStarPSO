@@ -8,10 +8,10 @@ class Himmelblau(TestFunction):
     """
     This function was originally proposed in:
 
-    K. Deb, “Genetic algorithms in multimodal function optimization
-    (master thesis and tcga report no. 89002)”,  Ph.D. dissertation,
-    Tuscaloosa: University of Alabama, The Clearinghouse for Genetic
-    Algorithms, 1989.
+    - K. Deb, “Genetic algorithms in multimodal function optimization
+      (master thesis and tcga report no. 89002)”,  Ph.D. dissertation,
+      Tuscaloosa: University of Alabama, The Clearinghouse for Genetic
+      Algorithms, 1989.
     """
 
     def __init__(self, x_min: float = -6.0, x_max: float = 6.0) -> None:
