@@ -161,10 +161,10 @@
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">blk</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_container</span><span class="p">,</span> <span class="n">v_new</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">block</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_container</span><span class="p">,</span> <span class="n">v_new</span><span class="p">):</span>
             <span class="c1"># This calls internally the &#39;right&#39;</span>
             <span class="c1"># method to update each block type.</span>
-            <span class="n">blk</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="n">block</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">v</span>
     <span class="c1"># _end_def_</span>
 
     <span class="nd">@property</span>
@@ -174,7 +174,7 @@
 
 <span class="sd">        :return: a list with each data block best position.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">blk</span><span class="o">.</span><span class="n">best_position</span> <span class="k">for</span> <span class="n">blk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_container</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">block</span><span class="o">.</span><span class="n">best_position</span> <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_container</span><span class="p">]</span>
     <span class="c1"># _end_def_</span>
 
     <span class="nd">@best_position</span><span class="o">.</span><span class="n">setter</span>
@@ -186,8 +186,8 @@
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">blk</span><span class="p">,</span> <span class="n">new_best</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_container</span><span class="p">,</span> <span class="n">new_vector</span><span class="p">):</span>
-            <span class="n">blk</span><span class="o">.</span><span class="n">best_position</span> <span class="o">=</span> <span class="n">new_best</span>
+        <span class="k">for</span> <span class="n">block</span><span class="p">,</span> <span class="n">new_best</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_container</span><span class="p">,</span> <span class="n">new_vector</span><span class="p">):</span>
+            <span class="n">block</span><span class="o">.</span><span class="n">best_position</span> <span class="o">=</span> <span class="n">new_best</span>
     <span class="c1"># _end_def_</span>
 
     <span class="nd">@property</span>
@@ -243,8 +243,8 @@
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">blk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_container</span><span class="p">:</span>
-            <span class="n">blk</span><span class="o">.</span><span class="n">reset_position</span><span class="p">()</span></div>
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_container</span><span class="p">:</span>
+            <span class="n">block</span><span class="o">.</span><span class="n">reset_position</span><span class="p">()</span></div>
 
     <span class="c1"># _end_def_</span>
 
@@ -306,7 +306,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_container</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">container</span>
     <span class="c1"># _end_def_</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;JatParticle&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;JatParticle&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This custom method overrides the default deepcopy method.</span>
 

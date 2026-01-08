@@ -85,7 +85,6 @@
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
- | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
@@ -134,9 +133,9 @@
 </li>
       <li><a href="star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO">BinaryPSO (class in star_pso.engines.binary_pso)</a>
 </li>
-      <li><a href="star_pso.utils.html#star_pso.utils.auxiliary.BlockType">BlockType (class in star_pso.utils.auxiliary)</a>
+      <li><a href="star_pso.utils.html#star_pso.utils.data_block.DataBlock.block_t">block_t (star_pso.utils.data_block.DataBlock property)</a>
 </li>
-      <li><a href="star_pso.utils.html#star_pso.utils.data_block.DataBlock.btype">btype (star_pso.utils.data_block.DataBlock property)</a>
+      <li><a href="star_pso.utils.html#star_pso.utils.auxiliary.BlockType">BlockType (class in star_pso.utils.auxiliary)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -182,6 +181,8 @@
 </li>
       <li><a href="star_pso.benchmarks.html#star_pso.benchmarks.composite_functions.CompositeFunction">CompositeFunction (class in star_pso.benchmarks.composite_functions)</a>
 </li>
+      <li><a href="star_pso.benchmarks.html#star_pso.benchmarks.composite_functions.CompositeFunction.compute_weights">compute_weights() (star_pso.benchmarks.composite_functions.CompositeFunction static method)</a>
+</li>
       <li><a href="star_pso.population.html#star_pso.population.jat_particle.JatParticle.container">container (star_pso.population.jat_particle.JatParticle property)</a>
 </li>
       <li><a href="star_pso.utils.html#star_pso.utils.auxiliary.cost_function">cost_function() (in module star_pso.utils.auxiliary)</a>
@@ -212,6 +213,8 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="star_pso.benchmarks.html#star_pso.benchmarks.composite_functions.f_ackley">f_ackley() (in module star_pso.benchmarks.composite_functions)</a>
+</li>
       <li><a href="star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.f_evals">f_evals (star_pso.engines.generic_pso.GenericPSO property)</a>
 </li>
       <li><a href="star_pso.benchmarks.html#star_pso.benchmarks.composite_functions.f_griewank">f_griewank() (in module star_pso.benchmarks.composite_functions)</a>
@@ -232,6 +235,8 @@
 </li>
       <li><a href="star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.fully_informed">fully_informed() (star_pso.engines.generic_pso.GenericPSO static method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="star_pso.benchmarks.html#star_pso.benchmarks.composite_functions.CompositeFunction.func">func() (star_pso.benchmarks.composite_functions.CompositeFunction method)</a>
 
       <ul>
@@ -256,8 +261,6 @@
         <li><a href="star_pso.benchmarks.html#star_pso.benchmarks.vincent.Vincent.func">(star_pso.benchmarks.vincent.Vincent method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="star_pso.population.html#star_pso.population.swarm.Swarm.function_values">function_values() (star_pso.population.swarm.Swarm method)</a>
 </li>
   </ul></td>
@@ -459,64 +462,22 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO.n_cols">n_cols (star_pso.engines.binary_pso.BinaryPSO attribute)</a>
-
-      <ul>
-        <li><a href="star_pso.engines.html#star_pso.engines.categorical_pso.CategoricalPSO.n_cols">(star_pso.engines.categorical_pso.CategoricalPSO attribute)</a>
+      <li><a href="star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.n_cols">n_cols (star_pso.engines.generic_pso.GenericPSO property)</a>
 </li>
-        <li><a href="star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.n_cols">(star_pso.engines.generic_pso.GenericPSO attribute)</a>
+      <li><a href="star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.n_cpus">n_cpus (star_pso.engines.generic_pso.GenericPSO property)</a>
 </li>
-        <li><a href="star_pso.engines.html#star_pso.engines.integer_pso.IntegerPSO.n_cols">(star_pso.engines.integer_pso.IntegerPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.n_cols">(star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.quantum_pso.QuantumPSO.n_cols">(star_pso.engines.quantum_pso.QuantumPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.standard_pso.StandardPSO.n_cols">(star_pso.engines.standard_pso.StandardPSO attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO.n_cpus">n_cpus (star_pso.engines.binary_pso.BinaryPSO attribute)</a>
-
-      <ul>
-        <li><a href="star_pso.engines.html#star_pso.engines.categorical_pso.CategoricalPSO.n_cpus">(star_pso.engines.categorical_pso.CategoricalPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.n_cpus">(star_pso.engines.generic_pso.GenericPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.integer_pso.IntegerPSO.n_cpus">(star_pso.engines.integer_pso.IntegerPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.n_cpus">(star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.quantum_pso.QuantumPSO.n_cpus">(star_pso.engines.quantum_pso.QuantumPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.standard_pso.StandardPSO.n_cpus">(star_pso.engines.standard_pso.StandardPSO attribute)</a>
-</li>
-      </ul></li>
       <li><a href="star_pso.benchmarks.html#star_pso.benchmarks.test_function.TestFunction.n_dim">n_dim (star_pso.benchmarks.test_function.TestFunction property)</a>
 </li>
-      <li><a href="star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO.n_rows">n_rows (star_pso.engines.binary_pso.BinaryPSO attribute)</a>
-
-      <ul>
-        <li><a href="star_pso.engines.html#star_pso.engines.categorical_pso.CategoricalPSO.n_rows">(star_pso.engines.categorical_pso.CategoricalPSO attribute)</a>
+      <li><a href="star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.n_rows">n_rows (star_pso.engines.generic_pso.GenericPSO property)</a>
 </li>
-        <li><a href="star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.n_rows">(star_pso.engines.generic_pso.GenericPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.integer_pso.IntegerPSO.n_rows">(star_pso.engines.integer_pso.IntegerPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.n_rows">(star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.quantum_pso.QuantumPSO.n_rows">(star_pso.engines.quantum_pso.QuantumPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.standard_pso.StandardPSO.n_rows">(star_pso.engines.standard_pso.StandardPSO attribute)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="star_pso.benchmarks.html#star_pso.benchmarks.test_function.TestFunction.name">name (star_pso.benchmarks.test_function.TestFunction property)</a>
 </li>
       <li><a href="star_pso.utils.html#star_pso.utils.auxiliary.nb_cdist">nb_cdist() (in module star_pso.utils.auxiliary)</a>
 </li>
       <li><a href="star_pso.utils.html#star_pso.utils.auxiliary.nb_clip_array">nb_clip_array() (in module star_pso.utils.auxiliary)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="star_pso.utils.html#star_pso.utils.auxiliary.nb_clip_item">nb_clip_item() (in module star_pso.utils.auxiliary)</a>
 </li>
       <li><a href="star_pso.utils.html#star_pso.utils.auxiliary.nb_median_euclidean_distance">nb_median_euclidean_distance() (in module star_pso.utils.auxiliary)</a>
@@ -531,28 +492,6 @@
 </li>
       <li><a href="star_pso.utils.html#star_pso.utils.auxiliary.SpecialMode.NORMAL">NORMAL (star_pso.utils.auxiliary.SpecialMode attribute)</a>
 </li>
-  </ul></td>
-</tr></table>
-
-<h2 id="O">O</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO.objective_func">objective_func (star_pso.engines.binary_pso.BinaryPSO attribute)</a>
-
-      <ul>
-        <li><a href="star_pso.engines.html#star_pso.engines.categorical_pso.CategoricalPSO.objective_func">(star_pso.engines.categorical_pso.CategoricalPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.objective_func">(star_pso.engines.generic_pso.GenericPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.integer_pso.IntegerPSO.objective_func">(star_pso.engines.integer_pso.IntegerPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.objective_func">(star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.quantum_pso.QuantumPSO.objective_func">(star_pso.engines.quantum_pso.QuantumPSO attribute)</a>
-</li>
-        <li><a href="star_pso.engines.html#star_pso.engines.standard_pso.StandardPSO.objective_func">(star_pso.engines.standard_pso.StandardPSO attribute)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 

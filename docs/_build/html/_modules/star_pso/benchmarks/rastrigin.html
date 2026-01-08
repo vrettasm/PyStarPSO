@@ -117,7 +117,7 @@
 
         <span class="c1"># Compute the total number of optimal values</span>
         <span class="c1"># as the product of the &#39;kappa&#39; coefficients.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">total_optima</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kappa</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_optima</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kappa</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="Rastrigin.func">

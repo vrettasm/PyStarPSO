@@ -215,7 +215,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">new_value</span>
     <span class="c1"># _end_def_</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Particle&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Particle&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This custom method overrides the default deepcopy method.</span>
 
@@ -299,7 +299,7 @@
         <span class="c1"># _end_if_</span>
 
         <span class="c1"># Compare directly the two position arrays.</span>
-        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">)</span>
     <span class="c1"># _end_def_</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>

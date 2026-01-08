@@ -103,15 +103,19 @@
 <span class="sd">        functionalities that all PSO models should share.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Make a random number generator.</span>
     <span class="n">rng</span><span class="p">:</span> <span class="n">Generator</span> <span class="o">=</span> <span class="n">default_rng</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Random Number Generator for the whole class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Set the maximum number of CPUs (at least one).</span>
     <span class="n">MAX_CPUs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cpu_count</span><span class="p">()</span> <span class="k">else</span> <span class="n">cpu_count</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set the maximum number of CPUs (at least one).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Object variables.</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_swarm&quot;</span><span class="p">,</span> <span class="s2">&quot;_velocities&quot;</span><span class="p">,</span> <span class="s2">&quot;objective_func&quot;</span><span class="p">,</span> <span class="s2">&quot;_upper_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_lower_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_stats&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;_items&quot;</span><span class="p">,</span> <span class="s2">&quot;_f_evals&quot;</span><span class="p">,</span> <span class="s2">&quot;n_cpus&quot;</span><span class="p">,</span> <span class="s2">&quot;n_rows&quot;</span><span class="p">,</span> <span class="s2">&quot;n_cols&quot;</span><span class="p">,</span> <span class="s2">&quot;_special_mode&quot;</span><span class="p">,</span> <span class="s2">&quot;_iteration&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_swarm&quot;</span><span class="p">,</span> <span class="s2">&quot;_velocities&quot;</span><span class="p">,</span> <span class="s2">&quot;_objective_func&quot;</span><span class="p">,</span> <span class="s2">&quot;_upper_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_lower_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_stats&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;_items&quot;</span><span class="p">,</span> <span class="s2">&quot;_f_evals&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_cpus&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_rows&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_cols&quot;</span><span class="p">,</span> <span class="s2">&quot;_special_mode&quot;</span><span class="p">,</span> <span class="s2">&quot;_iteration&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_swarm</span><span class="p">:</span> <span class="n">Swarm</span><span class="p">,</span> <span class="n">obj_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
                  <span class="n">lower_bound</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -136,10 +140,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">initial_swarm</span><span class="p">)</span> <span class="k">if</span> <span class="n">copy</span> <span class="k">else</span> <span class="n">initial_swarm</span>
 
         <span class="c1"># Number of particles.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="p">)</span>
 
         <span class="c1"># Size (length) of particle.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
         <span class="c1"># Make sure the fitness function is indeed callable.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj_func</span><span class="p">):</span>
@@ -148,13 +152,13 @@
         <span class="c1"># _end_if_</span>
 
         <span class="c1"># Get the objective function.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">objective_func</span> <span class="o">=</span> <span class="n">obj_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_objective_func</span> <span class="o">=</span> <span class="n">obj_func</span>
 
         <span class="c1"># Check if the lower and upper bounds are set.</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">lower_bound</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">upper_bound</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
             <span class="c1"># Make sure they are numpy arrays.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">)</span>
 
             <span class="c1"># Check if the boundaries are set correctly.</span>
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">):</span>
@@ -170,13 +174,13 @@
         <span class="k">if</span> <span class="n">n_cpus</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
             <span class="c1"># This is the default option.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">n_cpus</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">MAX_CPUs</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_n_cpus</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">MAX_CPUs</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
 
             <span class="c1"># Assign the  requested number, making sure we have</span>
             <span class="c1"># enough CPUs and the value entered has the correct</span>
             <span class="c1"># type.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">n_cpus</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">GenericPSO</span><span class="o">.</span><span class="n">MAX_CPUs</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_cpus</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_n_cpus</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">GenericPSO</span><span class="o">.</span><span class="n">MAX_CPUs</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_cpus</span><span class="p">)))</span>
         <span class="c1"># _end_if_</span>
 
         <span class="c1"># Log the number of CPUs.</span>
@@ -202,6 +206,98 @@
 
         <span class="c1"># Log the object initialization.</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> initialization complete.&quot;</span><span class="p">)</span>
+    <span class="c1"># _end_def_</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">n_cols</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accessor (getter) of the number of columns of the swarm matrix</span>
+<span class="sd">        (i.e. size of particle).</span>
+
+<span class="sd">        :return: the n_cols value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_cols</span>
+    <span class="c1"># _end_def_</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">n_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accessor (getter) of the number of rows of the swarm matrix</span>
+<span class="sd">        (i.e. number of particles).</span>
+
+<span class="sd">        :return: the n_rows value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_rows</span>
+    <span class="c1"># _end_def_</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">n_cpus</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accessor (getter) of the number of CPUs we will use.</span>
+
+<span class="sd">        :return: the n_cpus value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_cpus</span>
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="GenericPSO.set_seed">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.set_seed">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_seed</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">new_seed</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets a new seed for the random number generator.</span>
+
+<span class="sd">        :param new_seed: New seed value (default=None).</span>
+
+<span class="sd">        :return: None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Re-initialize the class variable.</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">new_seed</span><span class="p">)</span>
+
+        <span class="c1"># Log the new seed event.</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> random generator has a new seed.&quot;</span><span class="p">)</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="GenericPSO.fully_informed">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.fully_informed">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fully_informed</span><span class="p">(</span><span class="n">population</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SwarmParticle</span><span class="p">],</span> <span class="n">use_best</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uses the input population and computes a weighted average position according to</span>
+<span class="sd">        the linear ranking of the particles. Those with higher function value also have</span>
+<span class="sd">        bigger weight in the calculation.</span>
+
+<span class="sd">        :param population: list of particles which we want to consider in the calculation</span>
+<span class="sd">                           of the fully informed best position.</span>
+
+<span class="sd">        :param use_best: if True it will use the best_position of each particle to estimate</span>
+<span class="sd">                         the new weighted best position. Default is False, which means that</span>
+<span class="sd">                         only the current position is used.</span>
+
+<span class="sd">        :return: the weighted best position &#39;w_best&#39; (as numpy array).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">use_best</span><span class="p">:</span>
+            <span class="c1"># Extract the best positions and convert to numpy array.</span>
+            <span class="n">all_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">best_position</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">population</span><span class="p">,</span>
+                                                                            <span class="n">key</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;best_value&quot;</span><span class="p">))])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Extract the positions and convert to numpy array.</span>
+            <span class="n">all_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">position</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">population</span><span class="p">,</span>
+                                                                       <span class="n">key</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">))])</span>
+        <span class="c1"># _end_if_</span>
+
+        <span class="c1"># Compute the probabilities.</span>
+        <span class="n">p_weights</span><span class="p">,</span> <span class="n">p_weights_sum</span> <span class="o">=</span> <span class="n">linear_rank_probabilities</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_positions</span><span class="p">))</span>
+
+        <span class="c1"># Take a &quot;weighted average&quot; from all the positions of the swarm.</span>
+        <span class="n">w_best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">all_positions</span><span class="p">,</span>
+                             <span class="n">p_weights</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">p_weights_sum</span>
+
+        <span class="c1"># Return the weighted best position.</span>
+        <span class="k">return</span> <span class="n">w_best</span></div>
+
     <span class="c1"># _end_def_</span>
 
     <span class="nd">@property</span>
@@ -258,25 +354,6 @@
 <span class="sd">        :return: (numpy array).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span>
-    <span class="c1"># _end_def_</span>
-
-<div class="viewcode-block" id="GenericPSO.set_seed">
-<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.set_seed">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_seed</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">new_seed</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets a new seed for the random number generator.</span>
-
-<span class="sd">        :param new_seed: New seed value (default=None).</span>
-
-<span class="sd">        :return: None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Re-initialize the class variable.</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">new_seed</span><span class="p">)</span>
-
-        <span class="c1"># Log the new seed event.</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> random generator has a new seed.&quot;</span><span class="p">)</span></div>
-
     <span class="c1"># _end_def_</span>
 
     <span class="nd">@property</span>
@@ -368,7 +445,7 @@
         <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_typed_positions</span><span class="p">()</span>
 
         <span class="c1"># Get a local copy of the objective function.</span>
-        <span class="n">func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective_func</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objective_func</span>
 
         <span class="c1"># Check the &#39;parallel_mode&#39; flag.</span>
         <span class="k">if</span> <span class="n">parallel_mode</span><span class="p">:</span>
@@ -510,47 +587,6 @@
 
     <span class="c1"># _end_def_</span>
 
-<div class="viewcode-block" id="GenericPSO.fully_informed">
-<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.fully_informed">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fully_informed</span><span class="p">(</span><span class="n">population</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SwarmParticle</span><span class="p">],</span> <span class="n">use_best</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Uses the input population and computes a weighted average position according to</span>
-<span class="sd">        the linear ranking of the particles. Those with higher function value also have</span>
-<span class="sd">        bigger weight in the calculation.</span>
-
-<span class="sd">        :param population: list of particles which we want to consider in the calculation</span>
-<span class="sd">                           of the fully informed best position.</span>
-
-<span class="sd">        :param use_best: if True it will use the best_position of each particle to estimate</span>
-<span class="sd">                         the new weighted best position. Default is False, which means that</span>
-<span class="sd">                         only the current position is used.</span>
-
-<span class="sd">        :return: the weighted best position &#39;w_best&#39; (as numpy array).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="n">use_best</span><span class="p">:</span>
-            <span class="c1"># Extract the best positions and convert to numpy array.</span>
-            <span class="n">all_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">best_position</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">population</span><span class="p">,</span>
-                                                                            <span class="n">key</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;best_value&quot;</span><span class="p">))])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Extract the positions and convert to numpy array.</span>
-            <span class="n">all_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">position</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">population</span><span class="p">,</span>
-                                                                       <span class="n">key</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">))])</span>
-        <span class="c1"># _end_if_</span>
-
-        <span class="c1"># Compute the probabilities.</span>
-        <span class="n">p_weights</span><span class="p">,</span> <span class="n">p_weights_sum</span> <span class="o">=</span> <span class="n">linear_rank_probabilities</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_positions</span><span class="p">))</span>
-
-        <span class="c1"># Take a &quot;weighted average&quot; from all the positions of the swarm.</span>
-        <span class="n">w_best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">all_positions</span><span class="p">,</span>
-                             <span class="n">p_weights</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">p_weights_sum</span>
-
-        <span class="c1"># Return the weighted best position.</span>
-        <span class="k">return</span> <span class="n">w_best</span></div>
-
-    <span class="c1"># _end_def_</span>
-
 <div class="viewcode-block" id="GenericPSO.neighborhood_best">
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.neighborhood_best">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">neighborhood_best</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_neighbors</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">deque</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
@@ -599,6 +635,7 @@
         <span class="c1"># Return the container.</span>
         <span class="k">return</span> <span class="n">l_best</span></div>
 
+    <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="GenericPSO.get_local_best_positions">
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.get_local_best_positions">[docs]</a>
@@ -607,9 +644,9 @@
 <span class="sd">        This method uses the swarm&#39;s population and the current operating mode,</span>
 <span class="sd">        from the VOptions tuple, to calculate the local best positions.</span>
 
-<span class="sd">        :param operating_mode: the operating mode of the algorithm. The default value</span>
-<span class="sd">                               is set to be the &#39;g_best&#39; because it works with all the</span>
-<span class="sd">                               PSO implementations.</span>
+<span class="sd">        :param operating_mode: the operating mode of the algorithm. The default</span>
+<span class="sd">                               value is set to be the &#39;g_best&#39; because it works</span>
+<span class="sd">                               with all the PSO implementations.</span>
 
 <span class="sd">        :return: the local best positions (as numpy array).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -716,7 +753,7 @@
         <span class="c1"># Default return parameter.</span>
         <span class="n">have_been_updated</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="c1"># For the moment we hardcode the min/max</span>
+        <span class="c1"># For the moment hardcode the min/max</span>
         <span class="c1"># values of the c1 and c2 parameters.</span>
         <span class="n">c_min</span><span class="p">,</span> <span class="n">c_max</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">2.5</span>
 
@@ -837,7 +874,7 @@
         <span class="c1"># Convert options dict to VOptions.</span>
         <span class="n">params</span> <span class="o">=</span> <span class="n">VOptions</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
 
-        <span class="c1"># Get the function values before optimisation.</span>
+        <span class="c1"># Get the function values before optimization.</span>
         <span class="n">f_opt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_function</span><span class="p">(</span><span class="n">parallel</span><span class="p">)</span>
 
         <span class="c1"># Log the initial f_optimal value.</span>

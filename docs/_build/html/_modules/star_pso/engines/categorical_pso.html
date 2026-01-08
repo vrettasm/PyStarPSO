@@ -84,7 +84,7 @@
 <span class="c1"># Local fast version of sum method.</span>
 <div class="viewcode-block" id="fast_sum">
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.categorical_pso.fast_sum">[docs]</a>
-<span class="nd">@njit</span>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">fast_sum</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Local auxiliary function that is used</span>

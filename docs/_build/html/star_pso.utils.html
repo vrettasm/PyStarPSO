@@ -155,11 +155,13 @@ directly related to the specific versions of PSO method.</p>
 <span class="sig-prename descclassname"><span class="pre">star_pso.utils.auxiliary.</span></span><span class="sig-name descname"><span class="pre">check_velocity_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/utils/auxiliary.html#check_velocity_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.utils.auxiliary.check_velocity_parameters" title="Link to this definition"></a></dt>
 <dd><p>Checks that the options dictionary has all the additional
 parameters to estimate the velocities of the optimization
-algorithm:
-1) ‘w0’: inertia weight
-2) ‘c1’: cognitive coefficient
-3) ‘c2’: social coefficient
-4) ‘mode’: mode of operation</p>
+algorithm:</p>
+<ul class="simple">
+<li><p>‘w0’: inertia weight</p></li>
+<li><p>‘c1’: cognitive coefficient</p></li>
+<li><p>‘c2’: social coefficient</p></li>
+<li><p>‘mode’: mode of operation</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>options</strong> – dictionary to check for missing parameters.</p>
@@ -236,28 +238,15 @@ Note that KL divergence is not symmetric, thus KL(p, q) != KL(q, p).</p>
 sum to one.</p>
 <p>This method is equivalent to entropy(p, q, axis=1) from scipy_stats,
 only it’s around 10x faster.</p>
-<p>Example:
-# Create a random array.
-x = np.random.rand(10, 4)</p>
-<p># Normalize to sum to 1.0.
-x /= np.sum(x, axis=1).reshape(-1, 1)</p>
-<p># Entropy (from scipy.stats).
-entropy(x[0], x[1:], axis=1)
-&gt; array([0.12405413, 0.79411391, 0.5340511 , 0.13075877, 0.77733431,
-&gt;        0.04979758, 0.34470209, 0.83185617, 0.29883382])</p>
-<p># This (numba optimized) method.
-kl_divergence_array(x[0], x[1:])
-&gt; array([0.12405413, 0.79411391, 0.5340511 , 0.13075877, 0.77733431,
-&gt;        0.04979758, 0.34470209, 0.83185617, 0.29883382])</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>p</strong> – (np.array) probability distribution.</p></li>
-<li><p><strong>q</strong> – (np.array) probability distribution.</p></li>
+<li><p><strong>p</strong> – (np.ndarray) probability distribution.</p></li>
+<li><p><strong>q</strong> – (np.ndarray) probability distribution.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>(np.array) Kullback-Leibler divergence.</p>
+<dd class="field-even"><p>(np.ndarray) Kullback-Leibler divergence.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -274,8 +263,8 @@ around 10x faster.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>p</strong> – (np.array) probability distribution.</p></li>
-<li><p><strong>q</strong> – (np.array) probability distribution.</p></li>
+<li><p><strong>p</strong> – (np.ndarray) probability distribution.</p></li>
+<li><p><strong>q</strong> – (np.ndarray) probability distribution.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -379,8 +368,8 @@ them with the maximum distance (optional).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x_pos</strong> – (np.ndarray) A 2D array of shape (n_particles,
-n_features) representing the positions of the swarm.</p></li>
+<li><p><strong>x_pos</strong> – (array) A 2D numpy array (n_particles, n_features)
+representing the positions of the swarm.</p></li>
 <li><p><strong>normal</strong> – (bool) if “True”, normalize the distances by their
 maximum distance.</p></li>
 </ul>
@@ -400,7 +389,8 @@ array of particle binary positions {0, 1}.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x_pos</strong> – a 2D array with the particle positions.</p></li>
+<li><p><strong>x_pos</strong> – (array) A 2D numpy array (n_particles, n_features)
+representing the positions of the swarm.</p></li>
 <li><p><strong>normal</strong> – whether to compute the normalized average
 Hamming distance. This will yield a value
 between 0 and 1. A value of ‘0’ indicates
@@ -427,7 +417,8 @@ It is assumed that each row is a distribution (i.e. sum to 1).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x_pos</strong> – 2D array where each column.</p></li>
+<li><p><strong>x_pos</strong> – (array) A 2D numpy array (n_particles, n_features)
+representing the positions of the swarm.</p></li>
 <li><p><strong>normal</strong> – If enabled the KL values will be normalized using
 the maximum KL divergence from the data.</p></li>
 </ul>
@@ -468,7 +459,7 @@ maximum distance.</p></li>
 front points from a given input points numpy array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>points</strong> – array of points [(fx1, fx2, …, fxn),
+<dd class="field-odd"><p><strong>points</strong> – array of points as [(fx1, fx2, …, fxn),
 (fy1, fy2, …, fyn),
 ………………..,
 (fk1, fk2, …, fkn)]</p>
@@ -519,8 +510,8 @@ functions.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="star_pso.utils.data_block.DataBlock.btype">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">btype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#star_pso.utils.auxiliary.BlockType" title="star_pso.utils.auxiliary.BlockType"><span class="pre">BlockType</span></a></em><a class="headerlink" href="#star_pso.utils.data_block.DataBlock.btype" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="star_pso.utils.data_block.DataBlock.block_t">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">block_t</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#star_pso.utils.auxiliary.BlockType" title="star_pso.utils.auxiliary.BlockType"><span class="pre">BlockType</span></a></em><a class="headerlink" href="#star_pso.utils.data_block.DataBlock.block_t" title="Link to this definition"></a></dt>
 <dd><p>Accessor (getter) of the data block’s type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -627,7 +618,7 @@ of the new positions, for all types of data blocks.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="star_pso.utils.data_block.DataBlock.rng">
-<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x154DE7CA0</span></em><a class="headerlink" href="#star_pso.utils.data_block.DataBlock.rng" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x150D58740</span></em><a class="headerlink" href="#star_pso.utils.data_block.DataBlock.rng" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">

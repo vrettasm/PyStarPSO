@@ -70,6 +70,7 @@
              
   <h1>Source code for star_pso.benchmarks.composite_functions</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">njit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.population.particle</span><span class="w"> </span><span class="kn">import</span> <span class="n">Particle</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.benchmarks.test_function</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestFunction</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="n">identify_global_optima</span>
@@ -77,6 +78,7 @@
 <span class="c1"># Basic function: 1</span>
 <div class="viewcode-block" id="f_sphere">
 <a class="viewcode-back" href="../../../star_pso.benchmarks.html#star_pso.benchmarks.composite_functions.f_sphere">[docs]</a>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">f_sphere</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the sphere function at x_pos.</span>
@@ -88,6 +90,7 @@
 <span class="c1"># Basic function: 2</span>
 <div class="viewcode-block" id="f_griewank">
 <a class="viewcode-back" href="../../../star_pso.benchmarks.html#star_pso.benchmarks.composite_functions.f_griewank">[docs]</a>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">f_griewank</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the Griewank function at x_pos.</span>
@@ -99,13 +102,14 @@
     <span class="n">sqrt_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
 
     <span class="c1"># Get the final value.</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4000</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">/</span> <span class="n">sqrt_i</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span></div>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4000</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">/</span> <span class="n">sqrt_i</span><span class="p">)))</span> <span class="o">+</span> <span class="mf">1.0</span></div>
 
 <span class="c1"># _end_def_</span>
 
 <span class="c1"># Basic function: 3</span>
 <div class="viewcode-block" id="f_rastrigin">
 <a class="viewcode-back" href="../../../star_pso.benchmarks.html#star_pso.benchmarks.composite_functions.f_rastrigin">[docs]</a>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">f_rastrigin</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
                 <span class="n">kappa</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -119,11 +123,12 @@
 <span class="c1"># Basic function: 4</span>
 <div class="viewcode-block" id="f_weierstrass">
 <a class="viewcode-back" href="../../../star_pso.benchmarks.html#star_pso.benchmarks.composite_functions.f_weierstrass">[docs]</a>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">f_weierstrass</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">k_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">9</span><span class="p">,</span>
                   <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">beta</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes the Weierstrass function at x_pos,</span>
-<span class="sd">    with default k_max, alpha and beta parameters.</span>
+<span class="sd">    Computes the Weierstrass function at x_pos, with default k_max,</span>
+<span class="sd">    alpha and beta parameters.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the size of the vector.</span>
     <span class="n">n_dim</span> <span class="o">=</span> <span class="n">x_pos</span><span class="o">.</span><span class="n">size</span>
@@ -146,9 +151,33 @@
 
 <span class="c1"># _end_def_</span>
 
+<span class="c1"># Basic function: 5</span>
+<div class="viewcode-block" id="f_ackley">
+<a class="viewcode-back" href="../../../star_pso.benchmarks.html#star_pso.benchmarks.composite_functions.f_ackley">[docs]</a>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">f_ackley</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">20.0</span><span class="p">,</span>
+             <span class="n">beta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the Ackley function at x_pos,</span>
+<span class="sd">    with default alpha and beta parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the size of the vector.</span>
+    <span class="n">n_dim</span> <span class="o">=</span> <span class="n">x_pos</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="c1"># Compute the first part of the equation.</span>
+    <span class="n">f_total</span> <span class="o">=</span> <span class="o">-</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_dim</span><span class="p">))</span>
+
+    <span class="c1"># Update it with the second part.</span>
+    <span class="n">f_total</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x_pos</span><span class="p">))</span> <span class="o">/</span> <span class="n">n_dim</span><span class="p">)</span>
+
+    <span class="c1"># Return final result.</span>
+    <span class="k">return</span> <span class="n">f_total</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">e</span></div>
+
+<span class="c1"># _end_def_</span>
 
 <span class="c1"># Define a dictionary with all the basic functions.</span>
-<span class="n">BASIC_FUNCTIONS</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;f_sphere&quot;</span><span class="p">:</span> <span class="n">f_sphere</span><span class="p">,</span>
+<span class="n">BASIC_FUNCTIONS</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;f_ackley&quot;</span><span class="p">:</span> <span class="n">f_ackley</span><span class="p">,</span>
+                         <span class="s2">&quot;f_sphere&quot;</span><span class="p">:</span> <span class="n">f_sphere</span><span class="p">,</span>
                          <span class="s2">&quot;f_griewank&quot;</span><span class="p">:</span> <span class="n">f_griewank</span><span class="p">,</span>
                          <span class="s2">&quot;f_rastrigin&quot;</span><span class="p">:</span> <span class="n">f_rastrigin</span><span class="p">,</span>
                          <span class="s2">&quot;f_weierstrass&quot;</span><span class="p">:</span> <span class="n">f_weierstrass</span><span class="p">}</span>
@@ -158,8 +187,8 @@
 <a class="viewcode-back" href="../../../star_pso.benchmarks.html#star_pso.benchmarks.composite_functions.CompositeFunction">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CompositeFunction</span><span class="p">(</span><span class="n">TestFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generates a Composite Function using a weighting average</span>
-<span class="sd">    of basic functions, as defined in the &#39;basic_f&#39; list.</span>
+<span class="sd">    Generates a Composite Function using a weighted average of basic</span>
+<span class="sd">    functions, as defined in the &#39;BASIC_FUNCTIONS&#39; dictionary.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_func</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">list</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
@@ -194,12 +223,9 @@
 
         <span class="c1"># Ensure correct type.</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_func</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="mi">2</span> <span class="o">&lt;=</span> <span class="n">n_func</span> <span class="o">&lt;=</span> <span class="mi">20</span><span class="p">):</span>
-            <span class="c1"># Extract the keys.</span>
-            <span class="n">key_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">BASIC_FUNCTIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">size</span><span class="o">=</span><span class="n">n_func</span><span class="p">)</span>
-
-            <span class="c1"># Create a new list with basic functions.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">basic_f</span> <span class="o">=</span> <span class="p">[</span><span class="n">BASIC_FUNCTIONS</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">key_list</span><span class="p">]</span>
-
+            <span class="c1"># Create a new list by sampling randomly basic functions.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">basic_f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">BASIC_FUNCTIONS</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+                                           <span class="n">size</span><span class="o">=</span><span class="n">n_func</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_func</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="c1"># Create a new list with the given basic functions.</span>
@@ -209,6 +235,38 @@
                                <span class="sa">f</span><span class="s2">&quot;Valid options are: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">BASIC_FUNCTIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &#39;n_func&#39; must either be an int in [2, 20], or a list.&quot;</span><span class="p">)</span>
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="CompositeFunction.compute_weights">
+<a class="viewcode-back" href="../../../star_pso.benchmarks.html#star_pso.benchmarks.composite_functions.CompositeFunction.compute_weights">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@njit</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_weights</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates a set of weights (one for each function).</span>
+
+<span class="sd">        :param x_pos: (ndarray) the position that we are evaluating the functions.</span>
+
+<span class="sd">        :param sigma: (ndarray) are used to control each function&#39;s range.</span>
+<span class="sd">                      a small value gives a narrow range for the function.</span>
+
+<span class="sd">        :return: a (ndarray) of normalized weights.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize the weights array.</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_pos</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+        <span class="c1"># Find the maximum among them.</span>
+        <span class="n">w_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+        <span class="c1"># Raise w_max to the power of 10.</span>
+        <span class="n">w_max_power_10</span> <span class="o">=</span> <span class="n">w_max</span> <span class="o">**</span> <span class="mi">10</span>
+
+        <span class="c1"># Update the weights.</span>
+        <span class="n">weights</span><span class="p">[</span><span class="n">weights</span> <span class="o">!=</span> <span class="n">w_max</span><span class="p">]</span> <span class="o">*=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">w_max_power_10</span><span class="p">)</span>
+
+        <span class="c1"># Finally return the normalized values.</span>
+        <span class="k">return</span> <span class="n">weights</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span></div>
+
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="CompositeFunction.func">
@@ -235,15 +293,11 @@
             <span class="c1"># Get the number of basic functions.</span>
             <span class="n">num_f</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basic_f</span><span class="p">)</span>
 
-            <span class="c1"># Square of sigma values.</span>
-            <span class="c1"># For simplicity, we set them to one.</span>
-            <span class="n">sigma_sq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_f</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="c1"># Sigma values for simplicity are set to one.</span>
+            <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">num_f</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
-            <span class="c1"># Compute the weights.</span>
-            <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_dim</span> <span class="o">*</span> <span class="n">sigma_sq</span><span class="p">))</span>
-
-            <span class="c1"># Normalize them.</span>
-            <span class="n">weights</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+            <span class="c1"># Calculate the weights of the functions.</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">CompositeFunction</span><span class="o">.</span><span class="n">compute_weights</span><span class="p">(</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
 
             <span class="c1"># Get total evaluation of the composite function.</span>
             <span class="n">f_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">wi</span> <span class="o">*</span> <span class="p">(</span><span class="n">fi</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">/</span> <span class="n">num_f</span><span class="p">)</span> <span class="o">+</span> <span class="n">i_bias</span><span class="p">)</span>
@@ -297,6 +351,8 @@
 
         <span class="c1"># Return the new string.</span>
         <span class="k">return</span> <span class="n">cf_str</span></div>
+
+    <span class="c1"># _end_def_</span>
 
 <span class="c1"># _end_class_</span>
 </pre></div>

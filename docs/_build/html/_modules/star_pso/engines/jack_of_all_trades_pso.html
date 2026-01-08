@@ -84,7 +84,7 @@
                                       <span class="n">linear_rank_probabilities</span><span class="p">,</span>
                                       <span class="n">SpecialMode</span><span class="p">,</span> <span class="n">spread_methods</span><span class="p">)</span>
 <span class="c1"># Local fast version of sum method.</span>
-<span class="nd">@njit</span>
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">fast_sum</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Local auxiliary function that is used</span>
@@ -161,10 +161,10 @@
 
         <span class="c1"># Here we generate the random velocities.</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">particle</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">blk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">particle</span><span class="o">.</span><span class="n">container</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">particle</span><span class="o">.</span><span class="n">container</span><span class="p">):</span>
                 <span class="c1"># If the block is CATEGORICAL we</span>
                 <span class="c1"># will use it&#39;s valid set length.</span>
-                <span class="n">n_vars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">valid_set</span><span class="p">)</span> <span class="k">if</span> <span class="n">blk</span><span class="o">.</span><span class="n">valid_set</span> <span class="k">else</span> <span class="mi">1</span>
+                <span class="n">n_vars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">valid_set</span><span class="p">)</span> <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">valid_set</span> <span class="k">else</span> <span class="mi">1</span>
 
                 <span class="c1"># Generate the velocities randomly.</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">JackOfAllTradesPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">,</span>
@@ -197,7 +197,6 @@
 
 <span class="sd">        :param positions: the container with the lists of probabilities</span>
 <span class="sd">                          (one list for each position).</span>
-
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -205,14 +204,14 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">particle</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">):</span>
 
             <span class="c1"># Check all data blocks in the particle.</span>
-            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">blk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">particle</span><span class="o">.</span><span class="n">container</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">particle</span><span class="o">.</span><span class="n">container</span><span class="p">):</span>
 
                 <span class="c1"># If the data block is categorical.</span>
-                <span class="k">if</span> <span class="n">blk</span><span class="o">.</span><span class="n">btype</span> <span class="o">==</span> <span class="n">BlockType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">block_t</span> <span class="o">==</span> <span class="n">BlockType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">:</span>
 
                     <span class="c1"># Replace the probabilities with an actual sample.</span>
                     <span class="c1"># WARNING: &#39;shuffle&#39; option MUST be set to False!</span>
-                    <span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">JackOfAllTradesPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">blk</span><span class="o">.</span><span class="n">valid_set</span><span class="p">,</span>
+                    <span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">JackOfAllTradesPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">valid_set</span><span class="p">,</span>
                                                                     <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                                                     <span class="n">p</span><span class="o">=</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span></div>
 
@@ -230,7 +229,6 @@
 
 <span class="sd">        :param positions: the container with the lists of probabilities</span>
 <span class="sd">                          (one list for each position).</span>
-
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -252,7 +250,7 @@
             <span class="c1"># using the randomized index.</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">random_index</span><span class="p">:</span>
                 <span class="c1"># Get the j-th data block.</span>
-                <span class="n">blk</span> <span class="o">=</span> <span class="n">particle</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">block</span> <span class="o">=</span> <span class="n">particle</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
 
                 <span class="c1"># Extract the probability values.</span>
                 <span class="n">xj</span> <span class="o">=</span> <span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
@@ -263,7 +261,7 @@
                     <span class="c1"># unused element of the valid set.</span>
                     <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude_idx</span><span class="p">:</span>
                         <span class="c1"># Assign the element in the right position.</span>
-                        <span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">blk</span><span class="o">.</span><span class="n">valid_set</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                        <span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">valid_set</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
 
                         <span class="c1"># Update the set() with</span>
                         <span class="c1"># the excluded indexes.</span>
@@ -393,11 +391,13 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculates a spread measure for the particle positions.</span>
 
-<span class="sd">        A value close to &#39;0&#39; indicates the swarm is converging to a single value.</span>
-<span class="sd">        On the contrary a value close to &#39;1&#39; indicates the swarm is still spread</span>
-<span class="sd">        around the search space.</span>
+<span class="sd">        A value close to &#39;0&#39; indicates the swarm is converging</span>
+<span class="sd">        to a single value. On the contrary a value close to &#39;1&#39;</span>
+<span class="sd">        indicates the swarm is still spread around the search</span>
+<span class="sd">        space.</span>
 
-<span class="sd">        :return: an estimated measure (float) for the spread of the particles.</span>
+<span class="sd">        :return: an estimated measure (float) for the spread of</span>
+<span class="sd">                 the particles.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Extract the particle positions as a list.</span>
         <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">positions_as_list</span><span class="p">()</span>
@@ -408,8 +408,8 @@
         <span class="c1"># Extract the data for each</span>
         <span class="c1"># feature block separately.</span>
         <span class="k">for</span> <span class="n">particle</span> <span class="ow">in</span> <span class="n">positions</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data_block</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">particle</span><span class="p">):</span>
-                <span class="n">field</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_block</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">particle</span><span class="p">):</span>
+                <span class="n">field</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
         <span class="c1"># _end_for_</span>
 
         <span class="c1"># Preallocate a vector (one for each field).</span>
@@ -420,7 +420,7 @@
 
             <span class="c1"># The Block type will determine which</span>
             <span class="c1"># method we will use for the spread.</span>
-            <span class="n">b_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">btype</span>
+            <span class="n">b_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">block_t</span>
 
             <span class="c1"># Convert the data to array.</span>
             <span class="n">data_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
