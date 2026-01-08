@@ -35,10 +35,13 @@ class JackOfAllTradesPSO(GenericPSO):
     """
     Description:
 
-        JackOfAllTradesPSO class  is an implementation  of the  PSO algorithm that
-        can deal with mixed types  of optimization variables.  The supported types
-        are: i) float (continuous), ii) integer (discrete), iii) binary (discrete)
-        and iv) categorical (discrete).
+        JackOfAllTradesPSO class is an implementation of the PSO algorithm that
+        can deal with mixed types of optimization variables. The supported types
+        are:
+            - float (continuous)
+            - integer (discrete)
+            - binary  (discrete)
+            - categorical (discrete)
 
         The fundamental building block of the algorithm is the 'DataBlock' which
         encapsulates the data and the functionality of each variable type.
@@ -111,10 +114,10 @@ class JackOfAllTradesPSO(GenericPSO):
 
     def sample_categorical_values(self, positions: list[list]) -> None:
         """
-        Samples the actual position based on particles probabilities and
-        valid sets for each data block.
+        Samples the actual position based on particles probabilities
+        and valid sets for each data block.
 
-        :param positions: the container with the lists of probabilities
+        :param positions: container with the lists of probabilities
                           (one list for each position).
         :return: None.
         """
@@ -143,7 +146,7 @@ class JackOfAllTradesPSO(GenericPSO):
         It is assumed that all data blocks are CATEGORICAL
         and that they have the same valid set of values.
 
-        :param positions: the container with the lists of probabilities
+        :param positions: container with the lists of probabilities
                           (one list for each position).
         :return: None.
         """
