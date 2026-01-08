@@ -36,10 +36,11 @@ def check_velocity_parameters(options: dict) -> None:
     Checks that the options dictionary has all the additional
     parameters to estimate the velocities of the optimization
     algorithm:
-    1) 'w0': inertia weight
-    2) 'c1': cognitive coefficient
-    3) 'c2': social coefficient
-    4) 'mode': mode of operation
+
+    - 'w0': inertia weight
+    - 'c1': cognitive coefficient
+    - 'c2': social coefficient
+    - 'mode': mode of operation
 
     :param options: dictionary to check for missing parameters.
 
@@ -96,10 +97,11 @@ def pareto_front(points: np.ndarray) -> np.ndarray:
     Simple function that calculates the pareto (optimal)
     front points from a given input points numpy array.
 
-    :param points: array of points [(fx1, fx2, ..., fxn),
-                                    (fy1, fy2, ..., fyn),
-                                    ....................,
-                                    (fk1, fk2, ..., fkn)]
+    :param points: array of points as 2D matrix
+                   [(fx1, fx2, ..., fxn),
+                    (fy1, fy2, ..., fyn),
+                    ....................,
+                    (fk1, fk2, ..., fkn)]
 
     :return: array of points that lie on the pareto front.
     """
@@ -277,9 +279,9 @@ def kl_divergence_item(p: np.ndarray, q: np.ndarray) -> float:
     This method is equivalent to entropy(p, q) from scipy_stats, only it's
     around 10x faster.
 
-    :param p: (np.array) probability distribution.
+    :param p: (np.ndarray) probability distribution.
 
-    :param q: (np.array) probability distribution.
+    :param q: (np.ndarray) probability distribution.
 
     :return: (float) Kullback-Leibler divergence.
     """
@@ -300,28 +302,11 @@ def kl_divergence_array(p: np.ndarray, q: np.ndarray) -> np.ndarray:
     This method is equivalent to entropy(p, q, axis=1) from scipy_stats,
     only it's around 10x faster.
 
-    Example:
-    # Create a random array.
-    x = np.random.rand(10, 4)
+    :param p: (np.ndarray) probability distribution.
 
-    # Normalize to sum to 1.0.
-    x /= np.sum(x, axis=1).reshape(-1, 1)
+    :param q: (np.ndarray) probability distribution.
 
-    # Entropy (from scipy.stats).
-    entropy(x[0], x[1:], axis=1)
-    > array([0.12405413, 0.79411391, 0.5340511 , 0.13075877, 0.77733431,
-    >        0.04979758, 0.34470209, 0.83185617, 0.29883382])
-
-    # This (numba optimized) method.
-    kl_divergence_array(x[0], x[1:])
-    > array([0.12405413, 0.79411391, 0.5340511 , 0.13075877, 0.77733431,
-    >        0.04979758, 0.34470209, 0.83185617, 0.29883382])
-
-    :param p: (np.array) probability distribution.
-
-    :param q: (np.array) probability distribution.
-
-    :return: (np.array) Kullback-Leibler divergence.
+    :return: (np.ndarray) Kullback-Leibler divergence.
     """
     return np.sum(np.where(p != 0.0,
                            np.where(q != 0.0,
@@ -336,7 +321,8 @@ def nb_median_hamming_distance(x_pos: np.ndarray,
     It is assumed that the input 'x_pos', represents the 2D
     array of particle binary positions {0, 1}.
 
-    :param x_pos: a 2D array with the particle positions.
+    :param x_pos: (array) A 2D numpy array (n_particles, n_features)
+                  representing the positions of the swarm.
 
     :param normal: whether to compute the normalized average
                    Hamming distance. This will yield a value
@@ -386,8 +372,8 @@ def nb_median_euclidean_distance(x_pos: np.ndarray,
     from all the particles. To get an estimate in [0,1] we can divide
     them with the maximum distance (optional).
 
-    :param x_pos: (np.ndarray) A 2D array of shape (n_particles,
-                  n_features) representing the positions of the swarm.
+    :param x_pos: (array) A 2D numpy array (n_particles, n_features)
+                  representing the positions of the swarm.
 
     :param normal: (bool) if "True", normalize the distances by their
                    maximum distance.
@@ -461,7 +447,8 @@ def nb_median_kl_divergence(x_pos: np.ndarray,
     Calculate the 'median KL divergence' value of the input array.
     It is assumed that each row is a distribution (i.e. sum to 1).
 
-    :param x_pos: 2D array where each column.
+    :param x_pos: (array) A 2D numpy array (n_particles, n_features)
+                  representing the positions of the swarm.
 
     :param normal: If enabled the KL values will be normalized using
                    the maximum KL divergence from the data.
