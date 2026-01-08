@@ -8,9 +8,9 @@ class Vincent(TestFunction):
     """
     This function was originally proposed in:
 
-    O. Shir and T. Back, “Niche radius adaptation in the cms-es niching algorithm”,
-    in Parallel Problem-Solving from Nature - PPSN IX, 9th International Conference
-    (LNCS 4193). Reykjavík, Iceland: Springer, 2006, pp. 142 – 151.
+    - O. Shir and T. Back, “Niche radius adaptation in the cms-es niching algorithm”,
+      in Parallel Problem-Solving from Nature - PPSN IX, 9th International Conference
+      (LNCS 4193). Reykjavík, Iceland: Springer, 2006, pp. 142 – 151.
     """
 
     def __init__(self, n_dim: int = 2, x_min: float = 0.25, x_max: float = 10.0) -> None:

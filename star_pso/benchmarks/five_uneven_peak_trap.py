@@ -8,9 +8,9 @@ class FiveUnevenPeakTrap(TestFunction):
     """
     This function was originally proposed in:
 
-    J.-P. Li, M. E. Balazs, G. T. Parks, and P. J. Clarkson,
-    “A species conserving genetic algorithm for multimodal function optimization”
-    Evolutionary Computation, vol. 10, no. 3, pp. 207–234, 2002.
+    - J.-P. Li, M. E. Balazs, G. T. Parks, and P. J. Clarkson,
+      “A species conserving genetic algorithm for multimodal function optimization”
+      Evolutionary Computation, vol. 10, no. 3, pp. 207–234, 2002.
     """
 
     def __init__(self, x_min: float = 0.0, x_max: float = 30.0) -> None:

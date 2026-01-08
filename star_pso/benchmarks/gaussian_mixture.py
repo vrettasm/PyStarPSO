@@ -12,26 +12,40 @@ class GaussianMixture(TestFunction):
     The equations are given by the Multivariate Normal Distribution,
     with four modes (2 global and 2 local):
 
-    $f(x) = \sum_{i=1}^{4}{\cal N}(\mu_i, \Sigma_i)$,
+    .. math::
+        f(x) = \sum_{i=1}^{4} \mathcal{N}(\mu_i, \Sigma_i)
 
     with mean vectors:
-        1) $\mu_1 = [-0.0, -1.0]$,
-        2) $\mu_2 = [-4.0, -6.0]$,
-        3) $\mu_3 = [-5.0, +1.0]$,
-        4) $\mu_4 = [5.0, -10.0]$,
+
+    .. math::
+        \mu_1 = [-0.0, -1.0]
+
+        \mu_2 = [-4.0, -6.0]
+
+        \mu_3 = [-5.0, +1.0]
+
+        \mu_4 = [5.0, -10.0]
 
     and covariances:
-        1) $\Sigma_1 = \begin{bmatrix} 1.0 & 0.1 \\ 0.1 & 1.0\end{bmatrix}$,
-        2) $\Sigma_2 = \begin{bmatrix} 1.0 & 0.1 \\ 0.1 & 1.0\end{bmatrix}$,
-        3) $\Sigma_3 = \begin{bmatrix} 1.2 & 0.3 \\ 0.3 & 1.2\end{bmatrix}$,
-        4) $\Sigma_4 = \begin{bmatrix} 1.2 & 0.3 \\ 0.3 & 1.2\end{bmatrix}$.
+
+    .. math::
+        \Sigma_1 = [ [ 1.0, 0.1 ], [ 0.1, 1.0 ] ]
+
+        \Sigma_2 = [ [ 1.0, 0.1 ], [ 0.1, 1.0 ] ]
+
+        \Sigma_3 = [ [ 1.2, 0.3 ], [ 0.3, 1.2 ] ]
+
+        \Sigma_4 = [ [ 1.2, 0.3 ], [ 0.3, 1.2 ] ]
     """
 
-    # Set up the four multivariate normal distributions.
+    # Auxiliary (class-level) tuple.
     MVN = (multivariate_normal([-0.0, -1.0], [[1.0, 0.1], [0.1, 1.0]]),
            multivariate_normal([-4.0, -6.0], [[1.0, 0.1], [0.1, 1.0]]),
            multivariate_normal([-10.0, 5.0], [[1.2, 0.3], [0.3, 1.2]]),
            multivariate_normal([5.0, -10.0], [[1.2, 0.3], [0.3, 1.2]]))
+    """
+    Set up four multivariate normal distributions.
+    """
 
     def __init__(self, x_min: float = -15.0, x_max: float = 15.0) -> None:
         """
