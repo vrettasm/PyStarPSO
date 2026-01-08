@@ -97,11 +97,10 @@ def pareto_front(points: np.ndarray) -> np.ndarray:
     Simple function that calculates the pareto (optimal)
     front points from a given input points numpy array.
 
-    :param points: array of points as 2D matrix
-                   [(fx1, fx2, ..., fxn),
-                    (fy1, fy2, ..., fyn),
-                    ....................,
-                    (fk1, fk2, ..., fkn)]
+    :param points: array of points as [(fx1, fx2, ..., fxn),
+                                       (fy1, fy2, ..., fyn),
+                                       ....................,
+                                       (fk1, fk2, ..., fkn)]
 
     :return: array of points that lie on the pareto front.
     """
