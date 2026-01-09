@@ -1,5 +1,5 @@
-star_pso package
-================
+StarPSO package
+===============
 
 Subpackages
 -----------

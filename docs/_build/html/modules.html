@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>star_pso &mdash; StarPSO 0.1.0 documentation</title>
+  <title>PyStarPSO &mdash; StarPSO 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -16,11 +16,13 @@
       <script src="_static/documentation_options.js?v=01f34227"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="star_pso package" href="star_pso.html" />
+    <link rel="next" title="StarPSO package" href="star_pso.html" />
     <link rel="prev" title="Welcome to StarPSO’s documentation!" href="index.html" /> 
 </head>
 
@@ -45,10 +47,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">star_pso</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="star_pso.html">star_pso package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">PyStarPSO</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="star_pso.html">StarPSO package</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
 
         </div>
@@ -65,7 +68,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">star_pso</li>
+      <li class="breadcrumb-item active">PyStarPSO</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -75,13 +78,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="star-pso">
-<h1>star_pso<a class="headerlink" href="#star-pso" title="Link to this heading"></a></h1>
+  <section id="pystarpso">
+<h1>PyStarPSO<a class="headerlink" href="#pystarpso" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="star_pso.html">star_pso package</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="star_pso.html">StarPSO package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="star_pso.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="star_pso.benchmarks.html">star_pso.benchmarks package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="star_pso.benchmarks.html">Benchmarks package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="star_pso.benchmarks.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="star_pso.benchmarks.html#module-star_pso.benchmarks.composite_functions">star_pso.benchmarks.composite_functions module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="star_pso.benchmarks.html#module-star_pso.benchmarks.equal_maxima">star_pso.benchmarks.equal_maxima module</a></li>
@@ -97,7 +100,7 @@
 <li class="toctree-l4"><a class="reference internal" href="star_pso.benchmarks.html#module-star_pso.benchmarks">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="star_pso.engines.html">star_pso.engines package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="star_pso.engines.html">Engines package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="star_pso.engines.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="star_pso.engines.html#module-star_pso.engines.binary_pso">star_pso.engines.binary_pso module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="star_pso.engines.html#module-star_pso.engines.quantum_pso">star_pso.engines.quantum_pso module</a></li>
@@ -109,7 +112,7 @@
 <li class="toctree-l4"><a class="reference internal" href="star_pso.engines.html#module-star_pso.engines">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="star_pso.population.html">star_pso.population package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="star_pso.population.html">Population package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="star_pso.population.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="star_pso.population.html#module-star_pso.population.jat_particle">star_pso.population.jat_particle module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="star_pso.population.html#module-star_pso.population.particle">star_pso.population.particle module</a></li>
@@ -117,7 +120,7 @@
 <li class="toctree-l4"><a class="reference internal" href="star_pso.population.html#module-star_pso.population">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="star_pso.utils.html">star_pso.utils package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="star_pso.utils.html">Utils package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="star_pso.utils.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="star_pso.utils.html#module-star_pso.utils.auxiliary">star_pso.utils.auxiliary module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="star_pso.utils.html#module-star_pso.utils.data_block">star_pso.utils.data_block module</a></li>
@@ -138,7 +141,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to StarPSO’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="star_pso.html" class="btn btn-neutral float-right" title="star_pso package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="star_pso.html" class="btn btn-neutral float-right" title="StarPSO package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

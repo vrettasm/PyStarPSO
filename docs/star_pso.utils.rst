@@ -1,5 +1,5 @@
-star_pso.utils package
-======================
+Utils package
+=============
 
 Submodules
 ----------

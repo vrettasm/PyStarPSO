@@ -1,5 +1,6 @@
-star_pso.engines package
-========================
+Engines package
+===============
+This package contains a set of **PSO** variants.
 
 Submodules
 ----------

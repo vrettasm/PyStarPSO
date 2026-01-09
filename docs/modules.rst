@@ -1,5 +1,5 @@
-star_pso
-========
+PyStarPSO
+=========
 
 .. toctree::
    :maxdepth: 4

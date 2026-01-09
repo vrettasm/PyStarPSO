@@ -1,5 +1,8 @@
-star_pso.benchmarks package
-===========================
+Benchmarks package
+==================
+This package contains a set of optimization functions to
+demonstrate the algorithms ability to deal with multiple
+modes.
 
 Submodules
 ----------

@@ -1,5 +1,7 @@
-star_pso.population package
-===========================
+Population package
+==================
+This package contains the building blocks that create
+the particle and the swarm objects.
 
 Submodules
 ----------

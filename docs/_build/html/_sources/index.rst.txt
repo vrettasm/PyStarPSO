@@ -19,10 +19,11 @@ purpose optimization problems (constrained and unconstrained).
 * **Python dependencies:** NumPy, JobLib, Numba, Scipy
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents
 
    modules
+   examples
 
 Indices and tables
 ==================
