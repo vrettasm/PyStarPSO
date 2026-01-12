@@ -17,7 +17,6 @@ The current toolkit offers the following PSO implementations (with supported opt
 | [Jack of all trades](star_pso/engines/jack_of_all_trades_pso.py) |      Mixed       |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
 | [Quantum](star_pso/engines/quantum_pso.py)                       |      Float       |         Yes          |    Yes     |    Yes    |      Yes       |     Yes      |
 
-
 All the above methods inherit from the base class [Generic](star_pso/engines/generic_pso.py) which provides some common functionality.
 
 Adding new algorithms **MUST** inherit from the base class.
@@ -31,6 +30,25 @@ it with the *multimodal* option would not make much sense and in fact it will me
 Moreover, the *Parallel* option is supported only in the evaluation of the objective (or fitness) function. Therefore,
 it is beneficial only in cases where the objective function is "heavy" computationally or has many I/Os. In most cases
 setting this option to the default (False), will have the best results.
+
+## Installation
+
+There are two options to install the software.
+
+The easiest way is to download it from PyPI. Simply run the following command on a terminal:
+    
+    pip install starpso
+
+Alternatively one can clone the latest version directly from GitHub using git as follows:
+
+    git clone https://github.com/vrettasm/StarPSO.git
+
+After the download of the code (or the git clone), one can use the following commands:
+
+    cd PyStarPSO
+    pip install .
+
+This will install the latest StarPSO version in the package management system.
 
 ## Examples
 Some optimization examples on how to use these algorithms:
