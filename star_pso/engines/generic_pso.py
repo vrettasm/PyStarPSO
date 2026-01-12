@@ -677,14 +677,14 @@ class GenericPSO(object):
             # Update the cognitive and social parameters.
             if wt > w0:
                 # If the inertia weight has increased,
-                # then decrease the c1/c2 coefficients.
+                # then adapt the c1 / c2 coefficients.
                 c1 *= 0.9
-                c2 *= 0.9
+                c2 *= 1.1
             else:
                 # If the inertia weight has decreased,
-                # then increase the c1/c2 coefficients.
+                # then adapt the c1 / c2 coefficients.
                 c1 *= 1.1
-                c2 *= 1.1
+                c2 *= 0.9
             # _end_if_
 
             # Ensure the updated c1 / c2 values
