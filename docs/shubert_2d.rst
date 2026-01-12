@@ -17,7 +17,7 @@ The Shubert function has several local minima and many global minima. The equati
 The function is evaluated on the square :math:`x, y \in [-10, 10]`.
 
 Global minimum:
-    :math:`f^*(x_{opt}, y_{opt}) = -186.7309`.
+For D=2 the function has 18 global minima at :math:`f^*(x_{opt}, y_{opt}) = -186.7309`.
 
 Step 1: Import python libraries and StarPSO classes
 ---------------------------------------------------
