@@ -28,6 +28,15 @@ class GenericPSO(object):
         GenericPSO class models the interface of a specific particle swarm
         optimization model or engine. It provides the common variables and
         functionalities that all PSO models should share.
+
+        - J. Kennedy and R. Eberhart (1995). "Particle Swarm Optimization".
+          In Proceedings of IEEE International Conference on Neural Networks.
+          vol. 4. pp. 1942–1948. doi:10.1109/ICNN.1995.488968.
+
+        - R. Mendes and J. Kennedy and J. Neves (2004). "The fully informed particle
+          swarm: simpler, maybe better". In IEEE Transactions on Evolutionary Computation,
+          vol. 8, no. 3, pp. 204-210, June 2004, doi: 10.1109/TEVC.2004.826074.
+
     """
 
     rng: Generator = default_rng()
