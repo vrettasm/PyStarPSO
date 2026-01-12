@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Binh and Korn &mdash; StarPSO 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Shubert 2D" href="shubert_2d.html" />
+    <link rel="prev" title="OneMax" href="one_max.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            StarPSO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modules.html">PyStarPSO</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="examples.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="examples.html#simple-optimization">Simple optimization</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="examples.html#multiobjective-function-with-constraints">Multiobjective function (with constraints)</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Binh and Korn</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#step-1-import-python-libraries-and-starpso-classes">Step 1: Import python libraries and StarPSO classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-2-define-the-objective-function">Step 2: Define the objective function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-3-set-the-pso-parameters">Step 3: Set the PSO parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-4-run-the-optimization">Step 4: Run the optimization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-5-extract-the-data-for-analysis-and-plotting">Step 5: Extract the data for analysis and plotting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-6-compute-the-pareto-front">Step 6: Compute the Pareto front</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-6-visualize-the-solutions">Step 6: Visualize the solutions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#multimodal-function">Multimodal function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#more-examples">More examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">StarPSO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="examples.html">Examples</a></li>
+      <li class="breadcrumb-item active">Binh and Korn</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/binh_korn.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="binh-and-korn">
+<h1>Binh and Korn<a class="headerlink" href="#binh-and-korn" title="Link to this heading"></a></h1>
+<p>Description:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Optimization (min)</p></li>
+<li><p>Multi-objective (2)</p></li>
+<li><p>Constraints (2)</p></li>
+</ul>
+</div></blockquote>
+<p>The general problem statement is given by:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[\begin{split}\begin{cases}
+      f_{1}\left(x,y\right) = 4x^{2} + 4y^{2} \\
+      f_{2}\left(x,y\right) = \left(x - 5\right)^{2} + \left(y - 5\right)^{2} \\
+\end{cases}\end{split}\]</div>
+</div></blockquote>
+<p>subject to:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[\begin{split}\begin{cases}
+      C_{1}\left(x,y\right) = \left(x - 5\right)^{2} + y^{2} \leq 25, \\
+      C_{2}\left(x,y\right) = \left(x - 8\right)^{2} + \left(y + 3\right)^{2} \geq 7.7 \\
+\end{cases}\end{split}\]</div>
+</div></blockquote>
+<p>where: <span class="math notranslate nohighlight">\(-15\le x \le 30\)</span> and <span class="math notranslate nohighlight">\(-15\le y \le 30\)</span>.</p>
+<p>The Pareto-optimal solutions are constituted by solutions: <span class="math notranslate nohighlight">\(x=y \in [0.0, 3.0]\)</span> and
+<span class="math notranslate nohighlight">\(x \in [3.0, 5.0], y=3.0.\)</span></p>
+<section id="step-1-import-python-libraries-and-starpso-classes">
+<h2>Step 1: Import python libraries and StarPSO classes<a class="headerlink" href="#step-1-import-python-libraries-and-starpso-classes" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.population.swarm</span><span class="w"> </span><span class="kn">import</span> <span class="n">Swarm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.population.particle</span><span class="w"> </span><span class="kn">import</span> <span class="n">Particle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.engines.standard_pso</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardPSO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="n">pareto_front</span><span class="p">,</span> <span class="n">cost_function</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-define-the-objective-function">
+<h2>Step 2: Define the objective function<a class="headerlink" href="#step-2-define-the-objective-function" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Auxiliary method that returns a random value in [0, 1].</span>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">random_weight</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+
+<span class="c1"># Multi-objective cost function.</span>
+<span class="nd">@cost_function</span><span class="p">(</span><span class="n">minimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fun_binh_korn</span><span class="p">(</span><span class="n">vector_xy</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+
+    <span class="c1"># Set the penalty coefficient.</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="mf">5.0</span>
+
+    <span class="c1"># Extract the values from the particle position.</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">vector_xy</span>
+
+    <span class="c1"># Compute each objective function.</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">f2</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="c1"># Compute the constraints.</span>
+    <span class="n">C1</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mf">25.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">C2</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">8.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mf">3.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mf">7.7</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="c1"># Assign the weights.</span>
+    <span class="n">w1</span> <span class="o">=</span> <span class="n">random_weight</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;it&quot;</span><span class="p">])</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">w1</span>
+
+    <span class="c1"># Compute the final value.</span>
+    <span class="n">f_value</span> <span class="o">=</span> <span class="n">w1</span><span class="o">*</span><span class="n">f1</span> <span class="o">+</span> <span class="n">w2</span><span class="o">*</span><span class="n">f2</span> <span class="o">+</span> <span class="n">rho</span><span class="o">*</span><span class="p">(</span><span class="n">C1</span> <span class="o">+</span> <span class="n">C2</span><span class="p">)</span>
+
+    <span class="c1"># Return the solution.</span>
+    <span class="k">return</span> <span class="n">f_value</span>
+</pre></div>
+</div>
+</section>
+<section id="step-3-set-the-pso-parameters">
+<h2>Step 3: Set the PSO parameters<a class="headerlink" href="#step-3-set-the-pso-parameters" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set a seed for reproducible initial population.</span>
+<span class="n">SEED</span> <span class="o">=</span> <span class="mi">1821</span>
+
+<span class="c1"># Random number generator.</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+
+<span class="c1"># Define the number of optimizing variables.</span>
+<span class="n">n_dim</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1"># Define the number of particles.</span>
+<span class="n">n_pop</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Draw random samples for the initial points.</span>
+<span class="n">X_t0</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_pop</span><span class="p">,</span> <span class="n">n_dim</span><span class="p">))</span>
+
+<span class="c1"># Initial population.</span>
+<span class="n">swarm_t0</span> <span class="o">=</span> <span class="n">Swarm</span><span class="p">([</span><span class="n">Particle</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">X_t0</span><span class="p">])</span>
+
+<span class="c1"># Create a StandardPSO object that will perform the optimization.</span>
+<span class="n">test_PSO</span> <span class="o">=</span> <span class="n">StandardPSO</span><span class="p">(</span><span class="n">initial_swarm</span> <span class="o">=</span> <span class="n">swarm_t0</span><span class="p">,</span>
+                       <span class="n">obj_func</span> <span class="o">=</span> <span class="n">fun_binh_korn</span><span class="p">,</span>
+                       <span class="n">x_min</span> <span class="o">=</span> <span class="o">-</span><span class="mf">15.0</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="mf">30.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-4-run-the-optimization">
+<h2>Step 4: Run the optimization<a class="headerlink" href="#step-4-run-the-optimization" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">test_PSO</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">max_it</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">,</span>
+             <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;w0&quot;</span><span class="p">:</span> <span class="mf">0.70</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">:</span> <span class="mf">1.50</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">:</span> <span class="mf">1.50</span><span class="p">,</span> <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;g_best&quot;</span><span class="p">},</span>
+             <span class="n">reset_swarm</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">adapt_params</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-5-extract-the-data-for-analysis-and-plotting">
+<h2>Step 5: Extract the data for analysis and plotting<a class="headerlink" href="#step-5-extract-the-data-for-analysis-and-plotting" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the optimal solution from the PSO.</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">z_opt</span> <span class="o">=</span> <span class="n">test_PSO</span><span class="o">.</span><span class="n">get_optimal_values</span><span class="p">()</span>
+
+<span class="c1"># Extract the optimal optimization variables.</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">z_opt</span>
+
+<span class="c1"># Compute the final objective functions.</span>
+<span class="n">f1_opt</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">f2_opt</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="c1"># Print the results.</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;x=</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">, y=</span><span class="si">{</span><span class="n">y</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;f1(x, y) = </span><span class="si">{</span><span class="n">f1_opt</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;f2(x, y) = </span><span class="si">{</span><span class="n">f2_opt</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Stores the best positions.</span>
+<span class="n">best_n</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">test_PSO</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">best_n</span><span class="p">(</span><span class="n">n_pop</span><span class="o">//</span><span class="mi">2</span><span class="p">):</span>
+    <span class="c1"># Extract the position.</span>
+    <span class="n">x_p</span><span class="p">,</span> <span class="n">y_p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">best_position</span>
+
+    <span class="c1"># Compute the final objective functions.</span>
+    <span class="n">best_n</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mf">4.0</span><span class="o">*</span><span class="p">(</span><span class="n">x_p</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y_p</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
+                  <span class="p">(</span><span class="n">x_p</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y_p</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># Convert to numpy.</span>
+<span class="n">best_n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">best_n</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-6-compute-the-pareto-front">
+<h2>Step 6: Compute the Pareto front<a class="headerlink" href="#step-6-compute-the-pareto-front" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a list that will hold points that satisfy both constraints.</span>
+<span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Generate a 2D grid sample on [-15.0, 30].</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">15.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+
+        <span class="c1"># Compute the constraints.</span>
+        <span class="n">C1</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;=</span> <span class="mf">25.0</span>
+        <span class="n">C2</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">8.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mf">3.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;=</span> <span class="mf">7.7</span>
+
+        <span class="c1"># If both constraints are satisfied.</span>
+        <span class="k">if</span> <span class="n">C1</span> <span class="ow">and</span> <span class="n">C2</span><span class="p">:</span>
+
+            <span class="c1"># Evaluate both functions.</span>
+            <span class="n">f1</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">f2</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+            <span class="c1"># Keep the point in the list.</span>
+            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">))</span>
+<span class="c1"># _end_for_</span>
+
+<span class="c1"># Convert lists to numpy.</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+<span class="c1"># Estimate the pareto front points.</span>
+<span class="n">pareto_points</span> <span class="o">=</span> <span class="n">pareto_front</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-6-visualize-the-solutions">
+<h2>Step 6: Visualize the solutions<a class="headerlink" href="#step-6-visualize-the-solutions" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new figure.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Plot the Pareto front.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pareto_points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+         <span class="n">pareto_points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+         <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Pareto frontier&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot all the feasible solutions.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Feasible solutions&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot other points.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">best_n</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+         <span class="n">best_n</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+         <span class="s1">&#39;kx&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;StarPSO solutions&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot the optimal solution from the PSO.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">f1_opt</span><span class="p">,</span> <span class="n">f2_opt</span><span class="p">,</span>
+         <span class="s1">&#39;k*&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;StarPSO optimal&quot;</span><span class="p">)</span>
+
+<span class="c1"># Tidy up the plot.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Binh and Korn Test Case No.2&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\mathbf{f1(x,y)}$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\mathbf{f2(x,y)}$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-center">
+<img alt="_images/binh_and_korn.png" src="_images/binh_and_korn.png" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="one_max.html" class="btn btn-neutral float-left" title="OneMax" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="shubert_2d.html" class="btn btn-neutral float-right" title="Shubert 2D" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Michail D. Vrettas.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
