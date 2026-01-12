@@ -790,14 +790,14 @@
             <span class="c1"># Update the cognitive and social parameters.</span>
             <span class="k">if</span> <span class="n">wt</span> <span class="o">&gt;</span> <span class="n">w0</span><span class="p">:</span>
                 <span class="c1"># If the inertia weight has increased,</span>
-                <span class="c1"># then decrease the c1/c2 coefficients.</span>
+                <span class="c1"># then adapt the c1 / c2 coefficients.</span>
                 <span class="n">c1</span> <span class="o">*=</span> <span class="mf">0.9</span>
-                <span class="n">c2</span> <span class="o">*=</span> <span class="mf">0.9</span>
+                <span class="n">c2</span> <span class="o">*=</span> <span class="mf">1.1</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># If the inertia weight has decreased,</span>
-                <span class="c1"># then increase the c1/c2 coefficients.</span>
+                <span class="c1"># then adapt the c1 / c2 coefficients.</span>
                 <span class="n">c1</span> <span class="o">*=</span> <span class="mf">1.1</span>
-                <span class="n">c2</span> <span class="o">*=</span> <span class="mf">1.1</span>
+                <span class="n">c2</span> <span class="o">*=</span> <span class="mf">0.9</span>
             <span class="c1"># _end_if_</span>
 
             <span class="c1"># Ensure the updated c1 / c2 values</span>
