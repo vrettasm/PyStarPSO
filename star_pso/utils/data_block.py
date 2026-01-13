@@ -40,8 +40,11 @@ class DataBlock(object):
        functions.
     """
 
-    # Make a random number generator (Class variable).
+    # Make a random number generator (class variable).
     rng: Generator = default_rng()
+    """
+    Random Number Generator for the whole class.
+    """
 
     # Object variables.
     __slots__ = ("_btype", "_valid_set", "_position", "_best_position",
