@@ -20,8 +20,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Population" href="star_pso.population.html" />
-    <link rel="prev" title="Benchmarks" href="star_pso.benchmarks.html" /> 
+    <link rel="next" title="Population package" href="star_pso.population.html" />
+    <link rel="prev" title="Benchmarks package" href="star_pso.benchmarks.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,12 +45,12 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="star_pso.html">StarPSO</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">PyStarPSO</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="star_pso.html">StarPSO package</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="star_pso.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="star_pso.benchmarks.html">Benchmarks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="star_pso.benchmarks.html">Benchmarks package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Engines</a></li>
-<li class="toctree-l4"><a class="reference internal" href="star_pso.population.html">Population</a></li>
+<li class="toctree-l4"><a class="reference internal" href="star_pso.population.html">Population package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="star_pso.utils.html">Utils</a></li>
 </ul>
 </li>
@@ -76,8 +76,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="modules.html">Modules</a></li>
-          <li class="breadcrumb-item"><a href="star_pso.html">StarPSO</a></li>
+          <li class="breadcrumb-item"><a href="modules.html">PyStarPSO</a></li>
+          <li class="breadcrumb-item"><a href="star_pso.html">StarPSO package</a></li>
       <li class="breadcrumb-item active">Engines</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/star_pso.engines.rst.txt" rel="nofollow"> View page source</a>
@@ -92,10 +92,11 @@
 <h1>Engines<a class="headerlink" href="#engines" title="Link to this heading"></a></h1>
 <p>This package contains a set of <strong>PSO</strong> variants. Bellow we can see a summary of them along with the options that they
 support. The variable types, refers to the kind of data the algorithm supports and operates on. The <em>Jack of all trades</em>
-algorithm supports mixed types, which means that the particle can have any kind of data, in any order.</p>
+algorithm supports mixed types, which means that the particle can have any kind of data, in any order. Other options
+include:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>G_best</strong>: is the default option for the positional updates, since it is the simplest and supported
+<li><p><strong>G_best</strong>: (Global Best) is the default option for the positional updates, since it is the simplest and supported
 by all algorithms.</p></li>
 <li><p><strong>FIPSO</strong>: Refers to the <em>Fully Informed PSO</em> and is also supported by all algorithms, albeit with
 slightly higher computation cost.</p></li>
@@ -762,7 +763,7 @@ should be implemented separately.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.rng">
-<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x13CEC4660</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x151D767A0</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
 <dd><p>Random Number Generator for the whole class.</p>
 </dd></dl>
 
@@ -1162,8 +1163,8 @@ uniformly random numbers within the [x_min, x_max] bounds.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="star_pso.benchmarks.html" class="btn btn-neutral float-left" title="Benchmarks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="star_pso.population.html" class="btn btn-neutral float-right" title="Population" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="star_pso.benchmarks.html" class="btn btn-neutral float-left" title="Benchmarks package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="star_pso.population.html" class="btn btn-neutral float-right" title="Population package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

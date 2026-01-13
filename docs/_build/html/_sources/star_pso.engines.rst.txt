@@ -2,9 +2,10 @@ Engines
 =======
 This package contains a set of **PSO** variants. Bellow we can see a summary of them along with the options that they
 support. The variable types, refers to the kind of data the algorithm supports and operates on. The *Jack of all trades*
-algorithm supports mixed types, which means that the particle can have any kind of data, in any order.
+algorithm supports mixed types, which means that the particle can have any kind of data, in any order. Other options
+include:
 
-    - **G_best**: is the default option for the positional updates, since it is the simplest and supported
+    - **G_best**: (Global Best) is the default option for the positional updates, since it is the simplest and supported
       by all algorithms.
     - **FIPSO**: Refers to the *Fully Informed PSO* and is also supported by all algorithms, albeit with
       slightly higher computation cost.
@@ -22,7 +23,7 @@ algorithm supports mixed types, which means that the particle can have any kind 
 +--------------------+------------------+----------------------+------------+-----------+----------------+--------------+
 | Binary             |   Int. (0, 1)    |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
 +--------------------+------------------+----------------------+------------+-----------+----------------+--------------+
-| Categorical        |   Set {...}      |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
+| Categorical        |    Set {...}     |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
 +--------------------+------------------+----------------------+------------+-----------+----------------+--------------+
 | Integer            |     Integer      |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
 +--------------------+------------------+----------------------+------------+-----------+----------------+--------------+
