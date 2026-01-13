@@ -41,8 +41,8 @@ class JackOfAllTradesPSO(GenericPSO):
 
         - float (continuous)
         - integer (discrete)
-        - binary  (discrete)
-        - categorical (discrete)
+        - binary      (0, 1)
+        - categorical (sets)
 
         The fundamental building block of the algorithm is the 'DataBlock' which
         encapsulates the data and the functionality of each variable type.
