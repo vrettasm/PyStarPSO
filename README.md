@@ -2,6 +2,8 @@
 
 ![Logo](./logo/main_logo.png)
 
+[![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint) score 9.42/10.
+
 ## Algorithms
 
 This repository implements a collection of particle swarm optimization algorithms in Python3 programming language.
