@@ -50,8 +50,9 @@ class GenericPSO:
     """
 
     # Object variables.
-    __slots__ = ("_swarm", "_velocities", "_objective_func", "_upper_bound", "_lower_bound", "_stats",
-                 "_items", "_f_evals", "_n_cpus", "_n_rows", "_n_cols", "_special_mode", "_iteration")
+    __slots__ = ("_swarm", "_velocities", "_objective_func", "_upper_bound",
+                 "_lower_bound", "_stats", "_items", "_f_evals", "_n_cpus",
+                 "_n_rows", "_n_cols", "_special_mode", "_iteration")
 
     def __init__(self, initial_swarm: Swarm, obj_func: Callable,
                  lower_bound: ArrayLike = None, upper_bound: ArrayLike = None,
@@ -67,7 +68,8 @@ class GenericPSO:
 
         :param upper_bound: upper search space bound.
 
-        :param copy: if True it will create a separate (deep) copy of the initial swarm.
+        :param copy: if True it will create a separate (deep) copy of the
+                     initial swarm.
 
         :param n_cpus: number of requested CPUs for the optimization process.
         """
