@@ -90,7 +90,85 @@
              
   <section id="engines">
 <h1>Engines<a class="headerlink" href="#engines" title="Link to this heading"></a></h1>
-<p>This package contains a set of <strong>PSO</strong> variants.</p>
+<p>This package contains a set of <strong>PSO</strong> variants. Bellow we can see a summary of them along with the options that they
+support. The variable types, refers to the kind of data the algorithm supports and operates on. The <em>Jack of all trades</em>
+algorithm supports mixed types, which means that the particle can have any kind of data, in any order.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>G_best</strong>: is the default option for the positional updates, since it is the simplest and supported
+by all algorithms.</p></li>
+<li><p><strong>FIPSO</strong>: Refers to the <em>Fully Informed PSO</em> and is also supported by all algorithms, albeit with
+slightly higher computation cost.</p></li>
+<li><p><strong>Multimodal</strong>: is a new feature that allows the PSO to look for local optima values and not stuck to
+a single global optimal value. It is restricted to continuous variable types (Float), since it is using
+a ‘distance’ measure to calculate the proximity among particles.</p></li>
+<li><p><strong>Parallel</strong>: is supported natively by all algorithms. Note however that is implemented in the evaluation
+of the objective function. So, depending on the computational cost it might be faster to leave it as ‘False’
+(default parameter).</p></li>
+</ul>
+</div></blockquote>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Algorithm</strong></p></th>
+<th class="head"><p><strong>Var. Type(s)</strong></p></th>
+<th class="head"><p><strong>Adapt parameters</strong></p></th>
+<th class="head"><p><strong>G_best</strong></p></th>
+<th class="head"><p><strong>FIPSO</strong></p></th>
+<th class="head"><p><strong>Multimodal</strong></p></th>
+<th class="head"><p><strong>Parallel</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Standard</p></td>
+<td><p>Float</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Binary</p></td>
+<td><p>Int. (0, 1)</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Categorical</p></td>
+<td><p>Set {…}</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Integer</p></td>
+<td><p>Integer</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Jack of all trades</p></td>
+<td><p>Mixed</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Quantum</p></td>
+<td><p>Float</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+</tbody>
+</table>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
@@ -684,7 +762,7 @@ should be implemented separately.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.rng">
-<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x156E426C0</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x13CEC4660</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
 <dd><p>Random Number Generator for the whole class.</p>
 </dd></dl>
 
@@ -887,8 +965,8 @@ are:</p>
 <ul class="simple">
 <li><p>float (continuous)</p></li>
 <li><p>integer (discrete)</p></li>
-<li><p>binary  (discrete)</p></li>
-<li><p>categorical (discrete)</p></li>
+<li><p>binary      (0, 1)</p></li>
+<li><p>categorical (sets)</p></li>
 </ul>
 <p>The fundamental building block of the algorithm is the ‘DataBlock’ which
 encapsulates the data and the functionality of each variable type.</p>

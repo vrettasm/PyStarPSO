@@ -1,5 +1,7 @@
-Utils package
-=============
+Utils
+=====
+Utility functions and auxiliary data structures. The majority of the utility functions
+are compiled with *Numba - Jit*, for improved performance.
 
 Submodules
 ----------
