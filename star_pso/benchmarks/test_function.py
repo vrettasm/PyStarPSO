@@ -7,7 +7,7 @@ from star_pso.population.particle import Particle
 __all__ = ["TestFunction"]
 
 
-class TestFunction(object):
+class TestFunction:
     """
     Description:
         All benchmark test functions should inherit from this class.
@@ -21,7 +21,7 @@ class TestFunction(object):
     """
 
     # Object variables.
-    __slots__ = ("_name", "_nDim", "_x_min", "_x_max", "_lhc")
+    __slots__ = ("_name", "_n_dim", "_x_min", "_x_max", "_lhc")
 
     def __init__(self, name: str, n_dim: int,
                  x_min: float | np.ndarray,
@@ -47,7 +47,7 @@ class TestFunction(object):
         self._name = name
 
         # Assign the dimensions.
-        self._nDim = n_dim
+        self._n_dim = n_dim
 
         # Assign the minimum value(s).
         self._x_min = x_min
@@ -56,7 +56,7 @@ class TestFunction(object):
         self._x_max = x_max
 
         # Construct a Latin Hyper Cube sampler.
-        self._lhc = qmc.LatinHypercube(d=self._nDim, rng=TestFunction.rng,
+        self._lhc = qmc.LatinHypercube(d=self._n_dim, rng=TestFunction.rng,
                                        optimization="random-cd")
     # _end_def_
 
@@ -67,7 +67,7 @@ class TestFunction(object):
 
         :return: (int) number of dimensions.
         """
-        return self._nDim
+        return self._n_dim
     # _end_def_
 
     @property
@@ -140,7 +140,8 @@ class TestFunction(object):
             return self.rng.uniform(self.x_min, self.x_max,
                                     size=(n_pos, self.n_dim))
 
-        elif method.lower() == "latin-hc":
+        # Sanity check.
+        if method.lower() == "latin-hc":
             # Draw uniform random samples from LHC.
             sample = self._lhc.random(n_pos)
 

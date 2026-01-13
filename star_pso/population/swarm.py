@@ -17,7 +17,7 @@ SwarmParticle = Union[Particle, JatParticle]
 __all__ = ["Swarm", "SwarmParticle"]
 
 
-class Swarm(object):
+class Swarm:
     """
     Description:
 

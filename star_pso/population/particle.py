@@ -10,7 +10,7 @@ from star_pso.utils import ScalarOrArray
 __all__ = ["Particle"]
 
 
-class Particle(object):
+class Particle:
     """
     Description:
         Models the particle in the swarm of the PSO.

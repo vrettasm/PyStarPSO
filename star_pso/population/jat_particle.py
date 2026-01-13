@@ -7,7 +7,7 @@ from star_pso.utils.data_block import DataBlock
 __all__ = ["JatParticle"]
 
 
-class JatParticle(object):
+class JatParticle:
     """
     Description:
 

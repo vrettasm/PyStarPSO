@@ -30,7 +30,7 @@ Params = namedtuple("Params",
 __all__ = ["DataBlock"]
 
 
-class DataBlock(object):
+class DataBlock:
     """
     Description:
 
@@ -473,8 +473,10 @@ class DataBlock(object):
             # Return the logical AND from all conditions.
             return (positions_are_equal and valid_sets_are_equal and
                     lower_bounds_are_equal and upper_bounds_are_equal)
-        else:
-            return False
+        # _end_if_
+
+        # If you get here return False.
+        return False
     # _end_def_
 
     def __deepcopy__(self, memo: dict) -> "DataBlock":

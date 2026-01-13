@@ -47,7 +47,7 @@ def check_velocity_parameters(options: dict) -> None:
     :return: None.
     """
     # Sanity check.
-    for key in {"w0", "c1", "c2", "mode"}:
+    for key in ("w0", "c1", "c2", "mode"):
         # Make sure the right keys exist.
         if key not in options:
             raise KeyError(f"Option '{key}' is missing.")

@@ -142,8 +142,8 @@ class CategoricalPSO(GenericPSO):
         # Local copy of the valid sets.
         local_sets = self._valid_sets
 
-        # Loop over all particle positions.
-        for i, x_pos in enumerate(positions):
+        # Loop over all positions.
+        for x_pos in positions:
 
             # Each position is sampled according to its
             # particle probabilities and its valid set.
@@ -177,8 +177,8 @@ class CategoricalPSO(GenericPSO):
         # select first their categorical sample value.
         CategoricalPSO.rng.shuffle(random_index)
 
-        # Loop over all particle positions.
-        for i, x_pos in enumerate(positions):
+        # Loop over all positions.
+        for x_pos in positions:
 
             # Auxiliary set.
             exclude_idx = set()
@@ -282,7 +282,7 @@ class CategoricalPSO(GenericPSO):
         for particle, v_upd in zip(self.swarm.population,
                                    self._velocities):
             # Process each position separately.
-            for k, (x_j, v_j) in enumerate(zip(particle.position, v_upd)):
+            for x_j, v_j in zip(particle.position, v_upd):
                 # NOTE:  All operations happen inplace to avoid
                 # reallocating memory and provide some speed up
                 # to the update process.

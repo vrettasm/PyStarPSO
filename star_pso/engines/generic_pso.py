@@ -21,7 +21,7 @@ from star_pso.utils.auxiliary import (time_it, nb_clip_item, SpecialMode,
 __all__ = ["GenericPSO"]
 
 
-class GenericPSO(object):
+class GenericPSO:
     """
     Description:
 
