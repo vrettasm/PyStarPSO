@@ -155,7 +155,8 @@ class CompositeFunction(TestFunction):
                 raise KeyError(f"Unknown basic function. "
                                f"Valid options are: {list(BASIC_FUNCTIONS.keys())}") from ex
         else:
-            raise TypeError(f"{self.__class__.__name__}: 'n_func' must either be an int in [2, 20], or a list.")
+            raise TypeError(f"{self.__class__.__name__}: "
+                            f"'n_func' must either be an int in [2, 20], or a list.")
     # _end_def_
 
     @staticmethod
