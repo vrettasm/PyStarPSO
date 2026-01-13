@@ -147,9 +147,10 @@ class TestFunction:
 
             # Scale the samples to the limits.
             return qmc.scale(sample, self.x_min, self.x_max)
-        else:
-            raise ValueError(f"{self.__class__.__name__}: "
-                             f"Unknown sampling method: {method}. Use 'random' or 'latin-hc'.")
+
+        # If we get here, raise an error!
+        raise ValueError(f"{self.__class__.__name__}: "
+                         f"Unknown sampling method: {method}. Use 'random' or 'latin-hc'.")
     # _end_def_
 
     def search_for_optima(self, population: list[Particle],
