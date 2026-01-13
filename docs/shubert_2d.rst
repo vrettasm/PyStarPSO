@@ -152,7 +152,7 @@ Step 5: Extract the data for analysis and plotting
 
     optima = np.array(global_optima)
 
-Step 5: Visualize the solutions
+Step 6: Visualize the solutions
 -------------------------------
 
 .. code-block:: python

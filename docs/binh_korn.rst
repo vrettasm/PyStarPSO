@@ -184,7 +184,7 @@ Step 6: Compute the Pareto front
     # Estimate the pareto front points.
     pareto_points = pareto_front(points)
 
-Step 6: Visualize the solutions
+Step 7: Visualize the solutions
 -------------------------------
 
 .. code-block:: python
