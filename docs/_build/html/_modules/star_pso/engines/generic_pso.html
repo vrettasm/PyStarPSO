@@ -96,7 +96,7 @@
 
 <div class="viewcode-block" id="GenericPSO">
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">GenericPSO</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GenericPSO</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description:</span>
 
@@ -125,8 +125,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Object variables.</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_swarm&quot;</span><span class="p">,</span> <span class="s2">&quot;_velocities&quot;</span><span class="p">,</span> <span class="s2">&quot;_objective_func&quot;</span><span class="p">,</span> <span class="s2">&quot;_upper_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_lower_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_stats&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;_items&quot;</span><span class="p">,</span> <span class="s2">&quot;_f_evals&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_cpus&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_rows&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_cols&quot;</span><span class="p">,</span> <span class="s2">&quot;_special_mode&quot;</span><span class="p">,</span> <span class="s2">&quot;_iteration&quot;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_swarm&quot;</span><span class="p">,</span> <span class="s2">&quot;_velocities&quot;</span><span class="p">,</span> <span class="s2">&quot;_objective_func&quot;</span><span class="p">,</span> <span class="s2">&quot;_upper_bound&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;_lower_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_stats&quot;</span><span class="p">,</span> <span class="s2">&quot;_items&quot;</span><span class="p">,</span> <span class="s2">&quot;_f_evals&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_cpus&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;_n_rows&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_cols&quot;</span><span class="p">,</span> <span class="s2">&quot;_special_mode&quot;</span><span class="p">,</span> <span class="s2">&quot;_iteration&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_swarm</span><span class="p">:</span> <span class="n">Swarm</span><span class="p">,</span> <span class="n">obj_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
                  <span class="n">lower_bound</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -142,7 +143,8 @@
 
 <span class="sd">        :param upper_bound: upper search space bound.</span>
 
-<span class="sd">        :param copy: if True it will create a separate (deep) copy of the initial swarm.</span>
+<span class="sd">        :param copy: if True it will create a separate (deep) copy of the</span>
+<span class="sd">                     initial swarm.</span>
 
 <span class="sd">        :param n_cpus: number of requested CPUs for the optimization process.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

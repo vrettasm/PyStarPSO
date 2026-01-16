@@ -228,8 +228,8 @@
         <span class="c1"># Local copy of the valid sets.</span>
         <span class="n">local_sets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_sets</span>
 
-        <span class="c1"># Loop over all particle positions.</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x_pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">positions</span><span class="p">):</span>
+        <span class="c1"># Loop over all positions.</span>
+        <span class="k">for</span> <span class="n">x_pos</span> <span class="ow">in</span> <span class="n">positions</span><span class="p">:</span>
 
             <span class="c1"># Each position is sampled according to its</span>
             <span class="c1"># particle probabilities and its valid set.</span>
@@ -266,8 +266,8 @@
         <span class="c1"># select first their categorical sample value.</span>
         <span class="n">CategoricalPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">random_index</span><span class="p">)</span>
 
-        <span class="c1"># Loop over all particle positions.</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x_pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">positions</span><span class="p">):</span>
+        <span class="c1"># Loop over all positions.</span>
+        <span class="k">for</span> <span class="n">x_pos</span> <span class="ow">in</span> <span class="n">positions</span><span class="p">:</span>
 
             <span class="c1"># Auxiliary set.</span>
             <span class="n">exclude_idx</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
@@ -377,7 +377,7 @@
         <span class="k">for</span> <span class="n">particle</span><span class="p">,</span> <span class="n">v_upd</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
                                    <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">):</span>
             <span class="c1"># Process each position separately.</span>
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">x_j</span><span class="p">,</span> <span class="n">v_j</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">particle</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">v_upd</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">x_j</span><span class="p">,</span> <span class="n">v_j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">particle</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">v_upd</span><span class="p">):</span>
                 <span class="c1"># NOTE:  All operations happen inplace to avoid</span>
                 <span class="c1"># reallocating memory and provide some speed up</span>
                 <span class="c1"># to the update process.</span>
