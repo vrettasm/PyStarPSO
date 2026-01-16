@@ -680,13 +680,13 @@ class GenericPSO:
             if wt > w0:
                 # If the inertia weight has increased,
                 # then adapt the c1 / c2 coefficients.
-                c1 *= 0.9
-                c2 *= 1.1
+                c1 *= 1.1
+                c2 *= 0.9
             else:
                 # If the inertia weight has decreased,
                 # then adapt the c1 / c2 coefficients.
-                c1 *= 1.1
-                c2 *= 0.9
+                c1 *= 0.9
+                c2 *= 1.1
             # _end_if_
 
             # Ensure the updated c1 / c2 values
