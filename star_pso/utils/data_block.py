@@ -425,6 +425,35 @@ class DataBlock:
         return self._btype
     # _end_def_
 
+    # Helper function that compares
+    # scalars and Iterables (lists).
+    @staticmethod
+    def _check_equality(a, b) -> bool:
+        """
+        Compare two objects and return True if equal.
+        Handles scalar booleans and general iterables.
+
+        :param a: 1st object to compare.
+        :param b: 2nd object to compare.
+
+        :return: the bool outcome of a == b.
+        """
+        # Do the comparison.
+        condition = a == b
+
+        # If the result has an 'all' method
+        # (e.g. numpy / pandas), use it.
+        all_method = getattr(condition, "all", None)
+
+        # Quick exit in numpy.
+        if callable(all_method):
+            return bool(condition.all())
+
+        # Otherwise fall back to standard Python.
+        return all(condition) if isinstance(condition,
+                                            Iterable) else condition
+    # _end_def_
+
     def __eq__(self, other) -> bool:
         """
         Compares the data block of self with the other and
@@ -444,20 +473,15 @@ class DataBlock:
             return NotImplemented
         # _end_if_
 
+        # Local cache for speed.
+        check_it = self._check_equality
+
         # First check their block type.
         if self._btype == other._btype:
 
-            # Helper function that compares
-            # scalars and Iterables (lists).
-            def _check_equality(a, b) -> bool:
-                condition = a == b
-                return all(condition) if isinstance(condition,
-                                                    Iterable) else condition
-            # _end_def_
-
             # Check the positions.
-            positions_are_equal = _check_equality(self._position,
-                                                  other._position)
+            positions_are_equal = check_it(self._position,
+                                           other._position)
             # Check valid sets.
             valid_sets_are_equal = (True if self._valid_set is None
                                     else self._valid_set == other._valid_set)
@@ -465,11 +489,11 @@ class DataBlock:
             # If the bounds are not given (None) we set the conditions to True.
             if (self._lower_bound is not None) and (self._upper_bound is not None):
                 # Check lower bounds.
-                lower_bounds_are_equal = _check_equality(self._lower_bound,
-                                                         other._lower_bound)
+                lower_bounds_are_equal = check_it(self._lower_bound,
+                                                  other._lower_bound)
                 # Check upper bounds.
-                upper_bounds_are_equal = _check_equality(self._upper_bound,
-                                                         other._upper_bound)
+                upper_bounds_are_equal = check_it(self._upper_bound,
+                                                  other._upper_bound)
             else:
                 lower_bounds_are_equal = True
                 upper_bounds_are_equal = True
