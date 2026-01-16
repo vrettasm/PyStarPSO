@@ -442,7 +442,7 @@ class DataBlock:
         condition = a == b
 
         # If the result has an 'all' method
-        # (e.g. numpy / pandas), use it.
+        # (e.g. numpy / pandas) then use it.
         all_method = getattr(condition, "all", None)
 
         # Quick exit in numpy.
