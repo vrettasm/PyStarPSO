@@ -16,8 +16,13 @@ def fun_one_max(x: np.ndarray, **kwargs) -> tuple[float, bool]:
 
     :param x: the input array we want to test.
 
-    CAUTION: The 'kwargs' is added for compatibility.
-             The code will fail if it is removed.
+    :param kwargs: keyword arguments (added for compatibility,
+                   please DO NOT remove, otherwise the code will
+                   fail)
+
+    :return: the output of the function evaluation along with
+             the bool flag that indicates that a solution has
+             been found.
     """
     # Compute the function value.
     f_value = np.sum(x)
