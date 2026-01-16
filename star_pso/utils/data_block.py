@@ -447,10 +447,17 @@ class DataBlock:
         # First check their block type.
         if self._btype == other._btype:
 
+            # Helper function that compares
+            # scalars and Iterables (lists).
+            def check_equality(a, b) -> bool:
+                condition = a == b
+                return all(condition) if isinstance(condition,
+                                                    Iterable) else condition
+            # _end_def_
+
             # Check the positions.
-            condition = self._position == other._position
-            positions_are_equal = all(condition) if isinstance(condition,
-                                                               Iterable) else condition
+            positions_are_equal = check_equality(self._position,
+                                                 other._position)
             # Check valid sets.
             valid_sets_are_equal = (True if self._valid_set is None
                                     else self._valid_set == other._valid_set)
@@ -458,13 +465,11 @@ class DataBlock:
             # If the bounds are not given (None) we set the conditions to True.
             if (self._lower_bound is not None) and (self._upper_bound is not None):
                 # Check lower bounds.
-                lower_condition = self._lower_bound == other._lower_bound
-                lower_bounds_are_equal = all(lower_condition) if isinstance(lower_condition,
-                                                                            Iterable) else lower_condition
+                lower_bounds_are_equal = check_equality(self._lower_bound,
+                                                        other._lower_bound)
                 # Check upper bounds.
-                upper_condition = self._upper_bound == other._upper_bound
-                upper_bounds_are_equal = all(upper_condition) if isinstance(upper_condition,
-                                                                            Iterable) else upper_condition
+                upper_bounds_are_equal = check_equality(self._upper_bound,
+                                                        other._upper_bound)
             else:
                 lower_bounds_are_equal = True
                 upper_bounds_are_equal = True
