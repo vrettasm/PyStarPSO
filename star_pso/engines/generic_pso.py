@@ -672,7 +672,7 @@ class GenericPSO:
         c2 = options["c2"]
 
         # To reduce "noise effects" we allow the update only if the
-        # new inertia parameter "wt" is different from ~5% from the
+        # new inertia parameter "wt" differs more than ~5% from the
         # previous one "w0".
         if fabs(wt - w0) > 0.05:
             
