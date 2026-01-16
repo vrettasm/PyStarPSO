@@ -108,7 +108,7 @@ class Swarm:
 
         :return: Return the particle with the highest value.
         """
-        return max([p for p in self._population if not isnan(p.value)],
+        return max((p for p in self._population if not isnan(p.value)),
                    key=attrgetter("value"), default=None)
     # _end_def_
 
