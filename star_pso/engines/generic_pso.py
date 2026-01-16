@@ -672,7 +672,7 @@ class GenericPSO:
         # new inertia parameter "wt" differs more than ~5% from the
         # previous one "w0".
         if fabs(wt - w0) > 0.05:
-            
+
             # Update the cognitive and social parameters.
             if wt > w0:
                 # If the inertia weight has increased,
