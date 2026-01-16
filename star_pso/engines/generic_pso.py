@@ -377,17 +377,20 @@ class GenericPSO:
         # Get a local copy of the objective function.
         func = self._objective_func
 
+        # Local copy of iteration variable.
+        current_iter: int = self._iteration
+
         # Check the 'parallel_mode' flag.
         if parallel_mode:
 
             # Evaluate the particles in parallel mode.
             f_evaluation = Parallel(n_jobs=self.n_cpus, prefer=backend)(
-                delayed(func)(x, it=self._iteration) for x in positions
+                delayed(func)(x, it=current_iter) for x in positions
             )
         else:
 
             # Evaluate all the particles in serial mode.
-            f_evaluation = [func(x, it=self._iteration) for x in positions]
+            f_evaluation = [func(x, it=current_iter) for x in positions]
         # _end_if_
 
         # Flag to indicate if a solution has been found.
