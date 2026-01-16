@@ -25,7 +25,7 @@ class TestDataBlock(unittest.TestCase):
         :return: None.
         """
 
-        # Check if btype is valid callable.
+        # Check if btype is valid.
         with self.assertRaises(TypeError):
             _ = DataBlock(position=0.01,
                           btype="float",
