@@ -54,8 +54,8 @@ class DataBlock:
                  position: ScalarOrArray,
                  btype: BlockType,
                  valid_set: list | tuple | None = None,
-                 lower_bound: Number | None = None,
-                 upper_bound: Number | None = None) -> None:
+                 lower_bound: list | Number | None = None,
+                 upper_bound: list | Number | None = None) -> None:
         """
         Default initializer for the DataBlock class.
 
@@ -65,9 +65,9 @@ class DataBlock:
 
         :param valid_set: the set of values in the case of CATEGORICAL type.
 
-        :param lower_bound: the lower bound in the search space.
+        :param lower_bound: the lower bound(s) in the search space.
 
-        :param upper_bound: the upper bound in the search space.
+        :param upper_bound: the upper bound(s) in the search space.
         """
 
         # Sanity check.
