@@ -770,14 +770,11 @@
         <span class="c1"># values of the c1 and c2 parameters.</span>
         <span class="n">c_min</span><span class="p">,</span> <span class="n">c_max</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">2.5</span>
 
-        <span class="c1"># Get an estimate of the particles&#39; spread,</span>
-        <span class="c1"># ensuring its range in [0, 1].</span>
-        <span class="n">spread_t</span> <span class="o">=</span> <span class="n">nb_clip_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_spread</span><span class="p">(),</span>
-                                <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-
-        <span class="c1"># Compute the new inertia weight parameter.</span>
-        <span class="c1"># NOTE: THIS NEEDS TO BE REVISITED!</span>
-        <span class="n">wt</span> <span class="o">=</span> <span class="n">spread_t</span>
+        <span class="c1"># Get an estimate of the particles&#39; spread</span>
+        <span class="c1"># ensuring its range is in [0, 1] and use</span>
+        <span class="c1"># it as the current inertia weight.</span>
+        <span class="n">wt</span> <span class="o">=</span> <span class="n">nb_clip_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_spread</span><span class="p">(),</span>
+                          <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 
         <span class="c1"># Get the previous values of the parameters.</span>
         <span class="n">w0</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;w0&quot;</span><span class="p">]</span>
@@ -785,21 +782,21 @@
         <span class="n">c2</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;c2&quot;</span><span class="p">]</span>
 
         <span class="c1"># To reduce &quot;noise effects&quot; we allow the update only if the</span>
-        <span class="c1"># new inertia parameter &quot;wt&quot; is different from ~5% from the</span>
+        <span class="c1"># new inertia parameter &quot;wt&quot; differs more than ~5% from the</span>
         <span class="c1"># previous one &quot;w0&quot;.</span>
         <span class="k">if</span> <span class="n">fabs</span><span class="p">(</span><span class="n">wt</span> <span class="o">-</span> <span class="n">w0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.05</span><span class="p">:</span>
-            
+
             <span class="c1"># Update the cognitive and social parameters.</span>
             <span class="k">if</span> <span class="n">wt</span> <span class="o">&gt;</span> <span class="n">w0</span><span class="p">:</span>
                 <span class="c1"># If the inertia weight has increased,</span>
                 <span class="c1"># then adapt the c1 / c2 coefficients.</span>
-                <span class="n">c1</span> <span class="o">*=</span> <span class="mf">0.9</span>
-                <span class="n">c2</span> <span class="o">*=</span> <span class="mf">1.1</span>
+                <span class="n">c1</span> <span class="o">*=</span> <span class="mf">1.1</span>
+                <span class="n">c2</span> <span class="o">*=</span> <span class="mf">0.9</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># If the inertia weight has decreased,</span>
                 <span class="c1"># then adapt the c1 / c2 coefficients.</span>
-                <span class="n">c1</span> <span class="o">*=</span> <span class="mf">1.1</span>
-                <span class="n">c2</span> <span class="o">*=</span> <span class="mf">0.9</span>
+                <span class="n">c1</span> <span class="o">*=</span> <span class="mf">0.9</span>
+                <span class="n">c2</span> <span class="o">*=</span> <span class="mf">1.1</span>
             <span class="c1"># _end_if_</span>
 
             <span class="c1"># Ensure the updated c1 / c2 values</span>

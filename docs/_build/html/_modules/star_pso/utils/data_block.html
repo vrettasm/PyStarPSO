@@ -537,6 +537,35 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_btype</span>
     <span class="c1"># _end_def_</span>
 
+    <span class="c1"># Helper function that compares</span>
+    <span class="c1"># scalars and Iterables (lists).</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_equality</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compare two objects and return True if equal.</span>
+<span class="sd">        Handles scalar booleans and general iterables.</span>
+
+<span class="sd">        :param a: 1st object to compare.</span>
+<span class="sd">        :param b: 2nd object to compare.</span>
+
+<span class="sd">        :return: the bool outcome of a == b.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Do the comparison.</span>
+        <span class="n">condition</span> <span class="o">=</span> <span class="n">a</span> <span class="o">==</span> <span class="n">b</span>
+
+        <span class="c1"># If the result has an &#39;all&#39; method</span>
+        <span class="c1"># (e.g. numpy / pandas) then use it.</span>
+        <span class="n">all_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="c1"># Quick exit in numpy.</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">all_method</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">condition</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+        <span class="c1"># Otherwise fall back to standard Python.</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span>
+                                            <span class="n">Iterable</span><span class="p">)</span> <span class="k">else</span> <span class="n">condition</span>
+    <span class="c1"># _end_def_</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compares the data block of self with the other and</span>
@@ -556,13 +585,15 @@
             <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="c1"># _end_if_</span>
 
+        <span class="c1"># Local cache for speed.</span>
+        <span class="n">check_it</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_equality</span>
+
         <span class="c1"># First check their block type.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_btype</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_btype</span><span class="p">:</span>
 
             <span class="c1"># Check the positions.</span>
-            <span class="n">condition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_position</span>
-            <span class="n">positions_are_equal</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span>
-                                                               <span class="n">Iterable</span><span class="p">)</span> <span class="k">else</span> <span class="n">condition</span>
+            <span class="n">positions_are_equal</span> <span class="o">=</span> <span class="n">check_it</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">,</span>
+                                           <span class="n">other</span><span class="o">.</span><span class="n">_position</span><span class="p">)</span>
             <span class="c1"># Check valid sets.</span>
             <span class="n">valid_sets_are_equal</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_set</span> <span class="ow">is</span> <span class="kc">None</span>
                                     <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_set</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_valid_set</span><span class="p">)</span>
@@ -570,13 +601,11 @@
             <span class="c1"># If the bounds are not given (None) we set the conditions to True.</span>
             <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
                 <span class="c1"># Check lower bounds.</span>
-                <span class="n">lower_condition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_lower_bound</span>
-                <span class="n">lower_bounds_are_equal</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">lower_condition</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lower_condition</span><span class="p">,</span>
-                                                                            <span class="n">Iterable</span><span class="p">)</span> <span class="k">else</span> <span class="n">lower_condition</span>
+                <span class="n">lower_bounds_are_equal</span> <span class="o">=</span> <span class="n">check_it</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span><span class="p">,</span>
+                                                  <span class="n">other</span><span class="o">.</span><span class="n">_lower_bound</span><span class="p">)</span>
                 <span class="c1"># Check upper bounds.</span>
-                <span class="n">upper_condition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_upper_bound</span>
-                <span class="n">upper_bounds_are_equal</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">upper_condition</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">upper_condition</span><span class="p">,</span>
-                                                                            <span class="n">Iterable</span><span class="p">)</span> <span class="k">else</span> <span class="n">upper_condition</span>
+                <span class="n">upper_bounds_are_equal</span> <span class="o">=</span> <span class="n">check_it</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">,</span>
+                                                  <span class="n">other</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">lower_bounds_are_equal</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">upper_bounds_are_equal</span> <span class="o">=</span> <span class="kc">True</span>
