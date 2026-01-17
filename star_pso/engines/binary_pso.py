@@ -93,10 +93,8 @@ class BinaryPSO(GenericPSO):
         # than the random values set to one.
         new_positions[logistic_values > uniform_values] = 1
 
-        # Update all particle new positions.
-        for particle, x_new, in zip(self.swarm.population,
-                                    new_positions):
-            particle.position = x_new
+        # Update all particle positions.
+        self.set_positions(new_positions)
     # _end_def_
 
     def generate_random_positions(self) -> None:
