@@ -714,20 +714,6 @@ class GenericPSO:
         return have_been_updated
     # _end_def_
 
-    def set_positions(self, new_positions: np.ndarray) -> None:
-        """
-        Sets the positions of the particles in the swarm.
-
-        :param new_positions: (ndarray) the new positions of the particles.
-
-        :return: None.
-        """
-        # Update all particle new positions.
-        for particle, x_new, in zip(self.swarm.population,
-                                    new_positions):
-            particle.position = x_new
-    # _end_def_
-
     @time_it
     def run(self, max_it: int = 1000, options: dict = None, parallel: bool = False,
             reset_swarm: bool = False, f_tol: float = None, f_max_eval: int = None,

@@ -103,7 +103,7 @@ class QuantumPSO(GenericPSO):
         :return: None.
         """
         # Update all particle positions.
-        self.set_positions(self._velocities)
+        self.swarm.set_positions(self._velocities)
     # _end_def_
 
     def generate_random_positions(self) -> None:
@@ -119,7 +119,7 @@ class QuantumPSO(GenericPSO):
                                                   size=(self.n_rows,
                                                         self.n_cols))
         # Assign the new positions.
-        self.set_positions(self._velocities)
+        self.swarm.set_positions(self._velocities)
     # _end_def_
 
     def reset_all(self) -> None:

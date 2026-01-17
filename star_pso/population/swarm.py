@@ -223,6 +223,20 @@ class Swarm:
                 p.best_position = p.position
     # _end_def_
 
+    def set_positions(self, new_positions: ndarray) -> None:
+        """
+        Sets the positions of the particles in the swarm.
+
+        :param new_positions: (ndarray) the new positions
+                              of the particles.
+        :return: None.
+        """
+        # Update all swarm particle to new positions.
+        for particle, x_new, in zip(self._population,
+                                    new_positions):
+            particle.position = x_new
+    # _end_def_
+
     def __len__(self) -> int:
         """
         Accessor of the total size of the population.

@@ -50,7 +50,7 @@ class IntegerPSO(GenericPSO):
                         self.upper_bound)
 
         # Update all particle positions.
-        self.set_positions(new_positions)
+        self.swarm.set_positions(new_positions)
     # _end_def_
 
     def generate_random_positions(self) -> None:
@@ -68,7 +68,7 @@ class IntegerPSO(GenericPSO):
                                                     size=(self.n_rows,
                                                           self.n_cols))
         # Assign the new positions in the swarm.
-        self.set_positions(integer_positions)
+        self.swarm.set_positions(integer_positions)
     # _end_def_
 
     def reset_all(self) -> None:

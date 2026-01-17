@@ -268,8 +268,8 @@ class JackOfAllTradesPSO(GenericPSO):
 
         :return: None.
         """
-        # Evaluates all the particles.
-        self.set_positions(self._velocities)
+        # Update all particle positions.
+        self.swarm.set_positions(self._velocities)
     # _end_def_
 
     def reset_all(self) -> None:

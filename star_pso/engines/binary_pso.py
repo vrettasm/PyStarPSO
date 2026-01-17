@@ -94,7 +94,7 @@ class BinaryPSO(GenericPSO):
         new_positions[logistic_values > uniform_values] = 1
 
         # Update all particle positions.
-        self.set_positions(new_positions)
+        self.swarm.set_positions(new_positions)
     # _end_def_
 
     def generate_random_positions(self) -> None:
@@ -111,7 +111,7 @@ class BinaryPSO(GenericPSO):
                                                    size=(self.n_rows,
                                                          self.n_cols))
         # Assign the new positions in the swarm.
-        self.set_positions(binary_positions)
+        self.swarm.set_positions(binary_positions)
     # _end_def_
 
     def reset_all(self) -> None:
