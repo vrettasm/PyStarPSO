@@ -111,9 +111,7 @@ class BinaryPSO(GenericPSO):
                                                    size=(self.n_rows,
                                                          self.n_cols))
         # Assign the new positions in the swarm.
-        for particle, x_new in zip(self.swarm.population,
-                                   binary_positions):
-            particle.position = x_new
+        self.set_positions(binary_positions)
     # _end_def_
 
     def reset_all(self) -> None:

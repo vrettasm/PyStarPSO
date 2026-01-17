@@ -119,7 +119,7 @@ class QuantumPSO(GenericPSO):
                                                   size=(self.n_rows,
                                                         self.n_cols))
         # Assign the new positions.
-        self.update_positions()
+        self.set_positions(self._velocities)
     # _end_def_
 
     def reset_all(self) -> None:
