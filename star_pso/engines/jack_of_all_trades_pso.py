@@ -269,13 +269,7 @@ class JackOfAllTradesPSO(GenericPSO):
         :return: None.
         """
         # Evaluates all the particles.
-        for particle, velocity in zip(self.swarm.population,
-                                      self._velocities):
-            # NOTE:  This calls internally the correct
-            # update method for each data block so the
-            # positions are updated according to their
-            # type.
-            particle.position = velocity
+        self.set_positions(self._velocities)
     # _end_def_
 
     def reset_all(self) -> None:
