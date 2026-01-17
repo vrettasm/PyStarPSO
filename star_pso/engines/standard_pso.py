@@ -49,9 +49,7 @@ class StandardPSO(GenericPSO):
         nb_clip_inplace(new_positions, self.lower_bound, self.upper_bound)
 
         # Update all particle positions.
-        for particle, x_new in zip(self.swarm.population,
-                                   new_positions):
-            particle.position = x_new
+        self.set_positions(new_positions)
     # _end_def_
 
     def generate_random_positions(self) -> None:
