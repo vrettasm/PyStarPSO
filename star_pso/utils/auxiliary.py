@@ -480,7 +480,8 @@ def nb_median_kl_divergence(x_pos: np.ndarray,
 
 @njit
 def nb_clip_inplace(x: np.ndarray,
-                    x_min: np.ndarray, x_max: np.ndarray) -> None:
+                    x_min: float | np.ndarray,
+                    x_max: float | np.ndarray) -> None:
     """
     Local auxiliary function that is used to clip the values of
     input array 'x' to [x_min, x_max] range, and put the output
