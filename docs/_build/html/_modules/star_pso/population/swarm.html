@@ -324,6 +324,23 @@
 
     <span class="c1"># _end_def_</span>
 
+<div class="viewcode-block" id="Swarm.set_positions">
+<a class="viewcode-back" href="../../../star_pso.population.html#star_pso.population.swarm.Swarm.set_positions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_positions</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the positions of the particles in the swarm.</span>
+
+<span class="sd">        :param new_positions: (ndarray) the new positions</span>
+<span class="sd">                              of the particles.</span>
+<span class="sd">        :return: None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Update all swarm particle to new positions.</span>
+        <span class="k">for</span> <span class="n">particle</span><span class="p">,</span> <span class="n">x_new</span><span class="p">,</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_population</span><span class="p">,</span>
+                                    <span class="n">new_positions</span><span class="p">):</span>
+            <span class="n">particle</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">x_new</span></div>
+
+    <span class="c1"># _end_def_</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Accessor of the total size of the population.</span>

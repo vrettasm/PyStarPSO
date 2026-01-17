@@ -15,7 +15,6 @@
       <script src="../../../_static/documentation_options.js?v=01f34227"></script>
       <script src="../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -594,10 +593,12 @@
 
 <span class="c1"># _end_def_</span>
 
-<div class="viewcode-block" id="clip_inplace">
-<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.clip_inplace">[docs]</a>
+<div class="viewcode-block" id="nb_clip_inplace">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_clip_inplace">[docs]</a>
 <span class="nd">@njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">clip_inplace</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_inplace</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                    <span class="n">x_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                    <span class="n">x_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Local auxiliary function that is used to clip the values of</span>
 <span class="sd">    input array &#39;x&#39; to [x_min, x_max] range, and put the output</span>
@@ -616,7 +617,9 @@
 <div class="viewcode-block" id="nb_clip_array">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_clip_array">[docs]</a>
 <span class="nd">@njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_array</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">lower_limit</span><span class="p">,</span> <span class="n">upper_limit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_array</span><span class="p">(</span><span class="n">x_new</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                  <span class="n">lower_limit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                  <span class="n">upper_limit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Local version of numba clip which limits the values of an array.</span>
 <span class="sd">    Given an interval values outside the interval are clipped to the</span>
@@ -638,7 +641,9 @@
 <div class="viewcode-block" id="nb_clip_item">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_clip_item">[docs]</a>
 <span class="nd">@njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_item</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">lower_limit</span><span class="p">,</span> <span class="n">upper_limit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_item</span><span class="p">(</span><span class="n">x_new</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">lower_limit</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">upper_limit</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Local version of numba clip which limits the values of a scalar.</span>
 <span class="sd">    Given an interval values outside the interval are clipped to the</span>

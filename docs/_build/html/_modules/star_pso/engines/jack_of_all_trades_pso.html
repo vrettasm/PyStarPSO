@@ -359,14 +359,8 @@
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Evaluates all the particles.</span>
-        <span class="k">for</span> <span class="n">particle</span><span class="p">,</span> <span class="n">velocity</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
-                                      <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">):</span>
-            <span class="c1"># NOTE:  This calls internally the correct</span>
-            <span class="c1"># update method for each data block so the</span>
-            <span class="c1"># positions are updated according to their</span>
-            <span class="c1"># type.</span>
-            <span class="n">particle</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">velocity</span></div>
+        <span class="c1"># Update all particle positions.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">set_positions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">)</span></div>
 
     <span class="c1"># _end_def_</span>
 
