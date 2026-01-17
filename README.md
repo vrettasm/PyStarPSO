@@ -3,7 +3,7 @@
 ![Logo](./logo/main_logo.png)
 
 [![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint)
-Score: 9.49/10
+Score: 9.50/10
 
 ## Algorithms
 
