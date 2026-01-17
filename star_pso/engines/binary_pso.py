@@ -12,7 +12,9 @@ def fast_logistic(x: np.ndarray) -> np.ndarray:
     Local auxiliary function that is used to compute
     the logistic values of input array 'x'.
 
-    :param x: the numpy array with the logistic values.
+    :param x: a numpy array with the input values.
+
+    :return: the numpy array with the logistic values.
     """
     return 1.0 / (1.0 + np.exp(-x))
 # _end_def_
