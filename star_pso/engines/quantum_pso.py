@@ -3,7 +3,7 @@ from numpy.typing import ArrayLike
 
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import (clip_inplace,
+from star_pso.utils.auxiliary import (nb_clip_inplace,
                                       nb_median_euclidean_distance)
 
 # Public interface.
@@ -88,9 +88,9 @@ class QuantumPSO(GenericPSO):
         # _end_if_
 
         # Ensure we stay within limits.
-        clip_inplace(p_best,
-                     self.lower_bound,
-                     self.upper_bound)
+        nb_clip_inplace(p_best,
+                        self.lower_bound,
+                        self.upper_bound)
 
         # Assign the new "velocities" vectors.
         self._velocities = p_best

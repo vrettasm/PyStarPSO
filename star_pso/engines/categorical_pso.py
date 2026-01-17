@@ -8,7 +8,7 @@ from numpy import subtract as np_subtract
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
 from star_pso.utils.auxiliary import (SpecialMode,
-                                      clip_inplace,
+                                      nb_clip_inplace,
                                       nb_median_kl_divergence)
 # Local fast version of sum method.
 @njit(fastmath=True)
@@ -269,7 +269,7 @@ class CategoricalPSO(GenericPSO):
                 vk += c2[j] * np_subtract(g_best[j], xk)
 
                 # Ensure the velocities are within limits.
-                clip_inplace(vk, -0.5, +0.5)
+                nb_clip_inplace(vk, -0.5, +0.5)
     # _end_def_
 
     def update_positions(self) -> None:
@@ -289,7 +289,7 @@ class CategoricalPSO(GenericPSO):
                 x_j += v_j
 
                 # Ensure the values stay within limits.
-                clip_inplace(x_j, 0.0, 1.0)
+                nb_clip_inplace(x_j, 0.0, 1.0)
 
                 # Ensure there will be at least one
                 # element with positive probability.

@@ -3,7 +3,7 @@ from numba import njit
 
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import (clip_inplace,
+from star_pso.utils.auxiliary import (nb_clip_inplace,
                                       nb_median_hamming_distance)
 
 @njit(fastmath=True)
@@ -69,9 +69,9 @@ class BinaryPSO(GenericPSO):
         super().update_velocities(params)
 
         # Clip velocities in [v_min, v_max].
-        clip_inplace(self._velocities,
-                     self.lower_bound,
-                     self.upper_bound)
+        nb_clip_inplace(self._velocities,
+                        self.lower_bound,
+                        self.upper_bound)
     # _end_def_
 
     def update_positions(self) -> None:
