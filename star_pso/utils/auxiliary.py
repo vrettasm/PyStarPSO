@@ -518,7 +518,9 @@ def nb_clip_array(x_new: np.ndarray,
 # _end_def_
 
 @njit
-def nb_clip_item(x_new, lower_limit, upper_limit) -> int | float:
+def nb_clip_item(x_new: float,
+                 lower_limit: float,
+                 upper_limit: float) -> int | float:
     """
     Local version of numba clip which limits the values of a scalar.
     Given an interval values outside the interval are clipped to the
