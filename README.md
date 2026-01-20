@@ -6,11 +6,21 @@
 
 **Pylint score: 9.50 / 10**
 
-## Algorithms
+## Introduction
+Particle Swarm Optimization (PSO) is a computational method inspired by the social behavior of birds.
+It is utilized for solving optimization problems by simulating a group of individuals or "particles",
+that move through a multidimensional search space to find optimal solutions. Each particle adjusts its
+position based on its own experience (cognitive component) and that of its neighboring particles (social
+component), effectively sharing information about the quality of various solutions. PSO is widely applied
+across various fields, including engineering, finance, and artificial intelligence, due to its simplicity
+and effectiveness in converging towards optimal solutions in complex problem spaces.
 
-This repository implements a collection of particle swarm optimization algorithms in Python3 programming language.
+## Overview
 
-The current toolkit offers the following PSO implementations (with supported options):
+The current toolkit offers a comprehensive suite of Particle Swarm Optimization (PSO) implementations
+designed to handle a variety of variable types, breaking through the original PSO limitations that
+restricted it to continuous (floating-point) variables. The library includes multiple PSO algorithm
+variations (with supported options):
 
 | **Algorithm**                                                    | **Var. Type(s)** | **Adapt parameters** | **G_best** | **FIPSO** | **Multimodal** | **Parallel** |
 |:-----------------------------------------------------------------|:----------------:|:--------------------:|:----------:|:---------:|:--------------:|:------------:|
@@ -21,7 +31,9 @@ The current toolkit offers the following PSO implementations (with supported opt
 | [Jack of all trades](star_pso/engines/jack_of_all_trades_pso.py) |      Mixed       |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
 | [Quantum](star_pso/engines/quantum_pso.py)                       |      Float       |         Yes          |    Yes     |    Yes    |      Yes       |     Yes      |
 
-All the above methods inherit from the base class [Generic](star_pso/engines/generic_pso.py) which provides some common functionality.
+This versatility makes it a powerful tool for researchers and practitioners in fields such as engineering, finance,
+robotics, artificial intelligence, and more. All the above methods inherit from the base class [GenericPSO](star_pso/engines/generic_pso.py),
+which provides some common functionality.
 
 Adding new algorithms **MUST** inherit from the base class.
 
@@ -34,6 +46,27 @@ it with the *multimodal* option would not make much sense and in fact it will me
 Moreover, the *Parallel* option is supported only in the evaluation of the objective (or fitness) function. Therefore,
 it is beneficial only in cases where the objective function is "heavy" computationally or has many I/Os. In most cases
 setting this option to the default (False), will have the best results.
+
+## Features
+
+- **StandardPSO**: The classic implementation that optimizes continuous variables using the basic PSO rules. 
+  This version serves as a baseline for comparison with other algorithms in the library.
+
+- **BinaryPSO**: Suitable for optimization problems where decision variables are binary (0 or 1). 
+  This implementation adapts the PSO paradigm to effectively handle binary decision-making scenarios.
+
+- **IntegerPSO**: Designed for optimizing discrete integer variables. This implementation enhances the traditional
+  PSO methodology to accommodate problems that require integer solutions.
+
+- **QuantumPSO**: Inspired by quantum mechanics, this version introduces quantum behaviors to the particles,
+  enabling exploration of the search space more efficiently and potentially avoiding local optima.
+
+- **CategoricalPSO**: Tailored for problems involving categorical variables, allowing optimization when the
+  solutions are non-numeric categories. This is particularly useful in fields such as marketing and behavioral
+  science.
+
+- **JackOfAllTradesPSO**: Combines various types of variables (continuous, binary, categorical) within the same
+  optimization problem, providing a flexible approach for multi-faceted real-world problems.
 
 ## Installation
 
@@ -55,7 +88,7 @@ After the download of the code (or the git clone), one can use the following com
 This will install the latest StarPSO version in the package management system.
 
 ## Examples
-Some optimization examples on how to use these algorithms:
+Some optimization examples (use cases) on how to use these algorithms are provided below:
 
 | **Problem**                                               | **Variables** | **Objectives** | **Constraints** |
 |:----------------------------------------------------------|:-------------:|:--------------:|:---------------:|
@@ -69,12 +102,26 @@ Some optimization examples on how to use these algorithms:
 | [Gaussian Mixture](examples/gaussian_mixture_2D.ipynb)    |    M (=2)     |       1        |       no        |
 | [OneMax](examples/one_max.ipynb)                          |    M (=30)    |       1        |       no        |
 | [SumAbs](examples/sum_abs.ipynb)                          |    M (=15)    |       1        |       no        |
-| [JackofAllTrades](examples/jack_of_all_trades.ipynb)      |    M (=3)     |       1        |       no        |
+| [JackOfAllTrades](examples/jack_of_all_trades.ipynb)      |    M (=3)     |       1        |       no        |
 | [Categorical PSO](examples/categorical_pso.ipynb)         |    M (=4)     |       1        |       no        |
 | [Benchmark Functions](examples/benchmark_functions.ipynb) |       M       |       1        |       no        |
 
-## Benchmarks
-We have implemented the following benchmarks of **multimodal** functions:
+These examples demonstrate the applicability of StarPSO in various problems such as:
+
+- single/multi objective(s)
+- with/without constraints
+- single/multi variable(s)
+- single/multi modal
+
+## Multimodal benchmark functions
+Special emphasis is given in case of multimodal problems, where the optimization function involves more than one optimal
+values. In these cases the standard optimization techniques fail to locate all the optimal values because, by design,
+they are focusing on converging to a single solution. Within StarPSO a new powerful option exists that when activated
+allows the swarm of particle to focus not only on a single solution but rather to any number of them. Since the
+multimodal search spaces assume some form of 'distance' notion among the different modes, the multimodal option is
+currently available by the "StandardPSO" and "QuantumPSO" that deal only with continuous (float) variables.
+
+Here we have implemented the following benchmarks of **multimodal** functions:
 
 | **Problem Function**                                                        | **Variables** | **Global Optima** |
 |:----------------------------------------------------------------------------|:-------------:|:-----------------:|
@@ -88,8 +135,8 @@ We have implemented the following benchmarks of **multimodal** functions:
 | [Shubert](star_pso/benchmarks/shubert.py)                                   |       D       |      $D*3^D$      |
 | [Vincent](star_pso/benchmarks/vincent.py)                                   |       D       |       $6^D$       |
 
-All the above benchmarks inherit from the base class [TestFunction](star_pso/benchmarks/test_function.py) which provides
-some common functionality.  Adding new algorithms **MUST** inherit from the base class.
+All the above benchmarks inherit from the base class [TestFunction](star_pso/benchmarks/test_function.py) which provides some common functionality.
+Adding new algorithms **MUST** inherit from the base class.
 
 NOTE: The "Shubert" and "Vincent" functions were tested with D = 2, 3 (for simplicity). The code however
 is generalized and can solve any number of dimensions. Also, the "Rastrigin" function was tested for D = 2,
