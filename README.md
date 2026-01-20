@@ -65,7 +65,7 @@ setting this option to the default (False), will have the best results.
   solutions are non-numeric categories. This is particularly useful in fields such as marketing and behavioral
   science.
 
-- **JackOfAllTradesPSO**: Combines various types of variables (continuous, binary, categorical) within the same
+- **JackOfAllTradesPSO**: Combines various types of variables (continuous, discrete, categorical), within the same
   optimization problem, providing a flexible approach for multi-faceted real-world problems.
 
 ## Installation
