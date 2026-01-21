@@ -22,14 +22,14 @@ designed to handle a variety of variable types, breaking through the original PS
 restricted it to continuous (floating-point) variables. The library includes multiple PSO algorithm
 variations (with supported options):
 
-| **Algorithm**                                                    | **Var. Type(s)** | **Adapt parameters** | **G_best** | **FIPSO** | **Multimodal** | **Parallel** |
-|:-----------------------------------------------------------------|:----------------:|:--------------------:|:----------:|:---------:|:--------------:|:------------:|
-| [Standard](star_pso/engines/standard_pso.py)                     |      Float       |         Yes          |    Yes     |    Yes    |      Yes       |     Yes      |
-| [Binary](star_pso/engines/binary_pso.py)                         |   Int. (0, 1)    |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
-| [Categorical](star_pso/engines/categorical_pso.py)               |   Categorical    |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
-| [Integer](star_pso/engines/integer_pso.py)                       |     Integer      |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
-| [Jack of all trades](star_pso/engines/jack_of_all_trades_pso.py) |      Mixed       |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
-| [Quantum](star_pso/engines/quantum_pso.py)                       |      Float       |         Yes          |    Yes     |    Yes    |      Yes       |     Yes      |
+| **Algorithm**                                                    | **Var. Type(s)**       | **Adapt parameters** | **G_best** | **FIPSO** | **Multimodal** | **Parallel** |
+|:-----------------------------------------------------------------|:-----------------------|:--------------------:|:----------:|:---------:|:--------------:|:------------:|
+| [Standard](star_pso/engines/standard_pso.py)                     | continuous     (float) |         Yes          |    Yes     |    Yes    |      Yes       |     Yes      |
+| [Binary](star_pso/engines/binary_pso.py)                         | discrete        (0, 1) |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
+| [Categorical](star_pso/engines/categorical_pso.py)               | discrete (categorical) |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
+| [Integer](star_pso/engines/integer_pso.py)                       | discrete     (integer) |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
+| [Jack of all trades](star_pso/engines/jack_of_all_trades_pso.py) | mixed    (data blocks) |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
+| [Quantum](star_pso/engines/quantum_pso.py)                       | continuous     (float) |         Yes          |    Yes     |    Yes    |      Yes       |     Yes      |
 
 This versatility makes it a powerful tool for researchers and practitioners in fields such as engineering, finance,
 robotics, artificial intelligence, and more. All the above methods inherit from the base class [GenericPSO](star_pso/engines/generic_pso.py),
