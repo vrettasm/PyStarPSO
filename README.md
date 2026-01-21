@@ -104,7 +104,7 @@ Some optimization examples (use cases) on how to use these algorithms are provid
 | [SumAbs](examples/sum_abs.ipynb)                          |    M (=15)    |       1        |       no        |
 | [JackOfAllTrades](examples/jack_of_all_trades.ipynb)      |    M (=3)     |       1        |       no        |
 | [Categorical PSO](examples/categorical_pso.ipynb)         |    M (=4)     |       1        |       no        |
-| [Benchmark Functions](examples/benchmark_functions.ipynb) |       M       |       1        |       no        |
+| [Benchmark Functions](examples/benchmark_functions.ipynb) |    M (>1)     |       1        |       no        |
 
 These examples demonstrate the applicability of StarPSO in various problems such as:
 
