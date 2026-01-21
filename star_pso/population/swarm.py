@@ -3,8 +3,8 @@ from typing import Union
 from copy import deepcopy
 from operator import attrgetter
 
-from numpy import array, ndarray
-from numpy.typing import ArrayLike
+from numpy import array
+from numpy.typing import ArrayLike, NDArray
 
 from star_pso.utils.auxiliary import BlockType
 from star_pso.population.particle import Particle
@@ -142,7 +142,7 @@ class Swarm:
         return sorted_swarm[0:n]
     # _end_def_
 
-    def function_values(self) -> ndarray:
+    def function_values(self) -> NDArray:
         """
         Get the objectives function values of all the swarm.
 
@@ -173,7 +173,7 @@ class Swarm:
         return self._population[index].position
     # _end_def_
 
-    def positions_as_array(self) -> ndarray:
+    def positions_as_array(self) -> NDArray:
         """
         Get the particle positions of all the swarm.
 
@@ -182,7 +182,7 @@ class Swarm:
         return array([p.position for p in self._population])
     # _end_def_
 
-    def best_positions_as_array(self) -> ndarray:
+    def best_positions_as_array(self) -> NDArray:
         """
         Get the particle best positions of all the swarm.
 
@@ -223,11 +223,11 @@ class Swarm:
                 p.best_position = p.position
     # _end_def_
 
-    def set_positions(self, new_positions: ndarray) -> None:
+    def set_positions(self, new_positions: NDArray) -> None:
         """
         Sets the positions of the particles in the swarm.
 
-        :param new_positions: (ndarray) the new positions
+        :param new_positions: (NDArray) the new positions
                               of the particles.
         :return: None.
         """
