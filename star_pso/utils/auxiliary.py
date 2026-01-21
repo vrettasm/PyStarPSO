@@ -1,7 +1,7 @@
 """
-    This module contains a list of auxiliary data types (enumerations), decorators
-    and numba optimized utility functions that are used by the rest of the members
-    of the StarPSO library.
+    This module includes a list of auxiliary data types (enumerations), decorators,
+    and Numba-optimized (njit) utility functions that are utilized by the other
+    class components of the StarPSO library.
 """
 import time
 from enum import Enum
