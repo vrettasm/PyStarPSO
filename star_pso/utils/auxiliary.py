@@ -8,6 +8,7 @@ from functools import (wraps,
 import numpy as np
 from numba import njit
 from numpy.linalg import norm
+from numpy.typing import NDArray
 
 from star_pso.population.particle import Particle
 
@@ -92,7 +93,7 @@ def time_it(func):
     return time_it_wrapper
 # _end_def_
 
-def pareto_front(points: np.ndarray) -> np.ndarray:
+def pareto_front(points: NDArray) -> NDArray:
     """
     Simple function that calculates the pareto (optimal)
     front points from a given input points numpy array.
@@ -230,7 +231,7 @@ def identify_global_optima(swarm_population: list[Particle], epsilon: float = 1.
 # _end_def_
 
 @lru_cache(maxsize=64)
-def linear_rank_probabilities(p_size: int) -> tuple[np.ndarray, float]:
+def linear_rank_probabilities(p_size: int) -> tuple[NDArray, float]:
     """
     Calculate the rank probability distribution over the population size.
     The function is cached so repeated calls with the same input should
@@ -267,7 +268,7 @@ def linear_rank_probabilities(p_size: int) -> tuple[np.ndarray, float]:
 # _end_def_
 
 @njit
-def kl_divergence_item(p: np.ndarray, q: np.ndarray) -> float:
+def kl_divergence_item(p: NDArray, q: NDArray) -> float:
     """
     Calculates the Kullback-Leibler divergence between two distributions.
     Note that KL divergence is not symmetric, thus KL(p, q) != KL(q, p).
@@ -278,9 +279,9 @@ def kl_divergence_item(p: np.ndarray, q: np.ndarray) -> float:
     This method is equivalent to entropy(p, q) from scipy_stats, only it's
     around 10x faster.
 
-    :param p: (np.ndarray) probability distribution.
+    :param p: (NDArray) probability distribution.
 
-    :param q: (np.ndarray) probability distribution.
+    :param q: (NDArray) probability distribution.
 
     :return: (float) Kullback-Leibler divergence.
     """
@@ -290,7 +291,7 @@ def kl_divergence_item(p: np.ndarray, q: np.ndarray) -> float:
 # _end_def_
 
 @njit
-def kl_divergence_array(p: np.ndarray, q: np.ndarray) -> np.ndarray:
+def kl_divergence_array(p: NDArray, q: NDArray) -> NDArray:
     """
     Calculates the Kullback-Leibler divergence between two distributions.
     Note that KL divergence is not symmetric, thus KL(p, q) != KL(q, p).
@@ -301,11 +302,11 @@ def kl_divergence_array(p: np.ndarray, q: np.ndarray) -> np.ndarray:
     This method is equivalent to entropy(p, q, axis=1) from scipy_stats,
     only it's around 10x faster.
 
-    :param p: (np.ndarray) probability distribution.
+    :param p: (NDArray) probability distribution.
 
-    :param q: (np.ndarray) probability distribution.
+    :param q: (NDArray) probability distribution.
 
-    :return: (np.ndarray) Kullback-Leibler divergence.
+    :return: (NDArray) Kullback-Leibler divergence.
     """
     return np.sum(np.where(p != 0.0,
                            np.where(q != 0.0,
@@ -313,7 +314,7 @@ def kl_divergence_array(p: np.ndarray, q: np.ndarray) -> np.ndarray:
 # _end_def_
 
 @njit
-def nb_median_hamming_distance(x_pos: np.ndarray,
+def nb_median_hamming_distance(x_pos: NDArray,
                                normal: bool = False) -> float:
     """
     Compute the median Hamming distance of the input array.
@@ -362,7 +363,7 @@ def nb_median_hamming_distance(x_pos: np.ndarray,
 # _end_def_
 
 @njit
-def nb_median_euclidean_distance(x_pos: np.ndarray,
+def nb_median_euclidean_distance(x_pos: NDArray,
                                  normal: bool = False) -> float:
     """
     Calculates a measure of the particles spread, when their position
@@ -401,7 +402,7 @@ def nb_median_euclidean_distance(x_pos: np.ndarray,
 # _end_def_
 
 @njit
-def nb_median_taxicab_distance(x_pos: np.ndarray,
+def nb_median_taxicab_distance(x_pos: NDArray,
                                normal: bool = False) -> float:
     """
     Calculates a measure of the particles spread, when their position
@@ -440,7 +441,7 @@ def nb_median_taxicab_distance(x_pos: np.ndarray,
 # _end_def_
 
 @njit
-def nb_median_kl_divergence(x_pos: np.ndarray,
+def nb_median_kl_divergence(x_pos: NDArray,
                             normal: bool = False) -> float:
     """
     Calculate the 'median KL divergence' value of the input array.
@@ -479,9 +480,9 @@ def nb_median_kl_divergence(x_pos: np.ndarray,
 # _end_def_
 
 @njit
-def nb_clip_inplace(x: np.ndarray,
-                    x_min: float | np.ndarray,
-                    x_max: float | np.ndarray) -> None:
+def nb_clip_inplace(x: NDArray,
+                    x_min: float | NDArray,
+                    x_max: float | NDArray) -> None:
     """
     Local auxiliary function that is used to clip the values of
     input array 'x' to [x_min, x_max] range, and put the output
@@ -497,9 +498,9 @@ def nb_clip_inplace(x: np.ndarray,
 # _end_def_
 
 @njit
-def nb_clip_array(x_new: np.ndarray,
-                  lower_limit: float | np.ndarray,
-                  upper_limit: float | np.ndarray) -> np.ndarray:
+def nb_clip_array(x_new: NDArray,
+                  lower_limit: float | NDArray,
+                  upper_limit: float | NDArray) -> NDArray:
     """
     Local version of numba clip which limits the values of an array.
     Given an interval values outside the interval are clipped to the
@@ -518,9 +519,9 @@ def nb_clip_array(x_new: np.ndarray,
 # _end_def_
 
 @njit
-def nb_clip_item(x_new: float | np.ndarray,
-                 lower_limit: float | np.ndarray,
-                 upper_limit: float | np.ndarray) -> int | float:
+def nb_clip_item(x_new: float | NDArray,
+                 lower_limit: float | NDArray,
+                 upper_limit: float | NDArray) -> int | float:
     """
     Local version of numba clip which limits the values of a scalar.
     Given an interval values outside the interval are clipped to the
@@ -549,7 +550,7 @@ spread estimation methods as values.
 """
 
 @njit(fastmath=True)
-def nb_cdist(x_pos: np.ndarray, scaled: bool = False) -> np.ndarray:
+def nb_cdist(x_pos: NDArray, scaled: bool = False) -> NDArray:
     """
     This is equivalent to the scipy.spatial.distance.cdist method
     with Euclidean distance metric. It is a tailored version for

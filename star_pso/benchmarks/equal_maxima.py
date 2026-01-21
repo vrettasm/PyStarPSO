@@ -1,4 +1,6 @@
 import numpy as np
+from numpy.typing import NDArray
+
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 from star_pso.utils.auxiliary import identify_global_optima
@@ -29,7 +31,7 @@ class EqualMaxima(TestFunction):
                          n_dim=1, x_min=x_min, x_max=x_max)
     # _end_def_
 
-    def func(self, x_pos: np.ndarray) -> np.ndarray:
+    def func(self, x_pos: NDArray) -> NDArray:
         """
         This is 1D function. There are 5 global optima.
 

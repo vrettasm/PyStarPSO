@@ -3,6 +3,7 @@ from collections import defaultdict
 
 import numpy as np
 from numba import njit
+from numpy.typing import NDArray
 from numpy import array as np_array
 from numpy import isscalar as np_isscalar
 from numpy import subtract as np_subtract
@@ -14,7 +15,7 @@ from star_pso.utils.auxiliary import (BlockType,
                                       SpecialMode, spread_methods)
 # Local fast version of sum method.
 @njit(fastmath=True)
-def fast_sum(x: np.ndarray) -> np.ndarray:
+def fast_sum(x: NDArray) -> NDArray:
     """
     Local auxiliary function that is used
     to sum the values of input array 'x'.

@@ -1,6 +1,8 @@
 import numpy as np
 from scipy.stats import qmc
+from numpy.typing import NDArray
 from numpy.random import default_rng, Generator
+
 from star_pso.population.particle import Particle
 
 # Public interface.
@@ -24,8 +26,8 @@ class TestFunction:
     __slots__ = ("_name", "_n_dim", "_x_min", "_x_max", "_lhc")
 
     def __init__(self, name: str, n_dim: int,
-                 x_min: float | np.ndarray,
-                 x_max: float | np.ndarray) -> None:
+                 x_min: float | NDArray,
+                 x_max: float | NDArray) -> None:
         """
         Default initializer of the "TestFunction" class.
 
@@ -81,7 +83,7 @@ class TestFunction:
     # _end_def_
 
     @property
-    def x_min(self) -> float | np.ndarray:
+    def x_min(self) -> float | NDArray:
         """
         Accessor (getter) of the lower bounds of the test function.
 
@@ -91,7 +93,7 @@ class TestFunction:
     # _end_def_
 
     @property
-    def x_max(self) -> float | np.ndarray:
+    def x_max(self) -> float | NDArray:
         """
         Accessor (getter) of the upper bounds of the test function.
 
@@ -113,7 +115,7 @@ class TestFunction:
         cls.rng = default_rng(seed=new_seed)
     # _end_def_
 
-    def func(self, x_pos: np.ndarray) -> np.ndarray:
+    def func(self, x_pos: NDArray) -> NDArray:
         """
         This method will implement the objective function to be optimized.
 
@@ -123,7 +125,7 @@ class TestFunction:
                                   f"You should implement this method!")
     # _end_def_
 
-    def sample_random_positions(self, n_pos: int = 100, method: str = "random") -> np.ndarray:
+    def sample_random_positions(self, n_pos: int = 100, method: str = "random") -> NDArray:
         """
         Generate an initial set of uniformly random sampled positions within
         the lower / upper bounds of the test problem.

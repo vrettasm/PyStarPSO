@@ -1,12 +1,14 @@
 import numpy as np
 from numba import njit
+from numpy.typing import NDArray
+
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 from star_pso.utils.auxiliary import identify_global_optima
 
 # Basic function: 1
 @njit(fastmath=True)
-def f_sphere(x_pos: np.ndarray) -> np.ndarray:
+def f_sphere(x_pos: NDArray) -> NDArray:
     """
     Computes the sphere function at x_pos.
     """
@@ -15,7 +17,7 @@ def f_sphere(x_pos: np.ndarray) -> np.ndarray:
 
 # Basic function: 2
 @njit(fastmath=True)
-def f_griewank(x_pos: np.ndarray) -> np.ndarray:
+def f_griewank(x_pos: NDArray) -> NDArray:
     """
     Computes the Griewank function at x_pos.
     """
@@ -31,8 +33,8 @@ def f_griewank(x_pos: np.ndarray) -> np.ndarray:
 
 # Basic function: 3
 @njit(fastmath=True)
-def f_rastrigin(x_pos: np.ndarray,
-                kappa: float = 10.0) -> np.ndarray:
+def f_rastrigin(x_pos: NDArray,
+                kappa: float = 10.0) -> NDArray:
     """
     Computes the Rastrigin function at x_pos,
     with default kappa parameter.
@@ -42,8 +44,8 @@ def f_rastrigin(x_pos: np.ndarray,
 
 # Basic function: 4
 @njit(fastmath=True)
-def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
-                  alpha: float = 0.5, beta: int = 3) -> np.ndarray:
+def f_weierstrass(x_pos: NDArray, k_max: int = 9,
+                  alpha: float = 0.5, beta: int = 3) -> NDArray:
     """
     Computes the Weierstrass function at x_pos, with default k_max,
     alpha and beta parameters.
@@ -70,8 +72,8 @@ def f_weierstrass(x_pos: np.ndarray, k_max: int = 9,
 
 # Basic function: 5
 @njit(fastmath=True)
-def f_ackley(x_pos: np.ndarray, alpha: float = 20.0,
-             beta: float = 0.2) -> np.ndarray:
+def f_ackley(x_pos: NDArray, alpha: float = 20.0,
+             beta: float = 0.2) -> NDArray:
     """
     Computes the Ackley function at x_pos,
     with default alpha and beta parameters.
@@ -161,7 +163,7 @@ class CompositeFunction(TestFunction):
 
     @staticmethod
     @njit
-    def compute_weights(x_pos: np.ndarray, sigma: np.ndarray) -> np.ndarray:
+    def compute_weights(x_pos: NDArray, sigma: NDArray) -> NDArray:
         """
         Calculates a set of weights (one for each function).
 
@@ -188,8 +190,8 @@ class CompositeFunction(TestFunction):
         return weights / np.sum(weights)
     # _end_def_
 
-    def func(self, x_pos: np.ndarray,
-             i_bias: float = 0.0, f_bias: float = 0.0) -> float | np.ndarray:
+    def func(self, x_pos: NDArray,
+             i_bias: float = 0.0, f_bias: float = 0.0) -> float | NDArray:
         """
         Describes the general framework for the construction of
         multimodal composition functions with several global optima.

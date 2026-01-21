@@ -8,7 +8,7 @@ from typing import Callable
 from joblib import Parallel, delayed
 
 import numpy as np
-from numpy.typing import ArrayLike
+from numpy.typing import ArrayLike, NDArray
 from numpy.random import default_rng, Generator
 
 from star_pso.engines import logger
@@ -195,7 +195,7 @@ class GenericPSO:
     # _end_def_
 
     @staticmethod
-    def fully_informed(population: list[SwarmParticle], use_best: bool = False) -> np.ndarray:
+    def fully_informed(population: list[SwarmParticle], use_best: bool = False) -> NDArray:
         """
         Uses the input population and computes a weighted average position according to
         the linear ranking of the particles. Those with higher function value also have
@@ -259,7 +259,7 @@ class GenericPSO:
     # _end_def_
 
     @property
-    def lower_bound(self) -> np.ndarray:
+    def lower_bound(self) -> NDArray:
         """
         Accessor method that returns the lower bound value(s).
 
@@ -269,7 +269,7 @@ class GenericPSO:
     # _end_def_
 
     @property
-    def upper_bound(self) -> np.ndarray:
+    def upper_bound(self) -> NDArray:
         """
         Accessor method that returns the upper bound value(s).
 
@@ -279,7 +279,7 @@ class GenericPSO:
     # _end_def_
 
     @property
-    def velocities(self) -> np.ndarray:
+    def velocities(self) -> NDArray:
         """
         Accessor method that returns the velocity values.
 
@@ -328,7 +328,7 @@ class GenericPSO:
         return self._swarm
     # _end_def_
 
-    def _get_typed_positions(self) -> list | np.ndarray:
+    def _get_typed_positions(self) -> list | NDArray:
         """
         Extracts the positions from the swarm and returns them
         in their correct type according to the setting of the algorithm.
@@ -507,7 +507,7 @@ class GenericPSO:
                                   f"You should implement this method!")
     # _end_def_
 
-    def neighborhood_best(self, num_neighbors: int) -> deque[np.ndarray]:
+    def neighborhood_best(self, num_neighbors: int) -> deque[NDArray]:
         """
         For each particle in the swarm, finds the 'n' closest neighbors
         (distance-wise) and computes the local best neighborhood position.
@@ -554,7 +554,7 @@ class GenericPSO:
         return l_best
     # _end_def_
 
-    def get_local_best_positions(self, operating_mode: str = "g_best") -> np.ndarray:
+    def get_local_best_positions(self, operating_mode: str = "g_best") -> NDArray:
         """
         This method uses the swarm's population and the current operating mode,
         from the VOptions tuple, to calculate the local best positions.

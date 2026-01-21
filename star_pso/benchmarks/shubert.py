@@ -1,4 +1,6 @@
 import numpy as np
+from numpy.typing import NDArray
+
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 from star_pso.utils.auxiliary import identify_global_optima
@@ -36,7 +38,7 @@ class Shubert(TestFunction):
                          n_dim=n_dim, x_min=x_min, x_max=x_max)
     # _end_def_
 
-    def func(self, x_pos: np.ndarray) -> np.ndarray:
+    def func(self, x_pos: NDArray) -> NDArray:
         """
         This is a multidimensional function with 'n_dim * 3^n_dim'
         global optimal values.

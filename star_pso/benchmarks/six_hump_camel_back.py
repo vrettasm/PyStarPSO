@@ -1,4 +1,6 @@
 import numpy as np
+from numpy.typing import NDArray
+
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 from star_pso.utils.auxiliary import identify_global_optima
@@ -13,8 +15,8 @@ class SixHumpCamelBack(TestFunction):
     """
 
     def __init__(self,
-                 x_min: list | np.ndarray | None = None,
-                 x_max: list | np.ndarray | None = None) -> None:
+                 x_min: list | NDArray | None = None,
+                 x_max: list | NDArray | None = None) -> None:
         """
         Default initializer of the SixHumpCamelBack class.
 
@@ -39,7 +41,7 @@ class SixHumpCamelBack(TestFunction):
                          x_max=np.asarray(x_max))
     # _end_def_
 
-    def func(self, x_pos: np.ndarray) -> float | np.ndarray:
+    def func(self, x_pos: NDArray) -> float | NDArray:
         """
         This is a 2D function with 2 global and 2 local optima.
 

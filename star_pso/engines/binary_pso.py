@@ -1,5 +1,6 @@
 import numpy as np
 from numba import njit
+from numpy.typing import NDArray
 
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
@@ -7,7 +8,7 @@ from star_pso.utils.auxiliary import (nb_clip_inplace,
                                       nb_median_hamming_distance)
 
 @njit(fastmath=True)
-def fast_logistic(x: np.ndarray) -> np.ndarray:
+def fast_logistic(x: NDArray) -> NDArray:
     """
     Local auxiliary function that is used to compute
     the logistic values of input array 'x'.
