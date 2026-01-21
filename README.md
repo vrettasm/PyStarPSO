@@ -166,10 +166,10 @@ These examples demonstrate the applicability of StarPSO in various problem types
 - single/multi mode(s)
 
 ## Multimodal benchmark functions
-Special emphasis is given in case of multimodal problems, where the optimization function involves more than one optimal
-values. In these cases the standard optimization techniques fail to locate all the optimal values because, by design,
-they are focusing on converging to a single solution. Within StarPSO a new powerful option exists that when activated
-allows the swarm of particle to focus not only on a single solution but rather to any number of them. Since the
+Special emphasis is given in multimodal problems, where the optimization function involves more than one optimal values.
+In these cases standard optimization techniques fail to locate all the optimal values because, by design, they are
+focusing on converging to a single optimal solution. Within StarPSO a new powerful option exists that when activated
+allows the swarm of particle to focus not only on a single solution but rather to an arbitrary number of them. Since the
 multimodal search spaces assume some form of 'distance' notion among the different modes, the multimodal option is
 currently available by the "StandardPSO" and "QuantumPSO" that deal only with continuous (float) variables.
 
