@@ -110,8 +110,7 @@ These examples demonstrate the applicability of StarPSO in various problems such
 
 - single/multi objective(s)
 - with/without constraints
-- single/multi variable(s)
-- single/multi modal
+- single/multi mode(s)
 
 ## Multimodal benchmark functions
 Special emphasis is given in case of multimodal problems, where the optimization function involves more than one optimal
