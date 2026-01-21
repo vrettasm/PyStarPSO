@@ -81,6 +81,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">njit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.population.particle</span><span class="w"> </span><span class="kn">import</span> <span class="n">Particle</span>
 
@@ -179,7 +180,7 @@
 
 <div class="viewcode-block" id="pareto_front">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.pareto_front">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">pareto_front</span><span class="p">(</span><span class="n">points</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pareto_front</span><span class="p">(</span><span class="n">points</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simple function that calculates the pareto (optimal)</span>
 <span class="sd">    front points from a given input points numpy array.</span>
@@ -326,7 +327,7 @@
 <div class="viewcode-block" id="linear_rank_probabilities">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.linear_rank_probabilities">[docs]</a>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">linear_rank_probabilities</span><span class="p">(</span><span class="n">p_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">linear_rank_probabilities</span><span class="p">(</span><span class="n">p_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the rank probability distribution over the population size.</span>
 <span class="sd">    The function is cached so repeated calls with the same input should</span>
@@ -366,7 +367,7 @@
 <div class="viewcode-block" id="kl_divergence_item">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.kl_divergence_item">[docs]</a>
 <span class="nd">@njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">kl_divergence_item</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">kl_divergence_item</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates the Kullback-Leibler divergence between two distributions.</span>
 <span class="sd">    Note that KL divergence is not symmetric, thus KL(p, q) != KL(q, p).</span>
@@ -377,9 +378,9 @@
 <span class="sd">    This method is equivalent to entropy(p, q) from scipy_stats, only it&#39;s</span>
 <span class="sd">    around 10x faster.</span>
 
-<span class="sd">    :param p: (np.ndarray) probability distribution.</span>
+<span class="sd">    :param p: (NDArray) probability distribution.</span>
 
-<span class="sd">    :param q: (np.ndarray) probability distribution.</span>
+<span class="sd">    :param q: (NDArray) probability distribution.</span>
 
 <span class="sd">    :return: (float) Kullback-Leibler divergence.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -392,7 +393,7 @@
 <div class="viewcode-block" id="kl_divergence_array">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.kl_divergence_array">[docs]</a>
 <span class="nd">@njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">kl_divergence_array</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">kl_divergence_array</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates the Kullback-Leibler divergence between two distributions.</span>
 <span class="sd">    Note that KL divergence is not symmetric, thus KL(p, q) != KL(q, p).</span>
@@ -403,11 +404,11 @@
 <span class="sd">    This method is equivalent to entropy(p, q, axis=1) from scipy_stats,</span>
 <span class="sd">    only it&#39;s around 10x faster.</span>
 
-<span class="sd">    :param p: (np.ndarray) probability distribution.</span>
+<span class="sd">    :param p: (NDArray) probability distribution.</span>
 
-<span class="sd">    :param q: (np.ndarray) probability distribution.</span>
+<span class="sd">    :param q: (NDArray) probability distribution.</span>
 
-<span class="sd">    :return: (np.ndarray) Kullback-Leibler divergence.</span>
+<span class="sd">    :return: (NDArray) Kullback-Leibler divergence.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">p</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">,</span>
                            <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">q</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">,</span>
@@ -418,7 +419,7 @@
 <div class="viewcode-block" id="nb_median_hamming_distance">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_median_hamming_distance">[docs]</a>
 <span class="nd">@njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">nb_median_hamming_distance</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_median_hamming_distance</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span>
                                <span class="n">normal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the median Hamming distance of the input array.</span>
@@ -470,7 +471,7 @@
 <div class="viewcode-block" id="nb_median_euclidean_distance">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_median_euclidean_distance">[docs]</a>
 <span class="nd">@njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">nb_median_euclidean_distance</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_median_euclidean_distance</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span>
                                  <span class="n">normal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates a measure of the particles spread, when their position</span>
@@ -512,7 +513,7 @@
 <div class="viewcode-block" id="nb_median_taxicab_distance">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_median_taxicab_distance">[docs]</a>
 <span class="nd">@njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">nb_median_taxicab_distance</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_median_taxicab_distance</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span>
                                <span class="n">normal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates a measure of the particles spread, when their position</span>
@@ -554,7 +555,7 @@
 <div class="viewcode-block" id="nb_median_kl_divergence">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_median_kl_divergence">[docs]</a>
 <span class="nd">@njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">nb_median_kl_divergence</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_median_kl_divergence</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span>
                             <span class="n">normal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the &#39;median KL divergence&#39; value of the input array.</span>
@@ -596,9 +597,9 @@
 <div class="viewcode-block" id="nb_clip_inplace">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_clip_inplace">[docs]</a>
 <span class="nd">@njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_inplace</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-                    <span class="n">x_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-                    <span class="n">x_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_inplace</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span>
+                    <span class="n">x_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">,</span>
+                    <span class="n">x_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Local auxiliary function that is used to clip the values of</span>
 <span class="sd">    input array &#39;x&#39; to [x_min, x_max] range, and put the output</span>
@@ -617,9 +618,9 @@
 <div class="viewcode-block" id="nb_clip_array">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_clip_array">[docs]</a>
 <span class="nd">@njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_array</span><span class="p">(</span><span class="n">x_new</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-                  <span class="n">lower_limit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-                  <span class="n">upper_limit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_array</span><span class="p">(</span><span class="n">x_new</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span>
+                  <span class="n">lower_limit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">,</span>
+                  <span class="n">upper_limit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Local version of numba clip which limits the values of an array.</span>
 <span class="sd">    Given an interval values outside the interval are clipped to the</span>
@@ -641,9 +642,9 @@
 <div class="viewcode-block" id="nb_clip_item">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_clip_item">[docs]</a>
 <span class="nd">@njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_item</span><span class="p">(</span><span class="n">x_new</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                 <span class="n">lower_limit</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                 <span class="n">upper_limit</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_item</span><span class="p">(</span><span class="n">x_new</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">,</span>
+                 <span class="n">lower_limit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">,</span>
+                 <span class="n">upper_limit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Local version of numba clip which limits the values of a scalar.</span>
 <span class="sd">    Given an interval values outside the interval are clipped to the</span>
@@ -675,7 +676,7 @@
 <div class="viewcode-block" id="nb_cdist">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_cdist">[docs]</a>
 <span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">nb_cdist</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scaled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nb_cdist</span><span class="p">(</span><span class="n">x_pos</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">scaled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is equivalent to the scipy.spatial.distance.cdist method</span>
 <span class="sd">    with Euclidean distance metric. It is a tailored version for</span>
