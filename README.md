@@ -87,7 +87,60 @@ After the download of the code (or the git clone), one can use the following com
 
 This will install the latest StarPSO version in the package management system.
 
+## Objective function
+
+The most important thing the user has to do is to define the "objective function", that is problem dependent.
+A template is provided here in addition to the examples that follow. The 'cost_function' decorator is used to
+indicate whether the function will be maximized (default), or minimized. The second output parameter ("solution_found")
+is optional; only in the cases where we can evaluate if a termination condition is satisfied. The 'cost_function'
+will detect if the user has explicitly passed the second argument, and if not it will supplement it with 'False'.
+
+```python
+import numpy as np
+from numpy.typing import NDArray
+from star_pso.utils.auxiliary import cost_function
+
+# Objective function [Template].
+@cost_function(minimize=False)
+def objective_fun(x_input: NDArray, **kwargs) -> tuple[float, bool]:
+    """
+    This is how an objective function should look like. The whole
+    evaluation should be implemented, or wrapped around this function.
+    
+    :param x_input: input numpy ndarray, with the positional variables
+                    of the particle.
+    
+    :param kwargs: key-word arguments. They can pass additional
+                   parameters, e.g. like the current iteration
+                   as kwargs["it"], etc.
+    
+    :return: the function value evaluated at the particle's position.
+             Optionally we return a bool value if a solution has been
+             found (True) or not (False).
+    """
+    
+    # Extract the current iteration.
+    # IF IT IS NEEDED!
+    it = kwargs["it"]
+    
+    # ... CODE TO IMPLEMENT ...
+    
+    # Compute the function value.
+    # THIS IS ONLY AN EXAMPLE!
+    f_value = np.sum(x_input)
+    
+    # Condition for termination.
+    # THIS IS ONLY AN EXAMPLE!
+    solution_found = np.isclose(f_value, 0.0)
+    
+    return f_value, solution_found
+# _end_def_
+```
+Once the objective function has been defined correctly the next steps are straightforward
+as described in the _step-by-step_ examples below.
+
 ## Examples
+
 Some optimization examples (use cases) on how to use these algorithms are provided below:
 
 | **Problem**                                               | **Variables** | **Objectives** | **Constraints** |
@@ -102,7 +155,7 @@ Some optimization examples (use cases) on how to use these algorithms are provid
 | [Gaussian Mixture](examples/gaussian_mixture_2D.ipynb)    |    M (=2)     |       1        |       no        |
 | [OneMax](examples/one_max.ipynb)                          |    M (=30)    |       1        |       no        |
 | [SumAbs](examples/sum_abs.ipynb)                          |    M (=15)    |       1        |       no        |
-| [JackOfAllTrades](examples/jack_of_all_trades.ipynb)      |    M (=3)     |       1        |       no        |
+| [Mixed-Variable-Types](examples/jack_of_all_trades.ipynb) |    M (=3)     |       1        |       no        |
 | [Categorical PSO](examples/categorical_pso.ipynb)         |    M (=4)     |       1        |       no        |
 | [Benchmark Functions](examples/benchmark_functions.ipynb) |    M (>1)     |       1        |       no        |
 
