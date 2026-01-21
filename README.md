@@ -159,7 +159,7 @@ Some optimization examples (use cases) on how to use these algorithms are provid
 | [Categorical PSO](examples/categorical_pso.ipynb)         |    M (=4)     |       1        |       no        |
 | [Benchmark Functions](examples/benchmark_functions.ipynb) |    M (>1)     |       1        |       no        |
 
-These examples demonstrate the applicability of StarPSO in various problems such as:
+These examples demonstrate the applicability of StarPSO in various problem types such as:
 
 - single/multi objective(s)
 - with/without constraints
