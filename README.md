@@ -1,4 +1,4 @@
-# PyStarPSO: An Object-Oriented Library for Advanced Particle Swarm Optimization Algorithms.
+# StarPSO: An Object-Oriented Library for Advanced Particle Swarm Optimization Algorithms.
 
 ![Logo](./logo/main_logo.png)
 
