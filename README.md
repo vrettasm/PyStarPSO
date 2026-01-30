@@ -194,6 +194,16 @@ NOTE: The "Shubert" and "Vincent" functions were tested with D = 2, 3 (for simpl
 is generalized and can solve any number of dimensions. Also, the "Rastrigin" function was tested for D = 2,
 4 and K = 6 and 12 respectively.
 
+## References and Documentation
+
+This work is described in:
+
+- [Michail D. Vrettas and Stefano Silvestri (2026)]
+
+"StarPSO: A Unified Framework for Particle Swarm Optimization Across Multiple Problem Types" (submitted).
+
+You can find the latest documentation [here](https://pystarpso.readthedocs.io/en/latest/).
+
 ### Contact
 
 For any questions/comments (**regarding this code**) please contact me at: vrettasm@gmail.com
