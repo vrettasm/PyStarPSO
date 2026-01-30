@@ -13,7 +13,6 @@ authors = [
     { name = "Michalis Vrettas, PhD", email = "michail.vrettas@gmail.com" }
 ]
 keywords = ["optimization", "particle swarm intelligence", "algorithms"]
-homepage = "https://github.com/vrettasm/PyStarPSO"
 classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: Education",
@@ -30,3 +29,6 @@ dependencies = [
 
 [tool.setuptools.packages.find]
 exclude = ["docs", "unittests"]
+
+[project.urls]
+Homepage = "https://github.com/vrettasm/PyStarPSO"
