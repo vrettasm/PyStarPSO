@@ -6,6 +6,10 @@
 
 **Pylint score: 9.50 / 10**
 
+
+[![DOI](https://zenodo.org/badge/959816541.svg)](https://doi.org/10.5281/zenodo.18429186)
+
+
 ## Introduction
 Particle Swarm Optimization (PSO) is a computational method inspired by the social behavior of birds.
 It is utilized for solving optimization problems by simulating a group of individuals or "particles",
