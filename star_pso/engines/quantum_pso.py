@@ -77,6 +77,11 @@ class QuantumPSO(GenericPSO):
         p_best *= param_phi
         p_best += (1.0 - param_phi) * tile(g_best, (self.n_rows, 1))
 
+        # Ensure there are no zero values that would raise
+        # an error below when computing log(param_u). This
+        # is very unlikely but it could happen.
+        param_u[param_u == 0.0] = QuantumPSO.NUMPY_EPS
+
         # Compute the offset.
         p_offset = - beta_coefficient * (m_best - x_current) * log(param_u)
 
