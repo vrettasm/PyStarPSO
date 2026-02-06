@@ -724,9 +724,9 @@ class GenericPSO:
         :param max_it: (int) maximum number of iterations in the optimization loop.
 
         :param f_tol: (float) tolerance in the difference between the optimal function
-                       value of two consecutive iterations. It is used to determine the
-                       convergence of the swarm. If this value is None (default) the
-                       algorithm will terminate using the max_it value.
+                      value of two consecutive iterations. It is used to determine the
+                      convergence of the swarm. If this value is None (default) the
+                      algorithm will terminate using the max_it value.
 
         :param options: dictionary with update equations options ('w': inertia weight,
                         'c1': cognitive coefficient, 'c2': social coefficient, 'mode':
@@ -736,10 +736,11 @@ class GenericPSO:
                          function.
 
         :param reset_swarm: (bool) if True it will reset the positions of the swarm to
-                            uniformly random respecting the boundaries of each space dimension.
+                            uniformly random respecting the boundaries of each space
+                            dimension.
 
         :param f_max_eval: (int) it sets an upper limit of function evaluations. If the
-                            number is exceeded the algorithm stops.
+                           number is exceeded the algorithm stops.
 
         :param adapt_params: (bool) If set to "True" it will allow the inertia, cognitive
                              and social parameters to adapt according to the convergence
