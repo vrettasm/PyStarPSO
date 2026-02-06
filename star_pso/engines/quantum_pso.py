@@ -25,7 +25,7 @@ class QuantumPSO(GenericPSO):
     # Auxiliary constant.
     NUMPY_EPS = finfo(float).eps
     """
-    Declare a constant eps for the whole class
+    Declare a constant eps for the whole class.
     """
 
     def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs) -> None:
