@@ -66,7 +66,7 @@ class BareBonesPSO(GenericPSO):
         # This produces an: (n_rows, n_cols) array.
         m_array = 0.5 * (p_best + g_best)
 
-        # Compute the standard deviations: 's_array'.
+        # Compute the standard deviations: "s_array".
         # This produces an: (n_rows,) array.
         s_array = np_norm(p_best - g_best, axis=1)
 
