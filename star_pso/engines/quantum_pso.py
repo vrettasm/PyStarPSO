@@ -30,7 +30,7 @@ class QuantumPSO(GenericPSO):
 
     def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs) -> None:
         """
-        Default initializer of the StandardPSO class.
+        Default initializer of the QuantumPSO class.
 
         :param x_min: lower search space bound.
 
