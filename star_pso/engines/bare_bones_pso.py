@@ -33,6 +33,11 @@ class BareBonesPSO(GenericPSO):
         # Call the super initializer with the input parameters.
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
+        # DISABLE the adaptation of model parameters
+        # since this class does not support the same
+        # velocity equations.
+        self.disable_parameters_update()
+
         # Generate initial particle "velocities".
         self._velocities = GenericPSO.rng.uniform(self.lower_bound,
                                                   self.upper_bound,
