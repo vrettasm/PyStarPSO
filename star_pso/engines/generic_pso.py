@@ -52,7 +52,8 @@ class GenericPSO:
     # Object variables.
     __slots__ = ("_swarm", "_velocities", "_objective_func", "_upper_bound",
                  "_lower_bound", "_stats", "_items", "_f_evals", "_n_cpus",
-                 "_n_rows", "_n_cols", "_special_mode", "_iteration")
+                 "_n_rows", "_n_cols", "_special_mode", "_iteration",
+                 "_allow_parameters_to_update")
 
     def __init__(self, initial_swarm: Swarm, obj_func: Callable,
                  lower_bound: ArrayLike = None, upper_bound: ArrayLike = None,
@@ -142,6 +143,9 @@ class GenericPSO:
         # Set the iteration counter to zero.
         self._iteration = 0
 
+        # Set the flag to True.
+        self._allow_parameters_to_update = True
+
         # Log the object initialization.
         logger.debug(f"{self.__class__.__name__} initialization complete.")
     # _end_def_
@@ -176,6 +180,34 @@ class GenericPSO:
         :return: the n_cpus value.
         """
         return self._n_cpus
+    # _end_def_
+
+    def enable_parameters_update(self) -> None:
+        """
+        Set the _allow_parameters_to_update
+        to True.
+
+        :return: None
+        """
+        # Set the flag to True.
+        self._allow_parameters_to_update = True
+
+        # Log enable of the flag.
+        logger.debug(f"{self.__class__.__name__} enabled parameters update.")
+    # _end_def_
+
+    def disable_parameters_update(self) -> None:
+        """
+        Set the _allow_parameters_to_update
+        to False.
+
+        :return: None
+        """
+        # Set the flag to False.
+        self._allow_parameters_to_update = False
+
+        # Log disable of the flag.
+        logger.debug(f"{self.__class__.__name__} disabled parameters update.")
     # _end_def_
 
     @classmethod
@@ -768,6 +800,10 @@ class GenericPSO:
             # Ensure all the parameters are here.
             check_velocity_parameters(options)
         # _end_if_
+
+        # Make sure the selected PSO allows the update of
+        # the model parameters.
+        adapt_params &= self._allow_parameters_to_update
 
         # Convert options dict to VOptions.
         params = VOptions(**options)
