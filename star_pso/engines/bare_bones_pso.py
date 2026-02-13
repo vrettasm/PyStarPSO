@@ -138,4 +138,5 @@ class BareBonesPSO(GenericPSO):
         # Normalized median Euclidean distance.
         return nb_median_euclidean_distance(positions, normal=True)
     # _end_def_
+
 # _end_class_
