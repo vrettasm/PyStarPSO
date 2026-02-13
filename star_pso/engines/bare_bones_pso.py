@@ -62,7 +62,7 @@ class BareBonesPSO(GenericPSO):
         # Extract the best (historical) positions.
         p_best = self.swarm.best_positions_as_array()
 
-        # Compute the means: 'm_array'.
+        # Compute the means: "m_array".
         # This produces an: (n_rows, n_cols) array.
         m_array = 0.5 * (p_best + g_best)
 
