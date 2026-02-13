@@ -33,7 +33,8 @@ variations (with supported options):
 | [Categorical](star_pso/engines/categorical_pso.py)               | discrete (categorical) |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
 | [Integer](star_pso/engines/integer_pso.py)                       | discrete     (integer) |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
 | [Jack of all trades](star_pso/engines/jack_of_all_trades_pso.py) | mixed    (data blocks) |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
-| [Quantum](star_pso/engines/quantum_pso.py)                       | continuous     (float) |         Yes          |    Yes     |    Yes    |      Yes       |     Yes      |
+| [Quantum](star_pso/engines/quantum_pso.py)                       | continuous     (float) |          No          |    Yes     |    Yes    |      Yes       |     Yes      |
+| [BareBones](star_pso/engines/bare_bones_pso.py)                  | continuous     (float) |          No          |    Yes     |    Yes    |      Yes       |     Yes      |
 
 This versatility makes it a powerful tool for researchers and practitioners in fields such as engineering, finance,
 robotics, artificial intelligence, and more. All the above methods inherit from the base class [GenericPSO](star_pso/engines/generic_pso.py),
@@ -44,10 +45,12 @@ Adding new algorithms **MUST** inherit from the base class.
 **Note(1):**
 Adapting parameters is supported in the Base class (**GenericPSO**), hence is inherited by all algorithms. However,
 since the current adapting algorithm version is checking for convergence of the population to a single solution, using
-it with the *multimodal* option would not make much sense and in fact it will mess up the results.
+it with the *multimodal* option would not make much sense and in fact it will mess up the results. Moreover, since
+Quantum and BareBones PSO don't use the typical update velocity equations, enabling the adapt parameters option will
+not have any effect.
 
 **Note(2):**
-Moreover, the *Parallel* option is supported only in the evaluation of the objective (or fitness) function. Therefore,
+Finally, the *Parallel* option is supported only in the evaluation of the objective (or fitness) function. Therefore,
 it is beneficial only in cases where the objective function is "heavy" computationally or has many I/Os. In most cases
 setting this option to the default (False), will have the best results.
 
@@ -56,6 +59,10 @@ setting this option to the default (False), will have the best results.
 - **StandardPSO**: The classic implementation that optimizes continuous variables using the basic PSO rules. 
   This version serves as a baseline for comparison with other algorithms in the library.
 
+- **BareBonesPSO**: The implementation is used for the optimization of continuous variables using the bare-bones
+  PSO rules, where the velocity updates have been completely removed and the new position updates are sampled by
+  a Gaussian distribution.
+ 
 - **BinaryPSO**: Suitable for optimization problems where decision variables are binary (0 or 1). 
   This implementation adapts the PSO paradigm to effectively handle binary decision-making scenarios.
 
