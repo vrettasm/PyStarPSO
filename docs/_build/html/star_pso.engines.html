@@ -161,7 +161,15 @@ of the objective function. So, depending on the computational cost it might be f
 </tr>
 <tr class="row-odd"><td><p>Quantum</p></td>
 <td><p>Float</p></td>
+<td><p>No</p></td>
 <td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Bare Bones</p></td>
+<td><p>Float</p></td>
+<td><p>No</p></td>
 <td><p>Yes</p></td>
 <td><p>Yes</p></td>
 <td><p>Yes</p></td>
@@ -169,6 +177,9 @@ of the objective function. So, depending on the computational cost it might be f
 </tr>
 </tbody>
 </table>
+<p>Note that QuantumPSO and BareBonesPSO do not use the same update velocity equations hence they do not update the
+typical parameters. Even though the option remains, if enabled it will not have any effect in the quality of the
+final results.</p>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
@@ -282,10 +293,16 @@ the logistic values of input array ‘x’.</p>
 <p>This class implements a variant of the quantum particle swarm optimization
 as described in:</p>
 <ul class="simple">
-<li><p>M. Xi, J. Sun, W. Xu, An improved quantum-behaved particle swarm optimization
-algorithm with weighted mean best position, Applied Mathematics and Computation
+<li><p>M. Xi, J. Sun, W. Xu, “An improved quantum-behaved particle swarm optimization
+algorithm with weighted mean best position”, Applied Mathematics and Computation
 205 (2008) 751–759,</p></li>
 </ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="star_pso.engines.quantum_pso.QuantumPSO.NUMPY_EPS">
+<span class="sig-name descname"><span class="pre">NUMPY_EPS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">np.float64(2.220446049250313e-16)</span></em><a class="headerlink" href="#star_pso.engines.quantum_pso.QuantumPSO.NUMPY_EPS" title="Link to this definition"></a></dt>
+<dd><p>Declare a constant eps for the whole class.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.engines.quantum_pso.QuantumPSO.calculate_spread">
 <span class="sig-name descname"><span class="pre">calculate_spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/star_pso/engines/quantum_pso.html#QuantumPSO.calculate_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.quantum_pso.QuantumPSO.calculate_spread" title="Link to this definition"></a></dt>
@@ -342,6 +359,92 @@ and clear all the statistics dictionary.</p>
 <dt class="sig sig-object py" id="star_pso.engines.quantum_pso.QuantumPSO.update_velocities">
 <span class="sig-name descname"><span class="pre">update_velocities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="star_pso.utils.html#star_pso.utils.VOptions" title="star_pso.utils.VOptions"><span class="pre">VOptions</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/quantum_pso.html#QuantumPSO.update_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.quantum_pso.QuantumPSO.update_velocities" title="Link to this definition"></a></dt>
 <dd><p>Performs the update on the “velocity” equations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> – VOptions tuple with the PSO options.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-star_pso.engines.bare_bones_pso">
+<span id="star-pso-engines-bare-bones-pso-module"></span><h2>star_pso.engines.bare_bones_pso module<a class="headerlink" href="#module-star_pso.engines.bare_bones_pso" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="star_pso.engines.bare_bones_pso.BareBonesPSO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.bare_bones_pso.</span></span><span class="sig-name descname"><span class="pre">BareBonesPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/bare_bones_pso.html#BareBonesPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.bare_bones_pso.BareBonesPSO" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#star_pso.engines.generic_pso.GenericPSO" title="star_pso.engines.generic_pso.GenericPSO"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericPSO</span></code></a></p>
+<p>Description:</p>
+<p>This class implements a variant of the bare-bones particle swarm optimization
+as described in:</p>
+<ul class="simple">
+<li><p>J. Kennedy, “Bare-bones particle swarms”, Proceedings of the 2003 IEEE Swarm
+Intelligence Symposium. SIS’03 (Cat. No.03EX706), Indianapolis, IN, USA, 2003,
+pp. 80-87, doi: 10.1109/SIS.2003.1202251.</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.bare_bones_pso.BareBonesPSO.calculate_spread">
+<span class="sig-name descname"><span class="pre">calculate_spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/star_pso/engines/bare_bones_pso.html#BareBonesPSO.calculate_spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.bare_bones_pso.BareBonesPSO.calculate_spread" title="Link to this definition"></a></dt>
+<dd><p>Calculates a spread measure for the particle positions
+using the normalized median Euclidean distance.</p>
+<p>A value close to ‘0’ indicates the swarm is converging
+to a single value. On the contrary a value close to ‘1’
+indicates the swarm is still  spread around the search
+space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an estimated measure (float) for the spread of
+the particles.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.bare_bones_pso.BareBonesPSO.generate_random_positions">
+<span class="sig-name descname"><span class="pre">generate_random_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/bare_bones_pso.html#BareBonesPSO.generate_random_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.bare_bones_pso.BareBonesPSO.generate_random_positions" title="Link to this definition"></a></dt>
+<dd><p>Generate the population of particles positions by
+sampling uniform random numbers within the limits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.bare_bones_pso.BareBonesPSO.reset_all">
+<span class="sig-name descname"><span class="pre">reset_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/bare_bones_pso.html#BareBonesPSO.reset_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.bare_bones_pso.BareBonesPSO.reset_all" title="Link to this definition"></a></dt>
+<dd><p>Resets the particle positions, velocities
+and clear all the statistics dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.bare_bones_pso.BareBonesPSO.update_positions">
+<span class="sig-name descname"><span class="pre">update_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/bare_bones_pso.html#BareBonesPSO.update_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.bare_bones_pso.BareBonesPSO.update_positions" title="Link to this definition"></a></dt>
+<dd><p>Updates the positions of the particles in the swarm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.bare_bones_pso.BareBonesPSO.update_velocities">
+<span class="sig-name descname"><span class="pre">update_velocities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="star_pso.utils.html#star_pso.utils.VOptions" title="star_pso.utils.VOptions"><span class="pre">VOptions</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/bare_bones_pso.html#BareBonesPSO.update_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.bare_bones_pso.BareBonesPSO.update_velocities" title="Link to this definition"></a></dt>
+<dd><p>By definition Bare-Bones doesn’t have “velocities”,
+but to keep the API  consistent we  use this method
+to sample the Gaussian updates, and subsequently we
+simply assign the values to the positions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>params</strong> – VOptions tuple with the PSO options.</p>
@@ -765,7 +868,7 @@ should be implemented separately.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.rng">
-<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x1501258C0</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x147C798C0</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
 <dd><p>Random Number Generator for the whole class.</p>
 </dd></dl>
 
@@ -787,7 +890,8 @@ operation mode).</p></li>
 <li><p><strong>parallel</strong> – (bool) flag that enables parallel computation of the objective
 function.</p></li>
 <li><p><strong>reset_swarm</strong> – (bool) if True it will reset the positions of the swarm to
-uniformly random respecting the boundaries of each space dimension.</p></li>
+uniformly random respecting the boundaries of each space
+dimension.</p></li>
 <li><p><strong>f_max_eval</strong> – (int) it sets an upper limit of function evaluations. If the
 number is exceeded the algorithm stops.</p></li>
 <li><p><strong>adapt_params</strong> – (bool) If set to “True” it will allow the inertia, cognitive

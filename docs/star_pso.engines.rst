@@ -29,8 +29,14 @@ include:
 +--------------------+------------------+----------------------+------------+-----------+----------------+--------------+
 | Jack of all trades |      Mixed       |         Yes          |    Yes     |    Yes    |       No       |     Yes      |
 +--------------------+------------------+----------------------+------------+-----------+----------------+--------------+
-| Quantum            |      Float       |         Yes          |    Yes     |    Yes    |      Yes       |     Yes      |
+| Quantum            |      Float       |         No           |    Yes     |    Yes    |      Yes       |     Yes      |
 +--------------------+------------------+----------------------+------------+-----------+----------------+--------------+
+| Bare Bones         |      Float       |         No           |    Yes     |    Yes    |      Yes       |     Yes      |
++--------------------+------------------+----------------------+------------+-----------+----------------+--------------+
+
+Note that QuantumPSO and BareBonesPSO do not use the same update velocity equations hence they do not update the
+typical parameters. Even though the option remains, if enabled it will not have any effect in the quality of the
+final results.
 
 Submodules
 ----------
@@ -47,6 +53,14 @@ star_pso.engines.quantum\_pso module
 ------------------------------------
 
 .. automodule:: star_pso.engines.quantum_pso
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+star_pso.engines.bare\_bones\_pso module
+----------------------------------------
+
+.. automodule:: star_pso.engines.bare_bones_pso
    :members:
    :undoc-members:
    :show-inheritance:

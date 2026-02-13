@@ -70,7 +70,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for star_pso.engines.quantum_pso</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">tile</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">tile</span><span class="p">,</span> <span class="n">finfo</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">VOptions</span>
@@ -91,14 +91,20 @@
 <span class="sd">    This class implements a variant of the quantum particle swarm optimization</span>
 <span class="sd">    as described in:</span>
 
-<span class="sd">    - M. Xi, J. Sun, W. Xu, An improved quantum-behaved particle swarm optimization</span>
-<span class="sd">      algorithm with weighted mean best position, Applied Mathematics and Computation</span>
+<span class="sd">    - M. Xi, J. Sun, W. Xu, &quot;An improved quantum-behaved particle swarm optimization</span>
+<span class="sd">      algorithm with weighted mean best position&quot;, Applied Mathematics and Computation</span>
 <span class="sd">      205 (2008) 751–759,</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Auxiliary constant.</span>
+    <span class="n">NUMPY_EPS</span> <span class="o">=</span> <span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Declare a constant eps for the whole class.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_min</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">x_max</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Default initializer of the StandardPSO class.</span>
+<span class="sd">        Default initializer of the QuantumPSO class.</span>
 
 <span class="sd">        :param x_min: lower search space bound.</span>
 
@@ -152,6 +158,11 @@
         <span class="c1"># Construct the &#39;p_best&#39;.</span>
         <span class="n">p_best</span> <span class="o">*=</span> <span class="n">param_phi</span>
         <span class="n">p_best</span> <span class="o">+=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">param_phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">tile</span><span class="p">(</span><span class="n">g_best</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># Ensure there are no zero values that would raise</span>
+        <span class="c1"># an error below when computing log(param_u). This</span>
+        <span class="c1"># is very unlikely but it could happen.</span>
+        <span class="n">param_u</span><span class="p">[</span><span class="n">param_u</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="n">QuantumPSO</span><span class="o">.</span><span class="n">NUMPY_EPS</span>
 
         <span class="c1"># Compute the offset.</span>
         <span class="n">p_offset</span> <span class="o">=</span> <span class="o">-</span> <span class="n">beta_coefficient</span> <span class="o">*</span> <span class="p">(</span><span class="n">m_best</span> <span class="o">-</span> <span class="n">x_current</span><span class="p">)</span> <span class="o">*</span> <span class="n">log</span><span class="p">(</span><span class="n">param_u</span><span class="p">)</span>
