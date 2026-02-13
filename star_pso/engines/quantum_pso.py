@@ -17,9 +17,9 @@ class QuantumPSO(GenericPSO):
     This class implements a variant of the quantum particle swarm optimization
     as described in:
 
-    - M. Xi, J. Sun, W. Xu, "An improved quantum-behaved particle swarm optimization
-      algorithm with weighted mean best position", Applied Mathematics and Computation
-      205 (2008) 751–759,
+    - M. Xi, J. Sun, W. Xu (2008), "An improved quantum-behaved particle swarm optimization
+      algorithm with weighted mean best position", Applied Mathematics and Computation vol.
+      205 pp: 751–759, doi: 10.1016/j.amc.2008.05.135.
     """
 
     # Auxiliary constant.
