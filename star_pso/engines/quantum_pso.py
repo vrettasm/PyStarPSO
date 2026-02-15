@@ -1,4 +1,4 @@
-from numpy import log, tile, finfo
+from numpy import log, tile
 from numpy.typing import ArrayLike
 
 from star_pso.utils import VOptions
@@ -20,12 +20,6 @@ class QuantumPSO(GenericPSO):
     - M. Xi, J. Sun, W. Xu (2008), "An improved quantum-behaved particle swarm optimization
       algorithm with weighted mean best position", Applied Mathematics and Computation vol.
       205 pp: 751–759, doi: 10.1016/j.amc.2008.05.135.
-    """
-
-    # Auxiliary constant.
-    NUMPY_EPS = finfo(float).eps
-    """
-    Declare a constant eps for the whole class.
     """
 
     def __init__(self, x_min: ArrayLike, x_max: ArrayLike, **kwargs) -> None:
