@@ -70,7 +70,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for star_pso.engines.quantum_pso</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">tile</span><span class="p">,</span> <span class="n">finfo</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">tile</span><span class="p">,</span> <span class="n">where</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">VOptions</span>
@@ -96,12 +96,6 @@
 <span class="sd">      205 pp: 751–759, doi: 10.1016/j.amc.2008.05.135.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Auxiliary constant.</span>
-    <span class="n">NUMPY_EPS</span> <span class="o">=</span> <span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Declare a constant eps for the whole class.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_min</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">x_max</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Default initializer of the QuantumPSO class.</span>
@@ -110,9 +104,13 @@
 
 <span class="sd">        :param x_max: upper search space bound.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="c1"># Call the super initializer with the input parameters.</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lower_bound</span><span class="o">=</span><span class="n">x_min</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="n">x_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># DISABLE the adaptation of model parameters</span>
+        <span class="c1"># since this class does not support the same</span>
+        <span class="c1"># velocity equations.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disable_parameters_update</span><span class="p">()</span>
 
         <span class="c1"># Generate initial particle &quot;velocities&quot;.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span>
@@ -165,14 +163,13 @@
         <span class="n">param_u</span><span class="p">[</span><span class="n">param_u</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="n">QuantumPSO</span><span class="o">.</span><span class="n">NUMPY_EPS</span>
 
         <span class="c1"># Compute the offset.</span>
-        <span class="n">p_offset</span> <span class="o">=</span> <span class="o">-</span> <span class="n">beta_coefficient</span> <span class="o">*</span> <span class="p">(</span><span class="n">m_best</span> <span class="o">-</span> <span class="n">x_current</span><span class="p">)</span> <span class="o">*</span> <span class="n">log</span><span class="p">(</span><span class="n">param_u</span><span class="p">)</span>
+        <span class="n">p_offset</span> <span class="o">=</span> <span class="n">beta_coefficient</span> <span class="o">*</span> <span class="p">(</span><span class="n">m_best</span> <span class="o">-</span> <span class="n">x_current</span><span class="p">)</span> <span class="o">*</span> <span class="n">log</span><span class="p">(</span><span class="n">param_u</span><span class="p">)</span>
 
-        <span class="c1"># Switch randomly.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
-            <span class="n">p_best</span> <span class="o">+=</span> <span class="n">p_offset</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">p_best</span> <span class="o">-=</span> <span class="n">p_offset</span>
-        <span class="c1"># _end_if_</span>
+        <span class="c1"># Select the directions at random.</span>
+        <span class="n">direction</span> <span class="o">=</span> <span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span>
+                                           <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="c1"># Perform all operations in place.</span>
+        <span class="n">p_best</span> <span class="o">+=</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">p_offset</span>
 
         <span class="c1"># Ensure we stay within limits.</span>
         <span class="n">nb_clip_inplace</span><span class="p">(</span><span class="n">p_best</span><span class="p">,</span>

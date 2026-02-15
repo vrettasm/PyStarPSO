@@ -118,6 +118,12 @@
 <span class="sd">    Random Number Generator for the whole class.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="c1"># Auxiliary constant.</span>
+    <span class="n">NUMPY_EPS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Declare a constant eps for the whole class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">MAX_CPUs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cpu_count</span><span class="p">()</span> <span class="k">else</span> <span class="n">cpu_count</span><span class="p">()</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set the maximum number of CPUs (at least one).</span>
@@ -126,7 +132,8 @@
     <span class="c1"># Object variables.</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_swarm&quot;</span><span class="p">,</span> <span class="s2">&quot;_velocities&quot;</span><span class="p">,</span> <span class="s2">&quot;_objective_func&quot;</span><span class="p">,</span> <span class="s2">&quot;_upper_bound&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;_lower_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_stats&quot;</span><span class="p">,</span> <span class="s2">&quot;_items&quot;</span><span class="p">,</span> <span class="s2">&quot;_f_evals&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_cpus&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;_n_rows&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_cols&quot;</span><span class="p">,</span> <span class="s2">&quot;_special_mode&quot;</span><span class="p">,</span> <span class="s2">&quot;_iteration&quot;</span><span class="p">)</span>
+                 <span class="s2">&quot;_n_rows&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_cols&quot;</span><span class="p">,</span> <span class="s2">&quot;_special_mode&quot;</span><span class="p">,</span> <span class="s2">&quot;_iteration&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;_allow_parameters_to_update&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_swarm</span><span class="p">:</span> <span class="n">Swarm</span><span class="p">,</span> <span class="n">obj_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
                  <span class="n">lower_bound</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -216,6 +223,9 @@
         <span class="c1"># Set the iteration counter to zero.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_iteration</span> <span class="o">=</span> <span class="mi">0</span>
 
+        <span class="c1"># Set the flag to True.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_allow_parameters_to_update</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="c1"># Log the object initialization.</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> initialization complete.&quot;</span><span class="p">)</span>
     <span class="c1"># _end_def_</span>
@@ -250,6 +260,40 @@
 <span class="sd">        :return: the n_cpus value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_cpus</span>
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="GenericPSO.enable_parameters_update">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.enable_parameters_update">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enable_parameters_update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the _allow_parameters_to_update</span>
+<span class="sd">        to True.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Set the flag to True.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_allow_parameters_to_update</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Log enable of the flag.</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> enabled parameters update.&quot;</span><span class="p">)</span></div>
+
+    <span class="c1"># _end_def_</span>
+
+<div class="viewcode-block" id="GenericPSO.disable_parameters_update">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.disable_parameters_update">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disable_parameters_update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the _allow_parameters_to_update</span>
+<span class="sd">        to False.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Set the flag to False.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_allow_parameters_to_update</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Log disable of the flag.</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> disabled parameters update.&quot;</span><span class="p">)</span></div>
+
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="GenericPSO.set_seed">
@@ -883,6 +927,10 @@
             <span class="c1"># Ensure all the parameters are here.</span>
             <span class="n">check_velocity_parameters</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
         <span class="c1"># _end_if_</span>
+
+        <span class="c1"># Make sure the selected PSO allows the update of</span>
+        <span class="c1"># the model parameters.</span>
+        <span class="n">adapt_params</span> <span class="o">&amp;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow_parameters_to_update</span>
 
         <span class="c1"># Convert options dict to VOptions.</span>
         <span class="n">params</span> <span class="o">=</span> <span class="n">VOptions</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
