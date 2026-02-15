@@ -1,4 +1,4 @@
-from numpy import log, tile
+from numpy import log, tile, where
 from numpy.typing import ArrayLike
 
 from star_pso.utils import VOptions
@@ -87,14 +87,13 @@ class QuantumPSO(GenericPSO):
         param_u[param_u == 0.0] = QuantumPSO.NUMPY_EPS
 
         # Compute the offset.
-        p_offset = - beta_coefficient * (m_best - x_current) * log(param_u)
+        p_offset = beta_coefficient * (m_best - x_current) * log(param_u)
 
-        # Switch randomly.
-        if self.rng.random() > 0.5:
-            p_best += p_offset
-        else:
-            p_best -= p_offset
-        # _end_if_
+        # Select the directions at random.
+        direction = where(self.rng.random((self.n_rows,
+                                           self.n_cols)) < 0.5, -1.0, 1.0)
+        # Perform all operations in place.
+        p_best += direction * p_offset
 
         # Ensure we stay within limits.
         nb_clip_inplace(p_best,
