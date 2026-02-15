@@ -1,6 +1,5 @@
-from numpy import newaxis
+from numpy import abs as np_abs
 from numpy.typing import ArrayLike
-from numpy.linalg import norm as np_norm
 
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
@@ -66,21 +65,26 @@ class BareBonesPSO(GenericPSO):
         # This produces an: (n_rows, n_cols) array.
         m_array = 0.5 * (p_best + g_best)
 
-        # Compute the standard deviations: "s_array".
-        # This produces an: (n_rows,) array.
-        s_array = np_norm(p_best - g_best, axis=1)
+        # Compute the absolute differences: "s_array".
+        s_array = np_abs(p_best - g_best)
 
-        # Generate Gaussian values with mean and standard deviation.
-        v_samples = self.rng.normal(m_array, s_array[:, newaxis],
-                                    size=(self.n_rows, self.n_cols))
+        # Avoid zero entries.
+        s_array[s_array == 0.0] = BareBonesPSO.NUMPY_EPS
 
-        # Ensure we stay within limits.
-        nb_clip_inplace(v_samples,
+        # Draw standard normal values N(0, 1).
+        z = self.rng.normal(size=(self.n_rows, self.n_cols))
+
+        # Generate the Gaussian values with the required mean
+        # and standard deviation. Do the operations in place.
+        m_array += z * s_array
+
+        # Ensure the values stay within limits.
+        nb_clip_inplace(m_array,
                         self.lower_bound,
                         self.upper_bound)
 
-        # Assign the new "velocities" vectors.
-        self._velocities = v_samples
+        # Assign the new "velocities" values.
+        self._velocities = m_array
     # _end_def_
 
     def update_positions(self) -> None:
