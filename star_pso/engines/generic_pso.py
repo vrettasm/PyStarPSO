@@ -44,6 +44,12 @@ class GenericPSO:
     Random Number Generator for the whole class.
     """
 
+    # Auxiliary constant.
+    NUMPY_EPS = np.finfo(float).eps
+    """
+    Declare a constant eps for the whole class.
+    """
+
     MAX_CPUs: int = 1 if not cpu_count() else cpu_count()
     """
     Set the maximum number of CPUs (at least one).
