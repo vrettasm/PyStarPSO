@@ -77,7 +77,7 @@ class QuantumPSO(GenericPSO):
         # Extract the global best position.
         g_best = self.swarm.best_particle().position
 
-        # Construct the 'p_best'.
+        # Construct the 'p_best' (in-place).
         p_best *= param_phi
         p_best += (1.0 - param_phi) * tile(g_best, (self.n_rows, 1))
 
