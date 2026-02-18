@@ -79,7 +79,9 @@ class QuantumPSO(GenericPSO):
 
         # Construct the 'p_best' (in-place).
         p_best *= param_phi
-        p_best += (1.0 - param_phi) * tile(g_best, (self.n_rows, 1))
+
+        # Element-wise multiplication using broadcasting.
+        p_best += (1.0 - param_phi) * g_best
 
         # Ensure there are no zero values that would raise
         # an error below when computing log(param_u). This
