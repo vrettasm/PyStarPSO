@@ -1,4 +1,4 @@
-from numpy import log, tile, where
+from numpy import log, where
 from numpy.typing import ArrayLike
 
 from star_pso.utils import VOptions
