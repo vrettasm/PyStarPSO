@@ -251,12 +251,14 @@ class GenericPSO:
 
         if use_best:
             # Extract the best positions and convert to numpy array.
-            all_positions = np.array([item.best_position for item in sorted(population,
-                                                                            key=attrgetter("best_value"))])
+            all_positions = np.array([item.best_position
+                                      for item in sorted(population,
+                                                         key=attrgetter("best_value"))])
         else:
             # Extract the positions and convert to numpy array.
-            all_positions = np.array([item.position for item in sorted(population,
-                                                                       key=attrgetter("value"))])
+            all_positions = np.array([item.position
+                                      for item in sorted(population,
+                                                         key=attrgetter("value"))])
         # _end_if_
 
         # Compute the probabilities.
