@@ -90,8 +90,8 @@ class QuantumPSO(GenericPSO):
         p_offset = beta_coefficient * (m_best - x_current) * log(param_u)
 
         # Select the directions at random.
-        direction = where(self.rng.random((self.n_rows,
-                                           self.n_cols)) < 0.5, -1.0, 1.0)
+        direction = where(self.rng.random(arr_shape) < 0.5, -1.0, 1.0)
+
         # Perform all operations in place.
         p_best += direction * p_offset
 
