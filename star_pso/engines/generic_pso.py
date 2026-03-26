@@ -45,7 +45,7 @@ class GenericPSO:
     """
 
     # Auxiliary constant.
-    NUMPY_EPS = np.finfo(float).eps
+    NUMPY_EPS: float = np.finfo(float).eps
     """
     Declare a constant eps for the whole class.
     """
