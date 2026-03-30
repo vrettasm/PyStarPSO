@@ -45,7 +45,7 @@ class Swarm:
         self._population = deepcopy(population) if copy else population
 
         # Set the default value for the categorical flag.
-        self._has_categorical = False
+        self._has_categorical: bool = False
 
         # This ensures that in case of JatParticles the
         # flag will be set accurately.
