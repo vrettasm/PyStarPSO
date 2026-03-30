@@ -55,7 +55,7 @@ def check_velocity_parameters(options: dict) -> None:
         # _end_if_
 # _end_def_
 
-def time_it(func):
+def time_it(func: Callable):
     """
     Timing decorator function.
 

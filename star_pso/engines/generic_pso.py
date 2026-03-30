@@ -415,7 +415,7 @@ class GenericPSO:
         positions = self._get_typed_positions()
 
         # Get a local copy of the objective function.
-        func = self._objective_func
+        func: Callable = self._objective_func
 
         # Local copy of iteration variable.
         current_iter: int = self._iteration
@@ -434,7 +434,7 @@ class GenericPSO:
         # _end_if_
 
         # Flag to indicate if a solution has been found.
-        found_solution = False
+        found_solution: bool = False
 
         # Initialize f_max.
         f_max = -inf

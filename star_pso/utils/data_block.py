@@ -115,7 +115,7 @@ class DataBlock:
         self._valid_set = valid_set
     # _end_def_
 
-    def _copy_to_scalar(self, x) -> None:
+    def _copy_to_scalar(self, x: Number) -> None:
         """
         Simple copy to scalar method. It is used to provide
         a dynamic interface when copy to the best position.
