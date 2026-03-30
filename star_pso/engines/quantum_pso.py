@@ -54,7 +54,7 @@ class QuantumPSO(GenericPSO):
         :return: None.
         """
         # Hardcode the contraction / expansion coefficient.
-        beta_coefficient = 0.5
+        beta_coefficient: float = 0.5
 
         # Get the shape of the velocity array.
         arr_shape = (self.n_rows, self.n_cols)
