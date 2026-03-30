@@ -127,7 +127,7 @@ class DataBlock:
         self._best_position = x
     # _end_def_
 
-    def _copy_to_array(self, x) -> None:
+    def _copy_to_array(self, x: NDArray) -> None:
         """
         Simple copy to array method. It is used to provide
         a dynamic interface when copy to the best position.
