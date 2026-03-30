@@ -6,7 +6,7 @@ from collections.abc import Iterable
 
 import numpy as np
 from numpy import array
-from numpy.typing import ArrayLike
+from numpy.typing import ArrayLike, NDArray
 from numpy.random import (default_rng, Generator)
 
 from star_pso.utils import ScalarOrArray
