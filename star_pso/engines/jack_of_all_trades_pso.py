@@ -15,7 +15,7 @@ from star_pso.utils.auxiliary import (BlockType,
                                       SpecialMode, spread_methods)
 # Local fast version of sum method.
 @njit(fastmath=True)
-def fast_sum(x: NDArray) -> NDArray:
+def fast_sum(x: NDArray) -> float:
     """
     Local auxiliary function that is used
     to sum the values of input array 'x'.
