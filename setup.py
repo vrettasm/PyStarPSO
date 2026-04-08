@@ -5,7 +5,7 @@ with open("README.md", encoding="utf8") as readme_file:
 
 setup(
     name='starpso',
-    version='0.1.0',
+    version='0.1.2',
     author='Michalis Vrettas, PhD',
     author_email='michail.vrettas@gmail.com',
     description='Particle Swarm Optimization algorithms toolbox in Python3',
