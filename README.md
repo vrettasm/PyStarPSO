@@ -3,7 +3,7 @@
 ![Logo](./logo/main_logo.png)
 
 [![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint)
-[![PyPI](https://img.shields.io/pypi/v/starpso.svg)](https://pypi.org/project/starpso/)
+[![PyPI](https://img.shields.io/pypi/v/starpso.svg)](https://pypi.org/project/starpso/0.1.2/)
 [![Supports Python 3.10](https://img.shields.io/badge/python-3.10-blue?logo=python)](https://www.python.org/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
