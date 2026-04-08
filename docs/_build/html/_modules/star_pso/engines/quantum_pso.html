@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>star_pso.engines.quantum_pso &mdash; StarPSO 0.1.0 documentation</title>
+  <title>star_pso.engines.quantum_pso &mdash; StarPSO 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../_static/documentation_options.js?v=92734c54"></script>
       <script src="../../../_static/doctools.js?v=9a2dae69"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -70,7 +70,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for star_pso.engines.quantum_pso</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">tile</span><span class="p">,</span> <span class="n">where</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">where</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">VOptions</span>
@@ -130,7 +130,7 @@
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Hardcode the contraction / expansion coefficient.</span>
-        <span class="n">beta_coefficient</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="n">beta_coefficient</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span>
 
         <span class="c1"># Get the shape of the velocity array.</span>
         <span class="n">arr_shape</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">)</span>
@@ -153,9 +153,11 @@
         <span class="c1"># Extract the global best position.</span>
         <span class="n">g_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">best_particle</span><span class="p">()</span><span class="o">.</span><span class="n">position</span>
 
-        <span class="c1"># Construct the &#39;p_best&#39;.</span>
+        <span class="c1"># Construct the &#39;p_best&#39; (in-place).</span>
         <span class="n">p_best</span> <span class="o">*=</span> <span class="n">param_phi</span>
-        <span class="n">p_best</span> <span class="o">+=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">param_phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">tile</span><span class="p">(</span><span class="n">g_best</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># Element-wise multiplication using broadcasting.</span>
+        <span class="n">p_best</span> <span class="o">+=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">param_phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">g_best</span>
 
         <span class="c1"># Ensure there are no zero values that would raise</span>
         <span class="c1"># an error below when computing log(param_u). This</span>
@@ -166,8 +168,8 @@
         <span class="n">p_offset</span> <span class="o">=</span> <span class="n">beta_coefficient</span> <span class="o">*</span> <span class="p">(</span><span class="n">m_best</span> <span class="o">-</span> <span class="n">x_current</span><span class="p">)</span> <span class="o">*</span> <span class="n">log</span><span class="p">(</span><span class="n">param_u</span><span class="p">)</span>
 
         <span class="c1"># Select the directions at random.</span>
-        <span class="n">direction</span> <span class="o">=</span> <span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span>
-                                           <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">direction</span> <span class="o">=</span> <span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">arr_shape</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
         <span class="c1"># Perform all operations in place.</span>
         <span class="n">p_best</span> <span class="o">+=</span> <span class="n">direction</span> <span class="o">*</span> <span class="n">p_offset</span>
 
