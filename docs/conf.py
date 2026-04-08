@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('..'))
 project = 'StarPSO'
 copyright = '2025, Michail D. Vrettas'
 author = 'Michail D. Vrettas'
-release = '0.1.0'
+release = '0.1.2'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
