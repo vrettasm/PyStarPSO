@@ -319,9 +319,29 @@ def kl_divergence_array(p: NDArray, q: NDArray) -> NDArray:
 
     :return: (NDArray) Kullback-Leibler divergence.
     """
-    return np.sum(np.where(p != 0.0,
-                           np.where(q != 0.0,
-                                    p * np.log(p / q), np.nan), 0.0), axis=1)
+    # Get the shape of the input arrays.
+    n_rows, n_cols = p.shape
+
+    # Preallocate the return array, with the
+    # correct type and shape.
+    results = np.empty(n_rows, dtype=float)
+
+    # Calculate the KL by rows.
+    for i in range(n_rows):
+        row_sum = 0.0
+        for j in range(n_cols):
+            pi = p[i, j]
+            qi = q[i, j]
+            if pi > 0.0:
+                if qi <= 0.0:
+                    # Exit inner loop for this row
+                    row_sum = np.nan
+                    break
+                # _end_if_
+                row_sum += pi * np.log(pi / qi)
+        results[i] = row_sum
+    # _end_for_
+    return results
 # _end_def_
 
 @njit
