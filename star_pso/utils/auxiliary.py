@@ -537,7 +537,7 @@ def nb_median_taxicab_distance(x_pos: NDArray,
     return float(np.median(x_dist))
 # _end_def_
 
-@njit
+@njit(fastmath=True, nogil=True)
 def nb_median_kl_divergence(x_pos: NDArray,
                             normal: bool = False) -> float:
     """
