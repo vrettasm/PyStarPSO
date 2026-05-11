@@ -344,7 +344,7 @@ def kl_divergence_array(p: NDArray, q: NDArray) -> NDArray:
     return results
 # _end_def_
 
-@njit
+@njit(fastmath=True, nogil=True)
 def nb_median_hamming_distance(x_pos: NDArray,
                                normal: bool = False) -> float:
     """
