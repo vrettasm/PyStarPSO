@@ -367,27 +367,43 @@ def nb_median_hamming_distance(x_pos: NDArray,
 
     :return: the (normalized) median Hamming distance value.
     """
-    # Get the columns size.
-    n_cols = x_pos.shape[1]
+    # Get the shape of the input array.
+    n_rows, n_cols = x_pos.shape
 
-    # Initialize the counter.
-    total_diff = []
+    # Pre-calculate the number of pairwise
+    # distances: n*(n-1)/2
+    n_pairs = (n_rows * (n_rows - 1)) // 2
 
-    # Count the non-identical positions.
-    for i, p in enumerate(x_pos):
-        total_diff.extend(np.count_nonzero(p != x_pos[i + 1:], axis=1))
+    # Preallocate once the buffer array.
+    x_diff = np.empty(n_pairs, dtype=float)
+
+    # Use a normal range on the outer loop.
+    for i in range(n_rows - 1):
+        # Calculate the starting index in the
+        # flat results array for this row.
+        start_idx = i * n_rows - (i * (i + 1)) // 2
+
+        for k in range(i + 1, n_rows):
+            # Reset the counter.
+            diff_count = 0
+
+            for j in range(n_cols):
+                # Count the non-identical positions.
+                if x_pos[i, j] != x_pos[k, j]:
+                    diff_count += 1
+
+            # Convert the difference to float to ensure
+            # the possible division (normal) is correct.
+            val = float(diff_count)
+            if normal:
+                # In this case the number of columns represents
+                # the  maximum  hamming  distance where all the
+                # positions between two particles are different.
+                val /= n_cols
+
+            # Assign the value.
+            x_diff[start_idx + (k - i - 1)] = val
     # _end_for_
-
-    # Convert the list to an array of floats.
-    x_diff = np.array([float(k) for k in total_diff])
-
-    # Check for normalization.
-    if normal:
-        # In this case the number of columns represents
-        # the  maximum  hamming  distance where all the
-        # positions between two particles are different.
-        x_diff /= n_cols
-    # _end_if_
 
     # Return the median value.
     return np.median(x_diff).item()
