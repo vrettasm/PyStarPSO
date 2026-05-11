@@ -212,7 +212,7 @@ def identify_global_optima(swarm_population: list[Particle], epsilon: float = 1.
 
         # Check if the fitness is near the global
         # optimal value (within error - epsilon).
-        if fabs(f_opt - px.value) <= epsilon:
+        if fabs(f_opt - px.value) <= epsilon: # type: ignore
 
             # Check if the particle is already
             # in the optimal particles list.
