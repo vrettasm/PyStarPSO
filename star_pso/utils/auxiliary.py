@@ -301,7 +301,7 @@ def kl_divergence_item(p: NDArray, q: NDArray) -> float:
     return res
 # _end_def_
 
-@njit
+@njit(fastmath=True, nogil=True)
 def kl_divergence_array(p: NDArray, q: NDArray) -> NDArray:
     """
     Calculates the Kullback-Leibler divergence between two distributions.
