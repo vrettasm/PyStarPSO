@@ -406,7 +406,7 @@ def nb_median_hamming_distance(x_pos: NDArray,
     # _end_for_
 
     # Return the median value.
-    return np.median(x_diff).item()
+    return float(np.median(x_diff))
 # _end_def_
 
 @njit(fastmath=True, nogil=True)
