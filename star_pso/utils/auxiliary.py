@@ -261,7 +261,7 @@ def linear_rank_probabilities(p_size: int) -> tuple[NDArray, float]:
 
     # Calculate the linear ranked probabilities of each
     # particle in the swarm using their ranking position.
-    probs = np.arange(1, p_size + 1) / sum_ranked_values
+    probs = np.arange(1, p_size + 1, dtype=float) / sum_ranked_values
 
     # Return the probs and their sum.
     return probs, probs.sum()
