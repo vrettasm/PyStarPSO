@@ -169,10 +169,12 @@ def cost_function(func: Callable = None, minimize: bool = False):
         # the termination requirements.
         if isinstance(result, tuple) and len(result) == 2:
 
-            f_value, solution_is_found = result[0], bool(result[1])
+            f_value: float = float(result[0])
+            solution_is_found: bool = bool(result[1])
         else:
-
-            f_value, solution_is_found = result, False
+            # noinspection PyTypeChecker
+            f_value: float = float(result)
+            solution_is_found: bool = False
         # _end_if_
 
         return {"f_value": -f_value if minimize else f_value,
