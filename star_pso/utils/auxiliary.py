@@ -311,7 +311,7 @@ def kl_divergence_array(p: NDArray, q: NDArray) -> NDArray:
     sum to one.
 
     This method is equivalent to entropy(p, q, axis=1) from scipy_stats,
-    only it's around 10x faster.
+    only it's much faster.
 
     :param p: (NDArray) probability distribution.
 
