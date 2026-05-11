@@ -439,7 +439,7 @@ def nb_centroid(x_pos: NDArray) -> NDArray:
     return centroid
 # _end_for_
 
-@njit
+@njit(fastmath=True, nogil=True)
 def nb_median_euclidean_distance(x_pos: NDArray,
                                  normal: bool = False) -> float:
     """
@@ -457,24 +457,34 @@ def nb_median_euclidean_distance(x_pos: NDArray,
 
     :return: the median Euclidean distance.
     """
+    # Get the shape information.
+    n_rows, n_cols = x_pos.shape
 
     # Calculate the centroid.
-    # NOTE: We use this instead of x_pos.mean(axis=0) because in
-    # 'no python mode' numba does not support the 'axis' option.
-    x_centroid = np.sum(x_pos, axis=0) / len(x_pos)
+    x_centroid = nb_centroid(x_pos)
 
-    # Get the distances from their centroid.
-    x_dist = np.sqrt(np.sum((x_centroid - x_pos) ** 2, axis=1))
+    # Pre-allocate distances array.
+    x_dist = np.empty(n_rows, dtype=float)
 
-    # Find the maximum distance.
-    d_max = x_dist.max()
+    # Calculate Euclidean distances in a single loop.
+    for i in range(n_rows):
+        sq_sum = 0.0
+        for j in range(n_cols):
+            diff = x_pos[i, j] - x_centroid[j]
+            sq_sum += diff * diff
+        x_dist[i] = np.sqrt(sq_sum)
+    # _end_for_
 
-    # Normalize the distances with d_max.
-    if normal and d_max != 0.0:
-        x_dist /= d_max
+    # Handle normalization and max distance.
+    if normal:
+        # Find the max value.
+        d_max = x_dist.max()
+
+        if d_max > 0.0:
+            x_dist /= d_max
     # _end_if_
 
-    # Return the median value.
+    # Return median value.
     return np.median(x_dist).item()
 # _end_def_
 
@@ -498,9 +508,7 @@ def nb_median_taxicab_distance(x_pos: NDArray,
     """
 
     # Calculate the centroid.
-    # NOTE: We use this instead of x_pos.mean(axis=0) because in
-    # 'no python mode' numba does not support the 'axis' option.
-    x_centroid = np.sum(x_pos, axis=0) / len(x_pos)
+    x_centroid = nb_centroid(x_pos)
 
     # Get the distances from their centroid.
     x_dist = np.sum(np.abs(x_centroid - x_pos), axis=1)
@@ -536,7 +544,7 @@ def nb_median_kl_divergence(x_pos: NDArray,
     n_rows = x_pos.shape[0]
 
     # Compute the "centroid" distribution.
-    x_centroid = x_pos.sum(axis=0) / n_rows
+    x_centroid = nb_centroid(x_pos)
 
     # Normalize to 1.0.
     x_centroid /= x_centroid.sum()
