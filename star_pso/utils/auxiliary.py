@@ -488,7 +488,7 @@ def nb_median_euclidean_distance(x_pos: NDArray,
     return float(np.median(x_dist))
 # _end_def_
 
-@njit
+@njit(fastmath=True, nogil=True)
 def nb_median_taxicab_distance(x_pos: NDArray,
                                normal: bool = False) -> float:
     """
@@ -506,23 +506,35 @@ def nb_median_taxicab_distance(x_pos: NDArray,
 
     :return: the median TaxiCab (Manhattan) distance.
     """
+    # Get the shape information.
+    n_rows, n_cols = x_pos.shape
 
     # Calculate the centroid.
     x_centroid = nb_centroid(x_pos)
 
-    # Get the distances from their centroid.
-    x_dist = np.sum(np.abs(x_centroid - x_pos), axis=1)
+    # Pre-allocate distances array.
+    x_dist = np.empty(n_rows, dtype=float)
 
-    # Find the maximum distance.
-    d_max = x_dist.max()
+    # Calculate Taxicab distances:
+    # L1 norm: sum(|pi - qi|)
+    for i in range(n_rows):
+        abs_sum = 0.0
+        for j in range(n_cols):
+            abs_sum += abs(x_pos[i, j] - x_centroid[j])
+        x_dist[i] = abs_sum
+    # _end_for_
 
-    # Normalize the distances with d_max.
-    if normal and d_max != 0.0:
-        x_dist /= d_max
+    # Handle normalization and max distance.
+    if normal:
+        # Find the max value.
+        d_max = x_dist.max()
+
+        if d_max > 0.0:
+            x_dist /= d_max
     # _end_if_
 
     # Return the median value.
-    return np.median(x_dist).item()
+    return float(np.median(x_dist))
 # _end_def_
 
 @njit
@@ -540,9 +552,6 @@ def nb_median_kl_divergence(x_pos: NDArray,
 
     :return: The median KL divergence of the swarm positions.
     """
-    # Get the number of rows.
-    n_rows = x_pos.shape[0]
-
     # Compute the "centroid" distribution.
     x_centroid = nb_centroid(x_pos)
 
