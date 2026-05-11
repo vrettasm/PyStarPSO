@@ -373,6 +373,36 @@ def nb_median_hamming_distance(x_pos: NDArray,
     return np.median(x_diff).item()
 # _end_def_
 
+@njit(fastmath=True, nogil=True)
+def nb_centroid(x_pos: NDArray) -> NDArray:
+    """
+    Provides an auxiliary optimized function that calculate
+    the centroid (i.e. x_pos.mean(axis=0)) for the input array.
+
+    :param x_pos: (array) A 2D numpy array (n_particles, n_features)
+                  representing the positions of the swarm.
+
+    :return: the mean values.
+    """
+    # Get the shape of the input.
+    n_rows, n_cols = x_pos.shape
+
+    # Pre-allocate the result array for
+    # the centroid (one value per column).
+    centroid = np.zeros(n_cols, dtype=x_pos.dtype)
+
+    # We could parallelize the outer loop across
+    # columns, with prange(), but for the moment
+    # we use the nornal range.
+    for j in range(n_cols):
+        col_sum = 0.0
+        for i in range(n_rows):
+            col_sum += x_pos[i, j]
+        centroid[j] = col_sum / n_rows
+
+    return centroid
+# _end_for_
+
 @njit
 def nb_median_euclidean_distance(x_pos: NDArray,
                                  normal: bool = False) -> float:
