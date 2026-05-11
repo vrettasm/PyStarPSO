@@ -557,22 +557,28 @@ def nb_median_kl_divergence(x_pos: NDArray,
     # Compute the "centroid" distribution.
     x_centroid = nb_centroid(x_pos)
 
-    # Normalize to 1.0.
-    x_centroid /= x_centroid.sum()
+    # 2. Normalize Centroid (Fused loop for speed)
+    total_sum = x_centroid.sum()
+    if total_sum == 0.0:
+        return 0.0
+
+    # In-place normalization using multiplication
+    x_centroid *= (1.0 / total_sum)
 
     # Compute the distances from the centroid.
     kl_dist = kl_divergence_array(x_pos, x_centroid)
 
-    # Find the maximum KL.
-    kl_max = kl_dist.max()
-
     # Check for normalization.
-    if normal and kl_max != 0.0:
-        kl_dist /= kl_max
+    if normal:
+        # Find the maximum KL.
+        kl_max = kl_dist.max()
+
+        if kl_max > 0.0:
+            kl_dist /= kl_max
     # _end_if_
 
     # Return the median value.
-    return np.median(kl_dist).item()
+    return float(np.median(kl_dist))
 # _end_def_
 
 @njit
