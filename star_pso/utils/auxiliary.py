@@ -651,7 +651,7 @@ Create a dictionary with block types as keys and their corresponding
 spread estimation methods as values.
 """
 
-@njit(fastmath=True)
+@njit(fastmath=True, nogil=True)
 def nb_cdist(x_pos: NDArray, scaled: bool = False) -> NDArray:
     """
     This is equivalent to the scipy.spatial.distance.cdist method
