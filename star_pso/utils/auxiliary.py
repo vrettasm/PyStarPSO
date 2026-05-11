@@ -267,7 +267,7 @@ def linear_rank_probabilities(p_size: int) -> tuple[NDArray, float]:
     return probs, probs.sum()
 # _end_def_
 
-@njit
+@njit(fastmath=True, nogil=True)
 def kl_divergence_item(p: NDArray, q: NDArray) -> float:
     """
     Calculates the Kullback-Leibler divergence between two distributions.
@@ -277,7 +277,7 @@ def kl_divergence_item(p: NDArray, q: NDArray) -> float:
     sum to one.
 
     This method is equivalent to entropy(p, q) from scipy_stats, only it's
-    around 10x faster.
+    much faster!
 
     :param p: (NDArray) probability distribution.
 
@@ -285,9 +285,20 @@ def kl_divergence_item(p: NDArray, q: NDArray) -> float:
 
     :return: (float) Kullback-Leibler divergence.
     """
-    return np.sum(np.where(p != 0.0,
-                           np.where(q != 0.0,
-                                    p * np.log(p / q), np.nan), 0.0)).item()
+    # Stores the final result.
+    res = 0.0
+
+    # Compute the KL[p,q].
+    for i in range(len(p)):
+        pi = p[i]
+        qi = q[i]
+        if pi > 0.0:
+            # Quick exit.
+            if qi <= 0.0:
+                return np.nan
+            res += pi * np.log(pi / qi)
+    # _end_for_
+    return res
 # _end_def_
 
 @njit
