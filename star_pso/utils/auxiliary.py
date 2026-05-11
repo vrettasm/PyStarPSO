@@ -485,7 +485,7 @@ def nb_median_euclidean_distance(x_pos: NDArray,
     # _end_if_
 
     # Return median value.
-    return np.median(x_dist).item()
+    return float(np.median(x_dist))
 # _end_def_
 
 @njit
