@@ -214,6 +214,7 @@ This work is described in:
 
 - [Michail D. Vrettas and Stefano Silvestri (2026)](https://openresearchsoftware.metajnl.com/articles/10.5334/jors.691)
 "StarPSO: A Unified Framework for Particle Swarm Optimization Across Multiple Problem Types".
+Journal of Open Research Software, VOl: 14, Issue:1, DOI: 10.5334/jors.691.
 
 You can find the latest documentation [here](https://pystarpso.readthedocs.io/en/latest/).
 
