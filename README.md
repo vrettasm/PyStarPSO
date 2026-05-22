@@ -212,9 +212,8 @@ is generalized and can solve any number of dimensions. Also, the "Rastrigin" fun
 
 This work is described in:
 
-- [Michail D. Vrettas and Stefano Silvestri (2026)]
-
-"StarPSO: A Unified Framework for Particle Swarm Optimization Across Multiple Problem Types" (submitted).
+- [Michail D. Vrettas and Stefano Silvestri (2026)](https://openresearchsoftware.metajnl.com/articles/10.5334/jors.691)
+"StarPSO: A Unified Framework for Particle Swarm Optimization Across Multiple Problem Types".
 
 You can find the latest documentation [here](https://pystarpso.readthedocs.io/en/latest/).
 
