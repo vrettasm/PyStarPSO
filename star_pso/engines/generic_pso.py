@@ -205,8 +205,7 @@ class GenericPSO:
 
     def disable_parameters_update(self) -> None:
         """
-        Set the _allow_parameters_to_update
-        to False.
+        Set the _allow_parameters_to_update to False.
 
         :return: None
         """
