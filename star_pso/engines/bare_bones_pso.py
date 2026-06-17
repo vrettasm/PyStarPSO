@@ -1,5 +1,5 @@
 from numpy import abs as np_abs
-from numpy.typing import ArrayLike
+from numpy.typing import NDArray, ArrayLike
 
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
@@ -56,14 +56,14 @@ class BareBonesPSO(GenericPSO):
         :return: None.
         """
         # Get the (Global / Local / FIPSO) best positions.
-        g_best = self.get_local_best_positions(params.mode.lower())
+        g_best: NDArray = self.get_local_best_positions(params.mode.lower())
 
         # Extract the best (historical) positions.
-        p_best = self.swarm.best_positions_as_array()
+        p_best: NDArray = self.swarm.best_positions_as_array()
 
         # Compute the means: "m_array".
         # This produces an: (n_rows, n_cols) array.
-        m_array = 0.5 * (p_best + g_best)
+        m_array: NDArray = 0.5 * (p_best + g_best)
 
         # Compute the absolute differences: "s_array".
         s_array = np_abs(p_best - g_best)
@@ -72,7 +72,7 @@ class BareBonesPSO(GenericPSO):
         s_array[s_array == 0.0] = BareBonesPSO.NUMPY_EPS
 
         # Draw standard normal values N(0, 1).
-        z = self.rng.normal(size=(self.n_rows, self.n_cols))
+        z: NDArray = self.rng.normal(size=(self.n_rows, self.n_cols))
 
         # Generate the Gaussian values with the required mean
         # and standard deviation. Do the operations in place.
