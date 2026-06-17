@@ -12,7 +12,7 @@ from star_pso.utils.auxiliary import (SpecialMode,
                                       nb_clip_inplace,
                                       nb_median_kl_divergence)
 # Local fast version of sum method.
-@njit(fastmath=True)
+@njit(cache=True, nogil=True, fastmath=True)
 def fast_sum(x: NDArray) -> float:
     """
     Local auxiliary function that is used
