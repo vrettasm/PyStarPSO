@@ -337,7 +337,7 @@ class CategoricalPSO(GenericPSO):
         positions = self.swarm.positions_as_array()
 
         # Feature data holder.
-        field = defaultdict(list)
+        field: dict = defaultdict(list)
 
         # Extract the data for each
         # feature block separately.
@@ -347,7 +347,7 @@ class CategoricalPSO(GenericPSO):
         # _end_for_
 
         # Preallocate a vector (one for each field).
-        per_field = np.empty(len(field))
+        per_field: NDArray = np.empty(len(field))
 
         # Calculate the spread per field.
         for n, data in field.items():
