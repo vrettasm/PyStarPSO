@@ -216,9 +216,11 @@ class JackOfAllTradesPSO(GenericPSO):
             # Extract only their positions and convert to numpy array.
             # Due to the different shapes of the variables we need to
             # set the dtype as object (instead of float).
-            all_positions = np.array([item.position
-                                      for item in sorted(self.swarm.population,
-                                                         key=attrgetter("value"))], dtype=object)
+            all_positions = np.array([
+                item.position for item in sorted(self.swarm.population,
+                                                 key=attrgetter("value"))
+            ], dtype=object)
+
             # Compute the linear rank probability weights.
             rank_weights, _ = linear_rank_probabilities(self.swarm.size)
 
