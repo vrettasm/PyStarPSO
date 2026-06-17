@@ -85,7 +85,7 @@ class BinaryPSO(GenericPSO):
         uniform_values = GenericPSO.rng.random(size=(self.n_rows, self.n_cols),
                                                dtype=float)
         # Create a matrix with zeros.
-        new_positions = np.zeros_like(uniform_values, dtype=int)
+        new_positions: NDArray = np.zeros_like(uniform_values, dtype=int)
 
         # Compute the logistic values.
         logistic_values = fast_logistic(self._velocities)
