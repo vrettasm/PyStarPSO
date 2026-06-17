@@ -2,14 +2,15 @@ from os import cpu_count
 from copy import deepcopy
 from operator import attrgetter
 from math import inf, fabs, isclose
-from collections import deque, defaultdict
 
-from typing import Callable
-from joblib import Parallel, delayed
+from typing import Callable, Optional
+from collections import deque, defaultdict
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 from numpy.random import default_rng, Generator
+
+from joblib import Parallel, delayed
 
 from star_pso.engines import logger
 from star_pso.utils import VOptions
@@ -86,10 +87,10 @@ class GenericPSO:
         self._swarm = deepcopy(initial_swarm) if copy else initial_swarm
 
         # Number of particles.
-        self._n_rows = len(self._swarm)
+        self._n_rows: int = len(self._swarm)
 
         # Size (length) of particle.
-        self._n_cols = len(self._swarm[0])
+        self._n_cols: int = len(self._swarm[0])
 
         # Make sure the fitness function is indeed callable.
         if not callable(obj_func):
@@ -120,20 +121,20 @@ class GenericPSO:
         if n_cpus is None:
 
             # This is the default option.
-            self._n_cpus = max(1, GenericPSO.MAX_CPUs-1)
+            self._n_cpus: int = max(1, GenericPSO.MAX_CPUs-1)
         else:
 
             # Assign the  requested number, making sure we have
             # enough CPUs and the value entered has the correct
             # type.
-            self._n_cpus = max(1, min(GenericPSO.MAX_CPUs-1, int(n_cpus)))
+            self._n_cpus: int = max(1, min(GenericPSO.MAX_CPUs-1, int(n_cpus)))
         # _end_if_
 
         # Log the number of CPUs.
         logger.debug(f"{self.__class__.__name__} uses {self.n_cpus} CPUs.")
 
         # Dictionary with statistics.
-        self._stats = defaultdict(list)
+        self._stats: dict = defaultdict(list)
 
         # Placeholder.
         self._items = None
@@ -142,16 +143,16 @@ class GenericPSO:
         self._velocities = None
 
         # Set the function evaluation counter to zero.
-        self._f_evals = 0
+        self._f_evals: int = 0
 
         # Set the special mode to Normal.
         self._special_mode = SpecialMode.NORMAL
 
         # Set the iteration counter to zero.
-        self._iteration = 0
+        self._iteration: int = 0
 
         # Set the flag to True.
-        self._allow_parameters_to_update = True
+        self._allow_parameters_to_update: bool = True
 
         # Log the object initialization.
         logger.debug(f"{self.__class__.__name__} initialization complete.")
@@ -235,9 +236,9 @@ class GenericPSO:
     @staticmethod
     def fully_informed(population: list[SwarmParticle], use_best: bool = False) -> NDArray:
         """
-        Uses the input population and computes a weighted average position according to
-        the linear ranking of the particles. Those with higher function value also have
-        bigger weight in the calculation.
+        Uses the input population and computes a weighted average position according
+        to the linear ranking of the particles. Those with higher function value also
+        have bigger weight in the calculation.
 
         :param population: list of particles which we want to consider in the calculation
                            of the fully informed best position.
@@ -261,8 +262,11 @@ class GenericPSO:
                                                          key=attrgetter("value"))])
         # _end_if_
 
+        # Get the size of the population.
+        pop_size: int = len(all_positions)
+
         # Compute the probabilities.
-        p_weights, p_weights_sum = linear_rank_probabilities(len(all_positions))
+        p_weights, p_weights_sum = linear_rank_probabilities(pop_size)
 
         # Take a "weighted average" from all the positions of the swarm.
         w_best = np.multiply(all_positions,
@@ -439,13 +443,13 @@ class GenericPSO:
         found_solution: bool = False
 
         # Initialize f_max.
-        f_max = -inf
+        f_max: float = -inf
 
         # Initialize the optimal position.
-        x_opt = None
+        x_opt: NDArray = None
 
         # Stores the function values.
-        fx_array = np.empty(self.n_rows, dtype=float)
+        fx_array: NDArray = np.empty(self.n_rows, dtype=float)
 
         # Update all particles with their new objective function values.
         for n, (p, result) in enumerate(zip(self._swarm.population, f_evaluation)):
