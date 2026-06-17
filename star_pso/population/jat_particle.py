@@ -25,7 +25,7 @@ class JatParticle:
         Default constructor of the JatParticle class.
         """
         # Define the particle as a list of DataBlocks.
-        self._container = container
+        self._container: list = container
 
         # Make sure it's the correct type.
         if not isinstance(value, float):
@@ -33,7 +33,7 @@ class JatParticle:
         # _end_if_
 
         # Assign the initial value.
-        self._value = value
+        self._value: float = value
 
         # Make sure it's the correct type.
         if not isinstance(best_value, float):
@@ -41,7 +41,7 @@ class JatParticle:
         # _end_if_
 
         # Assign the initial best value.
-        self._best_value = best_value
+        self._best_value: float = best_value
     # _end_def_
 
     @property
@@ -136,7 +136,7 @@ class JatParticle:
 
         :return: None.
         """
-        self._value = new_value
+        self._value: float = new_value
     # _end_def_
 
     @property
@@ -158,7 +158,7 @@ class JatParticle:
 
         :return: None.
         """
-        self._best_value = new_value
+        self._best_value: float = new_value
     # _end_def_
 
     def reset_position(self) -> None:

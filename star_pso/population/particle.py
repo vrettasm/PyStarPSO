@@ -1,8 +1,8 @@
 from math import inf
 from copy import deepcopy
 
-from numpy.typing import ArrayLike
 from numpy import copyto as copy_to
+from numpy.typing import NDArray, ArrayLike
 from numpy import array, asarray, array_equal
 
 from star_pso.utils import ScalarOrArray
@@ -29,16 +29,16 @@ class Particle:
         :return: None.
         """
         # Set the initial particle position to a vector.
-        self._position = array(initial_position, copy=True)
+        self._position: NDArray = array(initial_position, copy=True)
 
         # Initialize the best (historical) position.
-        self._best_position = array(initial_position, copy=True)
+        self._best_position: NDArray = array(initial_position, copy=True)
 
         # Initialize the best (historical) value to -Inf.
-        self._best_value = -inf
+        self._best_value: float = -inf
 
         # Initially the function value is set to -Inf.
-        self._value = -inf
+        self._value: float = -inf
     # _end_def_
 
     @property
