@@ -1,7 +1,7 @@
 import time
 from enum import Enum
-from math import fabs
 from typing import Callable
+from math import fabs, isclose
 from functools import (wraps,
                        partial,
                        lru_cache)
@@ -288,7 +288,7 @@ def kl_divergence_item(p: NDArray, q: NDArray) -> float:
     :return: (float) Kullback-Leibler divergence.
     """
     # Stores the final result.
-    res = 0.0
+    res: float = 0.0
 
     # Compute the KL[p,q].
     for i in range(len(p)):
@@ -324,16 +324,18 @@ def kl_divergence_array(p: NDArray, q: NDArray) -> NDArray:
     # Get the shape of the input arrays.
     n_rows, n_cols = p.shape
 
-    # Preallocate the return array, with the
-    # correct type and shape.
-    results = np.empty(n_rows, dtype=float)
+    # Preallocate the return array, with the correct
+    # type and shape.
+    results: NDArray = np.empty(n_rows, dtype=float)
 
     # Calculate the KL by rows.
     for i in range(n_rows):
-        row_sum = 0.0
+        row_sum: float = 0.0
+
         for j in range(n_cols):
             pi = p[i, j]
             qi = q[i, j]
+
             if pi > 0.0:
                 if qi <= 0.0:
                     # Exit inner loop for this row
@@ -374,10 +376,10 @@ def nb_median_hamming_distance(x_pos: NDArray,
 
     # Pre-calculate the number of pairwise
     # distances: n*(n-1)/2
-    n_pairs = (n_rows * (n_rows - 1)) // 2
+    n_pairs: int = (n_rows * (n_rows - 1)) // 2
 
     # Preallocate once the buffer array.
-    x_diff = np.empty(n_pairs, dtype=float)
+    x_diff: NDArray = np.empty(n_pairs, dtype=float)
 
     # Use a normal range on the outer loop.
     for i in range(n_rows - 1):
@@ -387,7 +389,7 @@ def nb_median_hamming_distance(x_pos: NDArray,
 
         for k in range(i + 1, n_rows):
             # Reset the counter.
-            diff_count = 0
+            diff_count: int = 0
 
             for j in range(n_cols):
                 # Count the non-identical positions.
@@ -396,7 +398,7 @@ def nb_median_hamming_distance(x_pos: NDArray,
 
             # Convert the difference to float to ensure
             # the possible division (normal) is correct.
-            val = float(diff_count)
+            val: float = float(diff_count)
             if normal:
                 # In this case the number of columns represents
                 # the  maximum  hamming  distance where all the
@@ -425,17 +427,19 @@ def nb_centroid(x_pos: NDArray) -> NDArray:
     # Get the shape of the input.
     n_rows, n_cols = x_pos.shape
 
-    # Pre-allocate the result array for
-    # the centroid (one value per column).
-    centroid = np.zeros(n_cols, dtype=x_pos.dtype)
+    # Pre-allocate the result array for the centroid
+    # (one value per column).
+    centroid: NDArray = np.zeros(n_cols, dtype=x_pos.dtype)
 
     # We could parallelize the outer loop across
     # columns, with prange(), but for the moment
     # we use the nornal range.
     for j in range(n_cols):
-        col_sum = 0.0
+        col_sum: float = 0.0
+
         for i in range(n_rows):
             col_sum += x_pos[i, j]
+        # _end_for_
         centroid[j] = col_sum / n_rows
 
     return centroid
@@ -463,17 +467,20 @@ def nb_median_euclidean_distance(x_pos: NDArray,
     n_rows, n_cols = x_pos.shape
 
     # Calculate the centroid.
-    x_centroid = nb_centroid(x_pos)
+    x_centroid: NDArray = nb_centroid(x_pos)
 
     # Pre-allocate distances array.
-    x_dist = np.empty(n_rows, dtype=float)
+    x_dist: NDArray = np.empty(n_rows, dtype=float)
 
     # Calculate Euclidean distances in a single loop.
     for i in range(n_rows):
-        sq_sum = 0.0
+        sq_sum: float = 0.0
+
         for j in range(n_cols):
             diff = x_pos[i, j] - x_centroid[j]
             sq_sum += diff * diff
+        # _end_for_
+
         x_dist[i] = np.sqrt(sq_sum)
     # _end_for_
 
@@ -512,17 +519,20 @@ def nb_median_taxicab_distance(x_pos: NDArray,
     n_rows, n_cols = x_pos.shape
 
     # Calculate the centroid.
-    x_centroid = nb_centroid(x_pos)
+    x_centroid: NDArray = nb_centroid(x_pos)
 
     # Pre-allocate distances array.
-    x_dist = np.empty(n_rows, dtype=float)
+    x_dist: NDArray = np.empty(n_rows, dtype=float)
 
     # Calculate Taxicab distances:
     # L1 norm: sum(|pi - qi|)
     for i in range(n_rows):
-        abs_sum = 0.0
+        abs_sum: float = 0.0
+
         for j in range(n_cols):
             abs_sum += abs(x_pos[i, j] - x_centroid[j])
+        # _end_for_
+
         x_dist[i] = abs_sum
     # _end_for_
 
@@ -555,14 +565,15 @@ def nb_median_kl_divergence(x_pos: NDArray,
     :return: The median KL divergence of the swarm positions.
     """
     # Compute the "centroid" distribution.
-    x_centroid = nb_centroid(x_pos)
+    x_centroid: NDArray = nb_centroid(x_pos)
 
     # 2. Normalize Centroid (Fused loop for speed)
-    total_sum = x_centroid.sum()
-    if total_sum == 0.0:
+    total_sum: float = x_centroid.sum()
+
+    if isclose(total_sum, 0.0):
         return 0.0
 
-    # In-place normalization using multiplication
+    # In-place normalization using multiplication.
     x_centroid *= (1.0 / total_sum)
 
     # Compute the distances from the centroid.
@@ -683,7 +694,7 @@ def nb_cdist(x_pos: NDArray, scaled: bool = False) -> NDArray:
     # _end_if_
 
     # Create a square matrix with zeros.
-    dist_x = np.zeros((n_rows, n_rows), dtype=float)
+    dist_x: NDArray = np.zeros((n_rows, n_rows), dtype=float)
 
     # Iterate through all vectors.
     for i in range(n_rows):
@@ -693,5 +704,6 @@ def nb_cdist(x_pos: NDArray, scaled: bool = False) -> NDArray:
         # Since the array is symmetric store the result in the 'i-th' column too.
         dist_x[:, i] = dist_x[i, :]
     # _end_for_
+
     return dist_x
 # _end_def_
