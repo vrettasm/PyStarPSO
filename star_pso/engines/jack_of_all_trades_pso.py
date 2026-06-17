@@ -62,8 +62,8 @@ class JackOfAllTradesPSO(GenericPSO):
 
         # First we declare the velocities to be
         # an [n_rows x n_cols] array of objects.
-        self._velocities = np.empty(shape=(self.n_rows, self.n_cols),
-                                    dtype=object)
+        self._velocities: NDArray = np.empty(shape=(self.n_rows, self.n_cols),
+                                             dtype=object)
 
         # Call the random velocity generator.
         self.generate_uniform_velocities()
@@ -308,7 +308,7 @@ class JackOfAllTradesPSO(GenericPSO):
         positions = self.swarm.positions_as_list()
 
         # Feature data holder.
-        field = defaultdict(list)
+        field: dict = defaultdict(list)
 
         # Extract the data for each
         # feature block separately.
@@ -318,7 +318,7 @@ class JackOfAllTradesPSO(GenericPSO):
         # _end_for_
 
         # Preallocate a vector (one for each field).
-        per_field = np.empty(len(field))
+        per_field: NDArray = np.empty(len(field))
 
         # Calculate the spread per data field.
         for n, data in field.items():
