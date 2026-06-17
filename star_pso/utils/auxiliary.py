@@ -581,7 +581,7 @@ def nb_median_kl_divergence(x_pos: NDArray,
     return float(np.median(kl_dist))
 # _end_def_
 
-@njit
+@njit(cache=True, nogil=True)
 def nb_clip_inplace(x: NDArray,
                     x_min: float | NDArray,
                     x_max: float | NDArray) -> None:
@@ -599,7 +599,7 @@ def nb_clip_inplace(x: NDArray,
     np.clip(x, x_min, x_max, out=x)
 # _end_def_
 
-@njit
+@njit(cache=True, nogil=True)
 def nb_clip_array(x_new: NDArray,
                   lower_limit: float | NDArray,
                   upper_limit: float | NDArray) -> NDArray:
@@ -620,7 +620,7 @@ def nb_clip_array(x_new: NDArray,
                       upper_limit)
 # _end_def_
 
-@njit
+@njit(cache=True, nogil=True)
 def nb_clip_item(x_new: float | NDArray,
                  lower_limit: float | NDArray,
                  upper_limit: float | NDArray) -> int | float:
