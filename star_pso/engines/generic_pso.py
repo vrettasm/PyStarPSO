@@ -757,8 +757,9 @@ class GenericPSO:
     # _end_def_
 
     @time_it
-    def run(self, max_it: int = 1000, options: dict = None, parallel: bool = False,
-            reset_swarm: bool = False, f_tol: float = None, f_max_eval: int = None,
+    def run(self, max_it: int = 1000, options: Optional[dict] = None,
+            parallel: bool = False, reset_swarm: bool = False,
+            f_tol: Optional[float] = None, f_max_eval: Optional[int] = None,
             adapt_params: bool = False, verbose: bool = False) -> None:
         """
         Main method of the GenericPSO class that implements the optimization routine.
