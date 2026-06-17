@@ -430,7 +430,9 @@ class GenericPSO:
         else:
 
             # Evaluate all the particles in serial mode.
-            f_evaluation = [func(x, it=current_iter) for x in positions]
+            f_evaluation = [
+                func(x, it=current_iter) for x in positions
+            ]
         # _end_if_
 
         # Flag to indicate if a solution has been found.
