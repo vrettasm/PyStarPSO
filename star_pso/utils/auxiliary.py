@@ -245,6 +245,7 @@ def linear_rank_probabilities(p_size: int, eta: float = 1.5) -> tuple[NDArray, f
     NOTE: Probabilities are returned in ascending order.
 
     :param p_size: (int) population size.
+    :param eta: (float) pressure adjustment factor.
 
     :return: (array, float) rank probability distribution in ascending
              order along with their sum. Note: The sum should be one
