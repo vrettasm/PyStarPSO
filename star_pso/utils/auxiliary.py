@@ -248,8 +248,8 @@ def linear_rank_probabilities(p_size: int, eta: float = 1.5) -> tuple[NDArray, f
     :param eta: (float) pressure adjustment factor.
 
     :return: (array, float) rank probability distribution in ascending
-             order along with their sum. Note: The sum should be one
-             but due to small errors it might be less.
+             order along with their sum. NB: The sum should be one but
+             due to small errors it might be less.
     """
     # Sanity check.
     if not isinstance(p_size, int):
