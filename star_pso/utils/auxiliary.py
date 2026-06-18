@@ -236,9 +236,11 @@ def identify_global_optima(swarm_population: list[Particle], epsilon: float = 1.
 def linear_rank_probabilities(p_size: int, eta: float = 1.5) -> tuple[NDArray, float]:
     """
     Calculate the rank probability distribution over the population size.
-    The function is cached so repeated calls with the same input should
-    not recompute the same array since the population size of the swarm
-    is not expected to change.
+    The function is lru_cached so that repeated calls with the same input
+    should not recompute the same array, since the population size of the
+    chromosomes is not expected to change dynamically. The eta parameter
+    provides a means to adjust the pressure from total random (eta = 1.0)
+    to the highest possible rank (eta = 2.0).
 
     NOTE: Probabilities are returned in ascending order.
 
