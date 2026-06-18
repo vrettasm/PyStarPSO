@@ -1,10 +1,10 @@
 import time
 from enum import Enum
 from typing import Callable
-from math import fabs, isclose
-from functools import (wraps,
-                       partial,
-                       lru_cache)
+
+from math import (fabs, fsum, isclose)
+from functools import (wraps, partial, lru_cache)
+
 import numpy as np
 from numba import njit
 from numpy.linalg import norm
