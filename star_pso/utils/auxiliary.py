@@ -233,7 +233,7 @@ def identify_global_optima(swarm_population: list[Particle], epsilon: float = 1.
 # _end_def_
 
 @lru_cache(maxsize=64)
-def linear_rank_probabilities(p_size: int) -> tuple[NDArray, float]:
+def linear_rank_probabilities(p_size: int, eta: float = 1.5) -> tuple[NDArray, float]:
     """
     Calculate the rank probability distribution over the population size.
     The function is cached so repeated calls with the same input should
