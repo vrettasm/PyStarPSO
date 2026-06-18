@@ -261,15 +261,28 @@ def linear_rank_probabilities(p_size: int, eta: float = 1.5) -> tuple[NDArray, f
         raise ValueError("'p_size' must be a positive number.")
     # _end_if_
 
-    # Calculate the sum of all the ranked swarm particles.
-    sum_ranked_values = float(0.5 * p_size * (p_size + 1))
+    # Handle edge case where population size is 1.
+    if p_size == 1:
+        return np.array([1.0], dtype=float), 1.0
+    # _end_if_
 
-    # Calculate the linear ranked probabilities of each
-    # particle in the swarm using their ranking position.
-    probs = np.arange(1, p_size + 1, dtype=float) / sum_ranked_values
+    # Precompute constant invariants out of the
+    # loop to eliminate repetitive division.
+    base = (2.0 - eta) / p_size
+    step = (2.0 * (eta - 1.0)) / (p_size * (p_size - 1))
+
+    # Calculate the probabilities.
+    probabilities = [base + (i * step) for i in range(p_size)]
+
+    # Calculate the sum of probabilities.
+    total = fsum(probabilities)
+
+    # Normalize for minor numerical safety.
+    # The probability values are in ascending order.
+    probs = np.fromiter([p / total for p in probabilities], dtype=float)
 
     # Return the probs and their sum.
-    return probs, probs.sum()
+    return probs, fsum(probs)
 # _end_def_
 
 @njit(fastmath=True, nogil=True)
