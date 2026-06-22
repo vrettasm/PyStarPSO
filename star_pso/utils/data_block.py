@@ -301,10 +301,10 @@ class DataBlock:
         :return: a new random (integer) position.
         """
         # Ensure the random position stays within bounds.
-        return cls.rng.integers(low=0, high=1,
-                                endpoint=True,
+        return cls.rng.integers(low=0, high=2,
+                                endpoint=False,
                                 size=kwargs["n_vars"],
-                                dtype=int).item()
+                                dtype=np.uint8).item()
     # _end_def_
 
     @staticmethod
