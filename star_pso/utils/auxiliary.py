@@ -168,7 +168,7 @@ def cost_function(func: Callable = None, minimize: bool = False):
         # value should be boolean to signal that the solution meets
         # the termination requirements.
         if isinstance(result, tuple) and len(result) == 2:
-
+            # noinspection PyTypeChecker
             f_value: float = float(result[0])
             solution_is_found: bool = bool(result[1])
         else:
