@@ -114,8 +114,9 @@ class CategoricalPSO(GenericPSO):
 
     def generate_random_positions(self) -> None:
         """
-        Generate the population of particles positions setting
-        their probabilities to 1/L (for all possible L states).
+        Generate the population of particles positions
+        by setting their probabilities to 1/L (for all
+        possible L states).
 
         :return: None.
         """
