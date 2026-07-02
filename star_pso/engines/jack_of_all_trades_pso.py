@@ -136,8 +136,8 @@ class JackOfAllTradesPSO(GenericPSO):
                     # Replace the probabilities with an actual sample.
                     # WARNING: 'shuffle' option MUST be set to False!
                     positions[i][j] = JackOfAllTradesPSO.rng.choice(block.valid_set,
-                                                                    shuffle=False,
-                                                                    p=positions[i][j])
+                                                                    p=positions[i][j],
+                                                                    shuffle=False)
     # _end_def_
 
     def sample_permutation_values(self, positions: list[list]) -> None:
