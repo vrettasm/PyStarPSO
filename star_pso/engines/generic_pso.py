@@ -701,8 +701,8 @@ class GenericPSO:
 
         :return: True if the update happened, False otherwise.
         """
-        # Default return parameter.
-        have_been_updated = False
+        # Initialize the return parameter.
+        have_been_updated: bool = False
 
         # For the moment hardcode the min/max
         # values of the c1 and c2 parameters.
