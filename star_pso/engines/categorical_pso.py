@@ -296,7 +296,11 @@ class CategoricalPSO(GenericPSO):
                 # Ensure there will be at least one
                 # element with positive probability.
                 if np.all(np.isclose(x_j, 0.0)):
-                    x_j[GenericPSO.rng.integers(len(x_j))] = 1.0
+                    # Select a random position from the particle's length.
+                    random_position: int = GenericPSO.rng.integers(len(x_j))
+
+                    # Set it to one.
+                    x_j[random_position] = 1.0
                 # _end_if_
 
                 # Normalize to account for probabilities.
