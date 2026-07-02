@@ -82,11 +82,12 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Generate random vectors in U(0, 1).
-        uniform_values = GenericPSO.rng.random(size=(self.n_rows, self.n_cols),
+        uniform_values = GenericPSO.rng.random(size=(self.n_rows,
+                                                     self.n_cols),
                                                dtype=float)
         # Create a matrix with zeros.
-        new_positions: NDArray = np.zeros_like(uniform_values, dtype=int)
-
+        new_positions: NDArray = np.zeros_like(uniform_values,
+                                               dtype=np.uint8)
         # Compute the logistic values.
         logistic_values = fast_logistic(self._velocities)
 
@@ -107,10 +108,10 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Generate random BINARY positions Bin(0, 1).
-        binary_positions = GenericPSO.rng.integers(0, 1,
-                                                   endpoint=True,
+        binary_positions = GenericPSO.rng.integers(0, 2,
                                                    size=(self.n_rows,
-                                                         self.n_cols))
+                                                         self.n_cols),
+                                                   dtype=np.uint8)
         # Assign the new positions in the swarm.
         self.swarm.set_positions(binary_positions)
     # _end_def_
