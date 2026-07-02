@@ -86,7 +86,7 @@ class QuantumPSO(GenericPSO):
         # Ensure there are no zero values that would raise
         # an error below when computing log(param_u). This
         # is very unlikely but it could happen.
-        param_u[param_u == 1.0e-256] = QuantumPSO.NUMPY_EPS
+        param_u[param_u <= 1.0e-256] = QuantumPSO.NUMPY_EPS
 
         # Compute the offset.
         p_offset = beta_coefficient * (m_best - x_current) * log(param_u)
