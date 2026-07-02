@@ -1,4 +1,5 @@
-from numpy import rint as np_rint
+import numpy as np
+from numpy import rint
 from numpy.typing import ArrayLike
 
 from star_pso.engines.generic_pso import GenericPSO
@@ -30,8 +31,9 @@ class IntegerPSO(GenericPSO):
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
         # Generate initial particle velocities.
-        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0, size=(self.n_rows,
-                                                                    self.n_cols))
+        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
+                                                  size=(self.n_rows,
+                                                        self.n_cols))
     # _end_def_
 
     def update_positions(self) -> None:
@@ -41,8 +43,8 @@ class IntegerPSO(GenericPSO):
         :return: None.
         """
         # Round the new positions and convert them to type int.
-        new_positions = np_rint(self.swarm.positions_as_array() +
-                                self._velocities).astype(int)
+        new_positions = rint(self.swarm.positions_as_array() +
+                             self._velocities).astype(np.int64)
 
         # Ensure the particle stays within bounds.
         nb_clip_inplace(new_positions,
@@ -66,7 +68,8 @@ class IntegerPSO(GenericPSO):
                                                     self.upper_bound,
                                                     endpoint=True,
                                                     size=(self.n_rows,
-                                                          self.n_cols))
+                                                          self.n_cols),
+                                                    dtype=np.int64)
         # Assign the new positions in the swarm.
         self.swarm.set_positions(integer_positions)
     # _end_def_
