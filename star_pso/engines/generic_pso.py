@@ -262,7 +262,7 @@ class GenericPSO:
         # and convert to numpy array.
         all_positions = np.array([
             item.best_position for item in sorted_population
-        ], dtype=float)
+        ])
 
         # Get the size of the population.
         pop_size: int = len(all_positions)
