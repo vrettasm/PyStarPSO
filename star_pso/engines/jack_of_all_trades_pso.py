@@ -5,8 +5,8 @@ import numpy as np
 from numba import njit
 from numpy.typing import NDArray
 from numpy import array as np_array
-from numpy import isscalar as np_isscalar
 from numpy import subtract as np_subtract
+from numpy import isscalar as np_is_scalar
 
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
@@ -231,7 +231,7 @@ class JackOfAllTradesPSO(GenericPSO):
             # account for probabilities.
             for i in range(self.n_cols):
                 # Avoid errors with scalar values.
-                if not np_isscalar(g_best[i]):
+                if not np_is_scalar(g_best[i]):
                     g_best[i] /= fast_sum(np_array(g_best[i]))
 
         elif params.mode.lower() == "g_best":
