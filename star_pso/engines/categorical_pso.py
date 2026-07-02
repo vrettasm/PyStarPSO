@@ -120,17 +120,17 @@ class CategoricalPSO(GenericPSO):
 
         :return: None.
         """
-        # Get the length of each set.
-        size_k = self.size_of_sets
+
+        # Precompute a single row template based on column sizes.
+        row_template = [
+            np.ones(size_k) / size_k for size_k in self.size_of_sets
+        ]
 
         # Reset the probabilities to uniform values.
         for i in range(self.n_rows):
             for j in range(self.n_cols):
-                # Get the length of the j-th set.
-                size_j = size_k[j]
-
                 # Set the variables uniformly.
-                self.swarm[i][j] = np.ones(size_j) / size_j
+                self.swarm[i][j] = row_template[j].copy()
     # _end_def_
 
     def sample_categorical_values(self, positions) -> None:
