@@ -268,18 +268,18 @@ def linear_rank_probabilities(p_size: int, eta: float = 1.5) -> tuple[NDArray, f
 
     # Precompute constant invariants out of the
     # loop to eliminate repetitive division.
-    base = (2.0 - eta) / p_size
-    step = (2.0 * (eta - 1.0)) / (p_size * (p_size - 1))
+    base: float = (2.0 - eta) / p_size
+    step: float = (2.0 * (eta - 1.0)) / (p_size * (p_size - 1))
 
     # Calculate the probabilities.
-    probabilities = [base + (i * step) for i in range(p_size)]
+    probabilities: list[float] = [base + (i * step) for i in range(p_size)]
 
     # Calculate the sum of probabilities.
-    total = fsum(probabilities)
+    total: float = fsum(probabilities)
 
     # Normalize for minor numerical safety.
     # The probability values are in ascending order.
-    probs = np.fromiter([p / total for p in probabilities], dtype=float)
+    probs: NDArray = np.fromiter([p / total for p in probabilities], dtype=float)
 
     # Return the probs and their sum.
     return probs, fsum(probs)
