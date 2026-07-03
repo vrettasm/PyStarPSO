@@ -73,8 +73,8 @@ class CategoricalPSO(GenericPSO):
             self._items: dict = {"sample_random_values":
                                      self.sample_permutation_values}
         else:
-            self._items = {"sample_random_values":
-                           self.sample_categorical_values}
+            self._items: dict = {"sample_random_values":
+                                     self.sample_categorical_values}
         # _end_if_
 
         # Set the special mode to Categorical.
