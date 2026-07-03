@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from math import inf
 from copy import deepcopy
 
@@ -206,7 +208,7 @@ class JatParticle:
         return len(self._container)
     # _end_def_
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: JatParticle) -> bool:
         """
         Compares the jat_particle of self with the other and
         returns True if they are identical, otherwise False.
@@ -230,7 +232,7 @@ class JatParticle:
         return self._container == other.container
     # _end_def_
 
-    def __deepcopy__(self, memo: dict) -> "JatParticle":
+    def __deepcopy__(self, memo: dict) -> JatParticle:
         """
         This custom method overrides the default deepcopy method.
 

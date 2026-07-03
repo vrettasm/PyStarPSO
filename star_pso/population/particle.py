@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from math import inf
 from copy import deepcopy
 
@@ -70,7 +72,7 @@ class Particle:
 
         :return: None.
         """
-        self._position = asarray(new_vector)
+        self._position: NDArray = asarray(new_vector)
     # _end_def_
 
     @property
@@ -143,7 +145,7 @@ class Particle:
         self._value = new_value
     # _end_def_
 
-    def __deepcopy__(self, memo: dict) -> "Particle":
+    def __deepcopy__(self, memo: dict) -> Particle:
         """
         This custom method overrides the default deepcopy method.
 
@@ -207,7 +209,7 @@ class Particle:
         return len(self._position)
     # _end_def_
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Particle) -> bool:
         """
         Compares the 'self' particle, with the 'other' particle and
         returns True if they have the same position otherwise False.
