@@ -69,7 +69,7 @@ class IntegerPSO(GenericPSO):
                                                     endpoint=True,
                                                     size=(self.n_rows,
                                                           self.n_cols),
-                                                    dtype=np.int64)
+                                                    dtype=int)
         # Assign the new positions in the swarm.
         self.swarm.set_positions(integer_positions)
     # _end_def_
