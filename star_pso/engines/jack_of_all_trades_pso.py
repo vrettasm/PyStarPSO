@@ -62,7 +62,8 @@ class JackOfAllTradesPSO(GenericPSO):
 
         # First we declare the velocities to be
         # an [n_rows x n_cols] array of objects.
-        self._velocities: NDArray = np.empty(shape=(self.n_rows, self.n_cols),
+        self._velocities: NDArray = np.empty(shape=(self.n_rows,
+                                                    self.n_cols),
                                              dtype=object)
 
         # Call the random velocity generator.
