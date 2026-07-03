@@ -236,9 +236,9 @@ class GenericPSO:
     @staticmethod
     def fully_informed(population: list[SwarmParticle], use_best: bool = False) -> NDArray:
         """
-        Uses the input population and computes a weighted average position according
-        to the linear ranking of the particles. Those with higher function value also
-        have bigger weight in the calculation.
+        Uses the input population and computes a weighted average position
+        according to the linear ranking of the particles. Those with higher
+        function value also have bigger weight in the calculation.
 
         :param population: list of particles which we want to consider in the calculation
                            of the fully informed best position.
