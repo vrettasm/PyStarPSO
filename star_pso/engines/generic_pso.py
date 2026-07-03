@@ -525,9 +525,8 @@ class GenericPSO:
         # Get the corresponding x_opt.
         x_opt = self._stats["x_opt"][i_opt]
 
-        # Ensure the index i_opt is returned
-        # as an integer (int).
-        return int(i_opt), f_opt, x_opt
+        # Cast the output explicitly to int, float.
+        return int(i_opt), float(f_opt), x_opt
     # _end_def_
 
     def reset_all(self) -> None:
