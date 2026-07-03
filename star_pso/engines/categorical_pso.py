@@ -133,7 +133,7 @@ class CategoricalPSO(GenericPSO):
                 self.swarm[i][j] = row_template[j].copy()
     # _end_def_
 
-    def sample_categorical_values(self, positions) -> None:
+    def sample_categorical_values(self, positions: list) -> None:
         """
         Samples an actual categorical position based on
         particle's probabilities and valid set for each
