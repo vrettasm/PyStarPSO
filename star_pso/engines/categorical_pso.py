@@ -61,9 +61,9 @@ class CategoricalPSO(GenericPSO):
 
         # First we declare the velocities to be
         # an [n_rows x n_cols] array of objects.
-        self._velocities = np.empty(shape=(self.n_rows, self.n_cols),
-                                    dtype=object)
-
+        self._velocities: NDArray = np.empty(shape=(self.n_rows,
+                                                    self.n_cols),
+                                             dtype=object)
         # Call the random velocity generator.
         self.generate_uniform_velocities()
 
