@@ -243,9 +243,9 @@ class GenericPSO:
         :param population: list of particles which we want to consider in the
                            calculation of the fully informed best position.
 
-        :param use_best: if True it will use the best_position of each particle to estimate
-                         the new weighted best position. Default is False, which means that
-                         only the current position is used.
+        :param use_best: if True it will use the best_position of each particle
+                         to estimate the new weighted best position. Default is
+                         False, which means that only the current position is used.
 
         :return: the weighted best position 'w_best' (as numpy array).
         """
