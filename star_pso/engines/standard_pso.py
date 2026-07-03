@@ -76,8 +76,9 @@ class StandardPSO(GenericPSO):
         :return: None.
         """
         # Reset particle velocities.
-        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
-                                                  size=(self.n_rows, self.n_cols))
+        self._velocities: NDArray = GenericPSO.rng.uniform(-1.0, +1.0,
+                                                           size=(self.n_rows,
+                                                                 self.n_cols))
         # Generate random uniform positions.
         self.generate_random_positions()
 
