@@ -52,10 +52,10 @@ class BinaryPSO(GenericPSO):
         super().__init__(lower_bound=v_min, upper_bound=v_max, **kwargs)
 
         # Generate initial particle velocities.
-        self._velocities = GenericPSO.rng.uniform(self.lower_bound,
-                                                  self.upper_bound,
-                                                  size=(self.n_rows,
-                                                        self.n_cols))
+        self._velocities: NDArray = GenericPSO.rng.uniform(self.lower_bound,
+                                                           self.upper_bound,
+                                                           size=(self.n_rows,
+                                                                 self.n_cols))
     # _end_def_
 
     def update_velocities(self, params: VOptions) -> None:
