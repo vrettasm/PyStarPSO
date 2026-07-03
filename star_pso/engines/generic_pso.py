@@ -193,8 +193,7 @@ class GenericPSO:
 
     def enable_parameters_update(self) -> None:
         """
-        Set the _allow_parameters_to_update
-        to True.
+        Set the _allow_parameters_to_update to True.
 
         :return: None
         """
