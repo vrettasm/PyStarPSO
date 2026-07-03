@@ -31,9 +31,9 @@ class IntegerPSO(GenericPSO):
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
         # Generate initial particle velocities.
-        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
-                                                  size=(self.n_rows,
-                                                        self.n_cols))
+        self._velocities: NDArray = GenericPSO.rng.uniform(-1.0, +1.0,
+                                                           size=(self.n_rows,
+                                                                 self.n_cols))
     # _end_def_
 
     def update_positions(self) -> None:
