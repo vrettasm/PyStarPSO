@@ -66,7 +66,7 @@ class BareBonesPSO(GenericPSO):
         m_array: NDArray = 0.5 * (p_best + g_best)
 
         # Compute the absolute differences: "s_array".
-        s_array = np_abs(p_best - g_best)
+        s_array: NDArray = np_abs(p_best - g_best)
 
         # Avoid zero entries.
         s_array[s_array == 0.0] = BareBonesPSO.NUMPY_EPS
