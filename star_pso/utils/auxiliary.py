@@ -261,6 +261,11 @@ def linear_rank_probabilities(p_size: int, eta: float = 1.5) -> tuple[NDArray, f
         raise ValueError("'p_size' must be a positive number.")
     # _end_if_
 
+    # Sanity check.
+    if eta < 1.0 or eta > 2.0:
+        raise ValueError("'eta' must be in [1, 2].")
+    # _end_if_
+
     # Handle edge case where population size is 1.
     if p_size == 1:
         return np.array([1.0], dtype=float), 1.0
