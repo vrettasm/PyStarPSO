@@ -1,4 +1,4 @@
-from numpy.typing import ArrayLike
+from numpy.typing import (NDArray, ArrayLike)
 
 from star_pso.engines.generic_pso import GenericPSO
 from star_pso.utils.auxiliary import (nb_clip_inplace,
