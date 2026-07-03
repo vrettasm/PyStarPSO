@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from copy import deepcopy
 from numbers import Number
 from functools import cache
@@ -454,7 +456,7 @@ class DataBlock:
                                             Iterable) else condition
     # _end_def_
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: DataBlock) -> bool:
         """
         Compares the data block of self with the other and
         returns True if they are identical, otherwise False.
@@ -508,7 +510,7 @@ class DataBlock:
         return False
     # _end_def_
 
-    def __deepcopy__(self, memo: dict) -> "DataBlock":
+    def __deepcopy__(self, memo: dict) -> DataBlock:
         """
         This custom method overrides the default deepcopy method.
 
