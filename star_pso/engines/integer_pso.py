@@ -44,7 +44,7 @@ class IntegerPSO(GenericPSO):
         """
         # Round the new positions and convert them to type int.
         new_positions = rint(self.swarm.positions_as_array() +
-                             self._velocities).astype(np.int64)
+                             self._velocities).astype(int)
 
         # Ensure the particle stays within bounds.
         nb_clip_inplace(new_positions,
