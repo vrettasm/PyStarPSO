@@ -240,8 +240,8 @@ class GenericPSO:
         according to the linear ranking of the particles. Those with higher
         function value also have bigger weight in the calculation.
 
-        :param population: list of particles which we want to consider in the calculation
-                           of the fully informed best position.
+        :param population: list of particles which we want to consider in the
+                           calculation of the fully informed best position.
 
         :param use_best: if True it will use the best_position of each particle to estimate
                          the new weighted best position. Default is False, which means that
