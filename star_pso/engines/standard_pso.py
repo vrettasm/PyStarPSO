@@ -44,7 +44,7 @@ class StandardPSO(GenericPSO):
         :return: None.
         """
         # Add the new velocities to the positions.
-        new_positions = self.swarm.positions_as_array() + self._velocities
+        new_positions: NDArray = self.swarm.positions_as_array() + self._velocities
 
         # Ensure the particle stays within bounds.
         nb_clip_inplace(new_positions, self.lower_bound, self.upper_bound)
