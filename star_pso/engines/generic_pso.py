@@ -7,6 +7,7 @@ from typing import Callable, Optional
 from collections import deque, defaultdict
 
 import numpy as np
+from numpy import argmax as np_argmax
 from numpy.typing import ArrayLike, NDArray
 from numpy.random import default_rng, Generator
 
@@ -515,19 +516,18 @@ class GenericPSO:
                  its function value and the iteration it was
                  found.
         """
-        # Get the maximum of the f_opt.
-        f_opt = max(self._stats["f_opt"])
+        # Find the index of the maximum value.
+        i_opt = np_argmax(self._stats["f_opt"])
 
-        # Get the index of f_opt.
-        i_opt = self._stats["f_opt"].index(f_opt)
+        # Get the maximum of the f_opt.
+        f_opt = self._stats["f_opt"][i_opt]
 
         # Get the corresponding x_opt.
         x_opt = self._stats["x_opt"][i_opt]
 
-        # Return the optimal particle position,
-        # along with its function value and its
-        # iteration.
-        return i_opt, f_opt, x_opt
+        # Ensure the index i_opt is returned
+        # as an integer (int).
+        return int(i_opt), f_opt, x_opt
     # _end_def_
 
     def reset_all(self) -> None:
