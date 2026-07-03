@@ -27,7 +27,6 @@ class StandardPSO(GenericPSO):
 
         :param x_max: upper search space bound.
         """
-
         # Call the super initializer with the input parameters.
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
