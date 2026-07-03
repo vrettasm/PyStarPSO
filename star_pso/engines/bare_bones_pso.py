@@ -74,8 +74,9 @@ class BareBonesPSO(GenericPSO):
         # Draw standard normal values N(0, 1).
         z: NDArray = self.rng.normal(size=(self.n_rows, self.n_cols))
 
-        # Generate the Gaussian values with the required mean
-        # and standard deviation. Do the operations in place.
+        # Generate the Gaussian values with the required
+        # mean and standard deviation. Do the operations
+        # in place.
         m_array += z * s_array
 
         # Ensure the values stay within limits.
