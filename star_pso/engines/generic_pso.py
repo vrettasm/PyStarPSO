@@ -565,20 +565,20 @@ class GenericPSO:
         :return: a container (deque) with the neighborhood best positions.
         """
         # Size of the population.
-        swarm_size = self.swarm.size
+        swarm_size: int = self.swarm.size
 
         # Extract the swarms positions as array.
-        x_pos = self.swarm.positions_as_array()
+        x_pos: NDArray = self.swarm.positions_as_array()
 
         # Compute the pairwise distances.
-        pairwise_dists = nb_cdist(x_pos, scaled=True)
+        pairwise_dists: NDArray = nb_cdist(x_pos, scaled=True)
 
         # Get the indices of the sorted distances.
         # This way we can have the nearest neighbors first.
-        x_sorted = np.argsort(pairwise_dists, axis=1)
+        x_sorted: NDArray = np.argsort(pairwise_dists, axis=1)
 
         # Local best deque with max length.
-        l_best = deque(maxlen=swarm_size)
+        l_best: deque = deque(maxlen=swarm_size)
 
         # Go through each row of the x_sorted matrix and for each
         # particle  compute it's best neighborhood  position as a
@@ -614,7 +614,7 @@ class GenericPSO:
         :return: the local best positions (as numpy array).
         """
         # Size of the population.
-        swarm_size = self.swarm.size
+        swarm_size: int = self.swarm.size
 
         # Get the global best.
         if operating_mode == "fipso":
@@ -646,22 +646,23 @@ class GenericPSO:
         :return: None.
         """
         # Get the shape of the velocity array.
-        arr_shape = (self.n_rows, self.n_cols)
+        arr_shape: tuple = (self.n_rows, self.n_cols)
 
         # Pre-sample the cognitive coefficients.
-        cogntv = GenericPSO.rng.uniform(0, params.c1, size=arr_shape)
-
+        cogntv: NDArray = GenericPSO.rng.uniform(0, params.c1,
+                                                 size=arr_shape)
         # Pre-sample the social coefficients.
-        social = GenericPSO.rng.uniform(0, params.c2, size=arr_shape)
+        social: NDArray = GenericPSO.rng.uniform(0, params.c2,
+                                                 size=arr_shape)
 
         # Get the local best positions (for the social attractor).
-        l_best = self.get_local_best_positions(params.mode.lower())
+        l_best: NDArray = self.get_local_best_positions(params.mode.lower())
 
         # Extract the current positions.
-        x_current = self.swarm.positions_as_array()
+        x_current: NDArray = self.swarm.positions_as_array()
 
         # Extract the best (historical) positions.
-        x_best = self.swarm.best_positions_as_array()
+        x_best: NDArray = self.swarm.best_positions_as_array()
 
         # Update the new velocity equations (inplace).
         self._velocities *= params.w0
