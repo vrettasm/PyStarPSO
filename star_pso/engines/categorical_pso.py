@@ -158,7 +158,7 @@ class CategoricalPSO(GenericPSO):
                                                  shuffle=False)
     # _end_def_
 
-    def sample_permutation_values(self, positions) -> None:
+    def sample_permutation_values(self, positions: list) -> None:
         """
         Samples a permutation from a given set of variables.
         It is used in problems like the 'Traveling Salesman'.
