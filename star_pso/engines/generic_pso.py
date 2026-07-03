@@ -490,7 +490,7 @@ class GenericPSO:
         self._swarm.update_local_best()
 
         # Return the tuple.
-        return f_max, found_solution
+        return float(f_max), found_solution
     # _end_def_
 
     def clear_all(self) -> None:
