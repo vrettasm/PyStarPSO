@@ -220,13 +220,13 @@ class CategoricalPSO(GenericPSO):
         :return: None.
         """
         # Get the shape of the velocity array.
-        arr_shape = (self.n_rows, self.n_cols)
+        arr_shape: tuple = (self.n_rows, self.n_cols)
 
         # Pre-sample the cognitive coefficients.
-        cogntv = GenericPSO.rng.uniform(0, params.c1, size=arr_shape)
+        cogntv: NDArray = GenericPSO.rng.uniform(0, params.c1, size=arr_shape)
 
         # Pre-sample the social coefficients.
-        social = GenericPSO.rng.uniform(0, params.c2, size=arr_shape)
+        social: NDArray = GenericPSO.rng.uniform(0, params.c2, size=arr_shape)
 
         # Get the global best.
         if params.mode.lower() == "fipso":
