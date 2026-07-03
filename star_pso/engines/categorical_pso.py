@@ -70,8 +70,8 @@ class CategoricalPSO(GenericPSO):
         # Assign the correct local sample method
         # according to the permutation mode flag.
         if permutation_mode:
-            self._items = {"sample_random_values":
-                           self.sample_permutation_values}
+            self._items: dict = {"sample_random_values":
+                                     self.sample_permutation_values}
         else:
             self._items = {"sample_random_values":
                            self.sample_categorical_values}
