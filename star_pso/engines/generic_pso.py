@@ -616,8 +616,8 @@ class GenericPSO:
 
         # Get the global best.
         if operating_mode == "fipso":
-            # Compute a weighted average from all the positions of the swarm,
-            # according to their linear ranking (of fitness value).
+            # Compute a weighted average from all the positions of the
+            # swarm, according to their linear ranking of fitness value.
             l_best = swarm_size * [GenericPSO.fully_informed(self.swarm.population)]
 
         elif operating_mode == "multimodal":
