@@ -59,7 +59,7 @@ class QuantumPSO(GenericPSO):
         beta_coefficient: float = 0.5
 
         # Get the shape of the velocity array.
-        arr_shape = (self.n_rows, self.n_cols)
+        arr_shape: tuple = (self.n_rows, self.n_cols)
 
         # Pre-sample the 'phi' parameters.
         param_phi: NDArray = GenericPSO.rng.random(size=arr_shape)
