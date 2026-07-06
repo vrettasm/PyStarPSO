@@ -68,7 +68,7 @@ class QuantumPSO(GenericPSO):
         param_u: NDArray = GenericPSO.rng.random(size=arr_shape)
 
         # Get the (Global / Local / FIPSO) best positions.
-        m_best: NDArray = self.get_local_best_positions(params.mode.lower())
+        m_best: NDArray = self.get_local_best_positions(params.mode)
 
         # Extract the current positions.
         x_current: NDArray = self.swarm.positions_as_array()
