@@ -335,19 +335,24 @@
 <span class="sd">        :return: the weighted best position &#39;w_best&#39; (as numpy array).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># Select the attribute to sort the population.</span>
-        <span class="n">key_attr</span> <span class="o">=</span> <span class="s2">&quot;best_value&quot;</span> <span class="k">if</span> <span class="n">use_best</span> <span class="k">else</span> <span class="s2">&quot;value&quot;</span>
+        <span class="k">if</span> <span class="n">use_best</span><span class="p">:</span>
+            <span class="c1"># Pre-bind the key function.</span>
+            <span class="n">get_key</span> <span class="o">=</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;best_value&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Sort the population.</span>
-        <span class="n">sorted_population</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SwarmParticle</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
-            <span class="n">population</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="n">key_attr</span><span class="p">)</span>
-        <span class="p">)</span>
+            <span class="c1"># Extract the best positions and convert</span>
+            <span class="c1"># to numpy array, with &#39;C&#39; order style.</span>
+            <span class="n">all_positions</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">best_position</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">get_key</span><span class="p">)</span>
+            <span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Pre-bind the key function.</span>
+            <span class="n">get_key</span> <span class="o">=</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Extract the best positions</span>
-        <span class="c1"># and convert to numpy array.</span>
-        <span class="n">all_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-            <span class="n">item</span><span class="o">.</span><span class="n">best_position</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sorted_population</span>
-        <span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+            <span class="c1"># Extract the positions and convert</span>
+            <span class="c1"># to numpy array, with &#39;C&#39; order style.</span>
+            <span class="n">all_positions</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">position</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">get_key</span><span class="p">)</span>
+            <span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
 
         <span class="c1"># Get the size of the population.</span>
         <span class="n">pop_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_positions</span><span class="p">)</span>
@@ -713,6 +718,9 @@
         <span class="c1"># Size of the population.</span>
         <span class="n">swarm_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">size</span>
 
+        <span class="c1"># Ensure lower case.</span>
+        <span class="n">operating_mode</span> <span class="o">=</span> <span class="n">operating_mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
         <span class="c1"># Get the global best.</span>
         <span class="k">if</span> <span class="n">operating_mode</span> <span class="o">==</span> <span class="s2">&quot;fipso&quot;</span><span class="p">:</span>
             <span class="c1"># Compute a weighted average from all the positions of the</span>
@@ -756,7 +764,7 @@
                                                  <span class="n">size</span><span class="o">=</span><span class="n">arr_shape</span><span class="p">)</span>
 
         <span class="c1"># Get the local best positions (for the social attractor).</span>
-        <span class="n">l_best</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_local_best_positions</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="n">l_best</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_local_best_positions</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
 
         <span class="c1"># Extract the current positions.</span>
         <span class="n">x_current</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">positions_as_array</span><span class="p">()</span>

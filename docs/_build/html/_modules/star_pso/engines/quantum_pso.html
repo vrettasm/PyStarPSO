@@ -144,7 +144,7 @@
         <span class="n">param_u</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">arr_shape</span><span class="p">)</span>
 
         <span class="c1"># Get the (Global / Local / FIPSO) best positions.</span>
-        <span class="n">m_best</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_local_best_positions</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="n">m_best</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_local_best_positions</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
 
         <span class="c1"># Extract the current positions.</span>
         <span class="n">x_current</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">positions_as_array</span><span class="p">()</span>
