@@ -588,7 +588,7 @@ class GenericPSO:
         l_best = [
             GenericPSO.fully_informed([local_population[k] for k in row],
                                       use_best=True)
-            for row in x_sorted[:, 1:num_neighbors + 1]
+            for row in x_partial
         ]
 
         # Return the container.
