@@ -250,19 +250,16 @@ class GenericPSO:
         :return: the weighted best position 'w_best' (as numpy array).
         """
 
-        # Select the attribute to sort the population.
-        key_attr = "best_value" if use_best else "value"
-
-        # Sort the population.
-        sorted_population: list[SwarmParticle] = sorted(
-            population, key=attrgetter(key_attr)
-        )
-
-        # Extract the best positions
-        # and convert to numpy array.
-        all_positions = np.array([
-            item.best_position for item in sorted_population
-        ], order="C")
+        if use_best:
+            # Extract the best positions and convert to numpy array.
+            all_positions = np.array([item.best_position
+                                      for item in sorted(population,
+                                                         key=attrgetter("best_value"))])
+        else:
+            # Extract the positions and convert to numpy array.
+            all_positions = np.array([item.position
+                                      for item in sorted(population,
+                                                         key=attrgetter("value"))])
 
         # Get the size of the population.
         pop_size: int = len(all_positions)
