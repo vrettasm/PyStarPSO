@@ -612,6 +612,9 @@ class GenericPSO:
         # Size of the population.
         swarm_size: int = self.swarm.size
 
+        # Ensure lower case.
+        operating_mode = operating_mode.lower()
+
         # Get the global best.
         if operating_mode == "fipso":
             # Compute a weighted average from all the positions of the
