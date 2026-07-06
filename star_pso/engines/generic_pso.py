@@ -254,9 +254,11 @@ class GenericPSO:
             # Pre-bind the key function.
             get_key = attrgetter("best_value")
 
-            # Extract the best positions and convert to numpy array.
-            all_positions = np.array([item.best_position
-                                      for item in sorted(population, key=get_key)])
+            # Extract the best positions and convert
+            # to numpy array, with 'C' order style.
+            all_positions: NDArray = np.array([
+                item.best_position for item in sorted(population, key=get_key)
+            ], order="C")
         else:
             # Pre-bind the key function.
             get_key = attrgetter("value")
