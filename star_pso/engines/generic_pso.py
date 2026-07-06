@@ -572,6 +572,9 @@ class GenericPSO:
         # This way we can have the nearest neighbors first.
         x_sorted: NDArray = np.argsort(pairwise_dists, axis=1)
 
+        # Make a copy of local population to improve performance.
+        local_population = self.swarm.population
+
         # Go through each row of the x_sorted matrix and for each
         # particle  compute it's best neighborhood  position as a
         # weighted average of their best positions, weighted with
