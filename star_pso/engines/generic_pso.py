@@ -251,15 +251,19 @@ class GenericPSO:
         """
 
         if use_best:
+            # Pre-bind the key function.
+            get_key = attrgetter("best_value")
+
             # Extract the best positions and convert to numpy array.
             all_positions = np.array([item.best_position
-                                      for item in sorted(population,
-                                                         key=attrgetter("best_value"))])
+                                      for item in sorted(population, key=get_key)])
         else:
+            # Pre-bind the key function.
+            get_key = attrgetter("value")
+
             # Extract the positions and convert to numpy array.
             all_positions = np.array([item.position
-                                      for item in sorted(population,
-                                                         key=attrgetter("value"))])
+                                      for item in sorted(population, key=get_key)])
 
         # Get the size of the population.
         pop_size: int = len(all_positions)
