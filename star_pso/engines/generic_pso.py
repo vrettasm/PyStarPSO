@@ -655,7 +655,7 @@ class GenericPSO:
                                                  size=arr_shape)
 
         # Get the local best positions (for the social attractor).
-        l_best: NDArray = self.get_local_best_positions(params.mode.lower())
+        l_best: NDArray = self.get_local_best_positions(params.mode)
 
         # Extract the current positions.
         x_current: NDArray = self.swarm.positions_as_array()
