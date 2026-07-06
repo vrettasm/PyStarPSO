@@ -270,12 +270,10 @@ class GenericPSO:
         # Compute the probabilities.
         p_weights, p_weights_sum = linear_rank_probabilities(pop_size)
 
-        # Take a "weighted average" from all the positions of the swarm.
-        w_best: NDArray = np.multiply(all_positions,
-                                      p_weights[:, np.newaxis]).sum(axis=0) / p_weights_sum
-
-        # Return the weighted best position.
-        return w_best
+        # Return the "weighted average" best position.
+        # Ensure the division never fails.
+        return (p_weights @ all_positions) / (p_weights_sum
+                                              if p_weights_sum != 0.0 else 1.0)
     # _end_def_
 
     @property
