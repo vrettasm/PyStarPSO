@@ -3,8 +3,8 @@ from copy import deepcopy
 from operator import attrgetter
 from math import inf, fabs, isclose
 
+from collections import defaultdict
 from typing import Callable, Optional
-from collections import deque, defaultdict
 
 import numpy as np
 from numpy import argmax as np_argmax
@@ -553,18 +553,15 @@ class GenericPSO:
                                   f"You should implement this method!")
     # _end_def_
 
-    def neighborhood_best(self, num_neighbors: int) -> deque[NDArray]:
+    def neighborhood_best(self, num_neighbors: int) -> list[NDArray]:
         """
         For each particle in the swarm, finds the 'n' closest neighbors
         (distance-wise) and computes the local best neighborhood position.
 
         :param num_neighbors: number of neighbors to consider.
 
-        :return: a container (deque) with the neighborhood best positions.
+        :return: a container with the neighborhood best positions.
         """
-        # Size of the population.
-        swarm_size: int = self.swarm.size
-
         # Extract the swarms positions as array.
         x_pos: NDArray = self.swarm.positions_as_array()
 
@@ -575,9 +572,6 @@ class GenericPSO:
         # This way we can have the nearest neighbors first.
         x_sorted: NDArray = np.argsort(pairwise_dists, axis=1)
 
-        # Local best deque with max length.
-        l_best: deque = deque(maxlen=swarm_size)
-
         # Go through each row of the x_sorted matrix and for each
         # particle  compute it's best neighborhood  position as a
         # weighted average of their best positions, weighted with
@@ -585,16 +579,12 @@ class GenericPSO:
         #
         # NB: Since the first index 0 refers to the same particle
         # we skip it and start counting from 1.
-        for row in x_sorted[:, 1:num_neighbors+1]:
-            # Collect only the m-local particles.
-            near_neighbors = [self.swarm.population[k] for k in row]
-
-            # Use the fully_informed with the 'use_best' option enabled
-            # to get a weighted average of the optimal local position.
-            optimal_position = GenericPSO.fully_informed(near_neighbors,
-                                                         use_best=True)
-            # Update the local best deque.
-            l_best.append(optimal_position)
+        l_best = [
+            GenericPSO.fully_informed([
+                self.swarm.population[k] for k in row
+            ], use_best=True)
+            for row in x_sorted[:, 1:num_neighbors + 1]
+        ]
 
         # Return the container.
         return l_best
