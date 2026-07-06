@@ -357,6 +357,11 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;p_size&#39; must be a positive number.&quot;</span><span class="p">)</span>
     <span class="c1"># _end_if_</span>
 
+    <span class="c1"># Sanity check.</span>
+    <span class="k">if</span> <span class="n">eta</span> <span class="o">&lt;</span> <span class="mf">1.0</span> <span class="ow">or</span> <span class="n">eta</span> <span class="o">&gt;</span> <span class="mf">2.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;eta&#39; must be in [1, 2].&quot;</span><span class="p">)</span>
+    <span class="c1"># _end_if_</span>
+
     <span class="c1"># Handle edge case where population size is 1.</span>
     <span class="k">if</span> <span class="n">p_size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> <span class="mf">1.0</span>
@@ -364,18 +369,18 @@
 
     <span class="c1"># Precompute constant invariants out of the</span>
     <span class="c1"># loop to eliminate repetitive division.</span>
-    <span class="n">base</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">-</span> <span class="n">eta</span><span class="p">)</span> <span class="o">/</span> <span class="n">p_size</span>
-    <span class="n">step</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">eta</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">p_size</span> <span class="o">*</span> <span class="p">(</span><span class="n">p_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">base</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">-</span> <span class="n">eta</span><span class="p">)</span> <span class="o">/</span> <span class="n">p_size</span>
+    <span class="n">step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">eta</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">p_size</span> <span class="o">*</span> <span class="p">(</span><span class="n">p_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
 
     <span class="c1"># Calculate the probabilities.</span>
-    <span class="n">probabilities</span> <span class="o">=</span> <span class="p">[</span><span class="n">base</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">step</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p_size</span><span class="p">)]</span>
+    <span class="n">probabilities</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">base</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">step</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p_size</span><span class="p">)]</span>
 
     <span class="c1"># Calculate the sum of probabilities.</span>
-    <span class="n">total</span> <span class="o">=</span> <span class="n">fsum</span><span class="p">(</span><span class="n">probabilities</span><span class="p">)</span>
+    <span class="n">total</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">fsum</span><span class="p">(</span><span class="n">probabilities</span><span class="p">)</span>
 
     <span class="c1"># Normalize for minor numerical safety.</span>
     <span class="c1"># The probability values are in ascending order.</span>
-    <span class="n">probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromiter</span><span class="p">([</span><span class="n">p</span> <span class="o">/</span> <span class="n">total</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">probabilities</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">probs</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromiter</span><span class="p">([</span><span class="n">p</span> <span class="o">/</span> <span class="n">total</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">probabilities</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
     <span class="c1"># Return the probs and their sum.</span>
     <span class="k">return</span> <span class="n">probs</span><span class="p">,</span> <span class="n">fsum</span><span class="p">(</span><span class="n">probs</span><span class="p">)</span></div>

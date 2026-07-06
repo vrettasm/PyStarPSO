@@ -75,10 +75,11 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">attrgetter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">inf</span><span class="p">,</span> <span class="n">fabs</span><span class="p">,</span> <span class="n">isclose</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span><span class="p">,</span> <span class="n">defaultdict</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">argmax</span> <span class="k">as</span> <span class="n">np_argmax</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.random</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_rng</span><span class="p">,</span> <span class="n">Generator</span>
 
@@ -268,8 +269,7 @@
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.enable_parameters_update">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">enable_parameters_update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the _allow_parameters_to_update</span>
-<span class="sd">        to True.</span>
+<span class="sd">        Set the _allow_parameters_to_update to True.</span>
 
 <span class="sd">        :return: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -321,16 +321,16 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">fully_informed</span><span class="p">(</span><span class="n">population</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SwarmParticle</span><span class="p">],</span> <span class="n">use_best</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Uses the input population and computes a weighted average position according</span>
-<span class="sd">        to the linear ranking of the particles. Those with higher function value also</span>
-<span class="sd">        have bigger weight in the calculation.</span>
+<span class="sd">        Uses the input population and computes a weighted average position</span>
+<span class="sd">        according to the linear ranking of the particles. Those with higher</span>
+<span class="sd">        function value also have bigger weight in the calculation.</span>
 
-<span class="sd">        :param population: list of particles which we want to consider in the calculation</span>
-<span class="sd">                           of the fully informed best position.</span>
+<span class="sd">        :param population: list of particles which we want to consider in the</span>
+<span class="sd">                           calculation of the fully informed best position.</span>
 
-<span class="sd">        :param use_best: if True it will use the best_position of each particle to estimate</span>
-<span class="sd">                         the new weighted best position. Default is False, which means that</span>
-<span class="sd">                         only the current position is used.</span>
+<span class="sd">        :param use_best: if True it will use the best_position of each particle</span>
+<span class="sd">                         to estimate the new weighted best position. Default is</span>
+<span class="sd">                         False, which means that only the current position is used.</span>
 
 <span class="sd">        :return: the weighted best position &#39;w_best&#39; (as numpy array).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -347,7 +347,7 @@
         <span class="c1"># and convert to numpy array.</span>
         <span class="n">all_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
             <span class="n">item</span><span class="o">.</span><span class="n">best_position</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sorted_population</span>
-        <span class="p">])</span>
+        <span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
 
         <span class="c1"># Get the size of the population.</span>
         <span class="n">pop_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_positions</span><span class="p">)</span>
@@ -355,12 +355,10 @@
         <span class="c1"># Compute the probabilities.</span>
         <span class="n">p_weights</span><span class="p">,</span> <span class="n">p_weights_sum</span> <span class="o">=</span> <span class="n">linear_rank_probabilities</span><span class="p">(</span><span class="n">pop_size</span><span class="p">)</span>
 
-        <span class="c1"># Take a &quot;weighted average&quot; from all the positions of the swarm.</span>
-        <span class="n">w_best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">all_positions</span><span class="p">,</span>
-                             <span class="n">p_weights</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">p_weights_sum</span>
-
-        <span class="c1"># Return the weighted best position.</span>
-        <span class="k">return</span> <span class="n">w_best</span></div>
+        <span class="c1"># Return the &quot;weighted average&quot; best position.</span>
+        <span class="c1"># Ensure the division never fails.</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">p_weights</span> <span class="o">@</span> <span class="n">all_positions</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">p_weights_sum</span>
+                                              <span class="k">if</span> <span class="n">p_weights_sum</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="mf">1.0</span><span class="p">)</span></div>
 
     <span class="c1"># _end_def_</span>
 
@@ -577,7 +575,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="o">.</span><span class="n">update_local_best</span><span class="p">()</span>
 
         <span class="c1"># Return the tuple.</span>
-        <span class="k">return</span> <span class="n">f_max</span><span class="p">,</span> <span class="n">found_solution</span></div>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">f_max</span><span class="p">),</span> <span class="n">found_solution</span></div>
 
     <span class="c1"># _end_def_</span>
 
@@ -609,19 +607,17 @@
 <span class="sd">                 its function value and the iteration it was</span>
 <span class="sd">                 found.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Get the maximum of the f_opt.</span>
-        <span class="n">f_opt</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;f_opt&quot;</span><span class="p">])</span>
+        <span class="c1"># Find the index of the maximum value.</span>
+        <span class="n">i_opt</span> <span class="o">=</span> <span class="n">np_argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;f_opt&quot;</span><span class="p">])</span>
 
-        <span class="c1"># Get the index of f_opt.</span>
-        <span class="n">i_opt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;f_opt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">f_opt</span><span class="p">)</span>
+        <span class="c1"># Get the maximum of the f_opt.</span>
+        <span class="n">f_opt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;f_opt&quot;</span><span class="p">][</span><span class="n">i_opt</span><span class="p">]</span>
 
         <span class="c1"># Get the corresponding x_opt.</span>
         <span class="n">x_opt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;x_opt&quot;</span><span class="p">][</span><span class="n">i_opt</span><span class="p">]</span>
 
-        <span class="c1"># Return the optimal particle position,</span>
-        <span class="c1"># along with its function value and its</span>
-        <span class="c1"># iteration.</span>
-        <span class="k">return</span> <span class="n">i_opt</span><span class="p">,</span> <span class="n">f_opt</span><span class="p">,</span> <span class="n">x_opt</span></div>
+        <span class="c1"># Cast the output explicitly to int, float.</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">i_opt</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">f_opt</span><span class="p">),</span> <span class="n">x_opt</span></div>
 
     <span class="c1"># _end_def_</span>
 
@@ -658,30 +654,30 @@
 
 <div class="viewcode-block" id="GenericPSO.neighborhood_best">
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.neighborhood_best">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">neighborhood_best</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_neighbors</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">deque</span><span class="p">[</span><span class="n">NDArray</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">neighborhood_best</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_neighbors</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">NDArray</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        For each particle in the swarm, finds the &#39;n&#39; closest neighbors</span>
 <span class="sd">        (distance-wise) and computes the local best neighborhood position.</span>
 
 <span class="sd">        :param num_neighbors: number of neighbors to consider.</span>
 
-<span class="sd">        :return: a container (deque) with the neighborhood best positions.</span>
+<span class="sd">        :return: a container with the neighborhood best positions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Size of the population.</span>
-        <span class="n">swarm_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">size</span>
-
         <span class="c1"># Extract the swarms positions as array.</span>
-        <span class="n">x_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">positions_as_array</span><span class="p">()</span>
+        <span class="n">x_pos</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">positions_as_array</span><span class="p">()</span>
 
         <span class="c1"># Compute the pairwise distances.</span>
-        <span class="n">pairwise_dists</span> <span class="o">=</span> <span class="n">nb_cdist</span><span class="p">(</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">scaled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pairwise_dists</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">nb_cdist</span><span class="p">(</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">scaled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># Get the indices of the sorted distances.</span>
         <span class="c1"># This way we can have the nearest neighbors first.</span>
-        <span class="n">x_sorted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pairwise_dists</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">x_sorted</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pairwise_dists</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="c1"># Local best deque with max length.</span>
-        <span class="n">l_best</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="n">swarm_size</span><span class="p">)</span>
+        <span class="c1"># Make a copy of local population to improve performance.</span>
+        <span class="n">local_population</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span>
+
+        <span class="c1"># Make a view of the entries we are interested in.</span>
+        <span class="n">x_partial</span> <span class="o">=</span> <span class="n">x_sorted</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="n">num_neighbors</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
         <span class="c1"># Go through each row of the x_sorted matrix and for each</span>
         <span class="c1"># particle  compute it&#39;s best neighborhood  position as a</span>
@@ -690,16 +686,11 @@
         <span class="c1">#</span>
         <span class="c1"># NB: Since the first index 0 refers to the same particle</span>
         <span class="c1"># we skip it and start counting from 1.</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">x_sorted</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="n">num_neighbors</span><span class="o">+</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="c1"># Collect only the m-local particles.</span>
-            <span class="n">near_neighbors</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span>
-
-            <span class="c1"># Use the fully_informed with the &#39;use_best&#39; option enabled</span>
-            <span class="c1"># to get a weighted average of the optimal local position.</span>
-            <span class="n">optimal_position</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">fully_informed</span><span class="p">(</span><span class="n">near_neighbors</span><span class="p">,</span>
-                                                         <span class="n">use_best</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="c1"># Update the local best deque.</span>
-            <span class="n">l_best</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">optimal_position</span><span class="p">)</span>
+        <span class="n">l_best</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">GenericPSO</span><span class="o">.</span><span class="n">fully_informed</span><span class="p">([</span><span class="n">local_population</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">row</span><span class="p">],</span>
+                                      <span class="n">use_best</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">x_partial</span>
+        <span class="p">]</span>
 
         <span class="c1"># Return the container.</span>
         <span class="k">return</span> <span class="n">l_best</span></div>
@@ -720,12 +711,12 @@
 <span class="sd">        :return: the local best positions (as numpy array).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Size of the population.</span>
-        <span class="n">swarm_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">swarm_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">size</span>
 
         <span class="c1"># Get the global best.</span>
         <span class="k">if</span> <span class="n">operating_mode</span> <span class="o">==</span> <span class="s2">&quot;fipso&quot;</span><span class="p">:</span>
-            <span class="c1"># Compute a weighted average from all the positions of the swarm,</span>
-            <span class="c1"># according to their linear ranking (of fitness value).</span>
+            <span class="c1"># Compute a weighted average from all the positions of the</span>
+            <span class="c1"># swarm, according to their linear ranking of fitness value.</span>
             <span class="n">l_best</span> <span class="o">=</span> <span class="n">swarm_size</span> <span class="o">*</span> <span class="p">[</span><span class="n">GenericPSO</span><span class="o">.</span><span class="n">fully_informed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">)]</span>
 
         <span class="k">elif</span> <span class="n">operating_mode</span> <span class="o">==</span> <span class="s2">&quot;multimodal&quot;</span><span class="p">:</span>
@@ -755,22 +746,23 @@
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Get the shape of the velocity array.</span>
-        <span class="n">arr_shape</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">)</span>
+        <span class="n">arr_shape</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">)</span>
 
         <span class="c1"># Pre-sample the cognitive coefficients.</span>
-        <span class="n">cogntv</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">c1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">arr_shape</span><span class="p">)</span>
-
+        <span class="n">cogntv</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">c1</span><span class="p">,</span>
+                                                 <span class="n">size</span><span class="o">=</span><span class="n">arr_shape</span><span class="p">)</span>
         <span class="c1"># Pre-sample the social coefficients.</span>
-        <span class="n">social</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">c2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">arr_shape</span><span class="p">)</span>
+        <span class="n">social</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">c2</span><span class="p">,</span>
+                                                 <span class="n">size</span><span class="o">=</span><span class="n">arr_shape</span><span class="p">)</span>
 
         <span class="c1"># Get the local best positions (for the social attractor).</span>
-        <span class="n">l_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_local_best_positions</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="n">l_best</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_local_best_positions</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
 
         <span class="c1"># Extract the current positions.</span>
-        <span class="n">x_current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">positions_as_array</span><span class="p">()</span>
+        <span class="n">x_current</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">positions_as_array</span><span class="p">()</span>
 
         <span class="c1"># Extract the best (historical) positions.</span>
-        <span class="n">x_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">best_positions_as_array</span><span class="p">()</span>
+        <span class="n">x_best</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">best_positions_as_array</span><span class="p">()</span>
 
         <span class="c1"># Update the new velocity equations (inplace).</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">*=</span> <span class="n">params</span><span class="o">.</span><span class="n">w0</span>

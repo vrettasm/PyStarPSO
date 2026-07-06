@@ -689,8 +689,7 @@ positions, according to the specific type of PSO.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.enable_parameters_update">
 <span class="sig-name descname"><span class="pre">enable_parameters_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.enable_parameters_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.enable_parameters_update" title="Link to this definition"></a></dt>
-<dd><p>Set the _allow_parameters_to_update
-to True.</p>
+<dd><p>Set the _allow_parameters_to_update to True.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
@@ -731,17 +730,17 @@ function. Default is False (serial execution).</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.fully_informed">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fully_informed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="star_pso.population.html#star_pso.population.particle.Particle" title="star_pso.population.particle.Particle"><span class="pre">Particle</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="star_pso.population.html#star_pso.population.jat_particle.JatParticle" title="star_pso.population.jat_particle.JatParticle"><span class="pre">JatParticle</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_best</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarType_co</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.fully_informed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.fully_informed" title="Link to this definition"></a></dt>
-<dd><p>Uses the input population and computes a weighted average position according
-to the linear ranking of the particles. Those with higher function value also
-have bigger weight in the calculation.</p>
+<dd><p>Uses the input population and computes a weighted average position
+according to the linear ranking of the particles. Those with higher
+function value also have bigger weight in the calculation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>population</strong> – list of particles which we want to consider in the calculation
-of the fully informed best position.</p></li>
-<li><p><strong>use_best</strong> – if True it will use the best_position of each particle to estimate
-the new weighted best position. Default is False, which means that
-only the current position is used.</p></li>
+<li><p><strong>population</strong> – list of particles which we want to consider in the
+calculation of the fully informed best position.</p></li>
+<li><p><strong>use_best</strong> – if True it will use the best_position of each particle
+to estimate the new weighted best position. Default is
+False, which means that only the current position is used.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -864,7 +863,7 @@ found.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.neighborhood_best">
-<span class="sig-name descname"><span class="pre">neighborhood_best</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_neighbors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">deque</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarType_co</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.neighborhood_best"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.neighborhood_best" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">neighborhood_best</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_neighbors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarType_co</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.neighborhood_best"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.neighborhood_best" title="Link to this definition"></a></dt>
 <dd><p>For each particle in the swarm, finds the ‘n’ closest neighbors
 (distance-wise) and computes the local best neighborhood position.</p>
 <dl class="field-list simple">
@@ -872,7 +871,7 @@ found.</p>
 <dd class="field-odd"><p><strong>num_neighbors</strong> – number of neighbors to consider.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a container (deque) with the neighborhood best positions.</p>
+<dd class="field-even"><p>a container with the neighborhood best positions.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -893,7 +892,7 @@ should be implemented separately.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.rng">
-<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x120DDF920</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x1339CB920</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
 <dd><p>Random Number Generator for the whole class.</p>
 </dd></dl>
 
