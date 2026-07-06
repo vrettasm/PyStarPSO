@@ -56,7 +56,7 @@ class BareBonesPSO(GenericPSO):
         :return: None.
         """
         # Get the (Global / Local / FIPSO) best positions.
-        g_best: NDArray = self.get_local_best_positions(params.mode.lower())
+        g_best: NDArray = self.get_local_best_positions(params.mode)
 
         # Extract the best (historical) positions.
         p_best: NDArray = self.swarm.best_positions_as_array()
