@@ -263,9 +263,11 @@ class GenericPSO:
             # Pre-bind the key function.
             get_key = attrgetter("value")
 
-            # Extract the positions and convert to numpy array.
-            all_positions = np.array([item.position
-                                      for item in sorted(population, key=get_key)])
+            # Extract the positions and convert
+            # to numpy array, with 'C' order style.
+            all_positions: NDArray = np.array([
+                item.position for item in sorted(population, key=get_key)
+            ], order="C")
 
         # Get the size of the population.
         pop_size: int = len(all_positions)
