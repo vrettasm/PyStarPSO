@@ -575,6 +575,9 @@ class GenericPSO:
         # Make a copy of local population to improve performance.
         local_population = self.swarm.population
 
+        # Make a view of the entries we are interested in.
+        x_partial = x_sorted[:, 1:num_neighbors + 1]
+
         # Go through each row of the x_sorted matrix and for each
         # particle  compute it's best neighborhood  position as a
         # weighted average of their best positions, weighted with
