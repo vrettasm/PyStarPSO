@@ -122,10 +122,9 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Reset particle velocities.
-        self._velocities = GenericPSO.rng.uniform(self.lower_bound,
-                                                  self.upper_bound,
-                                                  size=(self.n_rows,
-                                                        self.n_cols))
+        self._velocities = GenericPSO.rng.uniform(
+            self.lower_bound, self.upper_bound, size=(self.n_rows, self.n_cols)
+        )
         # Generate random binary positions.
         self.generate_random_positions()
 
