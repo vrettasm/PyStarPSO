@@ -69,9 +69,11 @@ class CategoricalPSO(GenericPSO):
 
         # Assign the correct local sample method
         # according to the permutation mode flag.
-        self._items: dict = {
-            "sample_random_values": (self.sample_permutation_values
-                                     if permutation_mode else self.sample_categorical_values)
+        self._items: dict[str, Callable] = {
+            "sample_random_values": (
+                self.sample_permutation_values
+                if permutation_mode else self.sample_categorical_values
+            )
         }
 
         # Set the special mode to Categorical.
