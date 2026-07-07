@@ -107,10 +107,9 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Generate random BINARY positions Bin(0, 1).
-        binary_positions = GenericPSO.rng.integers(0, 2,
-                                                   size=(self.n_rows,
-                                                         self.n_cols),
-                                                   dtype=np.uint8)
+        binary_positions = GenericPSO.rng.integers(
+            low=0, high=2, size=(self.n_rows, self.n_cols), dtype=np.uint8)
+
         # Assign the new positions in the swarm.
         self.swarm.set_positions(binary_positions)
     # _end_def_
