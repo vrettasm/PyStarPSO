@@ -811,8 +811,8 @@ class GenericPSO:
 
         if options is None:
             # Set default values of the simplified version.
-            options = {"w0": 0.70, "c1": 1.50, "c2": 1.50,
-                       "mode": "g_best"}
+            options: dict = {"w0": 0.70, "c1": 1.50, "c2": 1.50,
+                             "mode": "g_best"}
         else:
             # Ensure all the parameters are here.
             check_velocity_parameters(options)
