@@ -31,9 +31,9 @@ class StandardPSO(GenericPSO):
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
         # Generate initial particle velocities.
-        self._velocities: NDArray = GenericPSO.rng.uniform(-1.0, +1.0,
-                                                           size=(self.n_rows,
-                                                                 self.n_cols))
+        self._velocities: NDArray = GenericPSO.rng.uniform(
+            low=-1.0, high=+1.0, size=(self.n_rows, self.n_cols)
+        )
     # _end_def_
 
     def update_positions(self) -> None:
@@ -60,10 +60,9 @@ class StandardPSO(GenericPSO):
         :return: None.
         """
         # Generate uniform FLOAT positions U(x_min, x_max).
-        uniform_positions: NDArray = GenericPSO.rng.uniform(self.lower_bound,
-                                                            self.upper_bound,
-                                                            size=(self.n_rows,
-                                                                  self.n_cols))
+        uniform_positions: NDArray = GenericPSO.rng.uniform(
+            self.lower_bound, self.upper_bound, size=(self.n_rows, self.n_cols)
+        )
         # Assign the new positions in the swarm.
         self.swarm.set_positions(uniform_positions)
     # _end_def_
@@ -75,9 +74,9 @@ class StandardPSO(GenericPSO):
         :return: None.
         """
         # Reset particle velocities.
-        self._velocities: NDArray = GenericPSO.rng.uniform(-1.0, +1.0,
-                                                           size=(self.n_rows,
-                                                                 self.n_cols))
+        self._velocities: NDArray = GenericPSO.rng.uniform(
+            low=-1.0, high=+1.0, size=(self.n_rows, self.n_cols)
+        )
         # Generate random uniform positions.
         self.generate_random_positions()
 

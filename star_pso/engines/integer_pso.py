@@ -30,9 +30,9 @@ class IntegerPSO(GenericPSO):
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
         # Generate initial particle velocities.
-        self._velocities: NDArray = GenericPSO.rng.uniform(-1.0, +1.0,
-                                                           size=(self.n_rows,
-                                                                 self.n_cols))
+        self._velocities: NDArray = GenericPSO.rng.uniform(
+            low=-1.0, high=+1.0, size=(self.n_rows, self.n_cols)
+        )
     # _end_def_
 
     def update_positions(self) -> None:
@@ -61,12 +61,10 @@ class IntegerPSO(GenericPSO):
         :return: None.
         """
         # Generate uniform INTEGER positions Int(x_min, x_max).
-        integer_positions = GenericPSO.rng.integers(self.lower_bound,
-                                                    self.upper_bound,
-                                                    endpoint=True,
-                                                    size=(self.n_rows,
-                                                          self.n_cols),
-                                                    dtype=int)
+        integer_positions = GenericPSO.rng.integers(
+            self.lower_bound, self.upper_bound, endpoint=True,
+            size=(self.n_rows, self.n_cols), dtype=int)
+
         # Assign the new positions in the swarm.
         self.swarm.set_positions(integer_positions)
     # _end_def_
@@ -79,9 +77,9 @@ class IntegerPSO(GenericPSO):
         :return: None.
         """
         # Reset particle velocities.
-        self._velocities = GenericPSO.rng.uniform(-1.0, +1.0,
-                                                  size=(self.n_rows,
-                                                        self.n_cols))
+        self._velocities = GenericPSO.rng.uniform(
+            low=-1.0, high=+1.0, size=(self.n_rows, self.n_cols)
+        )
         # Generate random integer positions.
         self.generate_random_positions()
 

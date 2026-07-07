@@ -38,10 +38,9 @@ class BareBonesPSO(GenericPSO):
         self.disable_parameters_update()
 
         # Generate initial particle "velocities".
-        self._velocities: NDArray = GenericPSO.rng.uniform(self.lower_bound,
-                                                           self.upper_bound,
-                                                           size=(self.n_rows,
-                                                                 self.n_cols))
+        self._velocities: NDArray = GenericPSO.rng.uniform(
+            self.lower_bound, self.upper_bound, size=(self.n_rows, self.n_cols)
+        )
     # _end_def_
 
     def update_velocities(self, params: VOptions) -> None:

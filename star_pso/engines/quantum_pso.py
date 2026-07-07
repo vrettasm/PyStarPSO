@@ -41,10 +41,9 @@ class QuantumPSO(GenericPSO):
         self.disable_parameters_update()
 
         # Generate initial particle "velocities".
-        self._velocities: NDArray = GenericPSO.rng.uniform(self.lower_bound,
-                                                           self.upper_bound,
-                                                           size=(self.n_rows,
-                                                                 self.n_cols))
+        self._velocities: NDArray = GenericPSO.rng.uniform(
+            self.lower_bound, self.upper_bound, size=(self.n_rows, self.n_cols)
+        )
     # _end_def_
 
     def update_velocities(self, params: VOptions) -> None:
@@ -124,10 +123,9 @@ class QuantumPSO(GenericPSO):
         :return: None.
         """
         # Generate uniform FLOAT positions U(x_min, x_max).
-        self._velocities: NDArray = GenericPSO.rng.uniform(self.lower_bound,
-                                                           self.upper_bound,
-                                                           size=(self.n_rows,
-                                                                 self.n_cols))
+        self._velocities: NDArray = GenericPSO.rng.uniform(
+            self.lower_bound, self.upper_bound, size=(self.n_rows, self.n_cols)
+        )
         # Assign the new positions.
         self.swarm.set_positions(self._velocities)
     # _end_def_
