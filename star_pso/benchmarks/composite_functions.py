@@ -22,10 +22,10 @@ def f_griewank(x_pos: NDArray) -> NDArray:
     Computes the Griewank function at x_pos.
     """
     # Get the size of the vector.
-    n_dim = x_pos.size
+    n_dim: int = x_pos.size
 
     # Compute the sqrt[i], {1, 2, ..., D}.
-    sqrt_i = np.sqrt(np.arange(1, n_dim + 1))
+    sqrt_i: NDArray = np.sqrt(np.arange(1, n_dim + 1))
 
     # Get the final value.
     return np.sum(x_pos ** 2) / 4000 - float(np.prod(np.cos(x_pos / sqrt_i))) + 1.0
@@ -51,16 +51,16 @@ def f_weierstrass(x_pos: NDArray, k_max: int = 9,
     alpha and beta parameters.
     """
     # Get the size of the vector.
-    n_dim = x_pos.size
+    n_dim: int = x_pos.size
 
     # Precalculate k-index values.
-    k = np.arange(0, k_max + 1)
+    k: NDArray = np.arange(0, k_max + 1)
 
     # Precalculate: alpha^k
-    alpha_k = alpha ** k
+    alpha_k: NDArray = alpha ** k
 
     # Precalculate: beta^k
-    beta_k = beta ** k
+    beta_k: NDArray = beta ** k
 
     # Vectorized double summation.
     sum_x = np.sum(alpha_k[:, np.newaxis] * np.cos(2 * np.pi * beta_k[:, np.newaxis] * (x_pos + 0.5)),
@@ -79,10 +79,10 @@ def f_ackley(x_pos: NDArray, alpha: float = 20.0,
     with default alpha and beta parameters.
     """
     # Get the size of the vector.
-    n_dim = x_pos.size
+    n_dim: int = x_pos.size
 
     # Compute the first part of the equation.
-    f_total = -alpha * np.exp(-beta * np.sqrt(np.sum(x_pos ** 2) / n_dim))
+    f_total: NDArray = -alpha * np.exp(-beta * np.sqrt(np.sum(x_pos ** 2) / n_dim))
 
     # Update it with the second part.
     f_total -= np.exp(np.sum(np.cos(2.0 * np.pi * x_pos)) / n_dim)
@@ -133,7 +133,7 @@ class CompositeFunction(TestFunction):
         :return: None.
         """
         # Ensure correct type.
-        n_dim = int(n_dim)
+        n_dim: int = int(n_dim)
 
         # Sanity check.
         if n_dim < 2:
