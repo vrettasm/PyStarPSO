@@ -588,7 +588,7 @@ def nb_median_kl_divergence(x_pos: NDArray,
     # Compute the "centroid" distribution.
     x_centroid: NDArray = nb_centroid(x_pos)
 
-    # 2. Normalize Centroid (Fused loop for speed)
+    # Get the sum of the centroid.
     total_sum: float = x_centroid.sum()
 
     if isclose(total_sum, 0.0):
