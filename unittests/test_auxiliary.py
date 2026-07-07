@@ -119,7 +119,7 @@ class TestAuxiliary(unittest.TestCase):
 
     def test_linear_rank_probabilities(self) -> None:
         """
-        Check the behaviour of the linear_rank_probabilities function.
+        Check the behavior of the linear_rank_probabilities function.
         We check for the correct type, the positive value and whether
         the sum of the probabilities sums to 1.0
 
