@@ -47,9 +47,7 @@ class IntegerPSO(GenericPSO):
                                       self._velocities).astype(int)
 
         # Ensure the particle stays within bounds.
-        nb_clip_inplace(new_positions,
-                        self.lower_bound,
-                        self.upper_bound)
+        nb_clip_inplace(new_positions, self.lower_bound, self.upper_bound)
 
         # Update all particle positions.
         self.swarm.set_positions(new_positions)
