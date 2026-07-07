@@ -613,7 +613,7 @@ class GenericPSO:
         swarm_size: int = self.swarm.size
 
         # Ensure lower case.
-        operating_mode = operating_mode.lower()
+        operating_mode: str = operating_mode.lower()
 
         # Get the global best.
         if operating_mode == "fipso":
