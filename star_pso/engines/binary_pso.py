@@ -81,9 +81,9 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Generate random vectors in U(0, 1).
-        uniform_values = GenericPSO.rng.random(size=(self.n_rows,
-                                                     self.n_cols),
-                                               dtype=float)
+        uniform_values = GenericPSO.rng.random(
+            size=(self.n_rows, self.n_cols), dtype=float)
+        
         # Create a matrix with zeros.
         new_positions: NDArray = np.zeros_like(uniform_values,
                                                dtype=np.uint8)
