@@ -100,9 +100,7 @@ class QuantumPSO(GenericPSO):
         p_best += direction * p_offset
 
         # Ensure we stay within limits.
-        nb_clip_inplace(p_best,
-                        self.lower_bound,
-                        self.upper_bound)
+        nb_clip_inplace(p_best, self.lower_bound, self.upper_bound)
 
         # Assign the new "velocities" vectors.
         self._velocities = p_best
