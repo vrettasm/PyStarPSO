@@ -592,7 +592,10 @@
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Clear statistics.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="c1"># Clear function counter.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_f_evals</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># Log the clearing.</span>
@@ -613,13 +616,13 @@
 <span class="sd">                 found.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Find the index of the maximum value.</span>
-        <span class="n">i_opt</span> <span class="o">=</span> <span class="n">np_argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;f_opt&quot;</span><span class="p">])</span>
+        <span class="n">i_opt</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">np_argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;f_opt&quot;</span><span class="p">])</span>
 
         <span class="c1"># Get the maximum of the f_opt.</span>
-        <span class="n">f_opt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;f_opt&quot;</span><span class="p">][</span><span class="n">i_opt</span><span class="p">]</span>
+        <span class="n">f_opt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;f_opt&quot;</span><span class="p">][</span><span class="n">i_opt</span><span class="p">]</span>
 
         <span class="c1"># Get the corresponding x_opt.</span>
-        <span class="n">x_opt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;x_opt&quot;</span><span class="p">][</span><span class="n">i_opt</span><span class="p">]</span>
+        <span class="n">x_opt</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;x_opt&quot;</span><span class="p">][</span><span class="n">i_opt</span><span class="p">]</span>
 
         <span class="c1"># Cast the output explicitly to int, float.</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">i_opt</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">f_opt</span><span class="p">),</span> <span class="n">x_opt</span></div>
@@ -679,10 +682,10 @@
         <span class="n">x_sorted</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pairwise_dists</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># Make a copy of local population to improve performance.</span>
-        <span class="n">local_population</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span>
+        <span class="n">local_population</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SwarmParticle</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span>
 
         <span class="c1"># Make a view of the entries we are interested in.</span>
-        <span class="n">x_partial</span> <span class="o">=</span> <span class="n">x_sorted</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="n">num_neighbors</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">x_partial</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">x_sorted</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="n">num_neighbors</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
         <span class="c1"># Go through each row of the x_sorted matrix and for each</span>
         <span class="c1"># particle  compute it&#39;s best neighborhood  position as a</span>
@@ -719,7 +722,7 @@
         <span class="n">swarm_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">size</span>
 
         <span class="c1"># Ensure lower case.</span>
-        <span class="n">operating_mode</span> <span class="o">=</span> <span class="n">operating_mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">operating_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">operating_mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
         <span class="c1"># Get the global best.</span>
         <span class="k">if</span> <span class="n">operating_mode</span> <span class="o">==</span> <span class="s2">&quot;fipso&quot;</span><span class="p">:</span>
@@ -829,13 +832,13 @@
         <span class="c1"># Get an estimate of the particles&#39; spread</span>
         <span class="c1"># ensuring its range is in [0, 1] and use</span>
         <span class="c1"># it as the current inertia weight.</span>
-        <span class="n">wt</span> <span class="o">=</span> <span class="n">nb_clip_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_spread</span><span class="p">(),</span>
-                          <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">wt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">nb_clip_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_spread</span><span class="p">(),</span>
+                                 <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 
         <span class="c1"># Get the previous values of the parameters.</span>
-        <span class="n">w0</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;w0&quot;</span><span class="p">]</span>
-        <span class="n">c1</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">]</span>
-        <span class="n">c2</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;c2&quot;</span><span class="p">]</span>
+        <span class="n">w0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;w0&quot;</span><span class="p">]</span>
+        <span class="n">c1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">]</span>
+        <span class="n">c2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;c2&quot;</span><span class="p">]</span>
 
         <span class="c1"># To reduce &quot;noise effects&quot; we allow the update only if the</span>
         <span class="c1"># new inertia parameter &quot;wt&quot; differs more than ~5% from the</span>
@@ -932,8 +935,8 @@
 
         <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Set default values of the simplified version.</span>
-            <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;w0&quot;</span><span class="p">:</span> <span class="mf">0.70</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">:</span> <span class="mf">1.50</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">:</span> <span class="mf">1.50</span><span class="p">,</span>
-                       <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;g_best&quot;</span><span class="p">}</span>
+            <span class="n">options</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;w0&quot;</span><span class="p">:</span> <span class="mf">0.70</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">:</span> <span class="mf">1.50</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">:</span> <span class="mf">1.50</span><span class="p">,</span>
+                             <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;g_best&quot;</span><span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Ensure all the parameters are here.</span>
             <span class="n">check_velocity_parameters</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>

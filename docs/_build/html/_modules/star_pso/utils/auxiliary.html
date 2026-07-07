@@ -705,7 +705,7 @@
     <span class="c1"># Compute the &quot;centroid&quot; distribution.</span>
     <span class="n">x_centroid</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">nb_centroid</span><span class="p">(</span><span class="n">x_pos</span><span class="p">)</span>
 
-    <span class="c1"># 2. Normalize Centroid (Fused loop for speed)</span>
+    <span class="c1"># Get the sum of the centroid.</span>
     <span class="n">total_sum</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">x_centroid</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">isclose</span><span class="p">(</span><span class="n">total_sum</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>

@@ -404,10 +404,9 @@
 <span class="sd">        :return: a new random (integer) position.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Ensure the random position stays within bounds.</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                                <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                <span class="n">size</span><span class="o">=</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;n_vars&quot;</span><span class="p">],</span>
-                                <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;n_vars&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
 
     <span class="c1"># _end_def_</span>
 
