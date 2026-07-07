@@ -1,4 +1,3 @@
-import numpy as np
 from numpy import rint
 from numpy.typing import (NDArray, ArrayLike)
 
