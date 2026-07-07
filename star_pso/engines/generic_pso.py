@@ -651,8 +651,9 @@ class GenericPSO:
         arr_shape: tuple = (self.n_rows, self.n_cols)
 
         # Pre-sample the cognitive coefficients.
-        cogntv: NDArray = GenericPSO.rng.uniform(0, params.c1,
-                                                 size=arr_shape)
+        cogntv: NDArray = GenericPSO.rng.uniform(
+            low=0.0, high=params.c1, size=arr_shape
+        )
         # Pre-sample the social coefficients.
         social: NDArray = GenericPSO.rng.uniform(0, params.c2,
                                                  size=arr_shape)
