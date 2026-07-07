@@ -121,7 +121,7 @@ class CategoricalPSO(GenericPSO):
         """
 
         # Precompute a single row template based on column sizes.
-        row_template = [
+        row_template: list[NDArray] = [
             np.ones(size_k) / size_k for size_k in self.size_of_sets
         ]
 
