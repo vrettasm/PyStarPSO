@@ -78,7 +78,7 @@ class TestAuxiliary(unittest.TestCase):
                          msg="Upper limit failed.")
     # _end_def_
 
-    def test_cost_function_min(self) -> None:
+    def test_cost_function_max(self) -> None:
         """
         Check the default behavior of the cost_function decorator.
         """
@@ -98,7 +98,7 @@ class TestAuxiliary(unittest.TestCase):
         self.assertEqual(x, result_x["f_value"])
     # _end_def_
 
-    def test_cost_function_max(self) -> None:
+    def test_cost_function_min(self) -> None:
         """
         Check the minimize=True, behavior of the cost_function decorator.
         """
