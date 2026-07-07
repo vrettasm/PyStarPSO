@@ -80,7 +80,7 @@ class TestAuxiliary(unittest.TestCase):
 
     def test_cost_function_min(self) -> None:
         """
-        Check the default behaviour of the cost_function decorator.
+        Check the default behavior of the cost_function decorator.
         """
 
         @cost_function
@@ -100,7 +100,7 @@ class TestAuxiliary(unittest.TestCase):
 
     def test_cost_function_max(self) -> None:
         """
-        Check the minimize=True, behaviour of the cost_function decorator.
+        Check the minimize=True, behavior of the cost_function decorator.
         """
         @cost_function(minimize=True)
         def func_2(num):
