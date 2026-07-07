@@ -579,7 +579,7 @@ class GenericPSO:
         local_population: list[SwarmParticle] = self.swarm.population
 
         # Make a view of the entries we are interested in.
-        x_partial = x_sorted[:, 1:num_neighbors + 1]
+        x_partial: NDArray = x_sorted[:, 1:num_neighbors + 1]
 
         # Go through each row of the x_sorted matrix and for each
         # particle  compute it's best neighborhood  position as a
