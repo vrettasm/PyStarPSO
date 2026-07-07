@@ -245,7 +245,7 @@ class JackOfAllTradesPSO(GenericPSO):
         # _end_if_
 
         # Inertia weight parameter.
-        w = params.w0
+        w: float = params.w0
 
         for i, (particle_i, c1, c2) in enumerate(zip(self.swarm.population,
                                                      cogntv, social)):
