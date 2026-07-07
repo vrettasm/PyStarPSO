@@ -576,7 +576,7 @@ class GenericPSO:
         x_sorted: NDArray = np.argsort(pairwise_dists, axis=1)
 
         # Make a copy of local population to improve performance.
-        local_population = self.swarm.population
+        local_population: list[SwarmParticle] = self.swarm.population
 
         # Make a view of the entries we are interested in.
         x_partial = x_sorted[:, 1:num_neighbors + 1]
