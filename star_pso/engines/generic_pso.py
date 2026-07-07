@@ -655,9 +655,9 @@ class GenericPSO:
             low=0.0, high=params.c1, size=arr_shape
         )
         # Pre-sample the social coefficients.
-        social: NDArray = GenericPSO.rng.uniform(0, params.c2,
-                                                 size=arr_shape)
-
+        social: NDArray = GenericPSO.rng.uniform(
+            low=0.0, high=params.c2, size=arr_shape
+        )
         # Get the local best positions (for the social attractor).
         l_best: NDArray = self.get_local_best_positions(params.mode)
 
