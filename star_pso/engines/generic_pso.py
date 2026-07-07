@@ -501,7 +501,10 @@ class GenericPSO:
 
         :return: None.
         """
+        # Clear statistics.
         self._stats.clear()
+
+        # Clear function counter.
         self._f_evals = 0
 
         # Log the clearing.
