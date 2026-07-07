@@ -132,7 +132,7 @@ class GenericPSO:
         # _end_if_
 
         # Log the number of CPUs.
-        logger.debug(f"{self.__class__.__name__} uses {self.n_cpus} CPUs.")
+        logger.debug("%s uses %s CPUs.", self.__class__.__name__, self.n_cpus)
 
         # Dictionary with statistics.
         self._stats: dict = defaultdict(list)
@@ -156,7 +156,7 @@ class GenericPSO:
         self._allow_parameters_to_update: bool = True
 
         # Log the object initialization.
-        logger.debug(f"{self.__class__.__name__} initialization complete.")
+        logger.debug("%s initialization complete.", self.__class__.__name__)
     # _end_def_
 
     @property
@@ -201,7 +201,7 @@ class GenericPSO:
         self._allow_parameters_to_update = True
 
         # Log enable of the flag.
-        logger.debug(f"{self.__class__.__name__} enabled parameters update.")
+        logger.debug("%s enabled parameters update.", self.__class__.__name__)
     # _end_def_
 
     def disable_parameters_update(self) -> None:
@@ -214,7 +214,7 @@ class GenericPSO:
         self._allow_parameters_to_update = False
 
         # Log disable of the flag.
-        logger.debug(f"{self.__class__.__name__} disabled parameters update.")
+        logger.debug("%s disabled parameters update.", self.__class__.__name__)
     # _end_def_
 
     @classmethod
@@ -230,7 +230,7 @@ class GenericPSO:
         cls.rng = default_rng(seed=new_seed)
 
         # Log the new seed event.
-        logger.debug(f"{cls.__name__} random generator has a new seed.")
+        logger.debug("%s random generator has a new seed.", cls.__name__)
     # _end_def_
 
     @staticmethod
@@ -508,8 +508,9 @@ class GenericPSO:
         self._f_evals = 0
 
         # Log the clearing.
-        logger.debug(f"{self.__class__.__name__} "
-                     f"'f_eval_counter' and 'stats' dictionary have been cleared.")
+        logger.debug(
+            "%s 'f_eval_counter' and 'stats' dictionary have been cleared.",
+            self.__class__.__name__)
     # _end_def_
 
     def get_optimal_values(self) -> tuple:
@@ -760,7 +761,7 @@ class GenericPSO:
             have_been_updated = True
 
             # Log the update.
-            logger.debug(f"{self.__class__.__name__} parameters have been updated.")
+            logger.debug("%s parameters have been updated.", self.__class__.__name__)
         # _end_if_
 
         return have_been_updated
@@ -810,7 +811,7 @@ class GenericPSO:
             self.reset_all()
 
             # Log the reset.
-            logger.warning(f"{self.__class__.__name__} has been reset.")
+            logger.warning("%s has been reset.", self.__class__.__name__)
         # _end_if_
 
         if options is None:
@@ -833,7 +834,7 @@ class GenericPSO:
         f_opt, _ = self.evaluate_function(parallel)
 
         # Log the initial f_optimal value.
-        logger.info(f"Initial f_optimal = {f_opt:.4f}")
+        logger.info("Initial f_optimal = %.4f", f_opt)
 
         # Local variable to display information on the screen.
         # To avoid cluttering the screen we print info only 10
@@ -857,7 +858,7 @@ class GenericPSO:
             # Check if we want to print output.
             if verbose and (i % its_time_to_print) == 0:
                 # Log the f_optimal at the current iteration.
-                logger.info(f"Iteration: {i + 1:>5} -> f_optimal = {f_new:.4f}")
+                logger.info("Iteration: %5d -> f_optimal = %.4f", i + 1, f_new)
             # _end_if_
 
             # Check for the maximum function evaluations.
@@ -866,8 +867,9 @@ class GenericPSO:
                 f_opt = f_new
 
                 # Log the exit message.
-                logger.warning(f"{self.__class__.__name__} reached the maximum "
-                               f"number of function evaluations at iteration {i + 1}")
+                logger.warning(
+                    "%s reached the maximum number of function evaluations at iteration %d",
+                    self.__class__.__name__, i + 1)
                 break
             # _end_if_
 
@@ -877,7 +879,9 @@ class GenericPSO:
                 f_opt = f_new
 
                 # Log the warning message.
-                logger.warning(f"{self.__class__.__name__} found a solution at iteration {i + 1}")
+                logger.warning(
+                    "%s found a solution at iteration %d",
+                    self.__class__.__name__, i + 1)
 
                 break
             # _end_if_
@@ -888,7 +892,7 @@ class GenericPSO:
                 f_opt = f_new
 
                 # Log the warning message.
-                logger.warning(f"{self.__class__.__name__} converged in {i + 1} iterations")
+                logger.warning("%s converged in %d iterations", self.__class__.__name__, i + 1)
 
                 break
             # _end_if_
