@@ -519,13 +519,13 @@ class GenericPSO:
                  found.
         """
         # Find the index of the maximum value.
-        i_opt = np_argmax(self._stats["f_opt"])
+        i_opt: int = np_argmax(self._stats["f_opt"])
 
         # Get the maximum of the f_opt.
-        f_opt = self._stats["f_opt"][i_opt]
+        f_opt: float = self._stats["f_opt"][i_opt]
 
         # Get the corresponding x_opt.
-        x_opt = self._stats["x_opt"][i_opt]
+        x_opt: NDArray = self._stats["x_opt"][i_opt]
 
         # Cast the output explicitly to int, float.
         return int(i_opt), float(f_opt), x_opt
