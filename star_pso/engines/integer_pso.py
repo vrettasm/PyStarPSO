@@ -66,8 +66,10 @@ class IntegerPSO(GenericPSO):
         """
         # Generate uniform INTEGER positions Int(x_min, x_max).
         integer_positions = GenericPSO.rng.integers(
-            self.lower_bound, self.upper_bound, endpoint=True,
-            size=(self.n_rows, self.n_cols), dtype=int)
+            low=self.lower_bound, high=self.upper_bound,
+            endpoint=True, size=(self.n_rows, self.n_cols),
+            dtype=int
+        )
 
         # Assign the new positions in the swarm.
         self.swarm.set_positions(integer_positions)
