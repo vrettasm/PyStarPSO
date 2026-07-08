@@ -55,7 +55,7 @@ class TestFunction:
         self._x_min: float | NDArray = x_min
 
         # Assign the maximum value(s).
-        self._x_max = x_max
+        self._x_max: float | NDArray = x_max
 
         # Construct a Latin Hyper Cube sampler.
         self._lhc = qmc.LatinHypercube(d=self._n_dim,
