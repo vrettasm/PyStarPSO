@@ -184,19 +184,19 @@ def cost_function(func: Callable = None, minimize: bool = False):
     return function_wrapper
 # _end_def_
 
-def identify_global_optima(swarm_population: list[Particle], epsilon: float = 1.0e-5,
-                           radius: float = 1.0e-1, f_opt: float | None = None) -> list:
+def identify_global_optima(swarm_population: list[Particle], f_opt: float,
+                           epsilon: float = 1.0e-5, radius: float = 1.0e-1) -> list:
     """
     This auxiliary method will search if the global optimal solution(s)
     are found in the swarm population.
 
     :param swarm_population: a list[Particle] of potential solutions.
 
+    :param f_opt: function value for the global optimal solution.
+
     :param epsilon: accuracy level of the global optimal solution.
 
     :param radius: niche radius of the distance between two particles.
-
-    :param f_opt: function value for the global optimal solution.
 
     :return: a list of best-fit individuals identified as solutions.
     """
