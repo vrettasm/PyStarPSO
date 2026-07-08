@@ -70,7 +70,8 @@ class StandardPSO(GenericPSO):
         """
         # Generate uniform FLOAT positions U(x_min, x_max).
         uniform_positions: NDArray = GenericPSO.rng.uniform(
-            self.lower_bound, self.upper_bound, size=(self.n_rows, self.n_cols)
+            low=self.lower_bound, high=self.upper_bound,
+            size=(self.n_rows, self.n_cols)
         )
         # Assign the new positions in the swarm.
         self.swarm.set_positions(uniform_positions)
