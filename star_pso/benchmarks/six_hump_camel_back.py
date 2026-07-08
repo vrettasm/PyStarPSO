@@ -77,8 +77,8 @@ class SixHumpCamelBack(TestFunction):
                  total number that exist.
         """
         # Get the global optima particles.
-        found_optima = identify_global_optima(population, epsilon=epsilon,
-                                              radius=0.5, f_opt=1.031628453)
+        found_optima = identify_global_optima(population, f_opt=1.031628453,
+                                              epsilon=epsilon, radius=0.5)
         # Find the number of optima.
         num_optima = len(found_optima)
 

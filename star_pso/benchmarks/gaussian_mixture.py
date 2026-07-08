@@ -99,8 +99,8 @@ class GaussianMixture(TestFunction):
                  total number that exist.
         """
         # Get the global optima particles.
-        found_optima = identify_global_optima(population, epsilon=epsilon,
-                                              radius=0.5, f_opt=-1.83285)
+        found_optima = identify_global_optima(population, f_opt=-1.83285,
+                                              epsilon=epsilon, radius=0.5)
         # Find the number of optima.
         num_optima = len(found_optima)
 

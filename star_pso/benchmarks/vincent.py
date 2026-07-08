@@ -78,8 +78,8 @@ class Vincent(TestFunction):
         total_optima = int(6**self.n_dim)
 
         # Get the global optima particles.
-        found_optima = identify_global_optima(population, epsilon=epsilon,
-                                              radius=0.2, f_opt=1.0)
+        found_optima = identify_global_optima(population, f_opt=1.0,
+                                              epsilon=epsilon, radius=0.1)
         # Find the number of optima.
         num_optima = len(found_optima)
 

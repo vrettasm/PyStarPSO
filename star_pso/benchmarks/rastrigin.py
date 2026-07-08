@@ -84,8 +84,8 @@ class Rastrigin(TestFunction):
                  total number that exist.
         """
         # Get the global optima particles.
-        found_optima = identify_global_optima(population, epsilon=epsilon,
-                                              radius=0.01, f_opt=-float(self.n_dim))
+        found_optima = identify_global_optima(population, f_opt=-float(self.n_dim),
+                                              epsilon=epsilon, radius=0.01)
         # Find the number of optima.
         num_optima = len(found_optima)
 
