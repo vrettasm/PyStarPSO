@@ -200,35 +200,31 @@ def identify_global_optima(swarm_population: list[Particle], f_opt: float,
 
     :return: a list of best-fit individuals identified as solutions.
     """
-    # Define a return list that will contain the
-    # particles that are on the global solutions.
+
+    # Filter out particles that don't meet the fitness threshold.
+    candidates = [
+        particle for particle in swarm_population
+        if fabs(f_opt - particle.value) < epsilon
+    ]
+
+    # Sort candidates so the highest-quality solutions are the
+    # first ones to be processed.
+    candidates.sort(key=lambda p: fabs(f_opt - p.value))
+
+    # Define a return list that will contain the particles that
+    # are the global solutions.
     optima_list = []
 
-    # Check all the particles.
-    for px in swarm_population:
+    # The best particle anchors the niche first and blocks all
+    # inferior neighbors.
+    for px in candidates:
+        # Function any() is optimized in C and short-circuits
+        # on the first true match, thus breaking the for-loop.
+        if not any(norm(k.position - px.position) <= radius
+                   for k in optima_list):
+            optima_list.append(px)
+    # _end_fors_
 
-        # Reset the exist flag.
-        already_exists = False
-
-        # Check if the fitness is near the global
-        # optimal value (within error - epsilon).
-        if fabs(f_opt - px.value) <= epsilon:
-
-            # Check if the particle is already
-            # in the optimal particles list.
-            for k in optima_list:
-
-                # Check if the two particles are close to each other.
-                if norm(k.position - px.position) <= radius:
-                    already_exists = True
-                    break
-            # Add the particle only if it doesn't
-            # already exist in the list.
-            if not already_exists:
-                optima_list.append(px)
-    # _end_for_
-
-    # Return the list.
     return optima_list
 # _end_def_
 
@@ -244,7 +240,35 @@ def linear_rank_probabilities(p_size: int, eta: float = 1.5) -> tuple[NDArray, f
 
     NOTE: Probabilities are returned in ascending order.
 
-    :param p_size: (int) population size.
+    :param p_size: (int) population size.def identify_global_optima(swarm_population: list[Particle], f_opt: float,
+                           epsilon: float = 1.0e-5, radius: float = 1.0e-1) -> list:
+
+    # 1. Filter out particles that don't meet the fitness threshold
+    candidates = [
+        p for p in swarm_population
+        if fabs(f_opt - p.value) <= epsilon
+    ]
+
+    # 2. Sort candidates so the highest-quality solutions are processed first.
+    # (Sorting by the absolute error to f_opt in ascending order)
+    candidates.sort(key=lambda p: fabs(f_opt - p.value))
+
+    optima_list = []
+
+    # 3. Form niches starting from the highest-quality peaks downward
+    for px in candidates:
+        already_exists = False
+
+        for k in optima_list:
+            if norm(k.position - px.position) <= radius:
+                already_exists = True
+                break
+
+        if not already_exists:
+            optima_list.append(px)
+
+    return optima_list
+
     :param eta: (float) pressure adjustment factor.
 
     :return: (array, float) rank probability distribution in ascending
