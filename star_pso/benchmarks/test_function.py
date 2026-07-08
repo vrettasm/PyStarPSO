@@ -58,7 +58,8 @@ class TestFunction:
         self._x_max = x_max
 
         # Construct a Latin Hyper Cube sampler.
-        self._lhc = qmc.LatinHypercube(d=self._n_dim, rng=TestFunction.rng,
+        self._lhc = qmc.LatinHypercube(d=self._n_dim,
+                                       rng=TestFunction.rng,
                                        optimization="random-cd")
     # _end_def_
 
