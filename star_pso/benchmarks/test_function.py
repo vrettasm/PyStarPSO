@@ -146,7 +146,7 @@ class TestFunction:
                                     size=(n_pos, self.n_dim))
 
         # Sanity check.
-        if method.lower() == "latin-hc":
+        if method == "latin-hc":
             # Draw uniform random samples from LHC.
             sample = self._lhc.random(n_pos)
 
