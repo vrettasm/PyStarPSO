@@ -76,7 +76,8 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.population.particle</span><span class="w"> </span><span class="kn">import</span> <span class="n">Particle</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.benchmarks.test_function</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestFunction</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="n">identify_global_optima</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">identify_global_optima</span><span class="p">,</span>
+                                      <span class="n">calculate_dynamic_radius</span><span class="p">)</span>
 
 <span class="c1"># Basic function: 1</span>
 <div class="viewcode-block" id="f_sphere">
@@ -99,10 +100,10 @@
 <span class="sd">    Computes the Griewank function at x_pos.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the size of the vector.</span>
-    <span class="n">n_dim</span> <span class="o">=</span> <span class="n">x_pos</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">n_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">x_pos</span><span class="o">.</span><span class="n">size</span>
 
     <span class="c1"># Compute the sqrt[i], {1, 2, ..., D}.</span>
-    <span class="n">sqrt_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">sqrt_i</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
 
     <span class="c1"># Get the final value.</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4000</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">/</span> <span class="n">sqrt_i</span><span class="p">)))</span> <span class="o">+</span> <span class="mf">1.0</span></div>
@@ -134,16 +135,16 @@
 <span class="sd">    alpha and beta parameters.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the size of the vector.</span>
-    <span class="n">n_dim</span> <span class="o">=</span> <span class="n">x_pos</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">n_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">x_pos</span><span class="o">.</span><span class="n">size</span>
 
     <span class="c1"># Precalculate k-index values.</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">k_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">k</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">k_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Precalculate: alpha^k</span>
-    <span class="n">alpha_k</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">**</span> <span class="n">k</span>
+    <span class="n">alpha_k</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">**</span> <span class="n">k</span>
 
     <span class="c1"># Precalculate: beta^k</span>
-    <span class="n">beta_k</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">**</span> <span class="n">k</span>
+    <span class="n">beta_k</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">**</span> <span class="n">k</span>
 
     <span class="c1"># Vectorized double summation.</span>
     <span class="n">sum_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha_k</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">beta_k</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_pos</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)),</span>
@@ -165,10 +166,10 @@
 <span class="sd">    with default alpha and beta parameters.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the size of the vector.</span>
-    <span class="n">n_dim</span> <span class="o">=</span> <span class="n">x_pos</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">n_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">x_pos</span><span class="o">.</span><span class="n">size</span>
 
     <span class="c1"># Compute the first part of the equation.</span>
-    <span class="n">f_total</span> <span class="o">=</span> <span class="o">-</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_dim</span><span class="p">))</span>
+    <span class="n">f_total</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="o">-</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_dim</span><span class="p">))</span>
 
     <span class="c1"># Update it with the second part.</span>
     <span class="n">f_total</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x_pos</span><span class="p">))</span> <span class="o">/</span> <span class="n">n_dim</span><span class="p">)</span>
@@ -222,7 +223,7 @@
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Ensure correct type.</span>
-        <span class="n">n_dim</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_dim</span><span class="p">)</span>
+        <span class="n">n_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_dim</span><span class="p">)</span>
 
         <span class="c1"># Sanity check.</span>
         <span class="k">if</span> <span class="n">n_dim</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
@@ -313,8 +314,10 @@
             <span class="n">weights</span> <span class="o">=</span> <span class="n">CompositeFunction</span><span class="o">.</span><span class="n">compute_weights</span><span class="p">(</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
 
             <span class="c1"># Get total evaluation of the composite function.</span>
-            <span class="n">f_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">wi</span> <span class="o">*</span> <span class="p">(</span><span class="n">fi</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">/</span> <span class="n">num_f</span><span class="p">)</span> <span class="o">+</span> <span class="n">i_bias</span><span class="p">)</span>
-                              <span class="k">for</span> <span class="n">wi</span><span class="p">,</span> <span class="n">fi</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">basic_f</span><span class="p">)])</span>
+            <span class="n">f_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span>
+                <span class="n">wi</span> <span class="o">*</span> <span class="p">(</span><span class="n">fi</span><span class="p">(</span><span class="n">x_pos</span> <span class="o">/</span> <span class="n">num_f</span><span class="p">)</span> <span class="o">+</span> <span class="n">i_bias</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">wi</span><span class="p">,</span> <span class="n">fi</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">basic_f</span><span class="p">)</span>
+            <span class="p">])</span>
             <span class="c1"># Add the bias at the end.</span>
             <span class="n">f_value</span> <span class="o">=</span> <span class="n">f_total</span> <span class="o">+</span> <span class="n">f_bias</span>
         <span class="c1"># _end_if_</span>
@@ -340,9 +343,12 @@
 <span class="sd">        :return: a tuple with the number of global optima found and the</span>
 <span class="sd">                 total number that exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Calculate the radius dynamically.</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="n">calculate_dynamic_radius</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_max</span><span class="p">)</span>
+
         <span class="c1"># Get the global optima particles.</span>
-        <span class="n">found_optima</span> <span class="o">=</span> <span class="n">identify_global_optima</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span>
-                                              <span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">f_opt</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">found_optima</span> <span class="o">=</span> <span class="n">identify_global_optima</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">f_opt</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                                              <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span>
         <span class="c1"># Find the number of optima.</span>
         <span class="n">num_optima</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">found_optima</span><span class="p">)</span>
 

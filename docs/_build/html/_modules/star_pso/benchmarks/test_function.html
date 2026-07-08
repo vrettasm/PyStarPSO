@@ -120,19 +120,20 @@
         <span class="c1"># _end_if_</span>
 
         <span class="c1"># Assign the function name.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">name</span>
 
         <span class="c1"># Assign the dimensions.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_n_dim</span> <span class="o">=</span> <span class="n">n_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">n_dim</span>
 
         <span class="c1"># Assign the minimum value(s).</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_x_min</span> <span class="o">=</span> <span class="n">x_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">x_min</span>
 
         <span class="c1"># Assign the maximum value(s).</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_x_max</span> <span class="o">=</span> <span class="n">x_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">x_max</span>
 
         <span class="c1"># Construct a Latin Hyper Cube sampler.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_lhc</span> <span class="o">=</span> <span class="n">qmc</span><span class="o">.</span><span class="n">LatinHypercube</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_dim</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">TestFunction</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lhc</span> <span class="o">=</span> <span class="n">qmc</span><span class="o">.</span><span class="n">LatinHypercube</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_dim</span><span class="p">,</span>
+                                       <span class="n">rng</span><span class="o">=</span><span class="n">TestFunction</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span>
                                        <span class="n">optimization</span><span class="o">=</span><span class="s2">&quot;random-cd&quot;</span><span class="p">)</span>
     <span class="c1"># _end_def_</span>
 
@@ -218,14 +219,25 @@
 
 <span class="sd">        :return: a uniformly sampled set of random positions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Ensure number of positions is int.</span>
+        <span class="n">n_pos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_pos</span><span class="p">)</span>
+
         <span class="c1"># Sanity check.</span>
-        <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;random&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n_pos</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &quot;</span>
+                             <span class="s2">&quot;The number of sampled positions should be &gt; 1.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Convert the method to lowercase.</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="c1"># Sanity check.</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;random&quot;</span><span class="p">:</span>
             <span class="c1"># Draw uniform random samples.</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_max</span><span class="p">,</span>
                                     <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_dim</span><span class="p">))</span>
 
         <span class="c1"># Sanity check.</span>
-        <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;latin-hc&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;latin-hc&quot;</span><span class="p">:</span>
             <span class="c1"># Draw uniform random samples from LHC.</span>
             <span class="n">sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lhc</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n_pos</span><span class="p">)</span>
 

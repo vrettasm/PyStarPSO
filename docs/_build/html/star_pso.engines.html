@@ -892,7 +892,7 @@ should be implemented separately.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.rng">
-<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x130CCB920</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x12F8F3840</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
 <dd><p>Random Number Generator for the whole class.</p>
 </dd></dl>
 
@@ -1049,6 +1049,20 @@ the particles.</p>
 <dd><p>Generate the population of particles positions by sampling
 uniformly random integer numbers within the [x_min, x_max]
 bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.integer_pso.IntegerPSO.generate_random_velocities">
+<span class="sig-name descname"><span class="pre">generate_random_velocities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/integer_pso.html#IntegerPSO.generate_random_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.integer_pso.IntegerPSO.generate_random_velocities" title="Link to this definition"></a></dt>
+<dd><p>Generate the population of velocities by sampling uniformly
+random numbers within predefined bounds that depend on the
+search space range. In this case we fix that to +/-10 % of
+the total range.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
@@ -1252,6 +1266,20 @@ the particles.</p>
 <span class="sig-name descname"><span class="pre">generate_random_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/standard_pso.html#StandardPSO.generate_random_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.standard_pso.StandardPSO.generate_random_positions" title="Link to this definition"></a></dt>
 <dd><p>Generate the population of particles positions by sampling
 uniformly random numbers within the [x_min, x_max] bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.standard_pso.StandardPSO.generate_random_velocities">
+<span class="sig-name descname"><span class="pre">generate_random_velocities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/standard_pso.html#StandardPSO.generate_random_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.standard_pso.StandardPSO.generate_random_velocities" title="Link to this definition"></a></dt>
+<dd><p>Generate the population of velocities by sampling uniformly
+random numbers within predefined bounds that depend on the
+search space range. In this case we fix that to +/-10 % of
+the total range.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
