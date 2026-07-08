@@ -52,7 +52,7 @@ class TestFunction:
         self._n_dim: int = n_dim
 
         # Assign the minimum value(s).
-        self._x_min = x_min
+        self._x_min: float | NDArray = x_min
 
         # Assign the maximum value(s).
         self._x_max = x_max
