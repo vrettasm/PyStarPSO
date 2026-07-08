@@ -29,9 +29,13 @@ class IntegerPSO(GenericPSO):
         # Call the super initializer with the input parameters.
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
+        # Calculate the search space range per dimension.
+        self._space_range = self.upper_bound - self.lower_bound
+
         # Generate initial particle velocities.
         self._velocities: NDArray = GenericPSO.rng.uniform(
-            low=-1.0, high=+1.0, size=(self.n_rows, self.n_cols)
+            low=-0.1 * self._space_range, high=0.1 * self._space_range,
+            size=(self.n_rows, self.n_cols)
         )
     # _end_def_
 
@@ -78,7 +82,8 @@ class IntegerPSO(GenericPSO):
         """
         # Reset particle velocities.
         self._velocities = GenericPSO.rng.uniform(
-            low=-1.0, high=+1.0, size=(self.n_rows, self.n_cols)
+            low=-0.1 * self._space_range, high=0.1 * self._space_range,
+            size=(self.n_rows, self.n_cols)
         )
         # Generate random integer positions.
         self.generate_random_positions()

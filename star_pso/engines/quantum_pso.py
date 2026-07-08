@@ -42,7 +42,8 @@ class QuantumPSO(GenericPSO):
 
         # Generate initial particle "velocities".
         self._velocities: NDArray = GenericPSO.rng.uniform(
-            self.lower_bound, self.upper_bound, size=(self.n_rows, self.n_cols)
+            low=self.lower_bound, high=self.upper_bound,
+            size=(self.n_rows, self.n_cols)
         )
     # _end_def_
 
@@ -124,7 +125,8 @@ class QuantumPSO(GenericPSO):
         """
         # Generate uniform FLOAT positions U(x_min, x_max).
         self._velocities: NDArray = GenericPSO.rng.uniform(
-            self.lower_bound, self.upper_bound, size=(self.n_rows, self.n_cols)
+            low=self.lower_bound, high=self.upper_bound,
+            size=(self.n_rows, self.n_cols)
         )
         # Assign the new positions.
         self.swarm.set_positions(self._velocities)

@@ -30,9 +30,15 @@ class StandardPSO(GenericPSO):
         # Call the super initializer with the input parameters.
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
-        # Generate initial particle velocities.
+        # Calculate the search space range per dimension.
+        self._space_range = self.upper_bound - self.lower_bound
+
+        # Generate initial particle velocities scaled by the search space
+        # range. E.g: initial velocity is bounded by +/-10 % of the total
+        # range.
         self._velocities: NDArray = GenericPSO.rng.uniform(
-            low=-0.1, high=0.1, size=(self.n_rows, self.n_cols)
+            low=-0.1 * self._space_range, high=0.1 * self._space_range,
+            size=(self.n_rows, self.n_cols)
         )
     # _end_def_
 
@@ -75,7 +81,8 @@ class StandardPSO(GenericPSO):
         """
         # Reset particle velocities.
         self._velocities: NDArray = GenericPSO.rng.uniform(
-            low=-0.1, high=0.1, size=(self.n_rows, self.n_cols)
+            low=-0.1 * self._space_range, high=0.1 * self._space_range,
+            size=(self.n_rows, self.n_cols)
         )
         # Generate random uniform positions.
         self.generate_random_positions()
