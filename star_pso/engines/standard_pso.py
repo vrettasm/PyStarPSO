@@ -48,6 +48,9 @@ class StandardPSO(GenericPSO):
 
         :return: None.
         """
+        # Initialize the new positions.
+        new_positions: NDArray = self.swarm.positions_as_array()
+
         # Add the new velocities to the positions.
         new_positions: NDArray = self.swarm.positions_as_array() + self._velocities
 
