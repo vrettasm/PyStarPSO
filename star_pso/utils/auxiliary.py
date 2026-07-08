@@ -184,6 +184,41 @@ def cost_function(func: Callable = None, minimize: bool = False):
     return function_wrapper
 # _end_def_
 
+def calculate_dynamic_radius(lower_bounds: NDArray, upper_bounds: NDArray,
+                             alpha: float = 0.01) -> float:
+    """
+    Calculates a niche radius proportional to the geometry of the search
+    space.
+
+    :param lower_bounds: 1D array of minimum values for each dimension.
+
+    :param upper_bounds: 1D array of maximum values for each dimension.
+
+    :param alpha: Scaling factor (typically 0.01 to 0.10 for 1% - 10%).
+
+    :return: A float radius scaled to the dimensions of the space.
+    """
+    # Sanity check.
+    if alpha < 0:
+        raise ValueError("Alpha factor must be non-negative.")
+
+    # Sanity check: Quick exit if alpha is zero.
+    if alpha == 0:
+        return 0.0
+
+    # Calculate the side length of the bounding box (for each dimension).
+    domain_ranges: NDArray = upper_bounds - lower_bounds
+
+    # Sanity Check: Ensure bounds are valid and not inverted.
+    if np.any(domain_ranges <= 0):
+        raise ValueError("Upper bounds must be strictly greater than lower bounds.")
+
+    # The maximum diagonal of the hypercube.
+    hypercube_diagonal = np.linalg.norm(domain_ranges)
+
+    return float(alpha * hypercube_diagonal)
+# _end_def_
+
 def identify_global_optima(swarm_population: list[Particle], f_opt: float,
                            epsilon: float = 1.0e-5, radius: float = 1.0e-1) -> list:
     """
