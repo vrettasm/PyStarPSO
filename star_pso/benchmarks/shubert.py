@@ -90,8 +90,8 @@ class Shubert(TestFunction):
         # _end_if_
 
         # Get the global optima particles.
-        found_optima = identify_global_optima(population, epsilon=epsilon,
-                                              radius=0.5, f_opt=f_opt)
+        found_optima = identify_global_optima(population, f_opt=f_opt,
+                                              epsilon=epsilon, radius=0.5)
         # Find the number of optima.
         num_optima = len(found_optima)
 
