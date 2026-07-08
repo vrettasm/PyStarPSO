@@ -49,7 +49,7 @@ class TestFunction:
         self._name: str = name
 
         # Assign the dimensions.
-        self._n_dim = n_dim
+        self._n_dim: int = n_dim
 
         # Assign the minimum value(s).
         self._x_min = x_min
