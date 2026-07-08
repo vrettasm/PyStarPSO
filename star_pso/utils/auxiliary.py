@@ -275,34 +275,7 @@ def linear_rank_probabilities(p_size: int, eta: float = 1.5) -> tuple[NDArray, f
 
     NOTE: Probabilities are returned in ascending order.
 
-    :param p_size: (int) population size.def identify_global_optima(swarm_population: list[Particle], f_opt: float,
-                           epsilon: float = 1.0e-5, radius: float = 1.0e-1) -> list:
-
-    # 1. Filter out particles that don't meet the fitness threshold
-    candidates = [
-        p for p in swarm_population
-        if fabs(f_opt - p.value) <= epsilon
-    ]
-
-    # 2. Sort candidates so the highest-quality solutions are processed first.
-    # (Sorting by the absolute error to f_opt in ascending order)
-    candidates.sort(key=lambda p: fabs(f_opt - p.value))
-
-    optima_list = []
-
-    # 3. Form niches starting from the highest-quality peaks downward
-    for px in candidates:
-        already_exists = False
-
-        for k in optima_list:
-            if norm(k.position - px.position) <= radius:
-                already_exists = True
-                break
-
-        if not already_exists:
-            optima_list.append(px)
-
-    return optima_list
+    :param p_size: (int) population size.
 
     :param eta: (float) pressure adjustment factor.
 
