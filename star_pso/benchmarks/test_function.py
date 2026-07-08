@@ -137,6 +137,14 @@ class TestFunction:
 
         :return: a uniformly sampled set of random positions.
         """
+        # Ensure number of positions is int.
+        n_pos = int(n_pos)
+
+        # Sanity check.
+        if n_pos < 1:
+            raise ValueError(f"{self.__class__.__name__}: "
+                             "The number of sampled positions should be > 1.")
+
         # Convert the method to lowercase.
         method = method.lower()
 
