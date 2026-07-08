@@ -4,7 +4,8 @@ from scipy.stats import multivariate_normal
 
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
-from star_pso.utils.auxiliary import identify_global_optima
+from star_pso.utils.auxiliary import (identify_global_optima,
+                                      calculate_dynamic_radius)
 
 
 class GaussianMixture(TestFunction):
@@ -98,9 +99,12 @@ class GaussianMixture(TestFunction):
         :return: a tuple with the number of global optima found and the
                  total number that exist.
         """
+        # Calculate the radius dynamically.
+        radius = calculate_dynamic_radius(self.x_min, self.x_max)
+
         # Get the global optima particles.
         found_optima = identify_global_optima(population, f_opt=-1.83285,
-                                              epsilon=epsilon, radius=0.1)
+                                              epsilon=epsilon, radius=radius)
         # Find the number of optima.
         num_optima = len(found_optima)
 

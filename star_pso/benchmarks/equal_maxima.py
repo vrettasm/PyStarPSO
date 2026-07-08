@@ -3,7 +3,8 @@ from numpy.typing import NDArray
 
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
-from star_pso.utils.auxiliary import identify_global_optima
+from star_pso.utils.auxiliary import (identify_global_optima,
+                                      calculate_dynamic_radius)
 
 
 class EqualMaxima(TestFunction):
@@ -64,9 +65,12 @@ class EqualMaxima(TestFunction):
         :return: a tuple with the number of global optima found and the
                  total number that exist.
         """
+        # Calculate the radius dynamically.
+        radius = calculate_dynamic_radius(self.x_min, self.x_max)
+
         # Get the global optima particles.
         found_optima = identify_global_optima(population, f_opt=1.0,
-                                              epsilon=epsilon, radius=0.01)
+                                              epsilon=epsilon, radius=radius)
         # Find the number of optima.
         num_optima = len(found_optima)
 

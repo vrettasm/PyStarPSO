@@ -3,7 +3,8 @@ from numpy.typing import NDArray
 
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
-from star_pso.utils.auxiliary import identify_global_optima
+from star_pso.utils.auxiliary import (identify_global_optima,
+                                      calculate_dynamic_radius)
 
 
 class Shubert(TestFunction):
@@ -89,9 +90,12 @@ class Shubert(TestFunction):
             total_optima, f_opt = 81, 2709.093505
         # _end_if_
 
+        # Calculate the radius dynamically.
+        radius = calculate_dynamic_radius(self.x_min, self.x_max)
+
         # Get the global optima particles.
         found_optima = identify_global_optima(population, f_opt=f_opt,
-                                              epsilon=epsilon, radius=0.5)
+                                              epsilon=epsilon, radius=radius)
         # Find the number of optima.
         num_optima = len(found_optima)
 
