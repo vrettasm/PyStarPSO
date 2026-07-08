@@ -29,14 +29,8 @@ class IntegerPSO(GenericPSO):
         # Call the super initializer with the input parameters.
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
-        # Calculate the search space range per dimension.
-        self._space_range = self.upper_bound - self.lower_bound
-
         # Generate initial particle velocities.
-        self._velocities: NDArray = GenericPSO.rng.uniform(
-            low=-0.1 * self._space_range, high=0.1 * self._space_range,
-            size=(self.n_rows, self.n_cols)
-        )
+        self.generate_random_velocities()
     # _end_def_
 
     def update_positions(self) -> None:
@@ -54,6 +48,27 @@ class IntegerPSO(GenericPSO):
 
         # Update all particle positions.
         self.swarm.set_positions(new_positions)
+    # _end_def_
+
+    def generate_random_velocities(self) -> None:
+        """
+        Generate the population of velocities by sampling uniformly
+        random numbers within predefined bounds that depend on the
+        search space range. In this case we fix that to +/-10 % of
+        the total range.
+
+        :return: None.
+        """
+        # Calculate the search space range per dimension.
+        space_range: NDArray = self.upper_bound - self.lower_bound
+
+        # Generate initial particle velocities scaled by the search
+        # space range. E.g.: initial velocity is bounded by +/- 10%
+        # of the total range.
+        self._velocities: NDArray = GenericPSO.rng.uniform(
+            low=-0.1 * space_range, high=0.1 * space_range,
+            size=(self.n_rows, self.n_cols)
+        )
     # _end_def_
 
     def generate_random_positions(self) -> None:
@@ -83,10 +98,8 @@ class IntegerPSO(GenericPSO):
         :return: None.
         """
         # Reset particle velocities.
-        self._velocities = GenericPSO.rng.uniform(
-            low=-0.1 * self._space_range, high=0.1 * self._space_range,
-            size=(self.n_rows, self.n_cols)
-        )
+        self.generate_random_velocities()
+
         # Generate random integer positions.
         self.generate_random_positions()
 
