@@ -46,7 +46,7 @@ class TestFunction:
         # _end_if_
 
         # Assign the function name.
-        self._name = name
+        self._name: str = name
 
         # Assign the dimensions.
         self._n_dim = n_dim
