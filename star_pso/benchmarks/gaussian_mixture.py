@@ -46,7 +46,7 @@ class GaussianMixture(TestFunction):
            multivariate_normal([-10.0, 5.0], [[1.2, 0.3], [0.3, 1.2]]),
            multivariate_normal([5.0, -10.0], [[1.2, 0.3], [0.3, 1.2]]))
     """
-    Set up four multivariate normal distributions.
+    Setup four multivariate normal distributions.
     """
 
     def __init__(self, x_min: float = -15.0, x_max: float = 15.0) -> None:
