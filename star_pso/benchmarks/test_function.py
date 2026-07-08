@@ -136,6 +136,9 @@ class TestFunction:
 
         :return: a uniformly sampled set of random positions.
         """
+        # Convert the method to lowercase.
+        method = method.lower()
+
         # Sanity check.
         if method.lower() == "random":
             # Draw uniform random samples.
