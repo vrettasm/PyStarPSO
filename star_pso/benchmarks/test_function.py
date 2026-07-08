@@ -140,7 +140,7 @@ class TestFunction:
         method = method.lower()
 
         # Sanity check.
-        if method.lower() == "random":
+        if method == "random":
             # Draw uniform random samples.
             return self.rng.uniform(self.x_min, self.x_max,
                                     size=(n_pos, self.n_dim))
