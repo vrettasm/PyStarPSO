@@ -40,16 +40,15 @@ class UnevenDecreasingMaxima(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function values to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        # Create a boolean mask for element-wise boundary checking.
+        in_bounds = (self.x_min <= x_pos) & (x_pos <= self.x_max)
 
-        # Condition for the valid range.
-        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            f_value = (np.exp(-2.0 * np.log(2.0) * ((x_pos - 0.08)/0.854)**2) *
-                       np.sin(5.0 * np.pi * (x_pos**(3/4) - 0.05))**6)
+        # Calculate values vectorized.
+        f_value = (np.exp(-2.0 * np.log(2.0) * ((x_pos - 0.08)/0.854)**2) *
+                   np.sin(5.0 * np.pi * (x_pos**(3/4) - 0.05))**6)
 
-        # Return the value.
-        return f_value
+        # Return f_value where true, else NaN.
+        return np.where(in_bounds, f_value, np.nan)
     # _end_def_
 
     def search_for_optima(self, population: list[Particle],
