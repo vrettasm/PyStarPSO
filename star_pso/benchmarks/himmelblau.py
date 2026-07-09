@@ -40,17 +40,22 @@ class Himmelblau(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function values to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        # Force array context cleanly.
+        x_pos = np.asarray(x_pos)
 
-        # Check the valid function range.
-        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Calculate the function value.
-            f_value = (200.0 - (x_pos[0]**2 + x_pos[1] - 11)**2 -
-                       (x_pos[0] + x_pos[1]**2 - 7)**2)
+        # Branchless slicing: works for both 1D arrays and 2D matrices.
+        x = x_pos[..., 0]
+        y = x_pos[..., 1]
 
-        # Return the ndarray.
-        return f_value
+        # Create a boolean mask for element-wise boundary checking.
+        in_bounds = ((self.x_min <= x) & (x <= self.x_max) &
+                     (self.x_min <= y) & (y <= self.x_max))
+
+        # Calculate values vectorized.
+        f_value = 200.0 - (x ** 2 + y - 11) ** 2 - (x + y ** 2 - 7) ** 2
+
+        # Return f_value where true, else NaN.
+        return np.where(in_bounds, f_value, np.nan)
     # _end_def_
 
     def search_for_optima(self, population: list[Particle],
