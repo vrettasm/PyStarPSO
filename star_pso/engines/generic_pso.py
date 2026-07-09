@@ -548,6 +548,18 @@ class GenericPSO:
                                   f"You should implement this method!")
     # _end_def_
 
+    def generate_random_velocities(self) -> None:
+        """
+        Generate a population of random velocities for the particles.
+        Each different class that inherits from here should know how
+        to implement it.
+
+        :return: None.
+        """
+        raise NotImplementedError(f"{self.__class__.__name__}: "
+                                  f"You should implement this method!")
+    # _end_def_
+
     def generate_random_positions(self) -> None:
         """
         Generate a population of random positions for the particles.
