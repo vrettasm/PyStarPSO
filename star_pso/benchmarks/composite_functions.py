@@ -8,7 +8,7 @@ from star_pso.utils.auxiliary import (identify_global_optima,
                                       calculate_dynamic_radius)
 
 # Basic function: 1
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def f_sphere(x_pos: NDArray) -> NDArray:
     """
     Computes the sphere function at x_pos.
@@ -17,7 +17,7 @@ def f_sphere(x_pos: NDArray) -> NDArray:
 # _end_def_
 
 # Basic function: 2
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def f_griewank(x_pos: NDArray) -> NDArray:
     """
     Computes the Griewank function at x_pos.
@@ -33,7 +33,7 @@ def f_griewank(x_pos: NDArray) -> NDArray:
 # _end_def_
 
 # Basic function: 3
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def f_rastrigin(x_pos: NDArray,
                 kappa: float = 10.0) -> NDArray:
     """
@@ -44,7 +44,7 @@ def f_rastrigin(x_pos: NDArray,
 # _end_def_
 
 # Basic function: 4
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def f_weierstrass(x_pos: NDArray, k_max: int = 9,
                   alpha: float = 0.5, beta: int = 3) -> NDArray:
     """
@@ -73,7 +73,7 @@ def f_weierstrass(x_pos: NDArray, k_max: int = 9,
 # _end_def_
 
 # Basic function: 5
-@njit(fastmath=True)
+@njit(cache=True, fastmath=True)
 def f_ackley(x_pos: NDArray, alpha: float = 20.0,
              beta: float = 0.2) -> NDArray:
     """
@@ -164,7 +164,7 @@ class CompositeFunction(TestFunction):
     # _end_def_
 
     @staticmethod
-    @njit
+    @njit(cache=True, fastmath=True)
     def compute_weights(x_pos: NDArray, sigma: NDArray) -> NDArray:
         """
         Calculates a set of weights (one for each function).
