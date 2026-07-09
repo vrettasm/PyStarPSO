@@ -169,7 +169,8 @@ class CompositeFunction(TestFunction):
         """
         Calculates a set of weights (one for each function).
 
-        :param x_pos: (ndarray) the position that we are evaluating the functions.
+        :param x_pos: (ndarray) the position that we are evaluating
+                      the functions.
 
         :param sigma: (ndarray) are used to control each function's range.
                       a small value gives a narrow range for the function.
