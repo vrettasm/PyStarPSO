@@ -87,12 +87,6 @@ class JackOfAllTradesPSO(GenericPSO):
 
         :return: None.
         """
-        # First we declare the velocities to be
-        # an [n_rows x n_cols] array of objects.
-        self._velocities: NDArray = np.empty(shape=(self.n_rows,
-                                                    self.n_cols),
-                                             dtype=object)
-
         # Here we generate the random velocities.
         for i, particle in enumerate(self.swarm.population):
             for j, block in enumerate(particle.container):
