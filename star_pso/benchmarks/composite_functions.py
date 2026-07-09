@@ -178,8 +178,11 @@ class CompositeFunction(TestFunction):
 
         :return: a (ndarray) of normalized weights.
         """
+        # Number of dimension.
+        n_dim = x_pos.size
+
         # Initialize the weights array.
-        weights = np.exp(-0.5 * np.sum(x_pos ** 2) / (x_pos.size * sigma**2))
+        weights = np.exp(-np.sum(x_pos ** 2) / (2.0 * n_dim * sigma**2))
 
         # Find the maximum among them.
         w_max = np.max(weights)
