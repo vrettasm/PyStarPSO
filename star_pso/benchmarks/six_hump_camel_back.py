@@ -50,17 +50,26 @@ class SixHumpCamelBack(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function values to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        # Force array context cleanly.
+        x_pos = np.asarray(x_pos)
 
-        # Condition for the valid range.
-        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Calculate the function value.
-            f_value = -((4 - 2.1 * x_pos[0]**2 + (x_pos[0]**4)/3) * x_pos[0]**2 +
-                        x_pos[0]*x_pos[1] + 4*(x_pos[1]**2 - 1.0)*(x_pos[1]**2))
+        # Branchless slicing: works for both 1D arrays and 2D matrices.
+        x = x_pos[..., 0]
+        y = x_pos[..., 1]
 
-        # Return the value.
-        return f_value
+        # Create a boolean mask for element-wise boundary checking.
+        in_bounds = np.all((self.x_min <= x_pos) &
+                           (x_pos <= self.x_max), axis=-1)
+
+        # Precalculate exponential values.
+        x2 = x * x
+        y2 = y * y
+
+        # Calculate the function value.
+        f_value = -((4.0 - 2.1 * x2 + (x2 * x2) / 3.0) * x2 +
+                    (x * y) + 4.0 * (y2 - 1.0) * y2)
+
+        return np.where(in_bounds, f_value, np.nan)
     # _end_def_
 
     def search_for_optima(self, population: list[Particle],
