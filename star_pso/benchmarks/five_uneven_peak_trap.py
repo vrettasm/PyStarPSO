@@ -39,6 +39,9 @@ class FiveUnevenPeakTrap(TestFunction):
 
         :return: the function value(s).
         """
+        # Ensure input is an NDArray.
+        x_pos = np.asarray(x_pos)
+
         # Initialize function values to NaN.
         f_value = np.full_like(x_pos, np.nan, dtype=float)
 
