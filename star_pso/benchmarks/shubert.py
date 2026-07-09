@@ -48,18 +48,35 @@ class Shubert(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function values to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        # Ensure input is NDArray.
+        x_pos = np.asarray(x_pos)
 
-        # Check the valid function range.
-        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Range 1 to 5.
-            i = np.array([1, 2, 3, 4, 5])
+        # Evaluate boundaries element-by-element along the coordinate axis.
+        in_bounds = np.all((self.x_min <= x_pos) &
+                           (x_pos <= self.x_max), axis=-1)
 
-            # Get the product of the sums.
-            f_value = -np.prod(np.sum(i[:, np.newaxis] * np.cos((i[:, np.newaxis] + 1) * x_pos +
-                                                                 i[:, np.newaxis]), axis=0))
-        # Return the ndarray.
+        # Setup output array matching the layout of the points.
+        f_value = np.full(np.shape(x_pos[..., 0]), np.nan, dtype=float)
+
+        # Only calculate the expression for elements inside bounds.
+        if np.any(in_bounds):
+
+            # Extract only the valid points.
+            valid_points = x_pos[in_bounds]
+
+            # Prepare the constant array: i = [1, 2, 3, 4, 5]
+            # Reshape it to (5, 1, ..., 1) so it broadcasts safely
+            # over valid_points.
+            i = np.arange(1, 6)
+            i_broadcast = i.reshape((5,) + (1,) * valid_points.ndim)
+
+            # Compute the internal Shubert sum per-dimension.
+            dim_sums = np.sum(i_broadcast * np.cos((i_broadcast + 1) * valid_points + i_broadcast),
+                              axis=0)
+
+            # Product of the sums across all dimensions (axis=-1)
+            f_value[in_bounds] = -np.prod(dim_sums, axis=-1)
+
         return f_value
     # _end_def_
 
