@@ -40,15 +40,14 @@ class EqualMaxima(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function values to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        # Create a boolean mask for element-wise boundary checking.
+        in_bounds = (self.x_min <= x_pos) & (x_pos <= self.x_max)
 
-        # Condition for the valid range.
-        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            f_value = np.sin(5.0 * np.pi * x_pos)**6
+        # Calculate values vectorized.
+        f_value = np.sin(5.0 * np.pi * x_pos) ** 6
 
-        # Return the ndarray.
-        return f_value
+        # Return f_value where true, else NaN.
+        return np.where(in_bounds, f_value, np.nan)
     # _end_def_
 
     def search_for_optima(self, population: list[Particle],
