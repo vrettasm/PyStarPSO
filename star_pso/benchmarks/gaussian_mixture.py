@@ -73,15 +73,28 @@ class GaussianMixture(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function values to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        # Ensure input is an array.
+        x_pos = np.asarray(x_pos)
 
-        # Check the valid function range.
-        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Calculate the log of the sum.
-            f_value = np.log(np.sum([mvn.pdf(x_pos)
-                                     for mvn in GaussianMixture.MVN]))
-        # Return the ndarray.
+        # Check bounds per-particle across the coordinate axis.
+        in_bounds = np.all((self.x_min <= x_pos) &
+                           (x_pos <= self.x_max), axis=-1)
+
+        # Create the return output container matching (init with NaN).
+        f_value = np.full(np.shape(x_pos[..., 0]), np.nan, dtype=float)
+
+        # Compute only for particles that are actually inside bounds.
+        if np.any(in_bounds):
+            valid_points = x_pos[in_bounds]
+
+            # vstack keeps components separated as rows.
+            component_pdfs = np.vstack([
+                mvn.pdf(valid_points) for mvn in GaussianMixture.MVN
+            ])
+
+            # Always sum vertically along components (axis=0).
+            f_value[in_bounds] = np.log(np.sum(component_pdfs, axis=0))
+
         return f_value
     # _end_def_
 
