@@ -172,8 +172,9 @@ class CompositeFunction(TestFunction):
         :param x_pos: (ndarray) the position that we are evaluating
                       the functions.
 
-        :param sigma: (ndarray) are used to control each function's range.
-                      a small value gives a narrow range for the function.
+        :param sigma: (ndarray) are used to control each function's
+                      range. A small value gives a narrow range for
+                      the function.
 
         :return: a (ndarray) of normalized weights.
         """
