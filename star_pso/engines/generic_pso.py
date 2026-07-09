@@ -550,9 +550,9 @@ class GenericPSO:
 
     def generate_random_positions(self) -> None:
         """
-        Generate a population of particles with random positions.
-        Each different class that inherits from here should know
-        how to implement it.
+        Generate a population of random positions for the particles.
+        Each different class that inherits from here should know how
+        to implement it.
 
         :return: None.
         """
