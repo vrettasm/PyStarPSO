@@ -16,7 +16,8 @@ from star_pso.population.particle import Particle
 __all__ = ["BlockType", "SpecialMode", "check_velocity_parameters", "time_it", "pareto_front", "cost_function",
            "calculate_dynamic_radius", "identify_global_optima", "linear_rank_probabilities", "kl_divergence_item",
            "kl_divergence_array", "nb_clip_inplace", "nb_clip_array", "nb_clip_item", "nb_median_hamming_distance",
-           "nb_median_euclidean_distance", "nb_centroid", "nb_median_taxicab_distance", "nb_median_kl_divergence"]
+           "nb_median_euclidean_distance", "nb_centroid", "nb_median_taxicab_distance", "nb_median_kl_divergence",
+           "nb_cdist"]
 
 
 class BlockType(Enum):
