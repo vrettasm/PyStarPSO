@@ -65,7 +65,7 @@ class CategoricalPSO(GenericPSO):
                                                     self.n_cols),
                                              dtype=object)
         # Call the random velocity generator.
-        self.generate_uniform_velocities()
+        self.generate_random_velocities()
 
         # Assign the correct local sample method
         # according to the permutation mode flag.
@@ -92,7 +92,7 @@ class CategoricalPSO(GenericPSO):
         return [len(k) for k in self._valid_sets]
     # _end_def_
 
-    def generate_uniform_velocities(self) -> None:
+    def generate_random_velocities(self) -> None:
         """
         Generates random uniform velocities
         for the categorical variable positions.
@@ -316,7 +316,7 @@ class CategoricalPSO(GenericPSO):
         :return: None.
         """
         # Reset particle velocities.
-        self.generate_uniform_velocities()
+        self.generate_random_velocities()
 
         # Reset particle positions.
         self.generate_random_positions()

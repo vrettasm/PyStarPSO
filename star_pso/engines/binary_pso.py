@@ -52,10 +52,7 @@ class BinaryPSO(GenericPSO):
         super().__init__(lower_bound=v_min, upper_bound=v_max, **kwargs)
 
         # Generate initial particle velocities.
-        self._velocities: NDArray = GenericPSO.rng.uniform(
-            low=self.lower_bound, high=self.upper_bound,
-            size=(self.n_rows, self.n_cols)
-        )
+        self.generate_random_velocities()
     # _end_def_
 
     def update_velocities(self, params: VOptions) -> None:
@@ -99,6 +96,20 @@ class BinaryPSO(GenericPSO):
         self.swarm.set_positions(new_positions)
     # _end_def_
 
+    def generate_random_velocities(self) -> None:
+        """
+        Generate the population of velocities by sampling uniformly
+        random numbers within predefined lower and upper bounds.
+
+        :return: None.
+        """
+        # Generate uniform FLOAT positions U(x_min, x_max).
+        self._velocities: NDArray = GenericPSO.rng.uniform(
+            low=self.lower_bound, high=self.upper_bound,
+            size=(self.n_rows, self.n_cols)
+        )
+    # _end_def_
+
     def generate_random_positions(self) -> None:
         """
         Generate the population of particles positions by
@@ -125,10 +136,8 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Reset particle velocities.
-        self._velocities = GenericPSO.rng.uniform(
-            low=self.lower_bound, high=self.upper_bound,
-            size=(self.n_rows, self.n_cols)
-        )
+        self.generate_random_velocities()
+
         # Generate random binary positions.
         self.generate_random_positions()
 

@@ -41,10 +41,7 @@ class QuantumPSO(GenericPSO):
         self.disable_parameters_update()
 
         # Generate initial particle "velocities".
-        self._velocities: NDArray = GenericPSO.rng.uniform(
-            low=self.lower_bound, high=self.upper_bound,
-            size=(self.n_rows, self.n_cols)
-        )
+        self.generate_random_velocities()
     # _end_def_
 
     def update_velocities(self, params: VOptions) -> None:
@@ -116,10 +113,10 @@ class QuantumPSO(GenericPSO):
         self.swarm.set_positions(self._velocities)
     # _end_def_
 
-    def generate_random_positions(self) -> None:
+    def generate_random_velocities(self) -> None:
         """
-        Generate the population of particles positions by
-        sampling uniform random numbers within the limits.
+        Generate the population of velocities by sampling uniformly
+        random numbers within predefined lower and upper bounds.
 
         :return: None.
         """
@@ -128,7 +125,19 @@ class QuantumPSO(GenericPSO):
             low=self.lower_bound, high=self.upper_bound,
             size=(self.n_rows, self.n_cols)
         )
-        # Assign the new positions.
+    # _end_def_
+
+    def generate_random_positions(self) -> None:
+        """
+        Generate the population of particles positions by
+        sampling uniform random numbers within the limits.
+
+        :return: None.
+        """
+        # First generate the velocities.
+        self.generate_random_velocities()
+
+        # Then assign them as new positions.
         self.swarm.set_positions(self._velocities)
     # _end_def_
 

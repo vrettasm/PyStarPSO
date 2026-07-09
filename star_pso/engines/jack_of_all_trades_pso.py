@@ -60,14 +60,8 @@ class JackOfAllTradesPSO(GenericPSO):
         # Call the super initializer.
         super().__init__(**kwargs)
 
-        # First we declare the velocities to be
-        # an [n_rows x n_cols] array of objects.
-        self._velocities: NDArray = np.empty(shape=(self.n_rows,
-                                                    self.n_cols),
-                                             dtype=object)
-
         # Call the random velocity generator.
-        self.generate_uniform_velocities()
+        self.generate_random_velocities()
 
         # Assign the correct local sample method
         # according to the permutation mode flag.
@@ -82,12 +76,17 @@ class JackOfAllTradesPSO(GenericPSO):
         self._special_mode = SpecialMode.JACK_OF_ALL_TRADES
     # _end_def_
 
-    def generate_uniform_velocities(self) -> None:
+    def generate_random_velocities(self) -> None:
         """
         Generates random uniform velocities for the data blocks.
 
         :return: None.
         """
+        # First we declare the velocities to be
+        # an [n_rows x n_cols] array of objects.
+        self._velocities: NDArray = np.empty(shape=(self.n_rows,
+                                                    self.n_cols),
+                                             dtype=object)
 
         # Here we generate the random velocities.
         for i, particle in enumerate(self.swarm.population):
@@ -284,7 +283,7 @@ class JackOfAllTradesPSO(GenericPSO):
         :return: None.
         """
         # Randomize particle velocities.
-        self.generate_uniform_velocities()
+        self.generate_random_velocities()
 
         # Randomize particle positions.
         self.generate_random_positions()
