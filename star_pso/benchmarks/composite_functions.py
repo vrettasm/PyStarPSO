@@ -149,15 +149,15 @@ class CompositeFunction(TestFunction):
         # Ensure correct type.
         if isinstance(n_func, int) and (2 <= n_func <= 20):
             # Create a new list by sampling randomly basic functions.
-            self.basic_f: list = self.rng.choice(list(BASIC_FUNCTIONS.values()),
+            self.basis_f: list = self.rng.choice(list(BASIS_FUNCTIONS.values()),
                                                  size=n_func, replace=True).tolist()
         elif isinstance(n_func, list):
             try:
                 # Create a new list with the given basic functions.
-                self.basic_f: list = [BASIC_FUNCTIONS[key] for key in n_func]
+                self.basis_f: list = [BASIS_FUNCTIONS[key] for key in n_func]
             except KeyError as ex:
                 raise KeyError(f"Unknown basic function. "
-                               f"Valid options are: {list(BASIC_FUNCTIONS.keys())}") from ex
+                               f"Valid options are: {list(BASIS_FUNCTIONS.keys())}") from ex
         else:
             raise TypeError(f"{self.__class__.__name__}: "
                             f"'n_func' must either be an int in [2, 20], or a list.")
@@ -217,7 +217,7 @@ class CompositeFunction(TestFunction):
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
             # Get the number of basic functions.
-            num_f = len(self.basic_f)
+            num_f = len(self.basis_f)
 
             # Sigma values for simplicity are set to one.
             sigma = np.ones(num_f, dtype=float)
@@ -228,7 +228,7 @@ class CompositeFunction(TestFunction):
             # Get total evaluation of the composite function.
             f_total = np.sum([
                 wi * (fi(x_pos / num_f) + i_bias)
-                for wi, fi in zip(weights, self.basic_f)
+                for wi, fi in zip(weights, self.basis_f)
             ])
             # Add the bias at the end.
             f_value = f_total + f_bias
@@ -276,7 +276,7 @@ class CompositeFunction(TestFunction):
                        f"x_max={self.x_max})\n")
 
         # Append all the basis functions.
-        for n, func in enumerate(self.basic_f):
+        for n, func in enumerate(self.basis_f):
             cf_str += f"F{n} -> {func.__name__}\n"
 
         # Return the new string.
