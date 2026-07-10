@@ -49,11 +49,11 @@ class Vincent(TestFunction):
 
         :return: the function value(s).
         """
-        # Number of dimensions.
-        n_dim = x_pos.size if x_pos.ndim == 1 else x_pos.shape[1]
-
         # Ensure input is NDArray.
         x_pos = np.asarray(x_pos)
+
+        # Number of dimensions.
+        n_dim = x_pos.size if x_pos.ndim == 1 else x_pos.shape[1]
 
         # Evaluate boundaries element-by-element along the coordinate axis.
         in_bounds = np.all((self.x_min <= x_pos) &
