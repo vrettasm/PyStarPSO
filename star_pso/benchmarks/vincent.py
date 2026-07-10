@@ -29,7 +29,7 @@ class Vincent(TestFunction):
         :return: None.
         """
         # Ensure correct type.
-        n_dim = int(n_dim)
+        n_dim: int = int(n_dim)
 
         # Sanity check.
         if n_dim < 2:
@@ -50,22 +50,22 @@ class Vincent(TestFunction):
         :return: the function value(s).
         """
         # Ensure input is NDArray.
-        x_pos = np.asarray(x_pos)
+        x_pos: NDArray = np.asarray(x_pos)
 
         # Evaluate boundaries element-by-element along the coordinate axis.
-        in_bounds = np.all((self.x_min <= x_pos) &
-                           (x_pos <= self.x_max), axis=-1)
+        in_bounds: NDArray = np.all((self.x_min <= x_pos) &
+                                    (x_pos <= self.x_max), axis=-1)
 
         # Setup output array matching the layout of the points.
-        f_value = np.full(np.shape(x_pos[..., 0]), np.nan, dtype=float)
+        f_value: NDArray = np.full(np.shape(x_pos[..., 0]), np.nan, dtype=float)
 
         # Only calculate the expression for elements inside bounds.
         if np.any(in_bounds):
             # Extract only the valid points.
-            valid_points = x_pos[in_bounds]
+            valid_points: NDArray = x_pos[in_bounds]
 
-            f_value[in_bounds] = np.sum(np.sin(10.0 * np.log(valid_points)), axis=-1) / self.n_dim
-
+            f_value[in_bounds] = np.sum(np.sin(10.0 * np.log(valid_points)),
+                                        axis=-1) / self.n_dim
         # Return the value.
         return f_value
     # _end_def_

@@ -40,10 +40,10 @@ class FiveUnevenPeakTrap(TestFunction):
         :return: the function value(s).
         """
         # Ensure input is an NDArray.
-        x_pos = np.asarray(x_pos)
+        x_pos: NDArray = np.asarray(x_pos)
 
         # Initialize function values to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        f_value: NDArray = np.full_like(x_pos, np.nan, dtype=float)
 
         # Apply the conditions using boolean indexing.
         cond_1 = (0.0 <= x_pos) & (x_pos < 2.5)
@@ -84,13 +84,13 @@ class FiveUnevenPeakTrap(TestFunction):
                  total number that exist.
         """
         # Calculate the radius dynamically.
-        radius = calculate_dynamic_radius(self.x_min, self.x_max)
+        radius: float = calculate_dynamic_radius(self.x_min, self.x_max)
 
         # Get the global optima particles.
-        found_optima = identify_global_optima(population, f_opt=200.0,
-                                              epsilon=epsilon, radius=radius)
+        found_optima: list[Particle] = identify_global_optima(population, f_opt=200.0,
+                                                              epsilon=epsilon, radius=radius)
         # Find the number of optima.
-        num_optima = len(found_optima)
+        num_optima: int = len(found_optima)
 
         # Return the tuple (number of found, total number)
         return num_optima, 2

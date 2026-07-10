@@ -40,11 +40,15 @@ class EqualMaxima(TestFunction):
 
         :return: the function value(s).
         """
+        # Convert input cleanly without re-allocation
+        # if x_pos is already an array.
+        x_pos: NDArray = np.asarray(x_pos)
+
         # Create a boolean mask for element-wise boundary checking.
-        in_bounds = (self.x_min <= x_pos) & (x_pos <= self.x_max)
+        in_bounds: NDArray = (self.x_min <= x_pos) & (x_pos <= self.x_max)
 
         # Calculate values vectorized.
-        f_value = np.sin(5.0 * np.pi * x_pos) ** 6
+        f_value: NDArray = np.sin(5.0 * np.pi * x_pos) ** 6
 
         # Return f_value where true, else NaN.
         return np.where(in_bounds, f_value, np.nan)
@@ -65,13 +69,14 @@ class EqualMaxima(TestFunction):
                  total number that exist.
         """
         # Calculate the radius dynamically.
-        radius = calculate_dynamic_radius(self.x_min, self.x_max)
+        radius: float = calculate_dynamic_radius(self.x_min, self.x_max)
 
         # Get the global optima particles.
-        found_optima = identify_global_optima(population, f_opt=1.0,
-                                              epsilon=epsilon, radius=radius)
+        found_optima: list[Particle] = identify_global_optima(population,
+                                                              f_opt=1.0,
+                                                              epsilon=epsilon, radius=radius)
         # Find the number of optima.
-        num_optima = len(found_optima)
+        num_optima: int = len(found_optima)
 
         # Return the tuple (number of found, total number)
         return num_optima, 5

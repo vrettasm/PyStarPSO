@@ -74,21 +74,21 @@ class GaussianMixture(TestFunction):
         :return: the function value(s).
         """
         # Ensure input is an array.
-        x_pos = np.asarray(x_pos)
+        x_pos: NDArray = np.asarray(x_pos)
 
         # Check bounds per-particle across the coordinate axis.
-        in_bounds = np.all((self.x_min <= x_pos) &
-                           (x_pos <= self.x_max), axis=-1)
+        in_bounds: NDArray = np.all((self.x_min <= x_pos) &
+                                    (x_pos <= self.x_max), axis=-1)
 
         # Create the return output container matching (init with NaN).
-        f_value = np.full(np.shape(x_pos[..., 0]), np.nan, dtype=float)
+        f_value: NDArray = np.full(np.shape(x_pos[..., 0]), np.nan, dtype=float)
 
         # Compute only for particles that are actually inside bounds.
         if np.any(in_bounds):
-            valid_points = x_pos[in_bounds]
+            valid_points: NDArray = x_pos[in_bounds]
 
             # vstack keeps components separated as rows.
-            component_pdfs = np.vstack([
+            component_pdfs: NDArray = np.vstack([
                 mvn.pdf(valid_points) for mvn in GaussianMixture.MVN
             ])
 
@@ -113,13 +113,13 @@ class GaussianMixture(TestFunction):
                  total number that exist.
         """
         # Calculate the radius dynamically.
-        radius = calculate_dynamic_radius(self.x_min, self.x_max)
+        radius: float = calculate_dynamic_radius(self.x_min, self.x_max)
 
         # Get the global optima particles.
-        found_optima = identify_global_optima(population, f_opt=-1.83285,
-                                              epsilon=epsilon, radius=radius)
+        found_optima: list[Particle] = identify_global_optima(population, f_opt=-1.83285,
+                                                              epsilon=epsilon, radius=radius)
         # Find the number of optima.
-        num_optima = len(found_optima)
+        num_optima: int = len(found_optima)
 
         # Return the tuple (number of found, total number)
         return num_optima, 2

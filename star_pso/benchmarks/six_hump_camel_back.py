@@ -51,24 +51,23 @@ class SixHumpCamelBack(TestFunction):
         :return: the function value(s).
         """
         # Force array context cleanly.
-        x_pos = np.asarray(x_pos)
+        x_pos: NDArray = np.asarray(x_pos)
 
         # Branchless slicing: works for both 1D arrays and 2D matrices.
-        x = x_pos[..., 0]
-        y = x_pos[..., 1]
+        x: NDArray = x_pos[..., 0]
+        y: NDArray = x_pos[..., 1]
 
         # Create a boolean mask for element-wise boundary checking.
-        in_bounds = np.all((self.x_min <= x_pos) &
-                           (x_pos <= self.x_max), axis=-1)
-
+        in_bounds: NDArray = np.all((self.x_min <= x_pos) &
+                                    (x_pos <= self.x_max), axis=-1)
         # Precalculate exponential values.
-        x2 = x * x
-        y2 = y * y
+        x2: NDArray = x * x
+        y2: NDArray = y * y
 
-        # Calculate the function value.
-        f_value = -((4.0 - 2.1 * x2 + (x2 * x2) / 3.0) * x2 +
-                    (x * y) + 4.0 * (y2 - 1.0) * y2)
-
+        # Calculate the function value everywhere.
+        f_value: NDArray = -((4.0 - 2.1 * x2 + (x2 * x2) / 3.0) * x2 +
+                             (x * y) + 4.0 * (y2 - 1.0) * y2)
+        # Return f_value where true, else NaN.
         return np.where(in_bounds, f_value, np.nan)
     # _end_def_
 

@@ -138,7 +138,7 @@ class TestFunction:
         :return: a uniformly sampled set of random positions.
         """
         # Ensure number of positions is int.
-        n_pos = int(n_pos)
+        n_pos: int = int(n_pos)
 
         # Sanity check.
         if n_pos < 1:
@@ -146,7 +146,7 @@ class TestFunction:
                              "The number of sampled positions should be > 1.")
 
         # Convert the method to lowercase.
-        method = method.lower()
+        method: str = method.lower()
 
         # Sanity check.
         if method == "random":

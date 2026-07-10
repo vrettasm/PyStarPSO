@@ -28,7 +28,7 @@ class Shubert(TestFunction):
         :return: None.
         """
         # Ensure correct type.
-        n_dim = int(n_dim)
+        n_dim: int = int(n_dim)
 
         # Sanity check.
         if n_dim < 2:
@@ -49,30 +49,30 @@ class Shubert(TestFunction):
         :return: the function value(s).
         """
         # Ensure input is NDArray.
-        x_pos = np.asarray(x_pos)
+        x_pos: NDArray = np.asarray(x_pos)
 
         # Evaluate boundaries element-by-element along the coordinate axis.
-        in_bounds = np.all((self.x_min <= x_pos) &
-                           (x_pos <= self.x_max), axis=-1)
+        in_bounds: NDArray = np.all((self.x_min <= x_pos) &
+                                    (x_pos <= self.x_max), axis=-1)
 
         # Setup output array matching the layout of the points.
-        f_value = np.full(np.shape(x_pos[..., 0]), np.nan, dtype=float)
+        f_value: NDArray = np.full(np.shape(x_pos[..., 0]), np.nan, dtype=float)
 
         # Only calculate the expression for elements inside bounds.
         if np.any(in_bounds):
 
             # Extract only the valid points.
-            valid_points = x_pos[in_bounds]
+            valid_points: NDArray = x_pos[in_bounds]
 
             # Prepare the constant array: i = [1, 2, 3, 4, 5]
             # Reshape it to (5, 1, ..., 1) so it broadcasts safely
             # over valid_points.
-            i = np.arange(1, 6)
-            i_broadcast = i.reshape((5,) + (1,) * valid_points.ndim)
+            i: NDArray = np.arange(1, 6)
+            i_broadcast: NDArray = i.reshape((5,) + (1,) * valid_points.ndim)
 
             # Compute the internal Shubert sum per-dimension.
-            dim_sums = np.sum(i_broadcast * np.cos((i_broadcast + 1) * valid_points + i_broadcast),
-                              axis=0)
+            dim_sums: NDArray = np.sum(i_broadcast * np.cos((i_broadcast + 1) * valid_points +
+                                                            i_broadcast), axis=0)
 
             # Product of the sums across all dimensions (axis=-1)
             f_value[in_bounds] = -np.prod(dim_sums, axis=-1)
@@ -108,13 +108,15 @@ class Shubert(TestFunction):
         # _end_if_
 
         # Calculate the radius dynamically.
-        radius = calculate_dynamic_radius(self.x_min, self.x_max)
+        radius: float = calculate_dynamic_radius(self.x_min, self.x_max)
 
         # Get the global optima particles.
-        found_optima = identify_global_optima(population, f_opt=f_opt,
-                                              epsilon=epsilon, radius=radius)
+        found_optima: list[Particle] = identify_global_optima(population,
+                                                              f_opt=f_opt,
+                                                              epsilon=epsilon,
+                                                              radius=radius)
         # Find the number of optima.
-        num_optima = len(found_optima)
+        num_optima: int = len(found_optima)
 
         # Return the tuple (number of found, total number)
         return num_optima, total_optima
