@@ -42,7 +42,8 @@ class Vincent(TestFunction):
 
     def func(self, x_pos: NDArray) -> NDArray:
         """
-        This is a nD function with 6^n_dim global optimal values.
+        This is an n_dim function with 6^n_dim global optimal
+        values.
 
         :param x_pos: the current position(s) of the function.
 
