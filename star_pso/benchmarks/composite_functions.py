@@ -164,7 +164,6 @@ class CompositeFunction(TestFunction):
     # _end_def_
 
     @staticmethod
-    @njit(cache=True, fastmath=True)
     def compute_weights(x_pos: NDArray, sigma: NDArray) -> NDArray:
         """
         Calculates a set of weights (one for each function).
@@ -178,24 +177,37 @@ class CompositeFunction(TestFunction):
 
         :return: a (ndarray) of normalized weights.
         """
-        # Number of system dimensions.
-        n_dim: NDArray = x_pos.size
+        # Ensure the input is NDArray.
+        x_pos = np.atleast_2d(x_pos)
 
-        # Initialize the weights array.
-        weights: NDArray = np.exp(-np.sum(x_pos * x_pos) /
-                                  (2.0 * n_dim * sigma**2))
+        # Number of dimension.
+        n_dim: NDArray = x_pos.shape[1]
 
-        # Find the maximum among them.
-        w_max: NDArray = np.max(weights)
+        # Precompute the denominator array.
+        denominator: NDArray = (2.0 * n_dim * sigma * sigma)
 
-        # Raise w_max to the power of 10.
+        # Compute the sum of squares.
+        sum_sq: NDArray = np.sum(x_pos * x_pos, axis=1)[:, np.newaxis]
+
+        # Broadcast division and exponential.
+        weights: NDArray = np.exp(-sum_sq/denominator)
+
+        # Track maximum values along the rows.
+        i_max: int = np.argmax(weights, axis=1)
+
+        row_indices: NDArray = np.arange(len(weights))
+        w_max: NDArray = weights[row_indices, i_max]
+
+        # Apply the transformation formula.
         w_max_power_10: NDArray = w_max ** 10
+        weights *= (1.0 - w_max_power_10)[:, np.newaxis]
 
-        # Update the weights.
-        weights[weights != w_max] *= (1.0 - w_max_power_10)
+        # Restore the original max values
+        # safely using advanced indexing.
+        weights[row_indices, i_max] = w_max
 
         # Finally return the normalized values.
-        return weights / np.sum(weights)
+        return weights / weights.sum(axis=1, keepdims=True)
     # _end_def_
 
     def func(self, x_pos: NDArray,
