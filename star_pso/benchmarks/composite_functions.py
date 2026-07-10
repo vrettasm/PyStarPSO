@@ -2,6 +2,7 @@ import numpy as np
 from numba import njit
 from numpy.typing import NDArray
 
+from population import particle
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 from star_pso.utils.auxiliary import (identify_global_optima,
@@ -179,16 +180,16 @@ class CompositeFunction(TestFunction):
         :return: a (ndarray) of normalized weights.
         """
         # Number of dimension.
-        n_dim = x_pos.size
+        n_dim: NDArray = x_pos.size
 
         # Initialize the weights array.
-        weights = np.exp(-np.sum(x_pos ** 2) / (2.0 * n_dim * sigma**2))
+        weights: NDArray = np.exp(-np.sum(x_pos ** 2) / (2.0 * n_dim * sigma**2))
 
         # Find the maximum among them.
-        w_max = np.max(weights)
+        w_max: NDArray = np.max(weights)
 
         # Raise w_max to the power of 10.
-        w_max_power_10 = w_max ** 10
+        w_max_power_10: NDArray = w_max ** 10
 
         # Update the weights.
         weights[weights != w_max] *= (1.0 - w_max_power_10)
@@ -253,13 +254,15 @@ class CompositeFunction(TestFunction):
                  total number that exist.
         """
         # Calculate the radius dynamically.
-        radius = calculate_dynamic_radius(self.x_min, self.x_max)
+        radius: float = calculate_dynamic_radius(self.x_min, self.x_max)
 
         # Get the global optima particles.
-        found_optima = identify_global_optima(population, f_opt=0.0,
-                                              epsilon=epsilon, radius=radius)
+        found_optima: list[Particle] = identify_global_optima(population,
+                                                              f_opt=0.0,
+                                                              epsilon=epsilon,
+                                                              radius=radius)
         # Find the number of optima.
-        num_optima = len(found_optima)
+        num_optima: int = len(found_optima)
 
         # Return the tuple (number of found, total number)
         return num_optima, len(self.basic_f)
@@ -270,7 +273,8 @@ class CompositeFunction(TestFunction):
         Returns a string representation of the CompositeFunction.
         """
         # Initialize the return string.
-        cf_str = f"{self.name}(x_min={self.x_min}, x_max={self.x_max})\n"
+        cf_str: str = (f"{self.name}(x_min={self.x_min},"
+                       f"x_max={self.x_max})\n")
 
         # Append all the basis functions.
         for n, func in enumerate(self.basic_f):
