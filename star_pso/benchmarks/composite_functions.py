@@ -93,8 +93,8 @@ def f_ackley(x_pos: NDArray, alpha: float = 20.0,
     return f_total + alpha + np.e
 # _end_def_
 
-# Auxiliary dictionary with the basic functions.
-BASIC_FUNCTIONS: dict = {"f_ackley": f_ackley,
+# Auxiliary dictionary with the basis functions.
+BASIS_FUNCTIONS: dict = {"f_ackley": f_ackley,
                          "f_sphere": f_sphere,
                          "f_griewank": f_griewank,
                          "f_rastrigin": f_rastrigin,
