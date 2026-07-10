@@ -63,8 +63,8 @@ class Rastrigin(TestFunction):
         x_arr: NDArray = np.asarray(x_pos)
 
         # Fully vectorized calculation across all points simultaneously.
-        raw_scores: NDArray = -np.sum(10.0 + 9.0 * np.cos(2.0 * np.pi * self.kappa * x_arr),
-                                      axis=-1)
+        f_value: NDArray = -np.sum(10.0 + 9.0 * np.cos(2.0 * np.pi * self.kappa * x_arr),
+                                   axis=-1)
 
         # Check boundaries across the last dimension (D).
         in_bounds: NDArray = np.all((self.x_min <= x_arr) & (x_arr <= self.x_max),
