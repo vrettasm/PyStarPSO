@@ -30,7 +30,7 @@ class Rastrigin(TestFunction):
         :return: None.
         """
         # Ensure correct type.
-        n_dim = int(n_dim)
+        n_dim: int = int(n_dim)
 
         # Sanity check.
         if n_dim < 2:
@@ -42,12 +42,12 @@ class Rastrigin(TestFunction):
 
         # Set the 'kappa' coefficients (automatically).
         # Here we set them as: [1, 2, 1, 2, ...].
-        self.kappa = np.array([1 if i % 2 != 0 else 2
-                               for i in range(1, self.n_dim + 1)])
+        self.kappa: NDArray = np.array([1 if i % 2 != 0 else 2
+                                        for i in range(1, self.n_dim + 1)])
 
         # Compute the total number of optimal values
         # as the product of the 'kappa' coefficients.
-        self.total_optima = np.prod(self.kappa, dtype=int)
+        self.total_optima: int = np.prod(self.kappa, dtype=int)
     # _end_def_
 
     def func(self, x_pos: NDArray) -> NDArray:
@@ -58,25 +58,20 @@ class Rastrigin(TestFunction):
 
         :return: the function value(s).
         """
-        # Ensure input is NDArray.
-        x_pos = np.asarray(x_pos)
+        # Convert input cleanly without re-allocation
+        # if x_pos is already an array.
+        x_arr: NDArray = np.asarray(x_pos)
 
-        # Evaluate boundaries element-by-element along the coordinate axis.
-        in_bounds = np.all((self.x_min <= x_pos) &
-                           (x_pos <= self.x_max), axis=-1)
+        # Fully vectorized calculation across all points simultaneously.
+        raw_scores: NDArray = -np.sum(10.0 + 9.0 * np.cos(2.0 * np.pi * self.kappa * x_arr),
+                                      axis=-1)
 
-        # Setup output array matching the layout of the points.
-        f_value = np.full(np.shape(x_pos[..., 0]), np.nan, dtype=float)
+        # Check boundaries across the last dimension (D).
+        in_bounds: NDArray = np.all((self.x_min <= x_arr) & (x_arr <= self.x_max),
+                                    axis=-1)
 
-        # Only calculate the expression for elements inside bounds.
-        if np.any(in_bounds):
-            # Extract only the valid points.
-            valid_points = x_pos[in_bounds]
-
-            f_value[in_bounds] = -np.sum(10.0 + 9.0 * np.cos(2.0 * np.pi * self.kappa * valid_points),
-                                         axis=-1)
-        # Return the value.
-        return f_value
+        # Apply NaN mask directly to out-of-bounds array coordinates.
+        return np.where(in_bounds, raw_scores, np.nan)
     # _end_def_
 
     def search_for_optima(self, population: list[Particle],
@@ -94,13 +89,14 @@ class Rastrigin(TestFunction):
                  total number that exist.
         """
         # Calculate the radius dynamically.
-        radius = calculate_dynamic_radius(self.x_min, self.x_max)
+        radius: float = calculate_dynamic_radius(self.x_min, self.x_max)
 
         # Get the global optima particles.
-        found_optima = identify_global_optima(population, f_opt=-float(self.n_dim),
-                                              epsilon=epsilon, radius=radius)
+        found_optima: list[Particle] = identify_global_optima(population,
+                                                              f_opt=-float(self.n_dim),
+                                                              epsilon=epsilon, radius=radius)
         # Find the number of optima.
-        num_optima = len(found_optima)
+        num_optima: int = len(found_optima)
 
         # Return the tuple (number of found, total number)
         return num_optima, self.total_optima
