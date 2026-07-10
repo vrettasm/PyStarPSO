@@ -58,15 +58,24 @@ class Rastrigin(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function values to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        # Ensure input is NDArray.
+        x_pos = np.asarray(x_pos)
 
-        # Check the valid function range.
-        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Get the sum.
-            f_value = -np.sum(10.0 + 9.0 * np.cos(2.0 * np.pi * self.kappa * x_pos),
-                              axis=0)
-        # Return the ndarray.
+        # Evaluate boundaries element-by-element along the coordinate axis.
+        in_bounds = np.all((self.x_min <= x_pos) &
+                           (x_pos <= self.x_max), axis=-1)
+
+        # Setup output array matching the layout of the points.
+        f_value = np.full(np.shape(x_pos[..., 0]), np.nan, dtype=float)
+
+        # Only calculate the expression for elements inside bounds.
+        if np.any(in_bounds):
+            # Extract only the valid points.
+            valid_points = x_pos[in_bounds]
+
+            f_value[in_bounds] = -np.sum(10.0 + 9.0 * np.cos(2.0 * np.pi * self.kappa * valid_points),
+                                         axis=-1)
+        # Return the value.
         return f_value
     # _end_def_
 
