@@ -49,13 +49,25 @@ class Vincent(TestFunction):
 
         :return: the function value(s).
         """
-        # Initialize function values to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        # Number of dimensions.
+        n_dim = x_pos.size if x_pos.ndim == 1 else x_pos.shape[1]
 
-        # Check the valid function range.
-        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Compute the function value.
-            f_value = np.sum(np.sin(10.0 * np.log(x_pos))) / self.n_dim
+        # Ensure input is NDArray.
+        x_pos = np.asarray(x_pos)
+
+        # Evaluate boundaries element-by-element along the coordinate axis.
+        in_bounds = np.all((self.x_min <= x_pos) &
+                           (x_pos <= self.x_max), axis=-1)
+
+        # Setup output array matching the layout of the points.
+        f_value = np.full(np.shape(x_pos[..., 0]), np.nan, dtype=float)
+
+        # Only calculate the expression for elements inside bounds.
+        if np.any(in_bounds):
+            # Extract only the valid points.
+            valid_points = x_pos[in_bounds]
+
+            f_value[in_bounds] = np.sum(np.sin(10.0 * np.log(valid_points)), axis=-1) / n_dim
 
         # Return the value.
         return f_value
