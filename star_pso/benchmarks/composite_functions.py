@@ -265,7 +265,7 @@ class CompositeFunction(TestFunction):
         num_optima: int = len(found_optima)
 
         # Return the tuple (number of found, total number)
-        return num_optima, len(self.basic_f)
+        return num_optima, len(self.basis_f)
     # _end_def_
 
     def __str__(self) -> str:
