@@ -149,8 +149,8 @@ class CompositeFunction(TestFunction):
         # Ensure correct type.
         if isinstance(n_func, int) and (2 <= n_func <= 20):
             # Create a new list by sampling randomly basic functions.
-            self.basic_f = self.rng.choice(list(BASIC_FUNCTIONS.values()),
-                                           size=n_func, replace=True).tolist()
+            self.basic_f: list = self.rng.choice(list(BASIC_FUNCTIONS.values()),
+                                                 size=n_func, replace=True).tolist()
         elif isinstance(n_func, list):
             try:
                 # Create a new list with the given basic functions.
