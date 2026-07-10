@@ -113,7 +113,7 @@ Define a dictionary with all the basis functions:
 class CompositeFunction(TestFunction):
     """
     Generates a Composite Function using a weighted average of basic
-    functions, as defined in the 'BASIC_FUNCTIONS' dictionary.
+    functions, as defined in the 'BASIS_FUNCTIONS' dictionary.
     """
 
     def __init__(self, n_dim: int = 2, n_func: int | list = 4,
