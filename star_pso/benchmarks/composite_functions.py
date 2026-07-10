@@ -178,7 +178,7 @@ class CompositeFunction(TestFunction):
 
         :return: a (ndarray) of normalized weights.
         """
-        # Number of dimension.
+        # Number of system dimensions.
         n_dim: NDArray = x_pos.size
 
         # Initialize the weights array.
