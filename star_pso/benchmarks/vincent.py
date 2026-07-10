@@ -52,9 +52,6 @@ class Vincent(TestFunction):
         # Ensure input is NDArray.
         x_pos = np.asarray(x_pos)
 
-        # Number of dimensions.
-        n_dim = x_pos.size if x_pos.ndim == 1 else x_pos.shape[1]
-
         # Evaluate boundaries element-by-element along the coordinate axis.
         in_bounds = np.all((self.x_min <= x_pos) &
                            (x_pos <= self.x_max), axis=-1)
@@ -67,7 +64,7 @@ class Vincent(TestFunction):
             # Extract only the valid points.
             valid_points = x_pos[in_bounds]
 
-            f_value[in_bounds] = np.sum(np.sin(10.0 * np.log(valid_points)), axis=-1) / n_dim
+            f_value[in_bounds] = np.sum(np.sin(10.0 * np.log(valid_points)), axis=-1) / self.n_dim
 
         # Return the value.
         return f_value
