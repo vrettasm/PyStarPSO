@@ -71,7 +71,7 @@ class Rastrigin(TestFunction):
                                     axis=-1)
 
         # Apply NaN mask directly to out-of-bounds array coordinates.
-        return np.where(in_bounds, raw_scores, np.nan)
+        return np.where(in_bounds, f_value, np.nan)
     # _end_def_
 
     def search_for_optima(self, population: list[Particle],
