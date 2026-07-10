@@ -2,7 +2,6 @@ import numpy as np
 from numba import njit
 from numpy.typing import NDArray
 
-from population import particle
 from star_pso.population.particle import Particle
 from star_pso.benchmarks.test_function import TestFunction
 from star_pso.utils.auxiliary import (identify_global_optima,
