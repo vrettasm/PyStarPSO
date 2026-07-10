@@ -100,7 +100,7 @@ BASIS_FUNCTIONS: dict = {"f_ackley": f_ackley,
                          "f_rastrigin": f_rastrigin,
                          "f_weierstrass": f_weierstrass}
 """
-Define a dictionary with all the basic functions:
+Define a dictionary with all the basis functions:
 
     - Ackley
     - Sphere
