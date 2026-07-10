@@ -154,7 +154,7 @@ class CompositeFunction(TestFunction):
         elif isinstance(n_func, list):
             try:
                 # Create a new list with the given basic functions.
-                self.basic_f = [BASIC_FUNCTIONS[key] for key in n_func]
+                self.basic_f: list = [BASIC_FUNCTIONS[key] for key in n_func]
             except KeyError as ex:
                 raise KeyError(f"Unknown basic function. "
                                f"Valid options are: {list(BASIC_FUNCTIONS.keys())}") from ex
