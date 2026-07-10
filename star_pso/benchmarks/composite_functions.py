@@ -182,7 +182,8 @@ class CompositeFunction(TestFunction):
         n_dim: NDArray = x_pos.size
 
         # Initialize the weights array.
-        weights: NDArray = np.exp(-np.sum(x_pos ** 2) / (2.0 * n_dim * sigma**2))
+        weights: NDArray = np.exp(-np.sum(x_pos * x_pos) /
+                                  (2.0 * n_dim * sigma**2))
 
         # Find the maximum among them.
         w_max: NDArray = np.max(weights)
