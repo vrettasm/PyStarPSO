@@ -302,7 +302,7 @@ class CompositeFunction(TestFunction):
             num_f: int = len(self.basis_f)
 
             # Sigma values for simplicity are set to one.
-            sigma = np.ones(num_f, dtype=float)
+            sigma: NDArray = np.ones(num_f, dtype=float)
 
             # Calculate the weights of the functions.
             weights = CompositeFunction.compute_weights(x_pos, sigma)
