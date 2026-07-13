@@ -99,11 +99,8 @@ def f_alpine(x_pos: NDArray) -> NDArray:
     """
     Computes the Alpine function at x_pos.
     """
-    # Compute the equation.
-    f_total: NDArray = np.sum(np.abs(x_pos * np.sin(x_pos)) + 0.1 * x_pos)
-    
     # Return final result.
-    return f_total
+    return np.sum(np.abs(x_pos * np.sin(x_pos)) + 0.1 * x_pos)
 # _end_def_
 
 # Auxiliary dictionary with the basis functions.
