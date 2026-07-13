@@ -13,7 +13,7 @@ def f_sphere(x_pos: NDArray) -> NDArray:
     """
     Computes the sphere function at x_pos.
     """
-    return np.sum(x_pos ** 2)
+    return np.sum(x_pos ** 2, axis=-1)
 # _end_def_
 
 # Basic function: 2
@@ -22,14 +22,35 @@ def f_griewank(x_pos: NDArray) -> NDArray:
     """
     Computes the Griewank function at x_pos.
     """
-    # Get the size of the vector.
-    n_dim: int = x_pos.size
+    # Ensure input is 2D array.
+    x_pos_2d: NDArray = np.atleast_2d(x_pos)
 
-    # Compute the sqrt[i], {1, 2, ..., D}.
-    sqrt_i: NDArray = np.sqrt(np.arange(1, n_dim + 1))
+    # Extract the shape variables.
+    n_samples, n_dim = x_pos_2d.shape
 
-    # Get the final value.
-    return np.sum(x_pos ** 2) / 4000 - float(np.prod(np.cos(x_pos / sqrt_i))) + 1.0
+    # Precompute the square root values.
+    sqrt_i = np.sqrt(np.arange(1, n_dim + 1))
+
+    # Pre-allocate output vector
+    f_value = np.empty(n_samples, dtype=float)
+
+    # Compute the function for each row (sample).
+    for n in range(n_samples):
+
+        # Extract row slice.
+        row = x_pos_2d[n]
+
+        # Sum all elements.
+        sum_term = np.sum(row * row) / 4000.0
+
+        # Compute the product of the elements.
+        prod_term = np.prod(np.cos(row / sqrt_i))
+
+        # Assign the new function value.
+        f_value[n] = sum_term - prod_term + 1.0
+    # _end_for_
+
+    return f_value
 # _end_def_
 
 # Basic function: 3
@@ -40,7 +61,9 @@ def f_rastrigin(x_pos: NDArray,
     Computes the Rastrigin function at x_pos,
     with default kappa parameter.
     """
-    return np.sum(x_pos ** 2 - kappa * np.cos(2.0 * np.pi * x_pos) + kappa)
+    return np.sum((x_pos * x_pos) -
+                  kappa * np.cos(2.0 * np.pi * x_pos) + kappa,
+                  axis=-1)
 # _end_def_
 
 # Basic function: 4
@@ -51,25 +74,47 @@ def f_weierstrass(x_pos: NDArray, k_max: int = 9,
     Computes the Weierstrass function at x_pos, with default k_max,
     alpha and beta parameters.
     """
-    # Get the size of the vector.
-    n_dim: int = x_pos.size
+    # Ensure input is NDArray.
+    x_pos: NDArray = np.atleast_2d(x_pos)
 
-    # Precalculate k-index values.
-    k: NDArray = np.arange(0, k_max + 1)
+    # Get the shape of input.
+    n_samples, n_dim = x_pos.shape
 
-    # Precalculate: alpha^k
-    alpha_k: NDArray = alpha ** k
+    # Initialize the constant.
+    const_k: float = 0.0
 
-    # Precalculate: beta^k
-    beta_k: NDArray = beta ** k
+    # Compute the k values.
+    k_values: NDArray = np.arange(0, k_max + 1)
 
-    # Vectorized double summation.
-    sum_x = np.sum(alpha_k[:, np.newaxis] *
-                   np.cos(2 * np.pi * beta_k[:, np.newaxis] * (x_pos + 0.5)),
-                   axis=0).sum()
+    # Compute the constant.
+    for k in k_values:
+        const_k += (alpha ** k) * np.cos(np.pi * (beta ** k))
+    # _end_for_
 
-    # Combine the final result with the last summation.
-    return sum_x - n_dim * np.sum(alpha_k * np.cos(np.pi * beta_k))
+    # Return array.
+    f_value: NDArray = np.empty(n_samples, dtype=float)
+
+    for n in range(n_samples):
+
+        # Get the n-th sample.
+        xn = x_pos[n]
+
+        # Partial f_value.
+        partial_f: float = 0.0
+
+        # Go through all dimensions.
+        for i in range(n_dim):
+
+            xi = xn[i] + 0.5
+
+            for k in k_values:
+                partial_f += (alpha ** k) * np.cos(2.0 * np.pi * (beta ** k) * xi)
+        # _end_for_
+
+        f_value[n] = partial_f
+    # _end_for_
+
+    return f_value - (n_dim * const_k)
 # _end_def_
 
 # Basic function: 5
@@ -80,15 +125,18 @@ def f_ackley(x_pos: NDArray, alpha: float = 20.0,
     Computes the Ackley function at x_pos,
     with default alpha and beta parameters.
     """
-    # Get the size of the vector.
-    n_dim: int = x_pos.size
+    # Ensure input is NDArray.
+    x_pos: NDArray = np.atleast_2d(x_pos)
+
+    # Get the shape of input.
+    _, n_dim = x_pos.shape
 
     # Compute the first part of the equation.
-    f_total: NDArray = -alpha * np.exp(-beta * np.sqrt(np.sum(x_pos ** 2) / n_dim))
-
+    f_total: NDArray = -alpha * np.exp(-beta * np.sqrt(np.sum(x_pos * x_pos,
+                                                              axis=1) / n_dim))
     # Update it with the second part.
-    f_total -= np.exp(np.sum(np.cos(2.0 * np.pi * x_pos)) / n_dim)
-
+    f_total -= np.exp(np.sum(np.cos(2.0 * np.pi * x_pos),
+                             axis=1) / n_dim)
     # Return final result.
     return f_total + alpha + np.e
 # _end_def_
@@ -99,8 +147,11 @@ def f_alpine(x_pos: NDArray) -> NDArray:
     """
     Computes the Alpine function at x_pos.
     """
+    # Ensure input is at least 2D.
+    x_pos: NDArray = np.atleast_2d(x_pos)
+
     # Return final result.
-    return np.sum(np.abs(x_pos * np.sin(x_pos)) + 0.1 * x_pos)
+    return np.sum(np.abs(x_pos * np.sin(x_pos)) + 0.1 * x_pos, axis=1)
 # _end_def_
 
 # Auxiliary dictionary with the basis functions.
