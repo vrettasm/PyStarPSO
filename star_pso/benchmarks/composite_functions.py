@@ -275,8 +275,11 @@ class CompositeFunction(TestFunction):
         # safely using advanced indexing.
         weights[row_indices, i_max] = w_max
 
-        # Finally return the normalized values.
-        return weights / weights.sum(axis=1, keepdims=True)
+        # Normalize.
+        weights /= weights.sum(axis=1, keepdims=True)
+
+        # Finally return the values.
+        return np.squeeze(weights)
     # _end_def_
 
     def func(self, x_pos: NDArray,
