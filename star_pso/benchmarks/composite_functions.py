@@ -294,7 +294,7 @@ class CompositeFunction(TestFunction):
         :return: the function value(s).
         """
         # Initialize function value to NaN.
-        f_value = np.full_like(x_pos, np.nan, dtype=float)
+        f_value: NDArray = np.full_like(x_pos, np.nan, dtype=float)
 
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
