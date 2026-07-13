@@ -1,3 +1,20 @@
+"""
+Description:
+
+    This implements an Integer variant of the original PSO algorithm that
+    operates similarly to the StandardPSO, but rounds the positions to the
+    nearest integer.
+
+Author:
+    Michail D. Vrettas, PhD
+
+Email:
+    michail.vrettas@gmail.com
+
+Metadata:
+    License: GPL-3
+"""
+
 from numpy import rint
 from numpy.typing import (NDArray, ArrayLike)
 

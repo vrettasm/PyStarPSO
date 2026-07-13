@@ -1,3 +1,20 @@
+"""
+Description:
+
+    This module implements a class for the 'Jack of all trades' particle.
+    This dataclass maintains a container (list of data blocks) and the rest
+    of the information is held in its data blocks.
+
+Author:
+    Michail D. Vrettas, PhD
+
+Email:
+    michail.vrettas@gmail.com
+
+Metadata:
+    License: GPL-3
+"""
+
 from __future__ import annotations
 
 from math import inf

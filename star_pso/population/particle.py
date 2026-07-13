@@ -1,3 +1,18 @@
+"""
+Description:
+
+    Models the particle in the swarm of the PSO.
+
+Author:
+    Michail D. Vrettas, PhD
+
+Email:
+    michail.vrettas@gmail.com
+
+Metadata:
+    License: GPL-3
+"""
+
 from __future__ import annotations
 
 from math import inf

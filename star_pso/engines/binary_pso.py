@@ -1,3 +1,24 @@
+"""
+Description:
+
+    This module implements a (discrete) binary particle swarm optimization
+    variant as described in:
+
+    - Kennedy, J., and R. C. Eberhart 1997. “A Discrete Binary Version of the
+      Particle Swarm Algorithm.” IEEE International conference on systems, man
+      and cybernetics, 1997. Computational cybernetics and simulation, Vol. 5,
+      Orlando, FL, October 12–15, pp: 4104–4108.
+
+Author:
+    Michail D. Vrettas, PhD
+
+Email:
+    michail.vrettas@gmail.com
+
+Metadata:
+    License: GPL-3
+"""
+
 import numpy as np
 from numba import njit
 from numpy.typing import NDArray

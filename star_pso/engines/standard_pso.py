@@ -1,3 +1,23 @@
+"""
+Description:
+
+    This implements a basic variant of the original (standard) PSO algorithm
+    as described in:
+
+    - Shi, Y. and Eberhart, R. (1998). "A modified particle swarm optimizer".
+      In Proceedings of the IEEE World Congress on Computational Intelligence,
+      Anchorage, AK, USA, 4–9 May 1998; pp. 69–73.
+
+Author:
+    Michail D. Vrettas, PhD
+
+Email:
+    michail.vrettas@gmail.com
+
+Metadata:
+    License: GPL-3
+"""
+
 from numpy.typing import (NDArray, ArrayLike)
 
 from star_pso.engines.generic_pso import GenericPSO

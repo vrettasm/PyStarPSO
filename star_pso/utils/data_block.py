@@ -1,3 +1,21 @@
+"""
+Description:
+
+    This is the main module that encodes the data of a single particle variable.
+    The class encapsulates not only the data (position and best position), but
+    also the way that this data can be updated using a specific type dependent
+    functions.
+
+Author:
+    Michail D. Vrettas, PhD
+
+Email:
+    michail.vrettas@gmail.com
+
+Metadata:
+    License: GPL-3
+"""
+
 from __future__ import annotations
 
 from copy import deepcopy

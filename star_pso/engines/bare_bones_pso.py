@@ -1,3 +1,23 @@
+"""
+Description:
+
+    This module includes a basic implementation (a variant) of the bare-bones
+    particle swarm optimization as described in:
+
+    - J. Kennedy, "Bare-bones particle swarms", Proceedings of the 2003 IEEE
+      Swarm Intelligence Symposium. SIS'03 (Cat. No.03EX706), Indianapolis,
+      IN, USA, 2003, pp. 80-87, doi: 10.1109/SIS.2003.1202251.
+
+Author:
+    Michail D. Vrettas, PhD
+
+Email:
+    michail.vrettas@gmail.com
+
+Metadata:
+    License: GPL-3
+"""
+
 from numpy import abs as np_abs
 from numpy.typing import NDArray, ArrayLike
 
@@ -5,6 +25,7 @@ from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
 from star_pso.utils.auxiliary import (nb_clip_inplace,
                                       nb_median_euclidean_distance)
+
 # Public interface.
 __all__ = ["BareBonesPSO"]
 

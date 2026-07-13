@@ -1,3 +1,18 @@
+"""
+Description:
+
+    Includes auxiliary functions used throughout star_pso.
+
+Author:
+    Michail D. Vrettas, PhD
+
+Email:
+    michail.vrettas@gmail.com
+
+Metadata:
+    License: GPL-3
+"""
+
 import time
 from enum import Enum
 from typing import Callable

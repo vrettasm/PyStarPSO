@@ -1,3 +1,23 @@
+"""
+Description:
+
+    This module includes a simplified variant of the original ICPSO algorithm
+    as described in:
+
+    - Strasser, S., Goodman, R., Sheppard, J., et al. "A new discrete particle
+      swarm optimization algorithm", Proceedings of 2016 Genetic and Evolutionary
+      Computation Conference (GECCO) 16, ACM Press, Denver, Colorado, USA, pp. 53-60.
+
+Author:
+    Michail D. Vrettas, PhD
+
+Email:
+    michail.vrettas@gmail.com
+
+Metadata:
+    License: GPL-3
+"""
+
 from collections import defaultdict
 from functools import cached_property
 

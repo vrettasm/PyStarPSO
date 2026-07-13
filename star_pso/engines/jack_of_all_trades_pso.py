@@ -1,3 +1,28 @@
+"""
+Description:
+
+    Module JackOfAllTradesPSO is an implementation of the PSO algorithm that
+    can deal with mixed types of optimization variables. The supported types
+    are:
+
+    - float (continuous)
+    - integer (discrete)
+    - binary      (0, 1)
+    - categorical (sets)
+
+    The fundamental building block of the algorithm is the 'DataBlock' which
+    encapsulates the data and the functionality of each variable type.
+
+Author:
+    Michail D. Vrettas, PhD
+
+Email:
+    michail.vrettas@gmail.com
+
+Metadata:
+    License: GPL-3
+"""
+
 from operator import attrgetter
 from collections import defaultdict
 

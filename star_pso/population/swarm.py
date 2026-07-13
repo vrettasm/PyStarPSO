@@ -1,3 +1,20 @@
+"""
+Description:
+
+    Implements a class for the Swarm entity. This class is responsible
+    for holding and organizing the individual solutions (i.e. particles),
+    of the optimization problem during the optimization process.
+
+Author:
+    Michail D. Vrettas, PhD
+
+Email:
+    michail.vrettas@gmail.com
+
+Metadata:
+    License: GPL-3
+"""
+
 from math import isnan
 from typing import Union
 from copy import deepcopy
