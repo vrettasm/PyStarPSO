@@ -70,7 +70,33 @@
            <div itemprop="articleBody">
              
   <h1>Source code for star_pso.engines.generic_pso</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">cpu_count</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Description:</span>
+
+<span class="sd">    This module includes the GenericPSO class which models the interface</span>
+<span class="sd">    of a specific particle swarm optimization model or engine. It provides</span>
+<span class="sd">    the common variables and functionalities that all PSO models should share.</span>
+
+<span class="sd">    - J. Kennedy and R. Eberhart (1995). &quot;Particle Swarm Optimization&quot;.</span>
+<span class="sd">      In Proceedings of IEEE International Conference on Neural Networks.</span>
+<span class="sd">      vol. 4. pp. 1942–1948. doi:10.1109/ICNN.1995.488968.</span>
+
+<span class="sd">    - R. Mendes and J. Kennedy and J. Neves (2004). &quot;The fully informed</span>
+<span class="sd">      particle swarm: simpler, maybe better&quot;. In IEEE Transactions on</span>
+<span class="sd">      Evolutionary Computation, vol. 8, no. 3, pp. 204-210, June 2004,</span>
+<span class="sd">      doi: 10.1109/TEVC.2004.826074.</span>
+
+<span class="sd">Author:</span>
+<span class="sd">    Michail D. Vrettas, PhD</span>
+
+<span class="sd">Email:</span>
+<span class="sd">    michail.vrettas@gmail.com</span>
+
+<span class="sd">Metadata:</span>
+<span class="sd">    License: GPL-3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">cpu_count</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">attrgetter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">inf</span><span class="p">,</span> <span class="n">fabs</span><span class="p">,</span> <span class="n">isclose</span>
@@ -646,13 +672,28 @@
 
     <span class="c1"># _end_def_</span>
 
+<div class="viewcode-block" id="GenericPSO.generate_random_velocities">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.generate_random_velocities">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_random_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a population of random velocities for the particles.</span>
+<span class="sd">        Each different class that inherits from here should know how</span>
+<span class="sd">        to implement it.</span>
+
+<span class="sd">        :return: None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &quot;</span>
+                                  <span class="sa">f</span><span class="s2">&quot;You should implement this method!&quot;</span><span class="p">)</span></div>
+
+    <span class="c1"># _end_def_</span>
+
 <div class="viewcode-block" id="GenericPSO.generate_random_positions">
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.generate_random_positions">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">generate_random_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generate a population of particles with random positions.</span>
-<span class="sd">        Each different class that inherits from here should know</span>
-<span class="sd">        how to implement it.</span>
+<span class="sd">        Generate a population of random positions for the particles.</span>
+<span class="sd">        Each different class that inherits from here should know how</span>
+<span class="sd">        to implement it.</span>
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

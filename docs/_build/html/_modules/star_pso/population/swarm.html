@@ -70,7 +70,24 @@
            <div itemprop="articleBody">
              
   <h1>Source code for star_pso.population.swarm</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">isnan</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Description:</span>
+
+<span class="sd">    Implements a class for the Swarm entity. This class is responsible</span>
+<span class="sd">    for holding and organizing the individual solutions (i.e. particles),</span>
+<span class="sd">    of the optimization problem during the optimization process.</span>
+
+<span class="sd">Author:</span>
+<span class="sd">    Michail D. Vrettas, PhD</span>
+
+<span class="sd">Email:</span>
+<span class="sd">    michail.vrettas@gmail.com</span>
+
+<span class="sd">Metadata:</span>
+<span class="sd">    License: GPL-3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">isnan</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">attrgetter</span>

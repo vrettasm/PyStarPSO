@@ -96,6 +96,20 @@ the particle and the swarm objects.</p>
 </section>
 <section id="module-star_pso.population.jat_particle">
 <span id="star-pso-population-jat-particle-module"></span><h2>star_pso.population.jat_particle module<a class="headerlink" href="#module-star_pso.population.jat_particle" title="Link to this heading"></a></h2>
+<p>Description:</p>
+<blockquote>
+<div><p>This module implements a class for the ‘Jack of all trades’ particle.
+This dataclass maintains a container (list of data blocks) and the rest
+of the information is held in its data blocks.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Author:</dt><dd><p>Michail D. Vrettas, PhD</p>
+</dd>
+<dt>Email:</dt><dd><p><a class="reference external" href="mailto:michail&#46;vrettas&#37;&#52;&#48;gmail&#46;com">michail<span>&#46;</span>vrettas<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+</dd>
+<dt>Metadata:</dt><dd><p>License: GPL-3</p>
+</dd>
+</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="star_pso.population.jat_particle.JatParticle">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.population.jat_particle.</span></span><span class="sig-name descname"><span class="pre">JatParticle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="star_pso.utils.html#star_pso.utils.data_block.DataBlock" title="star_pso.utils.data_block.DataBlock"><span class="pre">DataBlock</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">best_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-inf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/population/jat_particle.html#JatParticle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.population.jat_particle.JatParticle" title="Link to this definition"></a></dt>
@@ -192,6 +206,18 @@ retrieval.</p>
 </section>
 <section id="module-star_pso.population.particle">
 <span id="star-pso-population-particle-module"></span><h2>star_pso.population.particle module<a class="headerlink" href="#module-star_pso.population.particle" title="Link to this heading"></a></h2>
+<p>Description:</p>
+<blockquote>
+<div><p>Models the particle in the swarm of the PSO.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Author:</dt><dd><p>Michail D. Vrettas, PhD</p>
+</dd>
+<dt>Email:</dt><dd><p><a class="reference external" href="mailto:michail&#46;vrettas&#37;&#52;&#48;gmail&#46;com">michail<span>&#46;</span>vrettas<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+</dd>
+<dt>Metadata:</dt><dd><p>License: GPL-3</p>
+</dd>
+</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="star_pso.population.particle.Particle">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.population.particle.</span></span><span class="sig-name descname"><span class="pre">Particle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/population/particle.html#Particle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.population.particle.Particle" title="Link to this definition"></a></dt>
@@ -260,6 +286,20 @@ retrieval.</p>
 </section>
 <section id="module-star_pso.population.swarm">
 <span id="star-pso-population-swarm-module"></span><h2>star_pso.population.swarm module<a class="headerlink" href="#module-star_pso.population.swarm" title="Link to this heading"></a></h2>
+<p>Description:</p>
+<blockquote>
+<div><p>Implements a class for the Swarm entity. This class is responsible
+for holding and organizing the individual solutions (i.e. particles),
+of the optimization problem during the optimization process.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Author:</dt><dd><p>Michail D. Vrettas, PhD</p>
+</dd>
+<dt>Email:</dt><dd><p><a class="reference external" href="mailto:michail&#46;vrettas&#37;&#52;&#48;gmail&#46;com">michail<span>&#46;</span>vrettas<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+</dd>
+<dt>Metadata:</dt><dd><p>License: GPL-3</p>
+</dd>
+</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="star_pso.population.swarm.Swarm">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.population.swarm.</span></span><span class="sig-name descname"><span class="pre">Swarm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#star_pso.population.particle.Particle" title="star_pso.population.particle.Particle"><span class="pre">Particle</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#star_pso.population.jat_particle.JatParticle" title="star_pso.population.jat_particle.JatParticle"><span class="pre">JatParticle</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/population/swarm.html#Swarm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.population.swarm.Swarm" title="Link to this definition"></a></dt>

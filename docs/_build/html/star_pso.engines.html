@@ -185,6 +185,25 @@ final results.</p>
 </section>
 <section id="module-star_pso.engines.binary_pso">
 <span id="star-pso-engines-binary-pso-module"></span><h2>star_pso.engines.binary_pso module<a class="headerlink" href="#module-star_pso.engines.binary_pso" title="Link to this heading"></a></h2>
+<p>Description:</p>
+<blockquote>
+<div><p>This module implements a (discrete) binary particle swarm optimization
+variant as described in:</p>
+<ul class="simple">
+<li><p>Kennedy, J., and R. C. Eberhart 1997. “A Discrete Binary Version of the
+Particle Swarm Algorithm.” IEEE International conference on systems, man
+and cybernetics, 1997. Computational cybernetics and simulation, Vol. 5,
+Orlando, FL, October 12–15, pp: 4104–4108.</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>Author:</dt><dd><p>Michail D. Vrettas, PhD</p>
+</dd>
+<dt>Email:</dt><dd><p><a class="reference external" href="mailto:michail&#46;vrettas&#37;&#52;&#48;gmail&#46;com">michail<span>&#46;</span>vrettas<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+</dd>
+<dt>Metadata:</dt><dd><p>License: GPL-3</p>
+</dd>
+</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="star_pso.engines.binary_pso.BinaryPSO">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.binary_pso.</span></span><span class="sig-name descname"><span class="pre">BinaryPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/binary_pso.html#BinaryPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO" title="Link to this definition"></a></dt>
@@ -221,6 +240,18 @@ the particles.</p>
 <dd><p>Generate the population of particles positions by
 sampling discrete binary random numbers within the
 {0, 1} set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.binary_pso.BinaryPSO.generate_random_velocities">
+<span class="sig-name descname"><span class="pre">generate_random_velocities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/binary_pso.html#BinaryPSO.generate_random_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.binary_pso.BinaryPSO.generate_random_velocities" title="Link to this definition"></a></dt>
+<dd><p>Generate the population of velocities by sampling uniformly
+random numbers within predefined lower and upper bounds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
@@ -285,6 +316,24 @@ the logistic values of input array ‘x’.</p>
 </section>
 <section id="module-star_pso.engines.quantum_pso">
 <span id="star-pso-engines-quantum-pso-module"></span><h2>star_pso.engines.quantum_pso module<a class="headerlink" href="#module-star_pso.engines.quantum_pso" title="Link to this heading"></a></h2>
+<p>Description:</p>
+<blockquote>
+<div><p>This module implements a variant of the quantum particle swarm optimization
+as described in:</p>
+<ul class="simple">
+<li><p>M. Xi, J. Sun, W. Xu (2008), “An improved quantum-behaved particle swarm
+optimization algorithm with weighted mean best position”, Applied Mathematics
+and Computation vol. 205 pp: 751–759, doi: 10.1016/j.amc.2008.05.135.</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>Author:</dt><dd><p>Michail D. Vrettas, PhD</p>
+</dd>
+<dt>Email:</dt><dd><p><a class="reference external" href="mailto:michail&#46;vrettas&#37;&#52;&#48;gmail&#46;com">michail<span>&#46;</span>vrettas<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+</dd>
+<dt>Metadata:</dt><dd><p>License: GPL-3</p>
+</dd>
+</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="star_pso.engines.quantum_pso.QuantumPSO">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.quantum_pso.</span></span><span class="sig-name descname"><span class="pre">QuantumPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/quantum_pso.html#QuantumPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.quantum_pso.QuantumPSO" title="Link to this definition"></a></dt>
@@ -319,6 +368,18 @@ the particles.</p>
 <span class="sig-name descname"><span class="pre">generate_random_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/quantum_pso.html#QuantumPSO.generate_random_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.quantum_pso.QuantumPSO.generate_random_positions" title="Link to this definition"></a></dt>
 <dd><p>Generate the population of particles positions by
 sampling uniform random numbers within the limits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.quantum_pso.QuantumPSO.generate_random_velocities">
+<span class="sig-name descname"><span class="pre">generate_random_velocities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/quantum_pso.html#QuantumPSO.generate_random_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.quantum_pso.QuantumPSO.generate_random_velocities" title="Link to this definition"></a></dt>
+<dd><p>Generate the population of velocities by sampling uniformly
+random numbers within predefined lower and upper bounds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
@@ -368,6 +429,24 @@ and clear all the statistics dictionary.</p>
 </section>
 <section id="module-star_pso.engines.bare_bones_pso">
 <span id="star-pso-engines-bare-bones-pso-module"></span><h2>star_pso.engines.bare_bones_pso module<a class="headerlink" href="#module-star_pso.engines.bare_bones_pso" title="Link to this heading"></a></h2>
+<p>Description:</p>
+<blockquote>
+<div><p>This module includes a basic implementation (a variant) of the bare-bones
+particle swarm optimization as described in:</p>
+<ul class="simple">
+<li><p>J. Kennedy, “Bare-bones particle swarms”, Proceedings of the 2003 IEEE
+Swarm Intelligence Symposium. SIS’03 (Cat. No.03EX706), Indianapolis,
+IN, USA, 2003, pp. 80-87, doi: 10.1109/SIS.2003.1202251.</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>Author:</dt><dd><p>Michail D. Vrettas, PhD</p>
+</dd>
+<dt>Email:</dt><dd><p><a class="reference external" href="mailto:michail&#46;vrettas&#37;&#52;&#48;gmail&#46;com">michail<span>&#46;</span>vrettas<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+</dd>
+<dt>Metadata:</dt><dd><p>License: GPL-3</p>
+</dd>
+</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="star_pso.engines.bare_bones_pso.BareBonesPSO">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.bare_bones_pso.</span></span><span class="sig-name descname"><span class="pre">BareBonesPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/bare_bones_pso.html#BareBonesPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.bare_bones_pso.BareBonesPSO" title="Link to this definition"></a></dt>
@@ -402,6 +481,18 @@ the particles.</p>
 <span class="sig-name descname"><span class="pre">generate_random_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/bare_bones_pso.html#BareBonesPSO.generate_random_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.bare_bones_pso.BareBonesPSO.generate_random_positions" title="Link to this definition"></a></dt>
 <dd><p>Generate the population of particles positions by
 sampling uniform random numbers within the limits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.bare_bones_pso.BareBonesPSO.generate_random_velocities">
+<span class="sig-name descname"><span class="pre">generate_random_velocities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/bare_bones_pso.html#BareBonesPSO.generate_random_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.bare_bones_pso.BareBonesPSO.generate_random_velocities" title="Link to this definition"></a></dt>
+<dd><p>Generate the population of velocities by sampling uniformly
+random numbers within predefined lower and upper bounds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
@@ -454,6 +545,24 @@ simply assign the values to the positions.</p>
 </section>
 <section id="module-star_pso.engines.categorical_pso">
 <span id="star-pso-engines-categorical-pso-module"></span><h2>star_pso.engines.categorical_pso module<a class="headerlink" href="#module-star_pso.engines.categorical_pso" title="Link to this heading"></a></h2>
+<p>Description:</p>
+<blockquote>
+<div><p>This module includes a simplified variant of the original ICPSO algorithm
+as described in:</p>
+<ul class="simple">
+<li><p>Strasser, S., Goodman, R., Sheppard, J., et al. “A new discrete particle
+swarm optimization algorithm”, Proceedings of 2016 Genetic and Evolutionary
+Computation Conference (GECCO) 16, ACM Press, Denver, Colorado, USA, pp. 53-60.</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>Author:</dt><dd><p>Michail D. Vrettas, PhD</p>
+</dd>
+<dt>Email:</dt><dd><p><a class="reference external" href="mailto:michail&#46;vrettas&#37;&#52;&#48;gmail&#46;com">michail<span>&#46;</span>vrettas<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+</dd>
+<dt>Metadata:</dt><dd><p>License: GPL-3</p>
+</dd>
+</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.categorical_pso.</span></span><span class="sig-name descname"><span class="pre">CategoricalPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable_sets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permutation_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/categorical_pso.html#CategoricalPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO" title="Link to this definition"></a></dt>
@@ -496,8 +605,8 @@ possible L states).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.generate_uniform_velocities">
-<span class="sig-name descname"><span class="pre">generate_uniform_velocities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/categorical_pso.html#CategoricalPSO.generate_uniform_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.generate_uniform_velocities" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="star_pso.engines.categorical_pso.CategoricalPSO.generate_random_velocities">
+<span class="sig-name descname"><span class="pre">generate_random_velocities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/categorical_pso.html#CategoricalPSO.generate_random_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.categorical_pso.CategoricalPSO.generate_random_velocities" title="Link to this definition"></a></dt>
 <dd><p>Generates random uniform velocities
 for the categorical variable positions.</p>
 <dl class="field-list simple">
@@ -604,6 +713,29 @@ to sum the values of input array ‘x’.</p>
 </section>
 <section id="module-star_pso.engines.generic_pso">
 <span id="star-pso-engines-generic-pso-module"></span><h2>star_pso.engines.generic_pso module<a class="headerlink" href="#module-star_pso.engines.generic_pso" title="Link to this heading"></a></h2>
+<p>Description:</p>
+<blockquote>
+<div><p>This module includes the GenericPSO class which models the interface
+of a specific particle swarm optimization model or engine. It provides
+the common variables and functionalities that all PSO models should share.</p>
+<ul class="simple">
+<li><p>J. Kennedy and R. Eberhart (1995). “Particle Swarm Optimization”.
+In Proceedings of IEEE International Conference on Neural Networks.
+vol. 4. pp. 1942–1948. doi:10.1109/ICNN.1995.488968.</p></li>
+<li><p>R. Mendes and J. Kennedy and J. Neves (2004). “The fully informed
+particle swarm: simpler, maybe better”. In IEEE Transactions on
+Evolutionary Computation, vol. 8, no. 3, pp. 204-210, June 2004,
+doi: 10.1109/TEVC.2004.826074.</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>Author:</dt><dd><p>Michail D. Vrettas, PhD</p>
+</dd>
+<dt>Email:</dt><dd><p><a class="reference external" href="mailto:michail&#46;vrettas&#37;&#52;&#48;gmail&#46;com">michail<span>&#46;</span>vrettas<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+</dd>
+<dt>Metadata:</dt><dd><p>License: GPL-3</p>
+</dd>
+</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.generic_pso.</span></span><span class="sig-name descname"><span class="pre">GenericPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_swarm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="star_pso.population.html#star_pso.population.swarm.Swarm" title="star_pso.population.swarm.Swarm"><span class="pre">Swarm</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO" title="Link to this definition"></a></dt>
@@ -752,9 +884,22 @@ False, which means that only the current position is used.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.generate_random_positions">
 <span class="sig-name descname"><span class="pre">generate_random_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.generate_random_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.generate_random_positions" title="Link to this definition"></a></dt>
-<dd><p>Generate a population of particles with random positions.
-Each different class that inherits from here should know
-how to implement it.</p>
+<dd><p>Generate a population of random positions for the particles.
+Each different class that inherits from here should know how
+to implement it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.generate_random_velocities">
+<span class="sig-name descname"><span class="pre">generate_random_velocities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/generic_pso.html#GenericPSO.generate_random_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.generate_random_velocities" title="Link to this definition"></a></dt>
+<dd><p>Generate a population of random velocities for the particles.
+Each different class that inherits from here should know how
+to implement it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
@@ -892,7 +1037,7 @@ should be implemented separately.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="star_pso.engines.generic_pso.GenericPSO.rng">
-<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x12F8F3840</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x12BFD7D80</span></em><a class="headerlink" href="#star_pso.engines.generic_pso.GenericPSO.rng" title="Link to this definition"></a></dt>
 <dd><p>Random Number Generator for the whole class.</p>
 </dd></dl>
 
@@ -1020,6 +1165,20 @@ current optimal function values.</p></li>
 </section>
 <section id="module-star_pso.engines.integer_pso">
 <span id="star-pso-engines-integer-pso-module"></span><h2>star_pso.engines.integer_pso module<a class="headerlink" href="#module-star_pso.engines.integer_pso" title="Link to this heading"></a></h2>
+<p>Description:</p>
+<blockquote>
+<div><p>This implements an Integer variant of the original PSO algorithm that
+operates similarly to the StandardPSO, but rounds the positions to the
+nearest integer.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Author:</dt><dd><p>Michail D. Vrettas, PhD</p>
+</dd>
+<dt>Email:</dt><dd><p><a class="reference external" href="mailto:michail&#46;vrettas&#37;&#52;&#48;gmail&#46;com">michail<span>&#46;</span>vrettas<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+</dd>
+<dt>Metadata:</dt><dd><p>License: GPL-3</p>
+</dd>
+</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="star_pso.engines.integer_pso.IntegerPSO">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.integer_pso.</span></span><span class="sig-name descname"><span class="pre">IntegerPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/integer_pso.html#IntegerPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.integer_pso.IntegerPSO" title="Link to this definition"></a></dt>
@@ -1098,6 +1257,28 @@ and clear all the statistics dictionary.</p>
 </section>
 <section id="module-star_pso.engines.jack_of_all_trades_pso">
 <span id="star-pso-engines-jack-of-all-trades-pso-module"></span><h2>star_pso.engines.jack_of_all_trades_pso module<a class="headerlink" href="#module-star_pso.engines.jack_of_all_trades_pso" title="Link to this heading"></a></h2>
+<p>Description:</p>
+<blockquote>
+<div><p>Module JackOfAllTradesPSO is an implementation of the PSO algorithm that
+can deal with mixed types of optimization variables. The supported types
+are:</p>
+<ul class="simple">
+<li><p>float (continuous)</p></li>
+<li><p>integer (discrete)</p></li>
+<li><p>binary      (0, 1)</p></li>
+<li><p>categorical (sets)</p></li>
+</ul>
+<p>The fundamental building block of the algorithm is the ‘DataBlock’ which
+encapsulates the data and the functionality of each variable type.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Author:</dt><dd><p>Michail D. Vrettas, PhD</p>
+</dd>
+<dt>Email:</dt><dd><p><a class="reference external" href="mailto:michail&#46;vrettas&#37;&#52;&#48;gmail&#46;com">michail<span>&#46;</span>vrettas<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+</dd>
+<dt>Metadata:</dt><dd><p>License: GPL-3</p>
+</dd>
+</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.jack_of_all_trades_pso.</span></span><span class="sig-name descname"><span class="pre">JackOfAllTradesPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">permutation_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/jack_of_all_trades_pso.html#JackOfAllTradesPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO" title="Link to this definition"></a></dt>
@@ -1146,8 +1327,8 @@ reset methods of each data block.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.generate_uniform_velocities">
-<span class="sig-name descname"><span class="pre">generate_uniform_velocities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/jack_of_all_trades_pso.html#JackOfAllTradesPSO.generate_uniform_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.generate_uniform_velocities" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.generate_random_velocities">
+<span class="sig-name descname"><span class="pre">generate_random_velocities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/engines/jack_of_all_trades_pso.html#JackOfAllTradesPSO.generate_random_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.generate_random_velocities" title="Link to this definition"></a></dt>
 <dd><p>Generates random uniform velocities for the data blocks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -1232,6 +1413,24 @@ and that they have the same valid set of values.</p>
 </section>
 <section id="module-star_pso.engines.standard_pso">
 <span id="star-pso-engines-standard-pso-module"></span><h2>star_pso.engines.standard_pso module<a class="headerlink" href="#module-star_pso.engines.standard_pso" title="Link to this heading"></a></h2>
+<p>Description:</p>
+<blockquote>
+<div><p>This implements a basic variant of the original (standard) PSO algorithm
+as described in:</p>
+<ul class="simple">
+<li><p>Shi, Y. and Eberhart, R. (1998). “A modified particle swarm optimizer”.
+In Proceedings of the IEEE World Congress on Computational Intelligence,
+Anchorage, AK, USA, 4–9 May 1998; pp. 69–73.</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>Author:</dt><dd><p>Michail D. Vrettas, PhD</p>
+</dd>
+<dt>Email:</dt><dd><p><a class="reference external" href="mailto:michail&#46;vrettas&#37;&#52;&#48;gmail&#46;com">michail<span>&#46;</span>vrettas<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+</dd>
+<dt>Metadata:</dt><dd><p>License: GPL-3</p>
+</dd>
+</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="star_pso.engines.standard_pso.StandardPSO">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">star_pso.engines.standard_pso.</span></span><span class="sig-name descname"><span class="pre">StandardPSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Buffer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/star_pso/engines/standard_pso.html#StandardPSO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.engines.standard_pso.StandardPSO" title="Link to this definition"></a></dt>

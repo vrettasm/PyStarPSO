@@ -70,7 +70,32 @@
            <div itemprop="articleBody">
              
   <h1>Source code for star_pso.engines.jack_of_all_trades_pso</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">attrgetter</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Description:</span>
+
+<span class="sd">    Module JackOfAllTradesPSO is an implementation of the PSO algorithm that</span>
+<span class="sd">    can deal with mixed types of optimization variables. The supported types</span>
+<span class="sd">    are:</span>
+
+<span class="sd">    - float (continuous)</span>
+<span class="sd">    - integer (discrete)</span>
+<span class="sd">    - binary      (0, 1)</span>
+<span class="sd">    - categorical (sets)</span>
+
+<span class="sd">    The fundamental building block of the algorithm is the &#39;DataBlock&#39; which</span>
+<span class="sd">    encapsulates the data and the functionality of each variable type.</span>
+
+<span class="sd">Author:</span>
+<span class="sd">    Michail D. Vrettas, PhD</span>
+
+<span class="sd">Email:</span>
+<span class="sd">    michail.vrettas@gmail.com</span>
+
+<span class="sd">Metadata:</span>
+<span class="sd">    License: GPL-3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">attrgetter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -139,9 +164,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span>
                                                     <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">),</span>
                                              <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
-
         <span class="c1"># Call the random velocity generator.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">generate_uniform_velocities</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_velocities</span><span class="p">()</span>
 
         <span class="c1"># Assign the correct local sample method</span>
         <span class="c1"># according to the permutation mode flag.</span>
@@ -156,15 +180,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_special_mode</span> <span class="o">=</span> <span class="n">SpecialMode</span><span class="o">.</span><span class="n">JACK_OF_ALL_TRADES</span>
     <span class="c1"># _end_def_</span>
 
-<div class="viewcode-block" id="JackOfAllTradesPSO.generate_uniform_velocities">
-<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.generate_uniform_velocities">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">generate_uniform_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="JackOfAllTradesPSO.generate_random_velocities">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.jack_of_all_trades_pso.JackOfAllTradesPSO.generate_random_velocities">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_random_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates random uniform velocities for the data blocks.</span>
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="c1"># Here we generate the random velocities.</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">particle</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">population</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">particle</span><span class="o">.</span><span class="n">container</span><span class="p">):</span>
@@ -378,7 +401,7 @@
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Randomize particle velocities.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">generate_uniform_velocities</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_velocities</span><span class="p">()</span>
 
         <span class="c1"># Randomize particle positions.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_positions</span><span class="p">()</span>

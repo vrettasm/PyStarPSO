@@ -70,7 +70,28 @@
            <div itemprop="articleBody">
              
   <h1>Source code for star_pso.engines.binary_pso</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Description:</span>
+
+<span class="sd">    This module implements a (discrete) binary particle swarm optimization</span>
+<span class="sd">    variant as described in:</span>
+
+<span class="sd">    - Kennedy, J., and R. C. Eberhart 1997. “A Discrete Binary Version of the</span>
+<span class="sd">      Particle Swarm Algorithm.” IEEE International conference on systems, man</span>
+<span class="sd">      and cybernetics, 1997. Computational cybernetics and simulation, Vol. 5,</span>
+<span class="sd">      Orlando, FL, October 12–15, pp: 4104–4108.</span>
+
+<span class="sd">Author:</span>
+<span class="sd">    Michail D. Vrettas, PhD</span>
+
+<span class="sd">Email:</span>
+<span class="sd">    michail.vrettas@gmail.com</span>
+
+<span class="sd">Metadata:</span>
+<span class="sd">    License: GPL-3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">njit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
 
@@ -129,10 +150,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lower_bound</span><span class="o">=</span><span class="n">v_min</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="n">v_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Generate initial particle velocities.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
-            <span class="n">low</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">,</span>
-            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_velocities</span><span class="p">()</span>
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="BinaryPSO.update_velocities">
@@ -182,6 +200,23 @@
 
     <span class="c1"># _end_def_</span>
 
+<div class="viewcode-block" id="BinaryPSO.generate_random_velocities">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO.generate_random_velocities">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_random_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate the population of velocities by sampling uniformly</span>
+<span class="sd">        random numbers within predefined lower and upper bounds.</span>
+
+<span class="sd">        :return: None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Generate uniform FLOAT positions U(x_min, x_max).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+    <span class="c1"># _end_def_</span>
+
 <div class="viewcode-block" id="BinaryPSO.generate_random_positions">
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.binary_pso.BinaryPSO.generate_random_positions">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">generate_random_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -213,10 +248,8 @@
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Reset particle velocities.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
-            <span class="n">low</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">,</span>
-            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_velocities</span><span class="p">()</span>
+
         <span class="c1"># Generate random binary positions.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_positions</span><span class="p">()</span>
 

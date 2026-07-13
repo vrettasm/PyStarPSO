@@ -70,7 +70,27 @@
            <div itemprop="articleBody">
              
   <h1>Source code for star_pso.engines.categorical_pso</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Description:</span>
+
+<span class="sd">    This module includes a simplified variant of the original ICPSO algorithm</span>
+<span class="sd">    as described in:</span>
+
+<span class="sd">    - Strasser, S., Goodman, R., Sheppard, J., et al. &quot;A new discrete particle</span>
+<span class="sd">      swarm optimization algorithm&quot;, Proceedings of 2016 Genetic and Evolutionary</span>
+<span class="sd">      Computation Conference (GECCO) 16, ACM Press, Denver, Colorado, USA, pp. 53-60.</span>
+
+<span class="sd">Author:</span>
+<span class="sd">    Michail D. Vrettas, PhD</span>
+
+<span class="sd">Email:</span>
+<span class="sd">    michail.vrettas@gmail.com</span>
+
+<span class="sd">Metadata:</span>
+<span class="sd">    License: GPL-3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -142,7 +162,7 @@
                                                     <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">),</span>
                                              <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
         <span class="c1"># Call the random velocity generator.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">generate_uniform_velocities</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_velocities</span><span class="p">()</span>
 
         <span class="c1"># Assign the correct local sample method</span>
         <span class="c1"># according to the permutation mode flag.</span>
@@ -169,9 +189,9 @@
         <span class="k">return</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_sets</span><span class="p">]</span>
     <span class="c1"># _end_def_</span>
 
-<div class="viewcode-block" id="CategoricalPSO.generate_uniform_velocities">
-<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.categorical_pso.CategoricalPSO.generate_uniform_velocities">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">generate_uniform_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="CategoricalPSO.generate_random_velocities">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.categorical_pso.CategoricalPSO.generate_random_velocities">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_random_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates random uniform velocities</span>
 <span class="sd">        for the categorical variable positions.</span>
@@ -413,7 +433,7 @@
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Reset particle velocities.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">generate_uniform_velocities</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_velocities</span><span class="p">()</span>
 
         <span class="c1"># Reset particle positions.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_positions</span><span class="p">()</span>

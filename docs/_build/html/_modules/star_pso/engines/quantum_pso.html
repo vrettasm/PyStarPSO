@@ -70,7 +70,27 @@
            <div itemprop="articleBody">
              
   <h1>Source code for star_pso.engines.quantum_pso</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Third party imports.</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Description:</span>
+
+<span class="sd">    This module implements a variant of the quantum particle swarm optimization</span>
+<span class="sd">    as described in:</span>
+
+<span class="sd">    - M. Xi, J. Sun, W. Xu (2008), &quot;An improved quantum-behaved particle swarm</span>
+<span class="sd">      optimization algorithm with weighted mean best position&quot;, Applied Mathematics</span>
+<span class="sd">      and Computation vol. 205 pp: 751–759, doi: 10.1016/j.amc.2008.05.135.</span>
+
+<span class="sd">Author:</span>
+<span class="sd">    Michail D. Vrettas, PhD</span>
+
+<span class="sd">Email:</span>
+<span class="sd">    michail.vrettas@gmail.com</span>
+
+<span class="sd">Metadata:</span>
+<span class="sd">    License: GPL-3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Third party imports.</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">where</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">)</span>
 
@@ -115,10 +135,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">disable_parameters_update</span><span class="p">()</span>
 
         <span class="c1"># Generate initial particle &quot;velocities&quot;.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
-            <span class="n">low</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">,</span>
-            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_velocities</span><span class="p">()</span>
     <span class="c1"># _end_def_</span>
 
 <div class="viewcode-block" id="QuantumPSO.update_velocities">
@@ -196,6 +213,23 @@
 
     <span class="c1"># _end_def_</span>
 
+<div class="viewcode-block" id="QuantumPSO.generate_random_velocities">
+<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.quantum_pso.QuantumPSO.generate_random_velocities">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_random_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate the population of velocities by sampling uniformly</span>
+<span class="sd">        random numbers within predefined lower and upper bounds.</span>
+
+<span class="sd">        :return: None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Generate uniform FLOAT positions U(x_min, x_max).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+    <span class="c1"># _end_def_</span>
+
 <div class="viewcode-block" id="QuantumPSO.generate_random_positions">
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.quantum_pso.QuantumPSO.generate_random_positions">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">generate_random_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -205,12 +239,10 @@
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Generate uniform FLOAT positions U(x_min, x_max).</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
-            <span class="n">low</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">,</span>
-            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="c1"># Assign the new positions.</span>
+        <span class="c1"># First generate the velocities.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_velocities</span><span class="p">()</span>
+
+        <span class="c1"># Then assign them as new positions.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">set_positions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">)</span></div>
 
     <span class="c1"># _end_def_</span>
