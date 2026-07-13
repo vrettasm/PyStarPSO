@@ -305,7 +305,10 @@ class CompositeFunction(TestFunction):
             sigma: NDArray = np.ones(num_f, dtype=float)
 
             # Calculate the weights of the functions.
-            weights = CompositeFunction.compute_weights(x_pos, sigma)
+            weights: NDArray = CompositeFunction.compute_weights(x_pos, sigma)
+
+            # Initialize function value.
+            f_total: float = 0.0
 
             # Get total evaluation of the composite function.
             f_total = np.sum([
