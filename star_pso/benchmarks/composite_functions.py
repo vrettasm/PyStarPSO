@@ -101,6 +101,7 @@ def f_alpine(x_pos: NDArray) -> NDArray:
     """
     # Compute the equation.
     f_total: NDArray = np.sum(np.abs(x_pos * np.sin(x_pos)) + 0.1 * x_pos)
+    
     # Return final result.
     return f_total
 # _end_def_
