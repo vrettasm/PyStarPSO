@@ -299,7 +299,7 @@ class CompositeFunction(TestFunction):
         # Check the valid function range.
         if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
             # Get the number of basis functions.
-            num_f = len(self.basis_f)
+            num_f: int = len(self.basis_f)
 
             # Sigma values for simplicity are set to one.
             sigma = np.ones(num_f, dtype=float)
