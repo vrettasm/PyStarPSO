@@ -296,30 +296,46 @@ class CompositeFunction(TestFunction):
 
         :return: the function value(s).
         """
+        # Ensure the input is 2D array.
+        x_pos = np.atleast_2d(x_pos)
+
+        # Get the input dimensions.
+        n_samples, n_dim = x_pos.shape
+
         # Initialize function value to NaN.
-        f_value: NDArray = np.full_like(x_pos, np.nan, dtype=float)
+        f_value: NDArray = np.full(n_samples, np.nan, dtype=float)
 
-        # Check the valid function range.
-        if np.all((self.x_min <= x_pos) & (x_pos <= self.x_max)):
-            # Get the number of basis functions.
-            num_f: int = len(self.basis_f)
+        # Check the bounds.
+        in_bounds: NDArray = np.all((self.x_min <= x_pos) & (x_pos <= self.x_max),
+                                    axis=-1)
 
-            # Sigma values for simplicity are set to one.
-            sigma: NDArray = np.ones(num_f, dtype=float)
+        # Get the number of basis functions.
+        num_f: int = len(self.basis_f)
 
-            # Calculate the weights of the functions.
-            weights: NDArray = CompositeFunction.compute_weights(x_pos, sigma)
+        # Sigma values for simplicity are set to one.
+        sigma: NDArray = np.ones(num_f, dtype=float)
 
-            # Initialize function value.
-            f_total: float = 0.0
+        # Go through all samples.
+        for n, its_true in enumerate(in_bounds):
+            # If it is inside bounds perform
+            # the function evaluation.
+            if its_true:
+                # Get the n-th sample.
+                xn = x_pos[n]
 
-            # Get total evaluation of the composite function.
-            for wi, fi in zip(weights, self.basis_f):
-                f_total += wi * (fi(x_pos / num_f) + i_bias)
+                # Calculate the weights of the functions.
+                weights: NDArray = CompositeFunction.compute_weights(xn, sigma)
 
-            # Add the bias at the end.
-            f_value = f_total + f_bias
-        # _end_if_
+                # Initialize function value.
+                f_total: float = 0.0
+
+                # Get total evaluation of the composite function.
+                for wi, fi in zip(weights, self.basis_f):
+                    f_total += wi * (fi(xn / num_f) + i_bias)
+
+                # Add the bias at the end.
+                f_value[n] = f_total + f_bias
+            # _end_if_
 
         # Return the ndarray.
         return f_value
