@@ -246,7 +246,7 @@ class CompositeFunction(TestFunction):
 
         :return: a (ndarray) of normalized weights.
         """
-        # Ensure the input is NDArray.
+        # Ensure the input is 2D array.
         x_pos = np.atleast_2d(x_pos)
 
         # Number of dimension.
