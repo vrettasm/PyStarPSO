@@ -46,6 +46,7 @@ from star_pso.utils.auxiliary import (time_it, nb_clip_item,
                                       SpecialMode, nb_cdist,
                                       check_velocity_parameters,
                                       linear_rank_probabilities)
+
 # Public interface.
 __all__ = ["GenericPSO"]
 
