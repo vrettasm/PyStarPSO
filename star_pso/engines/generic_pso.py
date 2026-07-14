@@ -42,8 +42,9 @@ from joblib import Parallel, delayed
 from star_pso.engines import logger
 from star_pso.utils import VOptions
 from star_pso.population.swarm import Swarm, SwarmParticle
-from star_pso.utils.auxiliary import (time_it, nb_clip_item, SpecialMode,
-                                      check_velocity_parameters, nb_cdist,
+from star_pso.utils.auxiliary import (time_it, nb_clip_item,
+                                      SpecialMode, nb_cdist,
+                                      check_velocity_parameters,
                                       linear_rank_probabilities)
 # Public interface.
 __all__ = ["GenericPSO"]
