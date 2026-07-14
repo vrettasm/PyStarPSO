@@ -140,7 +140,7 @@ class BinaryPSO(GenericPSO):
         :return: None.
         """
         # Generate random BINARY positions Bin(0, 1).
-        binary_positions = GenericPSO.rng.integers(
+        binary_positions: NDArray = GenericPSO.rng.integers(
             low=0, high=2, size=(self.n_rows, self.n_cols),
             dtype=np.uint8
         )
