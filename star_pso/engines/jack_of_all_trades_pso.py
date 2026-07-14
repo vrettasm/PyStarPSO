@@ -27,7 +27,6 @@ from operator import attrgetter
 from collections import defaultdict
 
 import numpy as np
-from numba import njit
 from numpy.typing import NDArray
 from numpy import array as np_array
 from numpy import subtract as np_subtract
@@ -35,22 +34,9 @@ from numpy import isscalar as np_is_scalar
 
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import (BlockType,
+from star_pso.utils.auxiliary import (BlockType, fast_sum,
                                       linear_rank_probabilities,
                                       SpecialMode, spread_methods)
-# Local fast version of sum method.
-@njit(cache=True, nogil=True, fastmath=True)
-def fast_sum(x: NDArray) -> float:
-    """
-    Local auxiliary function that is used
-    to sum the values of input array 'x'.
-
-    :param x: the numpy array we want to sum.
-
-    :return: the sum(x).
-    """
-    return np.sum(x)
-# _end_def_
 
 
 # Public interface.

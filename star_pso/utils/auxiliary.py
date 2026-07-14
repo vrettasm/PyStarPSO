@@ -32,7 +32,7 @@ __all__ = ["BlockType", "SpecialMode", "check_velocity_parameters", "time_it", "
            "calculate_dynamic_radius", "identify_global_optima", "linear_rank_probabilities", "kl_divergence_item",
            "kl_divergence_array", "nb_clip_inplace", "nb_clip_array", "nb_clip_item", "nb_median_hamming_distance",
            "nb_median_euclidean_distance", "nb_centroid", "nb_median_taxicab_distance", "nb_median_kl_divergence",
-           "nb_cdist", "spread_methods"]
+           "nb_cdist", "spread_methods", "fast_sum"]
 
 
 class BlockType(Enum):
@@ -781,4 +781,18 @@ def nb_cdist(x_pos: NDArray, scaled: bool = False) -> NDArray:
     # _end_for_
 
     return dist_x
+# _end_def_
+
+# Local fast version of sum method.
+@njit(cache=True, nogil=True, fastmath=True)
+def fast_sum(x: NDArray) -> float:
+    """
+    Local auxiliary function that is used
+    to sum the values of input array 'x'.
+
+    :param x: the numpy array we want to sum.
+
+    :return: the sum(x).
+    """
+    return np.sum(x)
 # _end_def_

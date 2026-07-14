@@ -22,29 +22,13 @@ from collections import defaultdict
 from functools import cached_property
 
 import numpy as np
-from numba import njit
 from numpy.typing import NDArray
 from numpy import subtract as np_subtract
 
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import (SpecialMode,
-                                      nb_clip_inplace,
-                                      nb_median_kl_divergence)
-# Local fast version of sum method.
-@njit(cache=True, nogil=True, fastmath=True)
-def fast_sum(x: NDArray) -> float:
-    """
-    Local auxiliary function that is used
-    to sum the values of input array 'x'.
-
-    :param x: the numpy array we want to sum.
-
-    :return: the sum(x).
-    """
-    return np.sum(x)
-# _end_def_
-
+from star_pso.utils.auxiliary import (nb_clip_inplace, fast_sum,
+                                      SpecialMode, nb_median_kl_divergence)
 
 # Public interface.
 __all__ = ["CategoricalPSO", "fast_sum"]
