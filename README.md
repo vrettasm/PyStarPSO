@@ -200,6 +200,7 @@ Here we have implemented the following benchmarks of **multimodal** functions:
 | [Rastrigin](star_pso/benchmarks/rastrigin.py)                               |       D       |         K         |
 | [Shubert](star_pso/benchmarks/shubert.py)                                   |       D       |      $D*3^D$      |
 | [Vincent](star_pso/benchmarks/vincent.py)                                   |       D       |       $6^D$       |
+| [Composite](star_pso/benchmarks/composite_functions.py)                     |       D       |         K         |
 
 All the above benchmarks inherit from the base class [TestFunction](star_pso/benchmarks/test_function.py) which provides some common functionality.
 Adding new algorithms **MUST** inherit from the base class.
