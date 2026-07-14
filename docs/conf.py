@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('..'))
 project = 'StarPSO'
 copyright = '2025, Michail D. Vrettas'
 author = 'Michail D. Vrettas'
-release = '0.1.2'
+release = '0.1.3'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -45,4 +45,3 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'examples', 'experiments
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
