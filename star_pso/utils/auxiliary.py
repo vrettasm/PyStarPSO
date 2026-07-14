@@ -28,11 +28,12 @@ from numpy.typing import NDArray
 from star_pso.population.particle import Particle
 
 # Public interface.
-__all__ = ["BlockType", "SpecialMode", "check_velocity_parameters", "time_it", "pareto_front", "cost_function",
-           "calculate_dynamic_radius", "identify_global_optima", "linear_rank_probabilities", "kl_divergence_item",
-           "kl_divergence_array", "nb_clip_inplace", "nb_clip_array", "nb_clip_item", "nb_median_hamming_distance",
-           "nb_median_euclidean_distance", "nb_centroid", "nb_median_taxicab_distance", "nb_median_kl_divergence",
-           "nb_cdist", "spread_methods", "fast_sum"]
+__all__ = ["BlockType", "SpecialMode", "check_velocity_parameters", "time_it", "pareto_front",
+           "calculate_dynamic_radius", "identify_global_optima", "linear_rank_probabilities",
+           "cost_function", "kl_divergence_item", "kl_divergence_array", "nb_clip_inplace",
+           "nb_clip_array", "nb_clip_item", "nb_median_hamming_distance", "spread_methods",
+           "nb_centroid", "nb_median_taxicab_distance", "nb_median_kl_divergence", "fast_sum",
+           "nb_cdist", "nb_median_euclidean_distance",  ]
 
 
 class BlockType(Enum):
