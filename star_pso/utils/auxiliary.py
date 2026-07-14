@@ -733,8 +733,8 @@ spread_methods: dict = {BlockType.FLOAT: nb_median_euclidean_distance,
                         BlockType.INTEGER: nb_median_taxicab_distance,
                         BlockType.CATEGORICAL: nb_median_kl_divergence}
 """
-Create a dictionary with block types as keys and their corresponding
-spread estimation methods as values.
+Create a dictionary with block types as keys and their
+corresponding spread estimation methods as values.
 """
 
 @njit(fastmath=True, nogil=True)
