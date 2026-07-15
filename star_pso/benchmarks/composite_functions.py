@@ -253,7 +253,7 @@ class CompositeFunction(TestFunction):
         n_dim: NDArray = x_pos.shape[1]
 
         # Precompute the denominator array.
-        denominator: NDArray = (2.0 * n_dim * sigma * sigma)
+        denominator: NDArray = 2.0 * n_dim * sigma * sigma
 
         # Compute the sum of squares.
         sum_sq: NDArray = np.sum(x_pos * x_pos, axis=1)[:, np.newaxis]
