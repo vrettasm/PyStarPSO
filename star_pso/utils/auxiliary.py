@@ -372,7 +372,7 @@ def kl_divergence_item(p: NDArray, q: NDArray) -> float:
     n_var: int = len(p)
 
     # Compute the KL[p,q].
-    for i in range(len(p)):
+    for i in range(n_var):
         pi: float = p[i]
         qi: float = q[i]
         if pi > 0.0:
