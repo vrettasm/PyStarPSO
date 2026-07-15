@@ -300,7 +300,7 @@ class CompositeFunction(TestFunction):
         x_pos = np.atleast_2d(x_pos)
 
         # Get the input dimensions.
-        n_samples, n_dim = x_pos.shape
+        n_samples = x_pos.shape[0]
 
         # Initialize function value to NaN.
         f_value: NDArray = np.full(n_samples, np.nan, dtype=float)
