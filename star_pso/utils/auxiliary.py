@@ -99,13 +99,13 @@ def time_it(func: Callable):
         :return: the output of the wrapper function.
         """
         # Initial time instant.
-        time_t0 = time.perf_counter()
+        time_t0: float = time.perf_counter()
 
         # Run the function we want to time.
         result = func(*args, **kwargs)
 
         # Final time instant.
-        time_tf = time.perf_counter()
+        time_tf: float = time.perf_counter()
 
         # Print final duration in seconds.
         print(f"{func.__name__ }: "
@@ -134,10 +134,10 @@ def pareto_front(points: NDArray) -> NDArray:
     # _end_if_
 
     # Get the number of points.
-    num_points = points.shape[0]
+    num_points: int = points.shape[0]
 
     # Create a boolean array to track Pareto optimal points.
-    is_pareto_optimal = np.ones(num_points, dtype=bool)
+    is_pareto_optimal: NDArray = np.ones(num_points, dtype=bool)
 
     for i, point_i in enumerate(points):
         # Compare point i-th with all other points.
@@ -260,7 +260,7 @@ def identify_global_optima(swarm_population: list[Particle], f_opt: float,
     """
 
     # Filter out particles that don't meet the fitness threshold.
-    candidates = [
+    candidates: list[Particle] = [
         particle for particle in swarm_population
         if fabs(f_opt - particle.value) < epsilon
     ]
@@ -271,7 +271,7 @@ def identify_global_optima(swarm_population: list[Particle], f_opt: float,
 
     # Define a return list that will contain the particles that
     # are the global solutions.
-    optima_list = []
+    optima_list: list[Particle] = []
 
     # The best particle anchors the niche first and blocks all
     # inferior neighbors.
@@ -287,7 +287,7 @@ def identify_global_optima(swarm_population: list[Particle], f_opt: float,
 # _end_def_
 
 @lru_cache(maxsize=64)
-def linear_rank_probabilities(p_size: int, eta: float = 1.5) -> tuple[NDArray, float]:
+def linear_rank_probabilities(pop_size: int, eta: float = 1.5) -> tuple:
     """
     Calculate the rank probability distribution over the population size.
     The function is lru_cached so that repeated calls with the same input
@@ -298,7 +298,7 @@ def linear_rank_probabilities(p_size: int, eta: float = 1.5) -> tuple[NDArray, f
 
     NOTE: Probabilities are returned in ascending order.
 
-    :param p_size: (int) population size.
+    :param pop_size: (int) population size.
 
     :param eta: (float) pressure adjustment factor.
 
@@ -307,12 +307,12 @@ def linear_rank_probabilities(p_size: int, eta: float = 1.5) -> tuple[NDArray, f
              due to small errors it might be less.
     """
     # Sanity check.
-    if not isinstance(p_size, int):
+    if not isinstance(pop_size, int):
         raise TypeError("'p_size' must be an integer number.")
     # _end_if_
 
     # Sanity check.
-    if p_size <= 0:
+    if pop_size <= 0:
         raise ValueError("'p_size' must be a positive number.")
     # _end_if_
 
@@ -322,25 +322,27 @@ def linear_rank_probabilities(p_size: int, eta: float = 1.5) -> tuple[NDArray, f
     # _end_if_
 
     # Handle edge case where population size is 1.
-    if p_size == 1:
+    if pop_size == 1:
         return np.array([1.0], dtype=float), 1.0
     # _end_if_
 
     # Precompute constant invariants out of the
     # loop to eliminate repetitive division.
-    base: float = (2.0 - eta) / p_size
-    step: float = (2.0 * (eta - 1.0)) / (p_size * (p_size - 1))
+    base: float = (2.0 - eta) / pop_size
+    step: float = (2.0 * (eta - 1.0)) / (pop_size * (pop_size - 1))
 
     # Calculate the probabilities.
-    probabilities: list[float] = [base + (i * step) for i in range(p_size)]
+    probabilities: list[float] = [
+        base + (i * step) for i in range(pop_size)
+    ]
 
     # Calculate the sum of probabilities.
     total: float = fsum(probabilities)
 
-    # Normalize for minor numerical safety.
-    # The probability values are in ascending order.
-    probs: NDArray = np.fromiter([p / total for p in probabilities], dtype=float)
-
+    # Normalize for minor numerical safety. The
+    # probability values are in ascending order.
+    probs: NDArray = np.fromiter([p / total for p in probabilities],
+                                 dtype=float)
     # Return the probs and their sum.
     return probs, fsum(probs)
 # _end_def_
