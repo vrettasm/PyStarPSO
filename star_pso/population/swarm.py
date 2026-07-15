@@ -125,8 +125,12 @@ class Swarm:
 
         :return: Return the particle with the highest value.
         """
+        # Extract the key.
+        key_max = attrgetter("value")
+
+        # Return the best particle based on the particles value.
         return max((p for p in self._population if not isnan(p.value)),
-                   key=attrgetter("value"), default=None)
+                   key=key_max, default=None)
     # _end_def_
 
     def best_n(self, n: int = 1) -> list[SwarmParticle]:
@@ -151,9 +155,14 @@ class Swarm:
                              f"Best {n} exceeds swarm size.")
         # _end_if_
 
+        # Extract the key.
+        key_sort = attrgetter("value")
+
         # Sort the swarm in descending order.
-        sorted_swarm = sorted([p for p in self._population if not isnan(p.value)],
-                              key=attrgetter("value"), reverse=True)
+        sorted_swarm: list[SwarmParticle] = sorted(
+            [p for p in self._population if not isnan(p.value)],
+            key=key_sort, reverse=True
+        )
 
         # Return the best 'n' particles.
         return sorted_swarm[0:n]
