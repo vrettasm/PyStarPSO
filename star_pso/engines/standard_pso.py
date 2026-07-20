@@ -106,7 +106,7 @@ class StandardPSO(GenericPSO):
         # of the total range.
         self._velocities: NDArray = GenericPSO.rng.uniform(
             low=-0.1 * space_range, high=0.1 * space_range,
-            size=(self.n_rows, self.n_cols),
+            size=(self.n_rows, self.n_cols)
         )
     # _end_def_
 
