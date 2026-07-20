@@ -235,14 +235,14 @@ class JatParticle:
         :return: True if their containers have the same data
                  blocks.
         """
-        # Check if they are the same instance.
-        if self is other:
-            return True
-        # _end_if_
-
         # Make sure both objects are of the same type.
         if not isinstance(other, JatParticle):
             return NotImplemented
+        # _end_if_
+
+        # Check if they are the same instance.
+        if self is other:
+            return True
         # _end_if_
 
         # Compare directly their two containers.
