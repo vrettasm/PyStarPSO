@@ -482,14 +482,14 @@ class DataBlock:
 
         :return: True if the data blocks are identical else False.
         """
-        # Check if they are the same instance.
-        if self is other:
-            return True
-        # _end_if_
-
         # Make sure both items are of type 'DataBlock'.
         if not isinstance(other, DataBlock):
             return NotImplemented
+        # _end_if_
+
+        # Check if they are the same instance.
+        if self is other:
+            return True
         # _end_if_
 
         # Local cache for speed.
