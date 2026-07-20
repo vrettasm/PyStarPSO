@@ -2,8 +2,8 @@
 Description:
 
     This module implements a class for the 'Jack of all trades' particle.
-    This dataclass maintains a container (list of data blocks) and the rest
-    of the information is held in its data blocks.
+    This dataclass  maintains a container (i.e. list of data blocks) and
+    the rest of the information is held in its data blocks.
 
 Author:
     Michail D. Vrettas, PhD
