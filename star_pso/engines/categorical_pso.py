@@ -31,7 +31,7 @@ from star_pso.utils.auxiliary import (nb_clip_inplace, fast_sum,
                                       SpecialMode, nb_median_kl_divergence)
 
 # Public interface.
-__all__ = ["CategoricalPSO", "fast_sum"]
+__all__ = ["CategoricalPSO"]
 
 
 class CategoricalPSO(GenericPSO):
