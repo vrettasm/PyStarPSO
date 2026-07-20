@@ -219,8 +219,11 @@ class JackOfAllTradesPSO(GenericPSO):
         # Pre-sample the social coefficients.
         social: NDArray = JackOfAllTradesPSO.rng.uniform(0, params.c2,
                                                          size=arr_shape)
+        # Make the mode lower.
+        _mode: str = params.mode.lower()
+
         # Get the global best particle position.
-        if params.mode.lower() == "fipso":
+        if _mode == "fipso":
 
             # Extract only their positions and convert to numpy array.
             # Due to the different shapes of the variables we need to
@@ -244,7 +247,7 @@ class JackOfAllTradesPSO(GenericPSO):
                 if not np_is_scalar(g_best[i]):
                     g_best[i] /= fast_sum(np_array(g_best[i]))
 
-        elif params.mode.lower() == "g_best":
+        elif _mode == "g_best":
 
             # Get the (global) swarm's best particle position.
             g_best = self.swarm.best_particle().position
