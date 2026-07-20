@@ -337,7 +337,7 @@ class DataBlock:
         :return: a new random (integer) position.
         """
         # Get the number of variables.
-        n_vars = kwargs["n_vars"]
+        n_vars: int = kwargs["n_vars"]
 
         # Set the variables uniformly.
         return np.ones(n_vars)/n_vars
