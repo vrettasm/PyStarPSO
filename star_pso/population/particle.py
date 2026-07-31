@@ -233,14 +233,14 @@ class Particle:
 
         :return: True if the positions are identical else False.
         """
+        # Make sure both items are Particle.
+        if not isinstance(other, Particle):
+            return NotImplemented
+        # _end_if_
+
         # Check if they are the same instance.
         if self is other:
             return True
-        # _end_if_
-
-        # Make sure both objects are of the same type 'particle'.
-        if not isinstance(other, Particle):
-            return NotImplemented
         # _end_if_
 
         # Compare directly their two positional arrays.
