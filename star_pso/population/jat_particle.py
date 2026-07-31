@@ -225,7 +225,7 @@ class JatParticle:
         return len(self._container)
     # _end_def_
 
-    def __eq__(self, other: JatParticle) -> bool:
+    def __eq__(self, other: object) -> bool:
         """
         Compares the jat_particle of self with the other and
         returns True if they are identical, otherwise False.
