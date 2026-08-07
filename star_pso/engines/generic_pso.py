@@ -637,8 +637,7 @@ class GenericPSO:
         # NB: Since the first index 0 refers to the same particle
         # we skip it and start counting from 1.
         l_best = [
-            GenericPSO.fully_informed([local_population[k] for k in row],
-                                      use_best=True)
+            fipso([local_population[k] for k in row])
             for row in x_partial
         ]
 
