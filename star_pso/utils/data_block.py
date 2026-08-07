@@ -473,7 +473,7 @@ class DataBlock:
                                             Iterable) else condition
     # _end_def_
 
-    def __eq__(self, other: DataBlock) -> bool:
+    def __eq__(self, other: object) -> bool:
         """
         Compares the data block of self with the other and
         returns True if they are identical, otherwise False.
