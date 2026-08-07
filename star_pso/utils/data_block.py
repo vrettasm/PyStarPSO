@@ -47,7 +47,7 @@ Params = namedtuple("Params",
 """
 
 # Public interface.
-__all__ = ["DataBlock"]
+__all__ = ["DataBlock", "Params"]
 
 
 class DataBlock:
