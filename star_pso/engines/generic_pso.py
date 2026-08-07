@@ -626,6 +626,9 @@ class GenericPSO:
         # Make a view of the entries we are interested in.
         x_partial: NDArray = x_sorted[:, 1:num_neighbors + 1]
 
+        # Local copy of fully_informed function.
+        fipso = partial(GenericPSO.fully_informed, use_best=True)
+
         # Go through each row of the x_sorted matrix and for each
         # particle  compute it's best neighborhood  position as a
         # weighted average of their best positions, weighted with
