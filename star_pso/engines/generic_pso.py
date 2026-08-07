@@ -638,6 +638,8 @@ class GenericPSO:
         x_sorted: NDArray = np.argsort(pairwise_dists, axis=1)
 
         # Make a view of the entries we are interested in.
+        # NB:  Since the first index 0 refers to the same
+        # particle we skip it and start counting from 1.
         x_partial: NDArray = x_sorted[:, 1:num_neighbors + 1]
 
         # Local copy of fully_informed function.
@@ -649,9 +651,6 @@ class GenericPSO:
         # particle  compute it's best neighborhood  position as a
         # weighted average of their best positions, weighted with
         # their linear ranked probabilities.
-        #
-        # NB: Since the first index 0 refers to the same particle
-        # we skip it and start counting from 1.
         l_best = [
             _fipso(idx=row) for row in x_partial
         ]
