@@ -26,6 +26,7 @@ Metadata:
 
 from os import cpu_count
 from copy import deepcopy
+from functools import partial
 from operator import attrgetter
 from math import inf, fabs, isclose
 
