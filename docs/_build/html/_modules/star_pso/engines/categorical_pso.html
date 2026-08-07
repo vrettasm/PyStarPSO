@@ -94,35 +94,16 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">njit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">subtract</span> <span class="k">as</span> <span class="n">np_subtract</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">VOptions</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.engines.generic_pso</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericPSO</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">SpecialMode</span><span class="p">,</span>
-                                      <span class="n">nb_clip_inplace</span><span class="p">,</span>
-                                      <span class="n">nb_median_kl_divergence</span><span class="p">)</span>
-<span class="c1"># Local fast version of sum method.</span>
-<div class="viewcode-block" id="fast_sum">
-<a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.categorical_pso.fast_sum">[docs]</a>
-<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">fast_sum</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Local auxiliary function that is used</span>
-<span class="sd">    to sum the values of input array &#39;x&#39;.</span>
-
-<span class="sd">    :param x: the numpy array we want to sum.</span>
-
-<span class="sd">    :return: the sum(x).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
-
-<span class="c1"># _end_def_</span>
-
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">nb_clip_inplace</span><span class="p">,</span> <span class="n">fast_sum</span><span class="p">,</span>
+                                      <span class="n">SpecialMode</span><span class="p">,</span> <span class="n">nb_median_kl_divergence</span><span class="p">)</span>
 
 <span class="c1"># Public interface.</span>
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CategoricalPSO&quot;</span><span class="p">,</span> <span class="s2">&quot;fast_sum&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CategoricalPSO&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="CategoricalPSO">

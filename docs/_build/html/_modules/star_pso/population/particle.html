@@ -298,7 +298,7 @@
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">)</span>
     <span class="c1"># _end_def_</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Particle</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compares the &#39;self&#39; particle, with the &#39;other&#39; particle and</span>
 <span class="sd">        returns True if they have the same position otherwise False.</span>
@@ -307,14 +307,14 @@
 
 <span class="sd">        :return: True if the positions are identical else False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Make sure both items are Particle.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Particle</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="c1"># _end_if_</span>
+
         <span class="c1"># Check if they are the same instance.</span>
         <span class="k">if</span> <span class="bp">self</span> <span class="ow">is</span> <span class="n">other</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="c1"># _end_if_</span>
-
-        <span class="c1"># Make sure both objects are of the same type &#39;particle&#39;.</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Particle</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="c1"># _end_if_</span>
 
         <span class="c1"># Compare directly their two positional arrays.</span>

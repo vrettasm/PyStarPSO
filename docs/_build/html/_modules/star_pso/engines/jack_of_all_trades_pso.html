@@ -99,7 +99,6 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">njit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">array</span> <span class="k">as</span> <span class="n">np_array</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">subtract</span> <span class="k">as</span> <span class="n">np_subtract</span>
@@ -107,22 +106,9 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">VOptions</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.engines.generic_pso</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericPSO</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">BlockType</span><span class="p">,</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">BlockType</span><span class="p">,</span> <span class="n">fast_sum</span><span class="p">,</span>
                                       <span class="n">linear_rank_probabilities</span><span class="p">,</span>
                                       <span class="n">SpecialMode</span><span class="p">,</span> <span class="n">spread_methods</span><span class="p">)</span>
-<span class="c1"># Local fast version of sum method.</span>
-<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">fast_sum</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Local auxiliary function that is used</span>
-<span class="sd">    to sum the values of input array &#39;x&#39;.</span>
-
-<span class="sd">    :param x: the numpy array we want to sum.</span>
-
-<span class="sd">    :return: the sum(x).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="c1"># _end_def_</span>
 
 
 <span class="c1"># Public interface.</span>
@@ -321,8 +307,11 @@
         <span class="c1"># Pre-sample the social coefficients.</span>
         <span class="n">social</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">JackOfAllTradesPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">c2</span><span class="p">,</span>
                                                          <span class="n">size</span><span class="o">=</span><span class="n">arr_shape</span><span class="p">)</span>
+        <span class="c1"># Make the mode lower.</span>
+        <span class="n">_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
         <span class="c1"># Get the global best particle position.</span>
-        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;fipso&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;fipso&quot;</span><span class="p">:</span>
 
             <span class="c1"># Extract only their positions and convert to numpy array.</span>
             <span class="c1"># Due to the different shapes of the variables we need to</span>
@@ -346,7 +335,7 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">np_is_scalar</span><span class="p">(</span><span class="n">g_best</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
                     <span class="n">g_best</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">fast_sum</span><span class="p">(</span><span class="n">np_array</span><span class="p">(</span><span class="n">g_best</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
 
-        <span class="k">elif</span> <span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;g_best&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;g_best&quot;</span><span class="p">:</span>
 
             <span class="c1"># Get the (global) swarm&#39;s best particle position.</span>
             <span class="n">g_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">best_particle</span><span class="p">()</span><span class="o">.</span><span class="n">position</span>
