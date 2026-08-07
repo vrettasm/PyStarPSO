@@ -263,7 +263,9 @@ class GenericPSO:
     # _end_def_
 
     @staticmethod
-    def fully_informed(population: list[SwarmParticle], use_best: bool = False) -> NDArray:
+    def fully_informed(population: list[SwarmParticle],
+                       idx: Optional[ArrayLike] = None,
+                       use_best: bool = False) -> NDArray:
         """
         Uses the input population and computes a weighted average position
         according to the linear ranking of the particles. Those with higher
@@ -272,12 +274,25 @@ class GenericPSO:
         :param population: list of particles which we want to consider in the
                            calculation of the fully informed best position.
 
+        :param idx: (optional) index of the particle in the population that
+                    we want to consider for the calculation of the weighted
+                    best position.
+
         :param use_best: if True it will use the best_position of each particle
-                         to estimate the new weighted best position. Default is
-                         False, which means that only the current position is used.
+                         to estimate the new weighted best position. False means
+                         that only the current position is used.
 
         :return: the weighted best position 'w_best' (as numpy array).
         """
+        # Check if we pass array with indices.
+        if idx is None:
+            # Default action: all the population is considered.
+            local_population: list[SwarmParticle] = population
+        else:
+            # Otherwise, we use only some of the population.
+            local_population: list[SwarmParticle] = [
+                population[i] for i in idx
+            ]
 
         if use_best:
             # Pre-bind the key function.
@@ -286,7 +301,8 @@ class GenericPSO:
             # Extract the best positions and convert
             # to numpy array, with 'C' order style.
             all_positions: NDArray = np.array([
-                item.best_position for item in sorted(population, key=get_key)
+                item.best_position
+                for item in sorted(local_population, key=get_key)
             ], order="C")
         else:
             # Pre-bind the key function.
@@ -295,7 +311,8 @@ class GenericPSO:
             # Extract the positions and convert
             # to numpy array, with 'C' order style.
             all_positions: NDArray = np.array([
-                item.position for item in sorted(population, key=get_key)
+                item.position
+                for item in sorted(local_population, key=get_key)
             ], order="C")
 
         # Get the size of the population.
@@ -620,14 +637,13 @@ class GenericPSO:
         # This way we can have the nearest neighbors first.
         x_sorted: NDArray = np.argsort(pairwise_dists, axis=1)
 
-        # Make a copy of local population to improve performance.
-        local_population: list[SwarmParticle] = self.swarm.population
-
         # Make a view of the entries we are interested in.
         x_partial: NDArray = x_sorted[:, 1:num_neighbors + 1]
 
         # Local copy of fully_informed function.
-        fipso = partial(GenericPSO.fully_informed, use_best=True)
+        _fipso = partial(GenericPSO.fully_informed,
+                         population=self.swarm.population,
+                         use_best=True)
 
         # Go through each row of the x_sorted matrix and for each
         # particle  compute it's best neighborhood  position as a
@@ -637,8 +653,7 @@ class GenericPSO:
         # NB: Since the first index 0 refers to the same particle
         # we skip it and start counting from 1.
         l_best = [
-            fipso([local_population[k] for k in row])
-            for row in x_partial
+            _fipso(idx=row) for row in x_partial
         ]
 
         # Return the container.
