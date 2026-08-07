@@ -651,12 +651,7 @@ class GenericPSO:
         # particle  compute it's best neighborhood  position as a
         # weighted average of their best positions, weighted with
         # their linear ranked probabilities.
-        l_best = [
-            _fipso(idx=row) for row in x_partial
-        ]
-
-        # Return the container.
-        return l_best
+        return [_fipso(idx=row) for row in x_partial]
     # _end_def_
 
     def get_local_best_positions(self, operating_mode: str = "g_best") -> NDArray:
