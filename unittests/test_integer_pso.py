@@ -4,7 +4,7 @@ import numpy as np
 from star_pso.population.swarm import Swarm
 from star_pso.population.particle import Particle
 from star_pso.engines.integer_pso import IntegerPSO
-from star_pso.utils.auxiliary import cost_function
+from star_pso.utils.auxiliary import cost_function, RunConfig
 
 
 @cost_function(minimize=True)
@@ -40,22 +40,22 @@ class TestIntegerPSO(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         # Set a seed for reproducible initial population.
-        SEED = 1821
+        _SEED = 1821
 
         # Random number generator.
-        rng = np.random.default_rng(SEED)
+        rng = np.random.default_rng(_SEED)
 
         # Define the number of optimizing variables.
-        D = 15
+        n_dim = 15
 
         # Define the number of particles.
-        N = 60
+        n_par = 60
 
         # Sample the initial points randomly.
-        X_t0 = rng.integers(low=-100, high=100, endpoint=True, size=(N, D))
+        x_t0 = rng.integers(low=-100, high=100, endpoint=True, size=(n_par, n_dim))
 
         # Initial population.
-        cls.swarm_t0 = Swarm([Particle(x) for x in X_t0])
+        cls.swarm_t0 = Swarm([Particle(x) for x in x_t0])
     # _end_def_
 
     def test_run(self):
@@ -66,17 +66,17 @@ class TestIntegerPSO(unittest.TestCase):
         IntegerPSO.set_seed(2026)
 
         # Create the IntegerPSO object that will perform the optimization.
-        test_PSO = IntegerPSO(initial_swarm = TestIntegerPSO.swarm_t0,
+        test_pso = IntegerPSO(initial_swarm = TestIntegerPSO.swarm_t0,
                               obj_func = fun_sum_abs,
                               copy = True, x_min = -100, x_max = +100)
 
         # Run the PSO.
-        test_PSO.run(max_it=100,
-                     options={"w0": 0.70, "c1": 1.50, "c2": 1.50, "mode": "fipso"},
-                     reset_swarm=False, verbose=False, adapt_params=False)
+        test_pso.run(config=RunConfig(max_it=100,
+                                      options={"w0": 0.70, "c1": 1.50, "c2": 1.50, "mode": "fipso"},
+                                      reset_swarm=False, verbose=False, adapt_params=False))
 
         # Get the optimal solution from the PSO.
-        _, f_opt, _ = test_PSO.get_optimal_values()
+        _, f_opt, _ = test_pso.get_optimal_values()
 
         # This assumes the optimization was successful.
         self.assertEqual(0.0, f_opt)

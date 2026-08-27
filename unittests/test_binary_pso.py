@@ -4,7 +4,7 @@ import numpy as np
 from star_pso.population.swarm import Swarm
 from star_pso.population.particle import Particle
 from star_pso.engines.binary_pso import BinaryPSO
-from star_pso.utils.auxiliary import cost_function
+from star_pso.utils.auxiliary import cost_function, RunConfig
 
 
 @cost_function
@@ -40,22 +40,22 @@ class TestBinaryPSO(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         # Set a seed for reproducible initial population.
-        SEED = 1821
+        _SEED = 1821
 
         # Random number generator.
-        rng = np.random.default_rng(SEED)
+        rng = np.random.default_rng(_SEED)
 
         # Define the number of optimizing variables.
-        D = 20
+        n_dim = 20
 
         # Define the number of particles.
-        N = 40
+        n_pop = 40
 
         # Sample the initial points randomly.
-        X_t0 = rng.integers(low=0, high=1, endpoint=True, size=(N, D))
+        x_t0 = rng.integers(low=0, high=1, endpoint=True, size=(n_pop, n_dim))
 
         # Initial population.
-        cls.swarm_t0 = Swarm([Particle(x) for x in X_t0])
+        cls.swarm_t0 = Swarm([Particle(x) for x in x_t0])
     # _end_def_
 
     def test_run(self):
@@ -66,19 +66,19 @@ class TestBinaryPSO(unittest.TestCase):
         BinaryPSO.set_seed(2026)
 
         # Create a BinaryPSO object that will perform the optimization.
-        test_PSO = BinaryPSO(initial_swarm=TestBinaryPSO.swarm_t0,
+        test_pso = BinaryPSO(initial_swarm=TestBinaryPSO.swarm_t0,
                              obj_func=fun_one_max)
 
         # Run the optimization.
-        test_PSO.run(max_it=100,
-                     options={"w0": 0.70, "c1": 1.50, "c2": 1.50, "mode": "g_best"},
-                     reset_swarm=False, verbose=False, adapt_params=False)
+        test_pso.run(config=RunConfig(max_it=100,
+                                      options={"w0": 0.70, "c1": 1.50, "c2": 1.50, "mode": "g_best"},
+                                      reset_swarm=False, verbose=False, adapt_params=False))
 
         # Get the optimal solution from the PSO.
-        _, f_opt, _ = test_PSO.get_optimal_values()
+        _, f_opt, _ = test_pso.get_optimal_values()
 
         # This assumes the optimization was successful.
-        self.assertEqual(test_PSO.n_cols, int(f_opt))
+        self.assertEqual(test_pso.n_cols, int(f_opt))
     # _end_def_
 
 # _end_class_
