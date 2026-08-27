@@ -138,7 +138,7 @@ class RunConfig:
         # Sanity check 2.
         # Check for the correct type.
         if not isinstance(options, dict):
-            raise TypeError(f"{options} must be dict, ")
+            raise TypeError("'options' must be a dictionary.")
 
         # Make sure the right keys exist.
         for key in ("w0", "c1", "c2", "mode"):
