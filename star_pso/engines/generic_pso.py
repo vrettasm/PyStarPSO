@@ -849,7 +849,8 @@ class GenericPSO:
         # _end_if_
 
         # Make sure the selected PSO allows the update of the model parameters.
-        adapt_params = config.adapt_params & self._allow_parameters_to_update
+        adapt_params: bool = config.adapt_params &\
+                             self._allow_parameters_to_update
 
         # Convert options dict to VOptions.
         params = VOptions(**options)
