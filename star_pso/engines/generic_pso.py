@@ -793,8 +793,7 @@ class GenericPSO:
                 c2 *= 1.1
             # _end_if_
 
-            # Ensure the updated c1 / c2 values
-            # stay within their bounds.
+            # Ensure the updated c1 / c2 values stay within their bounds.
             c1 = nb_clip_item(c1, c_min, c_max)
             c2 = nb_clip_item(c2, c_min, c_max)
 
