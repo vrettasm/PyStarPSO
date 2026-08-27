@@ -116,7 +116,7 @@ class RunConfig:
     '''
 
     @staticmethod
-    def _check_velocity_parameters(options: dict = None) -> None:
+    def _check_velocity_parameters(options: Optional[dict]) -> None:
         """
         Checks that the options dictionary has all the additional
         parameters to estimate the velocities of the optimization
