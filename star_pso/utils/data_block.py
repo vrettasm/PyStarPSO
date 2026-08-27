@@ -306,8 +306,7 @@ class DataBlock:
         # Ensure the random position stays within bounds.
         return cls.rng.integers(kwargs["lower_bound"],
                                 kwargs["upper_bound"],
-                                endpoint=True,
-                                dtype=int)
+                                endpoint=True, dtype=int)
     # _end_def_
 
     @classmethod
