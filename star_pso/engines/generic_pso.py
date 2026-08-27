@@ -765,9 +765,8 @@ class GenericPSO:
         # values of the c1 and c2 parameters.
         c_min, c_max = 0.1, 2.5
 
-        # Get an estimate of the particles' spread
-        # ensuring its range is in [0, 1] and use
-        # it as the current inertia weight.
+        # Get an estimate of the particles' spread ensuring its range
+        # is in [0, 1] and use it as the current inertia weight.
         wt: float = nb_clip_item(self.calculate_spread(),
                                  0.0, 1.0)
 
