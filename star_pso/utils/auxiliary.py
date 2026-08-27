@@ -116,7 +116,7 @@ class RunConfig:
     '''
 
     @staticmethod
-    def _check_velocity_parameters(options: dict) -> None:
+    def _check_velocity_parameters(options: dict = None) -> None:
         """
         Checks that the options dictionary has all the additional
         parameters to estimate the velocities of the optimization
@@ -131,13 +131,19 @@ class RunConfig:
 
         :return: None.
         """
-        # Ensure options exits and is a dict.
-        if options and isinstance(options, dict):
+        # Sanity check 1.
+        if options is None:
+            return
 
-            # Make sure the right keys exist.
-            for key in ("w0", "c1", "c2", "mode"):
-                if key not in options:
-                    raise KeyError(f"Option '{key}' is missing.")
+        # Sanity check 2.
+        # Check for the correct type.
+        if not isinstance(options, dict):
+            raise TypeError(f"{options} must be dict, ")
+
+        # Make sure the right keys exist.
+        for key in ("w0", "c1", "c2", "mode"):
+            if key not in options:
+                raise KeyError(f"Option '{key}' is missing.")
     # _end_def_
 
     @staticmethod
