@@ -29,24 +29,25 @@ from copy import deepcopy
 from functools import partial
 from operator import attrgetter
 from math import inf, fabs, isclose
-
 from collections import defaultdict
 from typing import Callable, Optional
 
+# Third party imports.
 import numpy as np
 from numpy import argmax as np_argmax
 from numpy.typing import ArrayLike, NDArray
 from numpy.random import default_rng, Generator
 
+# Third party imports.
 from joblib import Parallel, delayed
 
+# Custom code imports.
 from star_pso.engines import logger
 from star_pso.utils import VOptions
 from star_pso.population.swarm import Swarm, SwarmParticle
-from star_pso.utils.auxiliary import (time_it, nb_clip_item,
-                                      SpecialMode, nb_cdist,
-                                      check_velocity_parameters,
-                                      linear_rank_probabilities)
+from star_pso.utils.auxiliary import (RunConfig, SpecialMode, time_it,
+                                      linear_rank_probabilities,
+                                      nb_clip_item,nb_cdist)
 
 # Public interface.
 __all__ = ["GenericPSO"]
@@ -112,7 +113,6 @@ class GenericPSO:
 
         :param n_cpus: number of requested CPUs for the optimization process.
         """
-
         # Get the swarm population.
         self._swarm = deepcopy(initial_swarm) if copy else initial_swarm
 
@@ -811,77 +811,51 @@ class GenericPSO:
             have_been_updated = True
 
             # Log the update.
-            logger.debug("%s parameters have been updated.", self.__class__.__name__)
+            logger.debug("%s parameters have been updated.",
+                         self.__class__.__name__)
         # _end_if_
 
         return have_been_updated
     # _end_def_
 
     @time_it
-    def run(self, max_it: int = 1000, options: Optional[dict] = None,
-            parallel: bool = False, reset_swarm: bool = False,
-            f_tol: Optional[float] = None, f_max_eval: Optional[int] = None,
-            adapt_params: bool = False, verbose: bool = False) -> None:
+    def run(self, config: Optional[RunConfig] = None) -> None:
         """
-        Main method of the GenericPSO class that implements the optimization routine.
+        Main method of the GenericPSO class that implements
+        the optimization routine.
 
-        :param max_it: (int) maximum number of iterations in the optimization loop.
-
-        :param f_tol: (float) tolerance in the difference between the optimal function
-                      value of two consecutive iterations. It is used to determine the
-                      convergence of the swarm. If this value is None (default) the
-                      algorithm will terminate using the max_it value.
-
-        :param options: dictionary with update equations options ('w': inertia weight,
-                        'c1': cognitive coefficient, 'c2': social coefficient, 'mode':
-                        operation mode).
-
-        :param parallel: (bool) flag that enables parallel computation of the objective
-                         function.
-
-        :param reset_swarm: (bool) if True it will reset the positions of the swarm to
-                            uniformly random respecting the boundaries of each space
-                            dimension.
-
-        :param f_max_eval: (int) it sets an upper limit of function evaluations. If the
-                           number is exceeded the algorithm stops.
-
-        :param adapt_params: (bool) If set to "True" it will allow the inertia, cognitive
-                             and social parameters to adapt according to the convergence
-                             of the swarm population to a single solution. Default is set
-                             to "False".
-
-        :param verbose: (bool) if True it will display periodically information about the
-                        current optimal function values.
+        :param config: (RunConfig) Configuration object.
 
         :return: None.
         """
+        # Initialize the configuration parameters.
+        config = config or RunConfig()
+
         # Check if resetting the swarm is requested.
-        if reset_swarm:
+        if config.reset_swarm:
             self.reset_all()
 
             # Log the reset.
             logger.warning("%s has been reset.", self.__class__.__name__)
         # _end_if_
 
-        if options is None:
+        if config.options is None:
             # Set default values of the simplified version.
             options: dict = {"w0": 0.70, "c1": 1.50, "c2": 1.50,
                              "mode": "g_best"}
         else:
-            # Ensure all the parameters are here.
-            check_velocity_parameters(options)
+            # Extract the options locally.
+            options: dict = config.options
         # _end_if_
 
-        # Make sure the selected PSO allows the update of
-        # the model parameters.
-        adapt_params &= self._allow_parameters_to_update
+        # Make sure the selected PSO allows the update of the model parameters.
+        adapt_params = config.adapt_params & self._allow_parameters_to_update
 
         # Convert options dict to VOptions.
         params = VOptions(**options)
 
         # Get the function values before optimization.
-        f_opt, _ = self.evaluate_function(parallel)
+        f_opt, _ = self.evaluate_function(config.parallel)
 
         # Log the initial f_optimal value.
         logger.info("Initial f_optimal = %.4f", f_opt)
@@ -889,10 +863,10 @@ class GenericPSO:
         # Local variable to display information on the screen.
         # To avoid cluttering the screen we print info only 10
         # times regardless of the total number of iterations.
-        its_time_to_print = max_it // 10 if max_it > 10 else 2
+        its_time_to_print = config.max_it // 10 if config.max_it > 10 else 2
 
         # Repeat for 'max_it' times.
-        for i in range(max_it):
+        for i in range(config.max_it):
             # Update the iteration.
             self._iteration = i
 
@@ -903,22 +877,23 @@ class GenericPSO:
             self.update_positions()
 
             # Calculate the new function values.
-            f_new, found_solution = self.evaluate_function(parallel)
+            f_new, found_solution = self.evaluate_function(config.parallel)
 
             # Check if we want to print output.
-            if verbose and (i % its_time_to_print) == 0:
+            if config.verbose and (i % its_time_to_print) == 0:
                 # Log the f_optimal at the current iteration.
                 logger.info("Iteration: %5d -> f_optimal = %.4f", i + 1, f_new)
             # _end_if_
 
             # Check for the maximum function evaluations.
-            if f_max_eval is not None and self._f_evals >= f_max_eval:
+            if config.f_max_eval is not None and\
+                    self._f_evals >= config.f_max_eval:
                 # Update optimal function.
                 f_opt = f_new
 
                 # Log the exit message.
                 logger.warning(
-                    "%s reached the maximum number of function evaluations at iteration %d",
+                    "%s reached the maximum function evaluations at iteration %d",
                     self.__class__.__name__, i + 1)
                 break
             # _end_if_
@@ -929,21 +904,20 @@ class GenericPSO:
                 f_opt = f_new
 
                 # Log the warning message.
-                logger.warning(
-                    "%s found a solution at iteration %d",
-                    self.__class__.__name__, i + 1)
-
+                logger.warning("%s found a solution at iteration %d",
+                               self.__class__.__name__, i + 1)
                 break
             # _end_if_
 
             # Check for convergence.
-            if f_tol is not None and isclose(f_new, f_opt, abs_tol=f_tol):
+            if config.f_tol is not None and isclose(f_new, f_opt,
+                                                    abs_tol=config.f_tol):
                 # Update optimal function.
                 f_opt = f_new
 
                 # Log the warning message.
-                logger.warning("%s converged in %d iterations", self.__class__.__name__, i + 1)
-
+                logger.warning("%s converged in %d iterations",
+                               self.__class__.__name__, i + 1)
                 break
             # _end_if_
 
@@ -957,7 +931,6 @@ class GenericPSO:
                     # If the update was successful convert the new
                     # parameters to VOptions for the next iteration.
                     params = VOptions(**dict_options)
-                # _end_if_
             # _end_if_
 
             # Update optimal function for next iteration.
