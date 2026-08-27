@@ -88,7 +88,6 @@ class RunConfig:
     the current average fitness and spread of the population.
     '''
 
-    # Stop criteria.
     f_tol: Optional[float] = None
     '''
     Tolerance in the difference between the optimal function value
