@@ -15,25 +15,28 @@ Metadata:
 
 import time
 from enum import Enum
-from typing import Callable
-
+from dataclasses import dataclass
+from typing import Callable, Optional
 from math import (fabs, fsum, isclose)
 from functools import (wraps, partial, lru_cache)
 
+# Third party imports.
 import numpy as np
 from numba import njit
 from numpy.linalg import norm
 from numpy.typing import NDArray
 
+# Custom code imports.
 from star_pso.population.particle import Particle
 
 # Public interface.
-__all__ = ["BlockType", "SpecialMode", "check_velocity_parameters", "time_it", "pareto_front",
-           "calculate_dynamic_radius", "identify_global_optima", "linear_rank_probabilities",
-           "cost_function", "kl_divergence_item", "kl_divergence_array", "nb_clip_inplace",
-           "nb_clip_array", "nb_clip_item", "nb_median_hamming_distance", "spread_methods",
-           "nb_centroid", "nb_median_taxicab_distance", "nb_median_kl_divergence", "fast_sum",
-           "nb_cdist", "nb_median_euclidean_distance",  ]
+__all__ = ["BlockType", "SpecialMode", "RunConfig", "time_it", "pareto_front",
+           "calculate_dynamic_radius", "identify_global_optima", "fast_sum",
+           "linear_rank_probabilities", "cost_function", "nb_clip_inplace",
+           "kl_divergence_item", "kl_divergence_array", "spread_methods",
+           "nb_clip_array", "nb_clip_item", "nb_median_hamming_distance",
+           "nb_median_kl_divergence", "nb_median_euclidean_distance",
+           "nb_centroid", "nb_median_taxicab_distance", "nb_cdist"]
 
 
 class BlockType(Enum):
@@ -55,28 +58,174 @@ class SpecialMode(Enum):
     NORMAL, CATEGORICAL, JACK_OF_ALL_TRADES = range(3)
 # _end_class_
 
-def check_velocity_parameters(options: dict) -> None:
+@dataclass(frozen=True)
+class RunConfig:
     """
-    Checks that the options dictionary has all the additional
-    parameters to estimate the velocities of the optimization
-    algorithm:
-
-    - 'w0': inertia weight
-    - 'c1': cognitive coefficient
-    - 'c2': social coefficient
-    - 'mode': mode of operation
-
-    :param options: dictionary to check for missing parameters.
-
-    :return: None.
+    Auxiliary dataclass to handle the configuration parameters
+    for all the PSO engines.
     """
-    # Sanity check.
-    for key in ("w0", "c1", "c2", "mode"):
-        # Make sure the right keys exist.
-        if key not in options:
-            raise KeyError(f"Option '{key}' is missing.")
-        # _end_if_
-# _end_def_
+
+    max_it: int = 1000
+    '''
+    Maximum number of iterations in the optimization process.
+    '''
+
+    adapt_params: bool = False
+    '''
+    If enabled it will allow the inertia, cognitive and social
+    parameters to adapt according to the convergence of the swarm
+    population to a single solution. Default is set to "False".
+    '''
+
+    parallel: bool = False
+    '''
+    Enables parallel computation of the fitness function.
+    '''
+
+    verbose: bool = False
+    '''
+    If 'True' it will display periodically information about
+    the current average fitness and spread of the population.
+    '''
+
+    # Stop criteria.
+    f_tol: Optional[float] = None
+    '''
+    Tolerance in the difference between the optimal function value
+    of two consecutive iterations. It is used to determine the convergence
+    of the swarm. If this value is None (default) then the algorithm will
+    terminate using the max_it value.
+    '''
+
+    f_max_eval: Optional[int] = None
+    '''
+    Sets an upper limit of function evaluations. If this number is
+    exceeded the PSO algorithm will terminate.
+    '''
+
+    reset_swarm: bool = False
+    '''
+    If enabled it will reset the positions of the swarm to uniformly
+    random, respecting the boundaries of each space dimension.
+    '''
+
+    options: Optional[dict] = None
+    '''
+    Dictionary with update equations options ('w': inertia weight,
+    'c1': cognitive coefficient, 'c2': social coefficient, 'mode':
+    operation mode).
+    '''
+
+    @staticmethod
+    def _check_velocity_parameters(options: dict) -> None:
+        """
+        Checks that the options dictionary has all the additional
+        parameters to estimate the velocities of the optimization
+        algorithm:
+
+        - 'w0': inertia weight
+        - 'c1': cognitive coefficient
+        - 'c2': social coefficient
+        - 'mode': mode of operation
+
+        :param options: dictionary to check for missing parameters.
+
+        :return: None.
+        """
+        # Ensure options exits and is a dict.
+        if options and isinstance(options, dict):
+
+            # Make sure the right keys exist.
+            for key in ("w0", "c1", "c2", "mode"):
+                if key not in options:
+                    raise KeyError(f"Option '{key}' is missing.")
+    # _end_def_
+
+    @staticmethod
+    def _check_bool(name: str, var: bool) -> None:
+        """
+        Helper method to check if a value is True or False.
+
+        :param name: variable name.
+        :param var: variable value.
+        :return: None.
+        """
+        if not isinstance(var, bool):
+            raise TypeError(f"{name} must be bool, "
+                            f"got {type(var).__name__}.")
+    # _end_def_
+
+    @staticmethod
+    def _check_int_positive(name: str, var: Optional[int]) -> None:
+        """
+        Helper method to check if a value is a positive integer.
+
+        :param name: variable name.
+        :param var: variable value.
+        :return: None.
+        """
+        # Sanity check 1.
+        if var is None:
+            return
+
+        # Sanity check 2.
+        # NOTE: In Python bool is a subclass of int!
+        if not isinstance(var, int) or isinstance(var, bool):
+            raise TypeError(f"{name} must be int, "
+                            f"got {type(var).__name__}.")
+        # Sanity check 3.
+        if var <= 0:
+            raise ValueError(f"{name} must be positive, "
+                             f"got {var}.")
+    # _end_def_
+
+    @staticmethod
+    def _check_float_non_negative(name: str, var: Optional[float | int]) -> None:
+        """
+        Helper method to check if a value is a non-negative float.
+
+        :param name: variable name.
+        :param var: variable value.
+        :return: None.
+        """
+        # Sanity check 1.
+        if var is None:
+            return
+
+        # Sanity check 2.
+        # NOTE: In Python bool is a subclass of int!
+        if not isinstance(var, (float, int)) or isinstance(var, bool):
+            raise TypeError(f"{name} must be float or int, "
+                            f"got {type(var).__name__}.")
+        # Sanity check 3.
+        if var < 0.0:
+            raise ValueError(f"{name} must be non-negative, "
+                             f"got {var}.")
+    # _end_def_
+
+    def __post_init__(self) -> None:
+        """
+        Post initialization checks.
+
+        :return: None.
+        """
+        # Check the options in the dictionary.
+        self._check_velocity_parameters(self.options)
+
+        # Check bool parameters.
+        self._check_bool("verbose", self.verbose)
+        self._check_bool("parallel", self.parallel)
+        self._check_bool("reset_swarm", self.reset_swarm)
+        self._check_bool("adapt_params", self.adapt_params)
+
+        # Check integer parameters.
+        self._check_int_positive("max_it", self.max_it)
+        self._check_int_positive("f_max_eval", self.f_max_eval)
+
+        # Check float parameters.
+        self._check_float_non_negative("f_tol", self.f_tol)
+    # _end_def_
+# _end_class_
 
 def time_it(func: Callable):
     """
