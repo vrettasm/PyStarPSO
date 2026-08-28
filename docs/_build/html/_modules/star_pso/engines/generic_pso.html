@@ -101,24 +101,25 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">attrgetter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">inf</span><span class="p">,</span> <span class="n">fabs</span><span class="p">,</span> <span class="n">isclose</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
 
+<span class="c1"># Third party imports.</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">argmax</span> <span class="k">as</span> <span class="n">np_argmax</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.random</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_rng</span><span class="p">,</span> <span class="n">Generator</span>
 
+<span class="c1"># Third party imports.</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">joblib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
 
+<span class="c1"># Custom code imports.</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.engines</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">VOptions</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.population.swarm</span><span class="w"> </span><span class="kn">import</span> <span class="n">Swarm</span><span class="p">,</span> <span class="n">SwarmParticle</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">time_it</span><span class="p">,</span> <span class="n">nb_clip_item</span><span class="p">,</span>
-                                      <span class="n">SpecialMode</span><span class="p">,</span> <span class="n">nb_cdist</span><span class="p">,</span>
-                                      <span class="n">check_velocity_parameters</span><span class="p">,</span>
-                                      <span class="n">linear_rank_probabilities</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils.auxiliary</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">RunConfig</span><span class="p">,</span> <span class="n">SpecialMode</span><span class="p">,</span> <span class="n">time_it</span><span class="p">,</span>
+                                      <span class="n">linear_rank_probabilities</span><span class="p">,</span>
+                                      <span class="n">nb_clip_item</span><span class="p">,</span><span class="n">nb_cdist</span><span class="p">)</span>
 
 <span class="c1"># Public interface.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GenericPSO&quot;</span><span class="p">]</span>
@@ -186,7 +187,6 @@
 
 <span class="sd">        :param n_cpus: number of requested CPUs for the optimization process.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="c1"># Get the swarm population.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">initial_swarm</span><span class="p">)</span> <span class="k">if</span> <span class="n">copy</span> <span class="k">else</span> <span class="n">initial_swarm</span>
 
@@ -886,9 +886,8 @@
         <span class="c1"># values of the c1 and c2 parameters.</span>
         <span class="n">c_min</span><span class="p">,</span> <span class="n">c_max</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">2.5</span>
 
-        <span class="c1"># Get an estimate of the particles&#39; spread</span>
-        <span class="c1"># ensuring its range is in [0, 1] and use</span>
-        <span class="c1"># it as the current inertia weight.</span>
+        <span class="c1"># Get an estimate of the particles&#39; spread ensuring its range</span>
+        <span class="c1"># is in [0, 1] and use it as the current inertia weight.</span>
         <span class="n">wt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">nb_clip_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_spread</span><span class="p">(),</span>
                                  <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 
@@ -915,8 +914,7 @@
                 <span class="n">c2</span> <span class="o">*=</span> <span class="mf">1.1</span>
             <span class="c1"># _end_if_</span>
 
-            <span class="c1"># Ensure the updated c1 / c2 values</span>
-            <span class="c1"># stay within their bounds.</span>
+            <span class="c1"># Ensure the updated c1 / c2 values stay within their bounds.</span>
             <span class="n">c1</span> <span class="o">=</span> <span class="n">nb_clip_item</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c_min</span><span class="p">,</span> <span class="n">c_max</span><span class="p">)</span>
             <span class="n">c2</span> <span class="o">=</span> <span class="n">nb_clip_item</span><span class="p">(</span><span class="n">c2</span><span class="p">,</span> <span class="n">c_min</span><span class="p">,</span> <span class="n">c_max</span><span class="p">)</span>
 
@@ -934,7 +932,8 @@
             <span class="n">have_been_updated</span> <span class="o">=</span> <span class="kc">True</span>
 
             <span class="c1"># Log the update.</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> parameters have been updated.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> parameters have been updated.&quot;</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="c1"># _end_if_</span>
 
         <span class="k">return</span> <span class="n">have_been_updated</span></div>
@@ -944,70 +943,44 @@
 <div class="viewcode-block" id="GenericPSO.run">
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO.run">[docs]</a>
     <span class="nd">@time_it</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_it</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">parallel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">reset_swarm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="n">f_tol</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">f_max_eval</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">adapt_params</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RunConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Main method of the GenericPSO class that implements the optimization routine.</span>
+<span class="sd">        Main method of the GenericPSO class that implements</span>
+<span class="sd">        the optimization routine.</span>
 
-<span class="sd">        :param max_it: (int) maximum number of iterations in the optimization loop.</span>
-
-<span class="sd">        :param f_tol: (float) tolerance in the difference between the optimal function</span>
-<span class="sd">                      value of two consecutive iterations. It is used to determine the</span>
-<span class="sd">                      convergence of the swarm. If this value is None (default) the</span>
-<span class="sd">                      algorithm will terminate using the max_it value.</span>
-
-<span class="sd">        :param options: dictionary with update equations options (&#39;w&#39;: inertia weight,</span>
-<span class="sd">                        &#39;c1&#39;: cognitive coefficient, &#39;c2&#39;: social coefficient, &#39;mode&#39;:</span>
-<span class="sd">                        operation mode).</span>
-
-<span class="sd">        :param parallel: (bool) flag that enables parallel computation of the objective</span>
-<span class="sd">                         function.</span>
-
-<span class="sd">        :param reset_swarm: (bool) if True it will reset the positions of the swarm to</span>
-<span class="sd">                            uniformly random respecting the boundaries of each space</span>
-<span class="sd">                            dimension.</span>
-
-<span class="sd">        :param f_max_eval: (int) it sets an upper limit of function evaluations. If the</span>
-<span class="sd">                           number is exceeded the algorithm stops.</span>
-
-<span class="sd">        :param adapt_params: (bool) If set to &quot;True&quot; it will allow the inertia, cognitive</span>
-<span class="sd">                             and social parameters to adapt according to the convergence</span>
-<span class="sd">                             of the swarm population to a single solution. Default is set</span>
-<span class="sd">                             to &quot;False&quot;.</span>
-
-<span class="sd">        :param verbose: (bool) if True it will display periodically information about the</span>
-<span class="sd">                        current optimal function values.</span>
+<span class="sd">        :param config: (RunConfig) Configuration object.</span>
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize the configuration parameters.</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">config</span> <span class="ow">or</span> <span class="n">RunConfig</span><span class="p">()</span>
+
         <span class="c1"># Check if resetting the swarm is requested.</span>
-        <span class="k">if</span> <span class="n">reset_swarm</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">reset_swarm</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reset_all</span><span class="p">()</span>
 
             <span class="c1"># Log the reset.</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> has been reset.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="c1"># _end_if_</span>
 
-        <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Set default values of the simplified version.</span>
             <span class="n">options</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;w0&quot;</span><span class="p">:</span> <span class="mf">0.70</span><span class="p">,</span> <span class="s2">&quot;c1&quot;</span><span class="p">:</span> <span class="mf">1.50</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">:</span> <span class="mf">1.50</span><span class="p">,</span>
                              <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;g_best&quot;</span><span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Ensure all the parameters are here.</span>
-            <span class="n">check_velocity_parameters</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+            <span class="c1"># Extract the options locally.</span>
+            <span class="n">options</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">options</span>
         <span class="c1"># _end_if_</span>
 
-        <span class="c1"># Make sure the selected PSO allows the update of</span>
-        <span class="c1"># the model parameters.</span>
-        <span class="n">adapt_params</span> <span class="o">&amp;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow_parameters_to_update</span>
+        <span class="c1"># Make sure the selected PSO allows the update of the model parameters.</span>
+        <span class="n">adapt_params</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">adapt_params</span> <span class="o">&amp;</span>\
+                             <span class="bp">self</span><span class="o">.</span><span class="n">_allow_parameters_to_update</span>
 
         <span class="c1"># Convert options dict to VOptions.</span>
         <span class="n">params</span> <span class="o">=</span> <span class="n">VOptions</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
 
         <span class="c1"># Get the function values before optimization.</span>
-        <span class="n">f_opt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_function</span><span class="p">(</span><span class="n">parallel</span><span class="p">)</span>
+        <span class="n">f_opt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_function</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">parallel</span><span class="p">)</span>
 
         <span class="c1"># Log the initial f_optimal value.</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initial f_optimal = </span><span class="si">%.4f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">f_opt</span><span class="p">)</span>
@@ -1015,10 +988,10 @@
         <span class="c1"># Local variable to display information on the screen.</span>
         <span class="c1"># To avoid cluttering the screen we print info only 10</span>
         <span class="c1"># times regardless of the total number of iterations.</span>
-        <span class="n">its_time_to_print</span> <span class="o">=</span> <span class="n">max_it</span> <span class="o">//</span> <span class="mi">10</span> <span class="k">if</span> <span class="n">max_it</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="k">else</span> <span class="mi">2</span>
+        <span class="n">its_time_to_print</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">max_it</span> <span class="o">//</span> <span class="mi">10</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">max_it</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="k">else</span> <span class="mi">2</span>
 
         <span class="c1"># Repeat for &#39;max_it&#39; times.</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_it</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">max_it</span><span class="p">):</span>
             <span class="c1"># Update the iteration.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_iteration</span> <span class="o">=</span> <span class="n">i</span>
 
@@ -1029,22 +1002,23 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">update_positions</span><span class="p">()</span>
 
             <span class="c1"># Calculate the new function values.</span>
-            <span class="n">f_new</span><span class="p">,</span> <span class="n">found_solution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_function</span><span class="p">(</span><span class="n">parallel</span><span class="p">)</span>
+            <span class="n">f_new</span><span class="p">,</span> <span class="n">found_solution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_function</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">parallel</span><span class="p">)</span>
 
             <span class="c1"># Check if we want to print output.</span>
-            <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">its_time_to_print</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">verbose</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">its_time_to_print</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="c1"># Log the f_optimal at the current iteration.</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Iteration: </span><span class="si">%5d</span><span class="s2"> -&gt; f_optimal = </span><span class="si">%.4f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">f_new</span><span class="p">)</span>
             <span class="c1"># _end_if_</span>
 
             <span class="c1"># Check for the maximum function evaluations.</span>
-            <span class="k">if</span> <span class="n">f_max_eval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f_evals</span> <span class="o">&gt;=</span> <span class="n">f_max_eval</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">f_max_eval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>\
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_f_evals</span> <span class="o">&gt;=</span> <span class="n">config</span><span class="o">.</span><span class="n">f_max_eval</span><span class="p">:</span>
                 <span class="c1"># Update optimal function.</span>
                 <span class="n">f_opt</span> <span class="o">=</span> <span class="n">f_new</span>
 
                 <span class="c1"># Log the exit message.</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> reached the maximum number of function evaluations at iteration </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> reached the maximum function evaluations at iteration </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
                 <span class="k">break</span>
             <span class="c1"># _end_if_</span>
@@ -1055,21 +1029,20 @@
                 <span class="n">f_opt</span> <span class="o">=</span> <span class="n">f_new</span>
 
                 <span class="c1"># Log the warning message.</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> found a solution at iteration </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> found a solution at iteration </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
                 <span class="k">break</span>
             <span class="c1"># _end_if_</span>
 
             <span class="c1"># Check for convergence.</span>
-            <span class="k">if</span> <span class="n">f_tol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">isclose</span><span class="p">(</span><span class="n">f_new</span><span class="p">,</span> <span class="n">f_opt</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="n">f_tol</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">f_tol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">isclose</span><span class="p">(</span><span class="n">f_new</span><span class="p">,</span> <span class="n">f_opt</span><span class="p">,</span>
+                                                    <span class="n">abs_tol</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">f_tol</span><span class="p">):</span>
                 <span class="c1"># Update optimal function.</span>
                 <span class="n">f_opt</span> <span class="o">=</span> <span class="n">f_new</span>
 
                 <span class="c1"># Log the warning message.</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> converged in </span><span class="si">%d</span><span class="s2"> iterations&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> converged in </span><span class="si">%d</span><span class="s2"> iterations&quot;</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
                 <span class="k">break</span>
             <span class="c1"># _end_if_</span>
 
@@ -1083,7 +1056,6 @@
                     <span class="c1"># If the update was successful convert the new</span>
                     <span class="c1"># parameters to VOptions for the next iteration.</span>
                     <span class="n">params</span> <span class="o">=</span> <span class="n">VOptions</span><span class="p">(</span><span class="o">**</span><span class="n">dict_options</span><span class="p">)</span>
-                <span class="c1"># _end_if_</span>
             <span class="c1"># _end_if_</span>
 
             <span class="c1"># Update optimal function for next iteration.</span>
