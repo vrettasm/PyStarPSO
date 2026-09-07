@@ -154,6 +154,7 @@ def f_alpine(x_pos: NDArray) -> NDArray:
     return np.sum(np.abs(x_pos * np.sin(x_pos)) + 0.1 * x_pos, axis=1)
 # _end_def_
 
+
 # Auxiliary dictionary with the basis functions.
 BASIS_FUNCTIONS: dict = {"f_ackley": f_ackley,
                          "f_alpine": f_alpine,
