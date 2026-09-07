@@ -42,7 +42,7 @@ class SixHumpCamelBack(TestFunction):
                          x_max=np.asarray(x_max))
     # _end_def_
 
-    def func(self, x_pos: NDArray) -> float | NDArray:
+    def func(self, x_pos: NDArray) -> NDArray:
         """
         This is a 2D function with 2 global and 2 local optima.
 

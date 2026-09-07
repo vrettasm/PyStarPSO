@@ -284,7 +284,7 @@ class CompositeFunction(TestFunction):
     # _end_def_
 
     def func(self, x_pos: NDArray,
-             i_bias: float = 0.0, f_bias: float = 0.0) -> float | NDArray:
+             i_bias: float = 0.0, f_bias: float = 0.0) -> NDArray:
         """
         Describes the general framework for the construction of
         multimodal composition functions with several global optima.
