@@ -435,7 +435,7 @@ def identify_global_optima(swarm_population: list[Particle], f_opt: float,
         if not any(norm(k.position - px.position) <= radius
                    for k in optima_list):
             optima_list.append(px)
-    # _end_fors_
+    # _end_for_
 
     return optima_list
 # _end_def_
@@ -668,7 +668,7 @@ def nb_centroid(x_pos: NDArray) -> NDArray:
 
     # We could parallelize the outer loop across
     # columns, with prange(), but for the moment
-    # we use the nornal range.
+    # we use the normal range.
     for j in range(n_cols):
         col_sum: float = 0.0
 
