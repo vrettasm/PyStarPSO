@@ -562,7 +562,7 @@ class DataBlock:
         # Simple copy of the copy-best method (callable).
         setattr(new_object, "_copy_best", self._copy_best)
 
-        # Return an identical datablock.
+        # Return an identical data-block.
         return new_object
     # _end_def_
 

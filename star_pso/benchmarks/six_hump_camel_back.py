@@ -53,7 +53,7 @@ class SixHumpCamelBack(TestFunction):
         # Force array context cleanly.
         x_pos: NDArray = np.asarray(x_pos)
 
-        # Branchless slicing: works for both 1D arrays and 2D matrices.
+        # Branch-less slicing: works for both 1D arrays and 2D matrices.
         x: NDArray = x_pos[..., 0]
         y: NDArray = x_pos[..., 1]
 

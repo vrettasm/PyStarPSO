@@ -33,7 +33,7 @@ __all__ = ["BlockType", "SpecialMode", "check_velocity_parameters", "time_it", "
            "cost_function", "kl_divergence_item", "kl_divergence_array", "nb_clip_inplace",
            "nb_clip_array", "nb_clip_item", "nb_median_hamming_distance", "spread_methods",
            "nb_centroid", "nb_median_taxicab_distance", "nb_median_kl_divergence", "fast_sum",
-           "nb_cdist", "nb_median_euclidean_distance",  ]
+           "nb_cdist", "nb_median_euclidean_distance"]
 
 
 class BlockType(Enum):
@@ -281,7 +281,7 @@ def identify_global_optima(swarm_population: list[Particle], f_opt: float,
         if not any(norm(k.position - px.position) <= radius
                    for k in optima_list):
             optima_list.append(px)
-    # _end_fors_
+    # _end_for_
 
     return optima_list
 # _end_def_
@@ -514,7 +514,7 @@ def nb_centroid(x_pos: NDArray) -> NDArray:
 
     # We could parallelize the outer loop across
     # columns, with prange(), but for the moment
-    # we use the nornal range.
+    # we use the normal range.
     for j in range(n_cols):
         col_sum: float = 0.0
 
@@ -732,6 +732,7 @@ def nb_clip_item(x_new: float | NDArray,
     return np.minimum(np.maximum(x_new, lower_limit),
                       upper_limit).item()
 # _end_def_
+
 
 # Dictionary with block types.
 spread_methods: dict = {BlockType.FLOAT: nb_median_euclidean_distance,
