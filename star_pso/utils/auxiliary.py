@@ -36,8 +36,7 @@ __all__ = ["BlockType", "SpecialMode", "RunConfig", "time_it", "pareto_front",
            "kl_divergence_item", "kl_divergence_array", "spread_methods",
            "nb_clip_array", "nb_clip_item", "nb_median_hamming_distance",
            "nb_median_kl_divergence", "nb_median_euclidean_distance",
-           "nb_centroid", "nb_median_taxicab_distance", "nb_cdist",
-           "reflect_boundary"]
+           "nb_centroid", "nb_median_taxicab_distance", "nb_cdist"]
 
 
 class BlockType(Enum):
@@ -956,35 +955,4 @@ def fast_sum(x: NDArray) -> float:
     :return: the sum(x).
     """
     return np.sum(x)
-# _end_def_
-
-@njit(cache=True, nogil=True, fastmath=True)
-def reflect_boundary(value: float, low: float, high: float) -> float:
-    """
-    Reflect value into the inclusive interval [low, high].
-
-    :param value: value to reflect.
-
-    :param low: lower bound.
-
-    :param high: upper bound.
-
-    :return: reflected value.
-    """
-    # Compute the interval.
-    width: float = high - low
-
-    if width <= 0.0:
-        raise ValueError("High must be greater than low")
-
-    # Compute the period.
-    period: float = 2.0 * width
-
-    # Compute the offset.
-    offset: float = (value - low) % period
-
-    if offset <= width:
-        return low + offset
-
-    return high - (offset - width)
 # _end_def_
