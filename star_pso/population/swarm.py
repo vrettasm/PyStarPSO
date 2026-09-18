@@ -121,7 +121,7 @@ class Swarm:
     def best_particle(self) -> SwarmParticle:
         """
         Auxiliary method that returns the particle with the
-        highest function value. Safeguard with ignoring NaNs.
+        highest function value. Safeguard with ignoring Nans.
 
         :return: Return the particle with the highest value.
         """
