@@ -507,7 +507,7 @@ class GenericPSO:
         # Update all particles with their new objective function values.
         for n, (p, result) in enumerate(zip(self._swarm.population, f_evaluation)):
             # Extract the n-th function value.
-            f_value = result["f_value"]
+            f_value: float = result["f_value"]
 
             # Attach the function value to each particle.
             p.value = f_value
