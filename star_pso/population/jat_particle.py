@@ -94,7 +94,9 @@ class JatParticle:
 
         :return: a list with each data block position.
         """
-        return [blk.position for blk in self._container]
+        return [
+            block.position for block in self._container
+        ]
     # _end_def_
 
     @position.setter
