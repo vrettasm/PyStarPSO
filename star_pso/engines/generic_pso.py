@@ -95,7 +95,8 @@ class GenericPSO:
                  "_allow_parameters_to_update")
 
     def __init__(self, initial_swarm: Swarm, obj_func: Callable,
-                 lower_bound: ArrayLike = None, upper_bound: ArrayLike = None,
+                 lower_bound: Optional[ArrayLike] = None,
+                 upper_bound: Optional[ArrayLike] = None,
                  copy: bool = False, n_cpus: int = None) -> None:
         """
         Default initializer of the GenericPSO class.
