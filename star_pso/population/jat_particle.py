@@ -122,7 +122,9 @@ class JatParticle:
 
         :return: a list with each data block best position.
         """
-        return [block.best_position for block in self._container]
+        return [
+            block.best_position for block in self._container
+        ]
     # _end_def_
 
     @best_position.setter
