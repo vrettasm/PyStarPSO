@@ -45,9 +45,9 @@ from joblib import Parallel, delayed
 from star_pso.engines import logger
 from star_pso.utils import VOptions
 from star_pso.population.swarm import Swarm, SwarmParticle
-from star_pso.utils.auxiliary import (RunConfig, SpecialMode, time_it,
+from star_pso.utils.auxiliary import (RunConfig, SpecialMode,
                                       linear_rank_probabilities,
-                                      nb_clip_item,nb_cdist)
+                                      nb_clip_item, nb_cdist, time_it)
 
 # Public interface.
 __all__ = ["GenericPSO"]
@@ -470,24 +470,25 @@ class GenericPSO:
         # Extract the correct type positions.
         positions = self._get_typed_positions()
 
-        # Get a local copy of the objective function.
-        func: Callable = self._objective_func
-
         # Local copy of iteration variable.
         current_iter: int = self._iteration
 
+        # Make a local copy of the objective function and use
+        # the partial function to fix the current iteration.
+        partial_func: Callable = partial(self._objective_func,
+                                         it=current_iter)
         # Check the 'parallel_mode' flag.
         if parallel_mode:
 
             # Evaluate the particles in parallel mode.
             f_evaluation = Parallel(n_jobs=self.n_cpus, prefer=backend)(
-                delayed(func)(x, it=current_iter) for x in positions
+                delayed(partial_func)(x) for x in positions
             )
         else:
 
             # Evaluate all the particles in serial mode.
             f_evaluation = [
-                func(x, it=current_iter) for x in positions
+                partial_func(x) for x in positions
             ]
         # _end_if_
 
