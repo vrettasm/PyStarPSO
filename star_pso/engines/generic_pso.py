@@ -130,7 +130,7 @@ class GenericPSO:
         # _end_if_
 
         # Get the objective function.
-        self._objective_func = obj_func
+        self._objective_func: Callable = obj_func
 
         # Check if the lower and upper bounds are set.
         if (lower_bound is not None) and (upper_bound is not None):
