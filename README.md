@@ -8,7 +8,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![PyPI downloads](https://img.shields.io/pypi/dm/starpso.svg)](https://pypi.org/project/starpso/)
 
-**Pylint score: 9.83 / 10**
+**Pylint score: 9.90 / 10**
 
 
 [![DOI](https://zenodo.org/badge/959816541.svg)](https://doi.org/10.5281/zenodo.18429186)
