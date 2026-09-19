@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Utils &mdash; StarPSO 0.1.3 documentation</title>
+  <title>Utils &mdash; StarPSO 0.1.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=360bc84d"></script>
+      <script src="_static/documentation_options.js?v=59fadc99"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -590,6 +590,28 @@ front points from a given input points numpy array.</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="star_pso.utils.auxiliary.reflect_boundary_in_place">
+<span class="sig-prename descclassname"><span class="pre">star_pso.utils.auxiliary.</span></span><span class="sig-name descname"><span class="pre">reflect_boundary_in_place</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarType_co</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarType_co</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarType_co</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/star_pso/utils/auxiliary.html#reflect_boundary_in_place"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#star_pso.utils.auxiliary.reflect_boundary_in_place" title="Link to this definition"></a></dt>
+<dd><p>Reflect the values of a 2D array in place between boundary values.</p>
+<p>Each column is reflected independently. Values below the lower boundary
+are reflected upward, and values above the upper boundary are reflected
+downward. Reflection repeats for values that lie multiple intervals
+outside the permitted range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – (ndarray) Two-dimensional, writable array with shape (n, m).</p></li>
+<li><p><strong>x_min</strong> – (ndarray) Lower boundary for each column.</p></li>
+<li><p><strong>x_max</strong> – (ndarray) Upper boundary for each column.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None. The input array ‘x’ is modified directly.</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="star_pso.utils.auxiliary.spread_methods">
 <span class="sig-prename descclassname"><span class="pre">star_pso.utils.auxiliary.</span></span><span class="sig-name descname"><span class="pre">spread_methods</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{BlockType.BINARY:</span> <span class="pre">CPUDispatcher(&lt;function</span> <span class="pre">nb_median_hamming_distance&gt;),</span> <span class="pre">BlockType.CATEGORICAL:</span> <span class="pre">CPUDispatcher(&lt;function</span> <span class="pre">nb_median_kl_divergence&gt;),</span> <span class="pre">BlockType.FLOAT:</span> <span class="pre">CPUDispatcher(&lt;function</span> <span class="pre">nb_median_euclidean_distance&gt;),</span> <span class="pre">BlockType.INTEGER:</span> <span class="pre">CPUDispatcher(&lt;function</span> <span class="pre">nb_median_taxicab_distance&gt;)}</span></em><a class="headerlink" href="#star_pso.utils.auxiliary.spread_methods" title="Link to this definition"></a></dt>
@@ -760,7 +782,7 @@ of the new positions, for all types of data blocks.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="star_pso.utils.data_block.DataBlock.rng">
-<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x11D30C4A0</span></em><a class="headerlink" href="#star_pso.utils.data_block.DataBlock.rng" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rng</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Generator</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Generator(PCG64)</span> <span class="pre">at</span> <span class="pre">0x1415D8580</span></em><a class="headerlink" href="#star_pso.utils.data_block.DataBlock.rng" title="Link to this definition"></a></dt>
 <dd><p>Random Number Generator for the whole class.</p>
 </dd></dl>
 
