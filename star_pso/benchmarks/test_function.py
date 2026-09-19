@@ -1,3 +1,4 @@
+""" Test Function module. """
 import numpy as np
 from scipy.stats import qmc
 from numpy.typing import NDArray

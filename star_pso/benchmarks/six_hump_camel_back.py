@@ -1,3 +1,4 @@
+""" Six hump camel back module. """
 import numpy as np
 from numpy.typing import NDArray
 
