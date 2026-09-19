@@ -32,12 +32,11 @@ from star_pso.population.particle import Particle
 # Public interface.
 __all__ = ["BlockType", "SpecialMode", "RunConfig", "time_it", "pareto_front",
            "calculate_dynamic_radius", "identify_global_optima", "fast_sum",
-           "linear_rank_probabilities", "cost_function", "nb_clip_inplace",
-           "kl_divergence_item", "kl_divergence_array", "spread_methods",
-           "nb_clip_array", "nb_clip_item", "nb_median_hamming_distance",
-           "nb_median_kl_divergence", "nb_median_euclidean_distance",
-           "nb_centroid", "nb_median_taxicab_distance", "nb_cdist",
-           "reflect_boundary_in_place"]
+           "linear_rank_probabilities", "cost_function", "kl_divergence_item",
+           "kl_divergence_array", "spread_methods", "nb_clip_array", "nb_cdist",
+           "nb_median_hamming_distance", "nb_median_kl_divergence", "nb_clip_item",
+           "nb_median_euclidean_distance", "nb_centroid", "reflect_boundary_in_place",
+           "nb_median_taxicab_distance"]
 
 
 class BlockType(Enum):
