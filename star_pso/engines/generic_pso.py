@@ -95,8 +95,7 @@ class GenericPSO:
                  "_allow_parameters_to_update")
 
     def __init__(self, initial_swarm: Swarm, obj_func: Callable,
-                 lower_bound: Optional[ArrayLike] = None,
-                 upper_bound: Optional[ArrayLike] = None,
+                 lower_bound: ArrayLike, upper_bound: ArrayLike,
                  copy: bool = False, n_cpus: int = None) -> None:
         """
         Default initializer of the GenericPSO class.
@@ -132,21 +131,14 @@ class GenericPSO:
         # Get the objective function.
         self._objective_func: Callable = obj_func
 
-        # Check if the lower and upper bounds are set.
-        if (lower_bound is not None) and (upper_bound is not None):
-            # Make sure they are numpy arrays.
-            self._lower_bound = np.asarray(lower_bound)
-            self._upper_bound = np.asarray(upper_bound)
+        # Make sure both bounds are numpy arrays (float).
+        self._lower_bound: NDArray = np.asarray(lower_bound, dtype=float)
+        self._upper_bound: NDArray = np.asarray(upper_bound, dtype=float)
 
-            # Check if the boundaries are set correctly.
-            if np.any(self._lower_bound > self._upper_bound):
-                raise ValueError(f"{self.__class__.__name__}: "
-                                 f"Lower and Upper bounds are set incorrectly.")
-        else:
-            # Set them to default.
-            self._lower_bound = None
-            self._upper_bound = None
-        # _end_if_
+        # Check if the boundaries are set correctly.
+        if np.any(self._lower_bound > self._upper_bound):
+            raise ValueError(f"{self.__class__.__name__}: "
+                             f"Lower and Upper bounds are set incorrectly.")
 
         # Get the number of requested CPUs.
         if n_cpus is None:
