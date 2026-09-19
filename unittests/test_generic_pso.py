@@ -38,7 +38,9 @@ class TestGenericPSO(unittest.TestCase):
 
         # Test pso object.
         cls.test_pso = GenericPSO(initial_swarm=cls.swarm_t0,
-                                  obj_func=dummy_f)
+                                  obj_func=dummy_f,
+                                  lower_bound=0,
+                                  upper_bound=1)
     # _end_def_
 
     @classmethod
