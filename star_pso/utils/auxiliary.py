@@ -36,7 +36,8 @@ __all__ = ["BlockType", "SpecialMode", "RunConfig", "time_it", "pareto_front",
            "kl_divergence_item", "kl_divergence_array", "spread_methods",
            "nb_clip_array", "nb_clip_item", "nb_median_hamming_distance",
            "nb_median_kl_divergence", "nb_median_euclidean_distance",
-           "nb_centroid", "nb_median_taxicab_distance", "nb_cdist"]
+           "nb_centroid", "nb_median_taxicab_distance", "nb_cdist",
+           "reflect_boundary_in_place"]
 
 
 class BlockType(Enum):
@@ -955,4 +956,92 @@ def fast_sum(x: NDArray) -> float:
     :return: the sum(x).
     """
     return np.sum(x)
+# _end_def_
+
+@njit(cache=True, nogil=True)
+def _reflect_columns(x: NDArray, lo: NDArray, hi: NDArray) -> None:
+    """
+    Fast (numba optimized) function that reflect the values
+    of a 2D array in place between column-wise bounds.
+
+    :param x: input array.
+    :param lo: lower bound.
+    :param hi: upper bound.
+    :return: none.
+    """
+    # Get the dimensions of 'x'.
+    n, m = x.shape
+
+    # Row-loop.
+    for i in range(n):
+
+        # Column-loop.
+        for j in range(m):
+            # Compute the range.
+            width = hi[j] - lo[j]
+
+            # If both 'lo' and 'hi'
+            # are equal, set it to 'lo'.
+            if width == 0:
+                x[i, j] = lo[j]
+                continue
+
+            # Compute the bouncing period.
+            period = 2.0 * width
+            r = (x[i, j] - lo[j]) % period
+
+            if r <= width:
+                x[i, j] = lo[j] + r
+            else:
+                x[i, j] = lo[j] + period - r
+    # _end_for_
+# _end_def_
+
+def reflect_boundary_in_place(x: NDArray,
+                              x_min: NDArray,
+                              x_max: NDArray) -> None:
+    """
+    Reflect the values of a 2D array in place between boundary values.
+
+    Each column is reflected independently. Values below the lower boundary
+    are reflected upward, and values above the upper boundary are reflected
+    downward. Reflection repeats for values that lie multiple intervals
+    outside the permitted range.
+
+    :param x: (ndarray) Two-dimensional, writable array with shape (n, m).
+
+    :param x_min: (ndarray) Lower boundary for each column.
+
+    :param x_max: (ndarray) Upper boundary for each column.
+
+    :return: None. The input array 'x' is modified directly.
+    """
+    # Ensure input is numpy array.
+    x = np.asarray(x, dtype=float)
+
+    # Sanity check.
+    if x.ndim != 2:
+        raise ValueError("x must be a 2D array")
+
+    # Get the dimensions of 'x'.
+    _, m = x.shape
+
+    # If x_min is scalar, make it the same length as 'm'.
+    if x_min.ndim == 0:
+        x_min = np.full(m, x_min.item(), dtype=float)
+    elif x_min.ndim == 1 and x_min.size == m:
+        x_min = np.ascontiguousarray(x_min)
+    else:
+        raise ValueError(f"x_min must be a scalar or have shape ({m},)")
+
+    # If x_max is scalar, make it the same length as 'm'.
+    if x_max.ndim == 0:
+        x_max = np.full(m, x_max.item(), dtype=float)
+    elif x_max.ndim == 1 and x_max.size == m:
+        x_max = np.ascontiguousarray(x_max)
+    else:
+        raise ValueError(f"x_max must be a scalar or have shape ({m},)")
+
+    # Call fast numba function.
+    _reflect_columns(x, x_min, x_max)
 # _end_def_
