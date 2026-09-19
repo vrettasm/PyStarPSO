@@ -68,8 +68,11 @@ class JackOfAllTradesPSO(GenericPSO):
                                  permutations of the valid sets.
         """
 
-        # Call the super initializer.
-        super().__init__(**kwargs)
+        # First call the super initializer.
+        # - NB: The lower and upper bounds
+        # - are set ONLY for compatibility.
+        super().__init__(lower_bound=0.0,
+                         upper_bound=1.0, **kwargs)
 
         # First we declare the velocities to be
         # an [n_rows x n_cols] array of objects.

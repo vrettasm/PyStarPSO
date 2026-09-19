@@ -27,8 +27,8 @@ from numpy import subtract as np_subtract
 
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import (nb_clip_inplace, fast_sum,
-                                      SpecialMode, nb_median_kl_divergence)
+from star_pso.utils.auxiliary import (fast_sum, SpecialMode,
+                                      nb_median_kl_divergence)
 
 # Public interface.
 __all__ = ["CategoricalPSO"]
@@ -58,7 +58,10 @@ class CategoricalPSO(GenericPSO):
         """
 
         # First call the super initializer.
-        super().__init__(**kwargs)
+        # - NB: The lower and upper bounds
+        # - are set ONLY for compatibility.
+        super().__init__(lower_bound=0.0,
+                         upper_bound=1.0, **kwargs)
 
         # Local copy of the variable sets.
         self._valid_sets = variable_sets
@@ -256,6 +259,9 @@ class CategoricalPSO(GenericPSO):
         # Inertia weight parameter.
         w: float = params.w0
 
+        # Local copy of clip function.
+        np_clip = np.clip
+
         for i, (particle_i, c1, c2) in enumerate(zip(self.swarm.population,
                                                      cogntv, social)):
             # Get the i-th particle's position.
@@ -275,7 +281,7 @@ class CategoricalPSO(GenericPSO):
                 vk += c2[j] * np_subtract(g_best[j], xk)
 
                 # Ensure the velocities are within limits.
-                nb_clip_inplace(vk, -0.5, +0.5)
+                np_clip(vk, -0.5, 0.5, out=vk)
     # _end_def_
 
     def update_positions(self) -> None:
@@ -284,6 +290,9 @@ class CategoricalPSO(GenericPSO):
 
         :return: None.
         """
+        # Local copy of clip function.
+        np_clip = np.clip
+
         # Update all particle positions.
         for particle, v_upd in zip(self.swarm.population,
                                    self._velocities):
@@ -295,7 +304,7 @@ class CategoricalPSO(GenericPSO):
                 x_j += v_j
 
                 # Ensure the values stay within limits.
-                nb_clip_inplace(x_j, 0.0, 1.0)
+                np_clip(x_j, 0.0, 1.0, out=x_j)
 
                 # Ensure there will be at least one
                 # element with positive probability.
