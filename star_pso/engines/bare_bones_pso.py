@@ -23,7 +23,7 @@ from numpy.typing import NDArray, ArrayLike
 
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import (nb_clip_inplace,
+from star_pso.utils.auxiliary import (reflect_boundary_in_place,
                                       nb_median_euclidean_distance)
 
 # Public interface.
@@ -98,11 +98,11 @@ class BareBonesPSO(GenericPSO):
         m_array += z * s_array
 
         # Ensure the values stay within limits.
-        nb_clip_inplace(m_array,
-                        self.lower_bound,
-                        self.upper_bound)
+        reflect_boundary_in_place(m_array,
+                                  self.lower_bound,
+                                  self.upper_bound)
 
-        # Assign the new "velocities" values.
+        # Assign the new "velocities".
         self._velocities = m_array
     # _end_def_
 

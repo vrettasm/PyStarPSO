@@ -19,7 +19,7 @@ from numpy import rint
 from numpy.typing import (NDArray, ArrayLike)
 
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import (nb_clip_inplace,
+from star_pso.utils.auxiliary import (reflect_boundary_in_place,
                                       nb_median_taxicab_distance)
 
 # Public interface.
@@ -61,7 +61,9 @@ class IntegerPSO(GenericPSO):
                                       self._velocities).astype(int)
 
         # Ensure the particle stays within bounds.
-        nb_clip_inplace(new_positions, self.lower_bound, self.upper_bound)
+        reflect_boundary_in_place(new_positions,
+                                  self.lower_bound,
+                                  self.upper_bound)
 
         # Update all particle positions.
         self.swarm.set_positions(new_positions)

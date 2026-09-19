@@ -25,7 +25,7 @@ from numpy.typing import NDArray
 
 from star_pso.utils import VOptions
 from star_pso.engines.generic_pso import GenericPSO
-from star_pso.utils.auxiliary import (nb_clip_inplace,
+from star_pso.utils.auxiliary import (reflect_boundary_in_place,
                                       nb_median_hamming_distance)
 
 @njit(cache=True, nogil=True, fastmath=True)
@@ -87,10 +87,10 @@ class BinaryPSO(GenericPSO):
         # Call the method of the parent class.
         super().update_velocities(params)
 
-        # Clip velocities in [v_min, v_max].
-        nb_clip_inplace(self._velocities,
-                        self.lower_bound,
-                        self.upper_bound)
+        # Reflect velocities in [v_min, v_max].
+        reflect_boundary_in_place(self._velocities,
+                                  self.lower_bound,
+                                  self.upper_bound)
     # _end_def_
 
     def update_positions(self) -> None:
