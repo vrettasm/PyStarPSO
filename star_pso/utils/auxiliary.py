@@ -828,24 +828,6 @@ def nb_median_kl_divergence(x_pos: NDArray,
 # _end_def_
 
 @njit(cache=True, nogil=True)
-def nb_clip_inplace(x: NDArray,
-                    x_min: float | NDArray,
-                    x_max: float | NDArray) -> None:
-    """
-    Local auxiliary function that is used to clip the values of
-    input array 'x' to [x_min, x_max] range, and put the output
-    inplace.
-
-    :param x: the numpy array we want to clip its values.
-
-    :param x_min: the minimum (lower bound).
-
-    :param x_max: the maximum (upper bound).
-    """
-    np.clip(x, x_min, x_max, out=x)
-# _end_def_
-
-@njit(cache=True, nogil=True)
 def nb_clip_array(x_new: NDArray,
                   lower_limit: float | NDArray,
                   upper_limit: float | NDArray) -> NDArray:
