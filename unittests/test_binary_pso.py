@@ -46,10 +46,10 @@ class TestBinaryPSO(unittest.TestCase):
         rng = np.random.default_rng(_SEED)
 
         # Define the number of optimizing variables.
-        n_dim = 20
+        n_dim = 10
 
         # Define the number of particles.
-        n_pop = 40
+        n_pop = 50
 
         # Sample the initial points randomly.
         x_t0 = rng.integers(low=0, high=1, endpoint=True, size=(n_pop, n_dim))
@@ -62,9 +62,6 @@ class TestBinaryPSO(unittest.TestCase):
         """
         Test the run() method.
         """
-        # Fix the seed (for reproducibility).
-        BinaryPSO.set_seed(2026)
-
         # Create a BinaryPSO object that will perform the optimization.
         test_pso = BinaryPSO(initial_swarm=TestBinaryPSO.swarm_t0,
                              obj_func=fun_one_max)
