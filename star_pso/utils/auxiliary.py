@@ -1003,25 +1003,7 @@ def reflect_boundary_in_place(x: NDArray,
     # Sanity check.
     if x.ndim != 2:
         raise ValueError("x must be a 2D array")
-
-    # Get the dimensions of 'x'.
-    _, m = x.shape
-
-    # If x_min is scalar, make it the same length as 'm'.
-    if x_min.ndim == 0:
-        x_min = np.full(m, x_min.item(), dtype=float)
-    elif x_min.ndim == 1 and x_min.size == m:
-        x_min = np.ascontiguousarray(x_min)
-    else:
-        raise ValueError(f"x_min must be a scalar or have shape ({m},)")
-
-    # If x_max is scalar, make it the same length as 'm'.
-    if x_max.ndim == 0:
-        x_max = np.full(m, x_max.item(), dtype=float)
-    elif x_max.ndim == 1 and x_max.size == m:
-        x_max = np.ascontiguousarray(x_max)
-    else:
-        raise ValueError(f"x_max must be a scalar or have shape ({m},)")
+    # _end_if_
 
     # Call fast numba function.
     _reflect_columns(x, x_min, x_max)
