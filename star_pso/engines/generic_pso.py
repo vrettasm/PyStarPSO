@@ -52,6 +52,48 @@ from star_pso.utils.auxiliary import (RunConfig, SpecialMode,
 # Public interface.
 __all__ = ["GenericPSO"]
 
+def _normalize_bound(bound: ArrayLike, n_cols: int, name: str) -> NDArray[np.float64]:
+    """
+    Convert and validate a scalar or one-dimensional bound array.
+
+    Scalar bounds are expanded to an array containing 'n_cols' identical values.
+    One-dimensional bounds are accepted when they contain exactly 'n_cols' elements.
+    The returned array is a contiguous NumPy array of type 'float64'.
+
+    :param bound: A scalar value or a one-dimensional array-like object containing
+                  one bound for each column.
+    :param n_cols: The required number of columns, and therefore the required length
+                   of the normalized bound array.
+    :param name: Name of the bound used in error messages, such as 'lower_bound', or
+                 'upper_bound'.
+    :return: A contiguous one-dimensional array with shape (n_cols,) and dtype float.
+    """
+    # Ensure bounds are NDArrays.
+    values: NDArray = np.asarray(bound, dtype=float)
+
+    # Check if bound is scalar.
+    if values.ndim == 0:
+        values = np.full(n_cols, values.item(), dtype=float)
+
+    # Check if it has the correct size.
+    elif values.ndim == 1 and values.size == n_cols:
+        values = np.ascontiguousarray(values, dtype=float)
+
+    # From here raise an error.
+    else:
+        raise ValueError(f"{name} must be a scalar or an array with shape ({n_cols},),"
+                         f"got shape {values.shape}.")
+    # _end_if_
+
+    # Sanity check. Reject both infinity and NaN.
+    if not np.all(np.isfinite(values)):
+        raise ValueError(f"{name} must contain only finite values.")
+    # _end_if_
+
+    # Return normalized array.
+    return values
+# _end_def_
+
 
 class GenericPSO:
     """
@@ -131,10 +173,14 @@ class GenericPSO:
         # Get the objective function.
         self._objective_func: Callable = obj_func
 
-        # Make sure both bounds are numpy arrays (float).
-        self._lower_bound: NDArray = np.asarray(lower_bound, dtype=float)
-        self._upper_bound: NDArray = np.asarray(upper_bound, dtype=float)
-
+        # Lower bounds check.
+        self._lower_bound: NDArray = _normalize_bound(lower_bound,
+                                                      self._n_cols,
+                                                      "LowerBound")
+        # Upper bounds check.
+        self._upper_bound: NDArray = _normalize_bound(upper_bound,
+                                                      self._n_cols,
+                                                      "UpperBound")
         # Check if the boundaries are set correctly.
         if np.any(self._lower_bound > self._upper_bound):
             raise ValueError(f"{self.__class__.__name__}: "
