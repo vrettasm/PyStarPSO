@@ -951,7 +951,7 @@ def _reflect_columns(x: NDArray, lo: NDArray, hi: NDArray) -> None:
     :return: none.
     """
     # Get the dimensions of 'x'.
-    n, m = x.shape
+    rows, cols = x.shape
 
     # Row-loop.
     for i in range(n):
