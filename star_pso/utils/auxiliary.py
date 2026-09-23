@@ -956,7 +956,7 @@ def _reflect_columns(x: NDArray, lo: NDArray, hi: NDArray) -> None:
     # Row-loop.
     for i in range(rows):
         # Column-loop.
-        for j in range(m):
+        for j in range(cols):
             # Compute the range.
             width = hi[j] - lo[j]
 
