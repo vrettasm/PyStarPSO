@@ -470,7 +470,7 @@ def linear_rank_probabilities(pop_size: int, eta: float = 1.5) -> tuple:
     # _end_if_
 
     # Sanity check.
-    if eta < 1.0 or eta > 2.0:
+    if not 1.0 <= eta <= 2.0:
         raise ValueError("'eta' must be in [1, 2].")
     # _end_if_
 
