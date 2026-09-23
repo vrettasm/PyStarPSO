@@ -954,8 +954,7 @@ def _reflect_columns(x: NDArray, lo: NDArray, hi: NDArray) -> None:
     rows, cols = x.shape
 
     # Row-loop.
-    for i in range(n):
-
+    for i in range(rows):
         # Column-loop.
         for j in range(m):
             # Compute the range.
