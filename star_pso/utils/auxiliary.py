@@ -255,17 +255,16 @@ def time_it(func: Callable):
         # Initial time instant.
         time_t0: float = time.perf_counter()
 
-        # Run the function we want to time.
-        result = func(*args, **kwargs)
+        try:
+            # Run the function we want to time.
+            return func(*args, **kwargs)
+        finally:
+            # Final time instant.
+            time_tf: float = time.perf_counter()
 
-        # Final time instant.
-        time_tf: float = time.perf_counter()
-
-        # Print final duration in seconds.
-        print(f"{func.__name__ }: "
-              f"elapsed time = {(time_tf - time_t0):.3f} seconds.")
-
-        return result
+            # Print final duration in seconds.
+            print(f"{func.__name__}: "
+                  f"elapsed time = {(time_tf - time_t0):.3f} seconds.")
     # _end_def_
     return time_it_wrapper
 # _end_def_
