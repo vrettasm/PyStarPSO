@@ -470,8 +470,8 @@ def linear_rank_probabilities(pop_size: int, eta: float = 1.5) -> tuple:
     # _end_if_
 
     # Sanity check.
-    if not 1.0 <= eta <= 2.0:
-        raise ValueError("'eta' must be in [1, 2].")
+    if not isinstance(eta, (int, float)) or not 1.0 <= eta <= 2.0:
+        raise ValueError("'eta' must be a number in the range [1.0, 2.0].")
     # _end_if_
 
     # Handle edge case where population size is 1.
