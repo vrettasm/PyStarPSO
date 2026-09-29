@@ -98,11 +98,16 @@ class IntegerPSO(GenericPSO):
 
         :return: None.
         """
-        # Generate uniform INTEGER positions Int(x_min, x_max).
+        # Cast bounds to int to ensure compatibility
+        # with rng.integers function.
+        lo: int = int(self.lower_bound)
+        hi: int = int(self.upper_bound)
+
+        # Generate positions: Int(x_min, x_max) with
+        # equal (uniform) probability for all values.
         integer_positions = GenericPSO.rng.integers(
-            low=self.lower_bound, high=self.upper_bound,
-            endpoint=True, size=(self.n_rows, self.n_cols),
-            dtype=int
+            low=lo, high=hi, endpoint=True,
+            size=(self.n_rows, self.n_cols)
         )
 
         # Assign the new positions in the swarm.
