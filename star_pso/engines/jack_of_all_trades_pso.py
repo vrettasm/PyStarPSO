@@ -113,7 +113,7 @@ class JackOfAllTradesPSO(GenericPSO):
         get_uniform = JackOfAllTradesPSO.rng.uniform
 
         # Local copy of swarm population.
-        population: list[SwarmParticle] = self.swarm.population
+        population: list = self.swarm.population
 
         # Generate all sub-arrays using a flat list comprehension.
         flat_velocities: list[NDArray] = [
