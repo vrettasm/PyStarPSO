@@ -59,7 +59,7 @@ class SpecialMode(Enum):
     NORMAL, CATEGORICAL, JACK_OF_ALL_TRADES = range(3)
 # _end_class_
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class RunConfig:
     """
     Auxiliary dataclass to handle the configuration parameters
