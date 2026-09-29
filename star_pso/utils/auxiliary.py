@@ -16,6 +16,7 @@ Metadata:
 import time
 from enum import Enum
 from dataclasses import dataclass
+from numbers import Integral, Real
 from typing import Callable, Optional
 from math import (fabs, fsum, isclose, isfinite)
 from functools import (wraps, partial, lru_cache)
@@ -440,7 +441,7 @@ def identify_global_optima(swarm_population: list[Particle], f_opt: float,
 # _end_def_
 
 @lru_cache(maxsize=64)
-def linear_rank_probabilities(pop_size: int, eta: float = 1.5) -> tuple:
+def linear_rank_probabilities(pop_size: Integral, eta: Real = 1.5) -> tuple:
     """
     Calculate the rank probability distribution over the population size.
     The function is lru_cached so that repeated calls with the same input
@@ -460,7 +461,7 @@ def linear_rank_probabilities(pop_size: int, eta: float = 1.5) -> tuple:
              due to small errors it might be less.
     """
     # Sanity check.
-    if isinstance(pop_size, bool) or not isinstance(pop_size, int):
+    if isinstance(pop_size, bool) or not isinstance(pop_size, Integral):
         raise TypeError("'pop_size' must be an integer.")
     # _end_if_
 
@@ -470,7 +471,7 @@ def linear_rank_probabilities(pop_size: int, eta: float = 1.5) -> tuple:
     # _end_if_
 
     # Sanity check.
-    if isinstance(eta, bool) or not isinstance(eta, (int, float)):
+    if isinstance(eta, bool) or not isinstance(eta, Real):
         raise TypeError("'eta' must be a real number.")
     # _end_if_
 
