@@ -467,8 +467,8 @@ class DataBlock:
             return True
         # _end_if_
 
-        # Local cache for speed.
-        check_equal = self._check_equality
+        # Local cached function for improved speed.
+        check_equal: Callable = self._check_equality
 
         return(
             check_equal(self._btype, other._btype)
