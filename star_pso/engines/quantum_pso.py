@@ -19,7 +19,7 @@ Metadata:
 """
 
 # Third party imports.
-from numpy import log, where
+import numpy as np
 from numpy.typing import (NDArray, ArrayLike)
 
 # Custom code imports.
@@ -78,12 +78,6 @@ class QuantumPSO(GenericPSO):
         # Get the shape of the velocity array.
         arr_shape: tuple = (self.n_rows, self.n_cols)
 
-        # Pre-sample the 'phi' parameters.
-        param_phi: NDArray = GenericPSO.rng.random(size=arr_shape)
-
-        # Pre-sample the 'u' parameters.
-        param_u: NDArray = GenericPSO.rng.random(size=arr_shape)
-
         # Get the (Global / Local / FIPSO) best positions.
         m_best: NDArray = self.get_local_best_positions(params.mode)
 
@@ -96,25 +90,46 @@ class QuantumPSO(GenericPSO):
         # Extract the global best position.
         g_best: NDArray = self.swarm.best_particle().position
 
-        # Construct the 'p_best' (in-place).
+        # Pre-sample the 'phi' parameters.
+        param_phi: NDArray = GenericPSO.rng.random(size=arr_shape)
+
+        # Pre-sample the 'u' parameters.
+        param_u: NDArray = GenericPSO.rng.random(size=arr_shape)
+
+        # Handle zero values in param_u (in-place)
+        # without generating a boolean mask array.
+        np.clip(param_u,
+                a_min=QuantumPSO.NUMPY_EPS,
+                a_max=1.0, out=param_u)
+
+        # Perform in-place operations on
+        # p_best to save memory allocation.
         p_best *= param_phi
 
-        # Element-wise multiplication using broadcasting.
-        p_best += (1.0 - param_phi) * g_best
+        # Reuse param_phi to calculate:
+        #  (1.0 - param_phi) * g_best
+        param_phi *= -1.0
+        param_phi += 1.0
+        param_phi *= g_best
 
-        # Ensure there are no zero values that would raise
-        # an error below when computing log(param_u). This
-        # is very unlikely but it could happen.
-        param_u[param_u <= 1.0e-256] = QuantumPSO.NUMPY_EPS
+        # p_best now holds the full cognitive component.
+        p_best += param_phi
 
-        # Compute the offset.
-        p_offset: NDArray = beta_coefficient * (m_best - x_current) * log(param_u)
+        # Compute the p_offset using in-place operations
+        # on existing arrays.
+        np.log(param_u, out=param_u)
+        m_best -= x_current
+        m_best *= param_u
+        m_best *= beta_coefficient
 
-        # Select the directions at random.
-        direction: NDArray = where(self.rng.random(arr_shape) < 0.5, -1.0, 1.0)
+        # Generate random signs (-1.0 or 1.0) directly.
+        direction: NDArray = GenericPSO.rng.integers(low=0, high=2,
+                                                     size=arr_shape) * 2.0 - 1.0
+        # Apply random signs to the offset.
+        m_best *= direction
 
-        # Perform all operations in place.
-        p_best += direction * p_offset
+        # Final velocity computation.
+        p_best += m_best
 
         # Ensure we stay within limits.
         reflect_boundary_in_place(p_best,
