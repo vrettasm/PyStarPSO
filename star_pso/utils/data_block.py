@@ -20,7 +20,6 @@ from __future__ import annotations
 
 from copy import deepcopy
 from numbers import Number
-from collections.abc import Iterable
 from typing import (Callable, NamedTuple)
 
 import numpy as np
@@ -445,22 +444,8 @@ class DataBlock:
         if isinstance(a, np.ndarray) or isinstance(b, np.ndarray):
             return bool(np.array_equal(a, b))
 
-        # Perform the comparison.
-        condition = a == b
-
-        # Handle comparison results with an .all() method.
-        all_method = getattr(condition, "all", None)
-        if callable(all_method):
-            all_method = cast(Callable, all_method)
-            return bool(all_method())
-
-        # Handle iterable comparison results.
-        if (isinstance(condition, Iterable)
-                and not isinstance(condition, (str, bytes))):
-            return all(condition)
-
-        # Fall back to standard python.
-        return bool(condition)
+        # Fallback for standard scalars or simple lists / tuples.
+        return bool(a == b)
     # _end_def_
 
     def __eq__(self, other: object) -> bool:
@@ -482,14 +467,33 @@ class DataBlock:
             return True
         # _end_if_
 
+        # Fail immediately if types don't match.
+        if self._btype != other._btype:
+            return False
+
+        # Check lightweight Python structures before arrays.
+        if self._valid_set != other._valid_set:
+            return False
+
+        # Fast-fail on boundary presence or boundary inequality.
+        if (self._lower_bound is None) != (other._lower_bound is None):
+            return False
+
         # Local cache for speed.
         check_it = self._check_equality
 
-        return (check_it(self._btype, other._btype)
-                and check_it(self._position, other._position)
-                and check_it(self._valid_set, other._valid_set)
-                and check_it(self._lower_bound, other._lower_bound)
-                and check_it(self._upper_bound, other._upper_bound))
+        # Check bounds.
+        if self._lower_bound is not None:
+
+            if not check_it(self._lower_bound, other._lower_bound):
+                return False
+
+            if not check_it(self._upper_bound, other._upper_bound):
+                return False
+        # _end_if_
+
+        # Heavy structural array comparisons occur LAST.
+        return check_it(self._position, other._position)
     # _end_def_
 
     def __deepcopy__(self, memo: dict) -> DataBlock:
