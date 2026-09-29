@@ -164,7 +164,6 @@ class JackOfAllTradesPSO(GenericPSO):
                           (one list for each position).
         :return: None.
         """
-
         # Create a range of values.
         random_index: NDArray = np.arange(self.n_cols, dtype=int)
 
