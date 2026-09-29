@@ -386,7 +386,7 @@ class DataBlock:
                         lower_bound=self._lower_bound,
                         upper_bound=self._upper_bound)
 
-        # Update the position to the new values.
+        # Update the position with the new values.
         self._position = self._upd_method(params)
     # _end_def_
 
