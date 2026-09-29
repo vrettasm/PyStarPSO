@@ -747,17 +747,6 @@ class GenericPSO:
 
         :return: None.
         """
-        # Get the shape of the velocity array.
-        arr_shape: tuple = (self.n_rows, self.n_cols)
-
-        # Pre-sample the cognitive coefficients.
-        cogntv: NDArray = GenericPSO.rng.uniform(
-            low=0.0, high=params.c1, size=arr_shape
-        )
-        # Pre-sample the social coefficients.
-        social: NDArray = GenericPSO.rng.uniform(
-            low=0.0, high=params.c2, size=arr_shape
-        )
         # Get the local best positions (for the social attractor).
         l_best: NDArray = self.get_local_best_positions(params.mode)
 
@@ -769,8 +758,16 @@ class GenericPSO:
 
         # Update the new velocity equations (inplace).
         self._velocities *= params.w0
-        self._velocities += cogntv * (x_best - x_current)
-        self._velocities += social * (l_best - x_current)
+
+        # Generate and apply cognitive component.
+        self._velocities += GenericPSO.rng.uniform(
+            0.0, params.c1, size=self._velocities.shape
+        ) * (x_best - x_current)
+
+        # Generate and apply social component.
+        self._velocities += GenericPSO.rng.uniform(
+            0.0, params.c2, size=self._velocities.shape
+        ) * (l_best - x_current)
     # _end_def_
 
     def update_positions(self) -> None:
