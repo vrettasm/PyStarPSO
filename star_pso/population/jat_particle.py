@@ -19,6 +19,7 @@ from __future__ import annotations
 
 from math import inf
 from copy import deepcopy
+from collections.abc import Iterator
 
 from star_pso.utils.data_block import DataBlock
 
@@ -193,6 +194,16 @@ class JatParticle:
         """
         for block in self._container:
             block.reset_position()
+    # _end_def_
+
+    def __iter__(self) -> Iterator[DataBlock]:
+        """
+        Returns an iterator over the particles'
+        data blocks.
+
+        :return: an iterator of DataBlock.
+        """
+        return iter(self._container)
     # _end_def_
 
     def __getitem__(self, index: int) -> DataBlock:
