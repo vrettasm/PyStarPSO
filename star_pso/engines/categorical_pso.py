@@ -109,14 +109,24 @@ class CategoricalPSO(GenericPSO):
         # Get the length of each set.
         size_k = self.size_of_sets
 
-        # Here we generate the random velocities
-        # in a short uniform range, according to
-        # the size of the variable set.
-        for i in range(self.n_rows):
-            for j in range(self.n_cols):
-                self._velocities[i, j] = GenericPSO.rng.uniform(
-                    low=-0.1, high=0.1, size=size_k[j]
-                )
+        # Cache the random function locally.
+        get_uniform = GenericPSO.rng.uniform
+
+        # Generate all random vectors for this column
+        # as a list of arrays.
+        for j in range(self.n_cols):
+            # Get the current size.
+            current_size = size_k[j]
+
+            # We use a list comprehension because it is faster
+            # than a for-loop when filling object-dtype arrays.
+            column_data: list[NDArray[np.float64]] = [
+                get_uniform(low=-0.5, high=0.5, size=current_size)
+                for _ in range(self.n_rows)
+            ]
+
+            # Assign the list of arrays to the object column.
+            self._velocities[:, j] = column_data
     # _end_def_
 
     def generate_random_positions(self) -> None:
@@ -151,6 +161,9 @@ class CategoricalPSO(GenericPSO):
         # Local copy of the valid sets.
         local_sets = self._valid_sets
 
+        # Cache the random function locally.
+        choose_randomly = GenericPSO.rng.choice
+
         # Loop over all positions.
         for x_pos in positions:
 
@@ -160,9 +173,8 @@ class CategoricalPSO(GenericPSO):
 
                 # Sample an item according to its probability.
                 # WARNING: shuffle option MUST be set to False!
-                x_pos[j] = GenericPSO.rng.choice(set_j,
-                                                 p=probs_j,
-                                                 shuffle=False)
+                x_pos[j] = choose_randomly(set_j, p=probs_j,
+                                           shuffle=False)
     # _end_def_
 
     def sample_permutation_values(self, positions: list) -> None:
