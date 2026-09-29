@@ -465,30 +465,37 @@ class GenericPSO:
     def _get_typed_positions(self) -> list | NDArray:
         """
         Extracts the positions from the swarm and returns them
-        in their correct type according to the setting of the algorithm.
+        in their correct type according to the setting of the
+        algorithm.
 
-        :return: the particle positions either as list or ndarray.
+        :return: the particle positions (as list or ndarray).
         """
-        # Check which mode is enabled.
-        if self._special_mode in (SpecialMode.NORMAL,
-                                  SpecialMode.CATEGORICAL):
-            # Extract the positions in a 2D numpy array.
-            positions = self._swarm.positions_as_array()
+        # Local copy of special mode.
+        mode: int = self._special_mode
 
-            # Only True in CategoricalPSO.
-            if self._special_mode == SpecialMode.CATEGORICAL:
-                # Sample categorical variable.
-                self._items["sample_random_values"](positions)
-        else:
-            # Extract the positions in a list of lists.
-            positions = self._swarm.positions_as_list()
+        # Compute the boolean flag.
+        use_array: bool = mode in (SpecialMode.CATEGORICAL,
+                                   SpecialMode.NORMAL)
 
-            # Check if the swarm has categorical data blocks.
-            if self.swarm.has_categorical:
-                # Sample categorical variable.
-                self._items["sample_random_values"](positions)
-        # _end_if_
+        # Compute the correct type of positions.
+        positions: list | NDArray = (
+            self._swarm.positions_as_array()
+            if use_array
+            else self._swarm.positions_as_list()
+        )
 
+        # Compute the boolean flag.
+        should_sample: bool = (
+            mode == SpecialMode.CATEGORICAL
+            if use_array
+            else self._swarm.has_categorical
+        )
+
+        # Check if we need a sample.
+        if should_sample:
+            self._items["sample_random_values"](positions)
+
+        # Return the positions.
         return positions
     # _end_def_
 
