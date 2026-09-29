@@ -19,6 +19,7 @@ Metadata:
 """
 
 from numpy import abs as np_abs
+from numpy import clip as np_clip
 from numpy.typing import NDArray, ArrayLike
 
 from star_pso.utils import VOptions
@@ -79,31 +80,23 @@ class BareBonesPSO(GenericPSO):
         # Extract the best (historical) positions.
         p_best: NDArray = self.swarm.best_positions_as_array()
 
-        # Compute the mean: "m_array".
-        # This produces an: (n_rows, n_cols) array.
-        m_array: NDArray = 0.5 * (p_best + g_best)
+        # Compute mean directly into the target attribute.
+        self._velocities = 0.5 * (p_best + g_best)
 
-        # Compute the absolute differences: "s_array".
+        # Compute standard deviation using the same memory space
+        # if possible. We create s_array, but we can perform the
+        # zero-correction in-place.
         s_array: NDArray = np_abs(p_best - g_best)
+        np_clip(s_array, BareBonesPSO.NUMPY_EPS, None, out=s_array)
 
-        # Avoid zero entries.
-        s_array[s_array == 0.0] = BareBonesPSO.NUMPY_EPS
+        # Compute the Gaussian shift in-place.
+        self._velocities += self.rng.normal(loc=0.0, scale=s_array,
+                                            size=self._velocities.shape)
 
-        # Draw standard normal values N(0, 1).
-        z: NDArray = self.rng.normal(size=(self.n_rows, self.n_cols))
-
-        # Generate the Gaussian values with the required
-        # mean and standard deviation. Do the operations
-        # in place.
-        m_array += z * s_array
-
-        # Ensure the values stay within limits.
-        reflect_boundary_in_place(m_array,
+        # Ensure the values stay within limits (already in-place).
+        reflect_boundary_in_place(self._velocities,
                                   self.lower_bound,
                                   self.upper_bound)
-
-        # Assign the new "velocities".
-        self._velocities = m_array
     # _end_def_
 
     def update_positions(self) -> None:
