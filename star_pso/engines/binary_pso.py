@@ -99,19 +99,15 @@ class BinaryPSO(GenericPSO):
 
         :return: None.
         """
-        # Generate random vectors in U(0, 1).
-        uniform_values: NDArray = GenericPSO.rng.random(
-            size=(self.n_rows, self.n_cols), dtype=float)
+        # First, compute logistic values.
+        logistic_values: NDArray = fast_logistic(self._velocities)
 
-        # Create a matrix with zeros.
-        new_positions: NDArray = np.zeros_like(uniform_values,
-                                               dtype=np.uint8)
-        # Compute the logistic values.
-        logistic_values = fast_logistic(self._velocities)
-
-        # Where the logistic function values are higher
-        # than the random values set to one.
-        new_positions[logistic_values > uniform_values] = 1
+        # Generate random values and compare them in one step.
+        # This creates a boolean array. Then cast it to uint8.
+        new_positions: NDArray = (
+                logistic_values > GenericPSO.rng.random(size=logistic_values.shape,
+                                                        dtype=float)
+        ).astype(np.uint8)
 
         # Update all particle positions.
         self.swarm.set_positions(new_positions)
