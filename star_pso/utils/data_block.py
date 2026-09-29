@@ -254,7 +254,7 @@ class DataBlock:
 
         # Ensure there will be at least one
         # element with positive probability.
-        if all(np.isclose(x_new, 0.0)):
+        if np.allclose(x_new, 0.0):
             x_new[cls.rng.integers(len(x_new))] = 1.0
         # _end_if_
 
