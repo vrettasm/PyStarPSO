@@ -38,7 +38,6 @@ from star_pso.utils.auxiliary import (BlockType, fast_sum,
                                       linear_rank_probabilities,
                                       SpecialMode, spread_methods)
 
-
 # Public interface.
 __all__ = ["JackOfAllTradesPSO"]
 
@@ -84,11 +83,20 @@ class JackOfAllTradesPSO(GenericPSO):
 
         # Assign the correct local sample method
         # according to the permutation mode flag.
+        # Build a static map of the locations of
+        # categorical blocks.
         self._items: dict = {
             "sample_random_values": (
                 self.sample_permutation_values
                 if permutation_mode else self.sample_categorical_values
-            )
+            ),
+
+            "categorical_blocks": [
+                (i, j, block.valid_set)
+                for i, particle in enumerate(self.swarm.population)
+                for j, block in enumerate(particle.container)
+                if block.block_t == BlockType.CATEGORICAL
+            ]
         }
 
         # Set the special mode to Jack-Of-All-Trades.
@@ -101,16 +109,25 @@ class JackOfAllTradesPSO(GenericPSO):
 
         :return: None.
         """
-        # Here we generate the random velocities.
-        for i, particle in enumerate(self.swarm.population):
-            for j, block in enumerate(particle.container):
-                # If the block is CATEGORICAL we
-                # will use it's valid set length.
-                n_vars = len(block.valid_set) if block.valid_set else 1
+        # Cache the random function locally.
+        get_uniform = JackOfAllTradesPSO.rng.uniform
 
-                # Generate the velocities randomly.
-                self._velocities[i, j] = JackOfAllTradesPSO.rng.uniform(-1.0, +1.0,
-                                                                        size=n_vars)
+        # Local copy of swarm population.
+        population: list[SwarmParticle] = self.swarm.population
+
+        # Generate all sub-arrays using a flat list comprehension.
+        flat_velocities: list[NDArray] = [
+            get_uniform(low=-1.0, high=1.0,
+                        size=len(block.valid_set)
+                        if block.valid_set else 1)
+            for particle in population
+            for block in particle.container
+        ]
+
+        # Reshape the flat list into the 2D object array shape.
+        self._velocities[:] = np.array(flat_velocities,
+                                       dtype=object).reshape(self.n_rows,
+                                                             self.n_cols)
     # _end_def_
 
     def generate_random_positions(self) -> None:
@@ -135,21 +152,18 @@ class JackOfAllTradesPSO(GenericPSO):
                           (one list for each position).
         :return: None.
         """
+        # Cache the random function locally.
+        choose_randomly = JackOfAllTradesPSO.rng.choice
 
-        # Check all particles in the swarm.
-        for i, particle in enumerate(self.swarm.population):
+        # Extract the categorical blocks locations.
+        categorical_blocks = self._items["categorical_blocks"]
 
-            # Check all data blocks in the particle.
-            for j, block in enumerate(particle.container):
-
-                # If the data block is categorical.
-                if block.block_t == BlockType.CATEGORICAL:
-
-                    # Replace the probabilities with an actual sample.
-                    # WARNING: 'shuffle' option MUST be set to False!
-                    positions[i][j] = JackOfAllTradesPSO.rng.choice(block.valid_set,
-                                                                    p=positions[i][j],
-                                                                    shuffle=False)
+        # WARNING: 'shuffle' option MUST be set to False!
+        #           Otherwise, results are INCONSISTENT.
+        for i, j, valid_set in categorical_blocks:
+            positions[i][j] = choose_randomly(valid_set,
+                                              p=positions[i][j],
+                                              shuffle=False)
     # _end_def_
 
     def sample_permutation_values(self, positions: list[list]) -> None:
