@@ -17,7 +17,7 @@ import time
 from enum import Enum
 from dataclasses import dataclass
 from typing import Callable, Optional
-from math import (fabs, fsum, isclose)
+from math import (fabs, fsum, isclose, isfinite)
 from functools import (wraps, partial, lru_cache)
 
 # Third party imports.
@@ -460,17 +460,22 @@ def linear_rank_probabilities(pop_size: int, eta: float = 1.5) -> tuple:
              due to small errors it might be less.
     """
     # Sanity check.
-    if not isinstance(pop_size, int):
-        raise TypeError("pop_size must be an integer variable.")
+    if isinstance(pop_size, bool) or not isinstance(pop_size, int):
+        raise TypeError("'pop_size' must be an integer.")
     # _end_if_
 
     # Sanity check.
     if pop_size <= 0:
-        raise ValueError("pop_size must be an positive number.")
+        raise ValueError("'pop_size' must be an greater than zero.")
     # _end_if_
 
     # Sanity check.
-    if not isinstance(eta, (int, float)) or not 1.0 <= eta <= 2.0:
+    if isinstance(eta, bool) or not isinstance(eta, (int, float)):
+        raise TypeError("'eta' must be a real number.")
+    # _end_if_
+
+    # Sanity check.
+    if not isfinite(eta) or not 1.0 <= eta <= 2.0:
         raise ValueError("'eta' must be a number in the range [1.0, 2.0].")
     # _end_if_
 
