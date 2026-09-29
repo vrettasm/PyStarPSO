@@ -308,7 +308,7 @@ class CategoricalPSO(GenericPSO):
 
                 # Ensure there will be at least one
                 # element with positive probability.
-                if np.all(np.isclose(x_j, 0.0)):
+                if np.abs(x_j).max() < 1.0e-8:
                     # Select a random position from the particle's length.
                     random_position: int = GenericPSO.rng.integers(len(x_j))
 
