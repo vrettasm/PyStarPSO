@@ -20,13 +20,12 @@ from __future__ import annotations
 
 from copy import deepcopy
 from numbers import Number
-from functools import cache
-from collections import namedtuple
 from collections.abc import Iterable
+from typing import (Callable, NamedTuple)
 
 import numpy as np
 from numpy import array
-from numpy.typing import ArrayLike, NDArray
+from numpy.typing import (ArrayLike, NDArray)
 from numpy.random import (default_rng, Generator)
 
 from star_pso.utils import ScalarOrArray
@@ -35,16 +34,20 @@ from star_pso.utils.auxiliary import (BlockType,
                                       nb_clip_array)
 
 # Create a tuple to pack some inputs.
-Params = namedtuple("Params",
-                    ["v_new", "x_old", "lower_bound", "upper_bound"])
-"""
-    Create a tuple to pack some input parameters:
-    
-    - v_new: new velocity
-    - x_old: old position
-    - lower_bound: lower bounds for position (or velocity)
-    - upper_bound: upper bounds for position (or velocity)
-"""
+class Params(NamedTuple):
+    """
+        Create a tuple to pack some input parameters:
+
+        - v_new: new velocity
+        - x_old: old position
+        - lower_bound: lower bounds for position (or velocity)
+        - upper_bound: upper bounds for position (or velocity)
+    """
+    v_new: ScalarOrArray
+    x_old: ScalarOrArray
+    lower_bound: NDArray | None
+    upper_bound: NDArray | None
+# _end_class_
 
 # Public interface.
 __all__ = ["DataBlock", "Params"]
@@ -68,7 +71,8 @@ class DataBlock:
 
     # Object variables.
     __slots__ = ("_btype", "_valid_set", "_position", "_best_position",
-                 "_lower_bound", "_upper_bound", "_copy_best")
+                 "_lower_bound", "_upper_bound", "_copy_best",
+                 "_upd_method", "_init_method")
 
     def __init__(self,
                  position: ScalarOrArray,
@@ -133,6 +137,22 @@ class DataBlock:
 
         # Get the valid set (categorical variables).
         self._valid_set = valid_set
+
+        # Update methods.
+        _upd_methods: dict[int, Callable] = {BlockType.FLOAT: DataBlock.upd_float,
+                                             BlockType.BINARY: DataBlock.upd_binary,
+                                             BlockType.INTEGER: DataBlock.upd_integer,
+                                             BlockType.CATEGORICAL: DataBlock.upd_categorical}
+        # Early bind of update method.
+        self._upd_method = _upd_methods[btype]
+
+        # Initialization methods.
+        _init_methods: dict[int, Callable] = {BlockType.FLOAT: DataBlock.init_float,
+                                              BlockType.BINARY: DataBlock.init_binary,
+                                              BlockType.INTEGER: DataBlock.init_integer,
+                                              BlockType.CATEGORICAL: DataBlock.init_categorical}
+        # Early bind of initialization method.
+        self._init_method = _init_methods[btype]
     # _end_def_
 
     def _copy_to_scalar(self, x: Number) -> None:
@@ -262,22 +282,6 @@ class DataBlock:
         return x_new / np.sum(x_new, dtype=float)
     # _end_def_
 
-    @staticmethod
-    @cache
-    def update_methods() -> dict:
-        """
-        Return a dictionary with keys the method names
-        and their corresponding update methods as values.
-
-        :return: a (cached) dictionary with functions
-                 that correspond to the correct block types.
-        """
-        return {BlockType.FLOAT: DataBlock.upd_float,
-                BlockType.BINARY: DataBlock.upd_binary,
-                BlockType.INTEGER: DataBlock.upd_integer,
-                BlockType.CATEGORICAL: DataBlock.upd_categorical}
-    # _end_def_
-
     @classmethod
     def init_float(cls, **kwargs) -> float:
         """
@@ -341,22 +345,6 @@ class DataBlock:
         return np.ones(n_vars)/n_vars
     # _end_def_
 
-    @staticmethod
-    @cache
-    def init_methods() -> dict:
-        """
-        Create a dictionary with method names as keys and their
-        corresponding initialization methods as values.
-
-        :return: a (cached) dictionary with functions that
-                 correspond to the correct block types.
-        """
-        return {BlockType.FLOAT: DataBlock.init_float,
-                BlockType.BINARY: DataBlock.init_binary,
-                BlockType.INTEGER: DataBlock.init_integer,
-                BlockType.CATEGORICAL: DataBlock.init_categorical}
-    # _end_def_
-
     def reset_position(self) -> None:
         """
         This method provides a public interface for the reset
@@ -364,16 +352,13 @@ class DataBlock:
 
         :return: None.
         """
-        # Get the dictionary with the methods.
-        method_dict = DataBlock.init_methods()
-
         # Differentiate between scalar and vector data block.
         n_vars = 1 if np.isscalar(self._position) else len(self._position)
 
         # Assign the function value to the new position.
-        self._position = method_dict[self._btype](n_vars=n_vars,
-                                                  lower_bound=self._lower_bound,
-                                                  upper_bound=self._upper_bound)
+        self._position = self._init_method(n_vars=n_vars,
+                                           lower_bound=self._lower_bound,
+                                           upper_bound=self._upper_bound)
     # _end_def_
 
     @property
@@ -396,17 +381,14 @@ class DataBlock:
 
         :return: None.
         """
-        # Get the dictionary with the methods.
-        method_dict = DataBlock.update_methods()
-
         # Pack the parameters in a tuple.
         params = Params(v_new=v_new,
                         x_old=self._position,
                         lower_bound=self._lower_bound,
                         upper_bound=self._upper_bound)
 
-        # Assign the function values to the new position.
-        self._position = method_dict[self._btype](params)
+        # Update the position to the new values.
+        self._position = self._upd_method(params)
     # _end_def_
 
     @property
@@ -455,20 +437,30 @@ class DataBlock:
 
         :return: the bool outcome of a == b.
         """
-        # Do the comparison.
+        # Handle None explicitly.
+        if a is None or b is None:
+            return a is b
+
+        # Use exact NumPy array equality when either operand is ndarray.
+        if isinstance(a, np.ndarray) or isinstance(b, np.ndarray):
+            return bool(np.array_equal(a, b))
+
+        # Perform the comparison.
         condition = a == b
 
-        # If the result has an 'all' method
-        # (e.g. numpy / pandas) then use it.
+        # Handle comparison results with an .all() method.
         all_method = getattr(condition, "all", None)
-
-        # Quick exit in numpy.
         if callable(all_method):
-            return bool(condition.all())
+            all_method = cast(Callable, all_method)
+            return bool(all_method())
 
-        # Otherwise fall back to standard Python.
-        return all(condition) if isinstance(condition,
-                                            Iterable) else condition
+        # Handle iterable comparison results.
+        if (isinstance(condition, Iterable)
+                and not isinstance(condition, (str, bytes))):
+            return all(condition)
+
+        # Fall back to standard python.
+        return bool(condition)
     # _end_def_
 
     def __eq__(self, other: object) -> bool:
@@ -493,36 +485,11 @@ class DataBlock:
         # Local cache for speed.
         check_it = self._check_equality
 
-        # First check their block type.
-        if self._btype == other._btype:
-
-            # Check the positions.
-            positions_are_equal = check_it(self._position,
-                                           other._position)
-            # Check valid sets.
-            valid_sets_are_equal = (True if self._valid_set is None
-                                    else self._valid_set == other._valid_set)
-
-            # If the bounds are not given (None) we set the conditions to True.
-            if (self._lower_bound is not None) and (self._upper_bound is not None):
-                # Check lower bounds.
-                lower_bounds_are_equal = check_it(self._lower_bound,
-                                                  other._lower_bound)
-                # Check upper bounds.
-                upper_bounds_are_equal = check_it(self._upper_bound,
-                                                  other._upper_bound)
-            else:
-                lower_bounds_are_equal = True
-                upper_bounds_are_equal = True
-            # _end_if_
-
-            # Return the logical AND from all conditions.
-            return (positions_are_equal and valid_sets_are_equal and
-                    lower_bounds_are_equal and upper_bounds_are_equal)
-        # _end_if_
-
-        # If you get here return False.
-        return False
+        return (check_it(self._btype, other._btype)
+                and check_it(self._position, other._position)
+                and check_it(self._valid_set, other._valid_set)
+                and check_it(self._lower_bound, other._lower_bound)
+                and check_it(self._upper_bound, other._upper_bound))
     # _end_def_
 
     def __deepcopy__(self, memo: dict) -> DataBlock:
