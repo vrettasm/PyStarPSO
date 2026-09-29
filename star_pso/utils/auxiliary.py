@@ -460,8 +460,13 @@ def linear_rank_probabilities(pop_size: int, eta: float = 1.5) -> tuple:
              due to small errors it might be less.
     """
     # Sanity check.
-    if not isinstance(pop_size, int) or pop_size <= 0:
-        raise TypeError("'p_size' must be an positive integer number.")
+    if not isinstance(pop_size, int):
+        raise TypeError("pop_size must be an integer variable.")
+    # _end_if_
+
+    # Sanity check.
+    if pop_size <= 0:
+        raise ValueError("pop_size must be an positive number.")
     # _end_if_
 
     # Sanity check.
