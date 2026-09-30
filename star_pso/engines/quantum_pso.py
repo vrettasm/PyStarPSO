@@ -123,8 +123,15 @@ class QuantumPSO(GenericPSO):
         m_best *= beta_coefficient
 
         # Generate random signs (-1.0 or 1.0) directly.
-        direction: NDArray = GenericPSO.rng.integers(low=0, high=2,
-                                                     size=arr_shape) * 2.0 - 1.0
+        direction: NDArray = GenericPSO.rng.integers(0, 2,
+                                                     size=arr_shape,
+                                                     dtype=np.int8)
+        # [0, 1 -> 0, 2]
+        direction <<= 1
+
+        # [0, 2 -> -1, 1]
+        direction -= 1
+
         # Apply random signs to the offset.
         m_best *= direction
 
