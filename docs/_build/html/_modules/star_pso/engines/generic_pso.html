@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>star_pso.engines.generic_pso &mdash; StarPSO 0.1.5 documentation</title>
+  <title>star_pso.engines.generic_pso &mdash; StarPSO 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../../_static/documentation_options.js?v=938c9ccc"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -124,6 +124,48 @@
 <span class="c1"># Public interface.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GenericPSO&quot;</span><span class="p">]</span>
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_normalize_bound</span><span class="p">(</span><span class="n">bound</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">n_cols</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert and validate a scalar or one-dimensional bound array.</span>
+
+<span class="sd">    Scalar bounds are expanded to an array containing &#39;n_cols&#39; identical values.</span>
+<span class="sd">    One-dimensional bounds are accepted when they contain exactly &#39;n_cols&#39; elements.</span>
+<span class="sd">    The returned array is a contiguous NumPy array of type &#39;float64&#39;.</span>
+
+<span class="sd">    :param bound: A scalar value or a one-dimensional array-like object containing</span>
+<span class="sd">                  one bound for each column.</span>
+<span class="sd">    :param n_cols: The required number of columns, and therefore the required length</span>
+<span class="sd">                   of the normalized bound array.</span>
+<span class="sd">    :param name: Name of the bound used in error messages, such as &#39;lower_bound&#39;, or</span>
+<span class="sd">                 &#39;upper_bound&#39;.</span>
+<span class="sd">    :return: A contiguous one-dimensional array with shape (n_cols,) and dtype float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Ensure bounds are NDArrays.</span>
+    <span class="n">values</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">bound</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="c1"># Check if bound is scalar.</span>
+    <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n_cols</span><span class="p">,</span> <span class="n">values</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="c1"># Check if it has the correct size.</span>
+    <span class="k">elif</span> <span class="n">values</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">values</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">n_cols</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="c1"># From here raise an error.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a scalar or an array with shape (</span><span class="si">{</span><span class="n">n_cols</span><span class="si">}</span><span class="s2">,),&quot;</span>
+                         <span class="sa">f</span><span class="s2">&quot;got shape </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="c1"># _end_if_</span>
+
+    <span class="c1"># Sanity check. Reject both infinity and NaN.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">values</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must contain only finite values.&quot;</span><span class="p">)</span>
+    <span class="c1"># _end_if_</span>
+
+    <span class="c1"># Return normalized array.</span>
+    <span class="k">return</span> <span class="n">values</span>
+<span class="c1"># _end_def_</span>
+
 
 <div class="viewcode-block" id="GenericPSO">
 <a class="viewcode-back" href="../../../star_pso.engines.html#star_pso.engines.generic_pso.GenericPSO">[docs]</a>
@@ -205,10 +247,14 @@
         <span class="c1"># Get the objective function.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_objective_func</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">obj_func</span>
 
-        <span class="c1"># Make sure both bounds are numpy arrays (float).</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-
+        <span class="c1"># Lower bounds check.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">_normalize_bound</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">,</span>
+                                                      <span class="bp">self</span><span class="o">.</span><span class="n">_n_cols</span><span class="p">,</span>
+                                                      <span class="s2">&quot;LowerBound&quot;</span><span class="p">)</span>
+        <span class="c1"># Upper bounds check.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">_normalize_bound</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">,</span>
+                                                      <span class="bp">self</span><span class="o">.</span><span class="n">_n_cols</span><span class="p">,</span>
+                                                      <span class="s2">&quot;UpperBound&quot;</span><span class="p">)</span>
         <span class="c1"># Check if the boundaries are set correctly.</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &quot;</span>
@@ -505,30 +551,37 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_typed_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Extracts the positions from the swarm and returns them</span>
-<span class="sd">        in their correct type according to the setting of the algorithm.</span>
+<span class="sd">        in their correct type according to the setting of the</span>
+<span class="sd">        algorithm.</span>
 
-<span class="sd">        :return: the particle positions either as list or ndarray.</span>
+<span class="sd">        :return: the particle positions (as list or ndarray).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Check which mode is enabled.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_special_mode</span> <span class="ow">in</span> <span class="p">(</span><span class="n">SpecialMode</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">,</span>
-                                  <span class="n">SpecialMode</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">):</span>
-            <span class="c1"># Extract the positions in a 2D numpy array.</span>
-            <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="o">.</span><span class="n">positions_as_array</span><span class="p">()</span>
+        <span class="c1"># Local copy of special mode.</span>
+        <span class="n">mode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_special_mode</span>
 
-            <span class="c1"># Only True in CategoricalPSO.</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_special_mode</span> <span class="o">==</span> <span class="n">SpecialMode</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">:</span>
-                <span class="c1"># Sample categorical variable.</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="s2">&quot;sample_random_values&quot;</span><span class="p">](</span><span class="n">positions</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Extract the positions in a list of lists.</span>
-            <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="o">.</span><span class="n">positions_as_list</span><span class="p">()</span>
+        <span class="c1"># Compute the boolean flag.</span>
+        <span class="n">use_array</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">(</span><span class="n">SpecialMode</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">,</span>
+                                   <span class="n">SpecialMode</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">)</span>
 
-            <span class="c1"># Check if the swarm has categorical data blocks.</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">has_categorical</span><span class="p">:</span>
-                <span class="c1"># Sample categorical variable.</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="s2">&quot;sample_random_values&quot;</span><span class="p">](</span><span class="n">positions</span><span class="p">)</span>
-        <span class="c1"># _end_if_</span>
+        <span class="c1"># Compute the correct type of positions.</span>
+        <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="o">.</span><span class="n">positions_as_array</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">use_array</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="o">.</span><span class="n">positions_as_list</span><span class="p">()</span>
+        <span class="p">)</span>
 
+        <span class="c1"># Compute the boolean flag.</span>
+        <span class="n">should_sample</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">mode</span> <span class="o">==</span> <span class="n">SpecialMode</span><span class="o">.</span><span class="n">CATEGORICAL</span>
+            <span class="k">if</span> <span class="n">use_array</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_swarm</span><span class="o">.</span><span class="n">has_categorical</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Check if we need a sample.</span>
+        <span class="k">if</span> <span class="n">should_sample</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="s2">&quot;sample_random_values&quot;</span><span class="p">](</span><span class="n">positions</span><span class="p">)</span>
+
+        <span class="c1"># Return the positions.</span>
         <span class="k">return</span> <span class="n">positions</span>
     <span class="c1"># _end_def_</span>
 
@@ -806,17 +859,6 @@
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Get the shape of the velocity array.</span>
-        <span class="n">arr_shape</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">)</span>
-
-        <span class="c1"># Pre-sample the cognitive coefficients.</span>
-        <span class="n">cogntv</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
-            <span class="n">low</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">c1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">arr_shape</span>
-        <span class="p">)</span>
-        <span class="c1"># Pre-sample the social coefficients.</span>
-        <span class="n">social</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
-            <span class="n">low</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">c2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">arr_shape</span>
-        <span class="p">)</span>
         <span class="c1"># Get the local best positions (for the social attractor).</span>
         <span class="n">l_best</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_local_best_positions</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
 
@@ -828,8 +870,16 @@
 
         <span class="c1"># Update the new velocity equations (inplace).</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">*=</span> <span class="n">params</span><span class="o">.</span><span class="n">w0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">+=</span> <span class="n">cogntv</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_best</span> <span class="o">-</span> <span class="n">x_current</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">+=</span> <span class="n">social</span> <span class="o">*</span> <span class="p">(</span><span class="n">l_best</span> <span class="o">-</span> <span class="n">x_current</span><span class="p">)</span></div>
+
+        <span class="c1"># Generate and apply cognitive component.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">+=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+            <span class="mf">0.0</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">c1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="o">.</span><span class="n">shape</span>
+        <span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_best</span> <span class="o">-</span> <span class="n">x_current</span><span class="p">)</span>
+
+        <span class="c1"># Generate and apply social component.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span> <span class="o">+=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+            <span class="mf">0.0</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">c2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="o">.</span><span class="n">shape</span>
+        <span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">l_best</span> <span class="o">-</span> <span class="n">x_current</span><span class="p">)</span></div>
 
     <span class="c1"># _end_def_</span>
 

@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>star_pso.utils.auxiliary &mdash; StarPSO 0.1.5 documentation</title>
+  <title>star_pso.utils.auxiliary &mdash; StarPSO 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../../_static/documentation_options.js?v=938c9ccc"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -89,8 +89,9 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">fabs</span><span class="p">,</span> <span class="n">fsum</span><span class="p">,</span> <span class="n">isclose</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">fabs</span><span class="p">,</span> <span class="n">fsum</span><span class="p">,</span> <span class="n">isclose</span><span class="p">,</span> <span class="n">isfinite</span><span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">wraps</span><span class="p">,</span> <span class="n">partial</span><span class="p">,</span> <span class="n">lru_cache</span><span class="p">)</span>
 
 <span class="c1"># Third party imports.</span>
@@ -105,12 +106,11 @@
 <span class="c1"># Public interface.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BlockType&quot;</span><span class="p">,</span> <span class="s2">&quot;SpecialMode&quot;</span><span class="p">,</span> <span class="s2">&quot;RunConfig&quot;</span><span class="p">,</span> <span class="s2">&quot;time_it&quot;</span><span class="p">,</span> <span class="s2">&quot;pareto_front&quot;</span><span class="p">,</span>
            <span class="s2">&quot;calculate_dynamic_radius&quot;</span><span class="p">,</span> <span class="s2">&quot;identify_global_optima&quot;</span><span class="p">,</span> <span class="s2">&quot;fast_sum&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;linear_rank_probabilities&quot;</span><span class="p">,</span> <span class="s2">&quot;cost_function&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_clip_inplace&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;kl_divergence_item&quot;</span><span class="p">,</span> <span class="s2">&quot;kl_divergence_array&quot;</span><span class="p">,</span> <span class="s2">&quot;spread_methods&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;nb_clip_array&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_clip_item&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_median_hamming_distance&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;nb_median_kl_divergence&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_median_euclidean_distance&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;nb_centroid&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_median_taxicab_distance&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_cdist&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;reflect_boundary_in_place&quot;</span><span class="p">]</span>
+           <span class="s2">&quot;linear_rank_probabilities&quot;</span><span class="p">,</span> <span class="s2">&quot;cost_function&quot;</span><span class="p">,</span> <span class="s2">&quot;kl_divergence_item&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;kl_divergence_array&quot;</span><span class="p">,</span> <span class="s2">&quot;spread_methods&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_clip_array&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_cdist&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;nb_median_hamming_distance&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_median_kl_divergence&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_clip_item&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;nb_median_euclidean_distance&quot;</span><span class="p">,</span> <span class="s2">&quot;nb_centroid&quot;</span><span class="p">,</span> <span class="s2">&quot;reflect_boundary_in_place&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;nb_median_taxicab_distance&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="BlockType">
@@ -140,7 +140,7 @@
 
 <div class="viewcode-block" id="RunConfig">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.RunConfig">[docs]</a>
-<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">RunConfig</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Auxiliary dataclass to handle the configuration parameters</span>
@@ -340,17 +340,16 @@
         <span class="c1"># Initial time instant.</span>
         <span class="n">time_t0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 
-        <span class="c1"># Run the function we want to time.</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Run the function we want to time.</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="c1"># Final time instant.</span>
+            <span class="n">time_tf</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 
-        <span class="c1"># Final time instant.</span>
-        <span class="n">time_tf</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
-
-        <span class="c1"># Print final duration in seconds.</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="w"> </span><span class="si">}</span><span class="s2">: &quot;</span>
-              <span class="sa">f</span><span class="s2">&quot;elapsed time = </span><span class="si">{</span><span class="p">(</span><span class="n">time_tf</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">time_t0</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">result</span>
+            <span class="c1"># Print final duration in seconds.</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: &quot;</span>
+                  <span class="sa">f</span><span class="s2">&quot;elapsed time = </span><span class="si">{</span><span class="p">(</span><span class="n">time_tf</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">time_t0</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
     <span class="c1"># _end_def_</span>
     <span class="k">return</span> <span class="n">time_it_wrapper</span></div>
 
@@ -541,7 +540,7 @@
 <div class="viewcode-block" id="linear_rank_probabilities">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.linear_rank_probabilities">[docs]</a>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">linear_rank_probabilities</span><span class="p">(</span><span class="n">pop_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">linear_rank_probabilities</span><span class="p">(</span><span class="n">pop_size</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the rank probability distribution over the population size.</span>
 <span class="sd">    The function is lru_cached so that repeated calls with the same input</span>
@@ -561,18 +560,23 @@
 <span class="sd">             due to small errors it might be less.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Sanity check.</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pop_size</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;p_size&#39; must be an integer number.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pop_size</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pop_size</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;pop_size&#39; must be an integer.&quot;</span><span class="p">)</span>
     <span class="c1"># _end_if_</span>
 
     <span class="c1"># Sanity check.</span>
     <span class="k">if</span> <span class="n">pop_size</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;p_size&#39; must be a positive number.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;pop_size&#39; must be an greater than zero.&quot;</span><span class="p">)</span>
     <span class="c1"># _end_if_</span>
 
     <span class="c1"># Sanity check.</span>
-    <span class="k">if</span> <span class="n">eta</span> <span class="o">&lt;</span> <span class="mf">1.0</span> <span class="ow">or</span> <span class="n">eta</span> <span class="o">&gt;</span> <span class="mf">2.0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;eta&#39; must be in [1, 2].&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;eta&#39; must be a real number.&quot;</span><span class="p">)</span>
+    <span class="c1"># _end_if_</span>
+
+    <span class="c1"># Sanity check.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">isfinite</span><span class="p">(</span><span class="n">eta</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="mf">1.0</span> <span class="o">&lt;=</span> <span class="n">eta</span> <span class="o">&lt;=</span> <span class="mf">2.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;eta&#39; must be a number in the range [1.0, 2.0].&quot;</span><span class="p">)</span>
     <span class="c1"># _end_if_</span>
 
     <span class="c1"># Handle edge case where population size is 1.</span>
@@ -949,27 +953,6 @@
 
 <span class="c1"># _end_def_</span>
 
-<div class="viewcode-block" id="nb_clip_inplace">
-<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_clip_inplace">[docs]</a>
-<span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">nb_clip_inplace</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span>
-                    <span class="n">x_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">,</span>
-                    <span class="n">x_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Local auxiliary function that is used to clip the values of</span>
-<span class="sd">    input array &#39;x&#39; to [x_min, x_max] range, and put the output</span>
-<span class="sd">    inplace.</span>
-
-<span class="sd">    :param x: the numpy array we want to clip its values.</span>
-
-<span class="sd">    :param x_min: the minimum (lower bound).</span>
-
-<span class="sd">    :param x_max: the maximum (upper bound).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">x</span><span class="p">)</span></div>
-
-<span class="c1"># _end_def_</span>
-
 <div class="viewcode-block" id="nb_clip_array">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.auxiliary.nb_clip_array">[docs]</a>
 <span class="nd">@njit</span><span class="p">(</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1106,13 +1089,12 @@
 <span class="sd">    :return: none.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the dimensions of &#39;x&#39;.</span>
-    <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">n_rows</span><span class="p">,</span> <span class="n">n_cols</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
 
     <span class="c1"># Row-loop.</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_rows</span><span class="p">):</span>
         <span class="c1"># Column-loop.</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_cols</span><span class="p">):</span>
             <span class="c1"># Compute the range.</span>
             <span class="n">width</span> <span class="o">=</span> <span class="n">hi</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">lo</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
 
@@ -1160,25 +1142,7 @@
     <span class="c1"># Sanity check.</span>
     <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;x must be a 2D array&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Get the dimensions of &#39;x&#39;.</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>
-
-    <span class="c1"># If x_min is scalar, make it the same length as &#39;m&#39;.</span>
-    <span class="k">if</span> <span class="n">x_min</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">x_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">x_min</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">x_min</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">x_min</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">m</span><span class="p">:</span>
-        <span class="n">x_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">x_min</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;x_min must be a scalar or have shape (</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">,)&quot;</span><span class="p">)</span>
-
-    <span class="c1"># If x_max is scalar, make it the same length as &#39;m&#39;.</span>
-    <span class="k">if</span> <span class="n">x_max</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">x_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">x_max</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">x_max</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">x_max</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">m</span><span class="p">:</span>
-        <span class="n">x_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">x_max</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;x_max must be a scalar or have shape (</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">,)&quot;</span><span class="p">)</span>
+    <span class="c1"># _end_if_</span>
 
     <span class="c1"># Call fast numba function.</span>
     <span class="n">_reflect_columns</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">)</span></div>

@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>star_pso.engines.binary_pso &mdash; StarPSO 0.1.5 documentation</title>
+  <title>star_pso.engines.binary_pso &mdash; StarPSO 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../../_static/documentation_options.js?v=938c9ccc"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -181,19 +181,15 @@
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Generate random vectors in U(0, 1).</span>
-        <span class="n">uniform_values</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span>
-            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_cols</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="c1"># First, compute logistic values.</span>
+        <span class="n">logistic_values</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">fast_logistic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">)</span>
 
-        <span class="c1"># Create a matrix with zeros.</span>
-        <span class="n">new_positions</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">uniform_values</span><span class="p">,</span>
-                                               <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-        <span class="c1"># Compute the logistic values.</span>
-        <span class="n">logistic_values</span> <span class="o">=</span> <span class="n">fast_logistic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_velocities</span><span class="p">)</span>
-
-        <span class="c1"># Where the logistic function values are higher</span>
-        <span class="c1"># than the random values set to one.</span>
-        <span class="n">new_positions</span><span class="p">[</span><span class="n">logistic_values</span> <span class="o">&gt;</span> <span class="n">uniform_values</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># Generate random values and compare them in one step.</span>
+        <span class="c1"># This creates a boolean array. Then cast it to uint8.</span>
+        <span class="n">new_positions</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">logistic_values</span> <span class="o">&gt;</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">logistic_values</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                                                        <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 
         <span class="c1"># Update all particle positions.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">swarm</span><span class="o">.</span><span class="n">set_positions</span><span class="p">(</span><span class="n">new_positions</span><span class="p">)</span></div>

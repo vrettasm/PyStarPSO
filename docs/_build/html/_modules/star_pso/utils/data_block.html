@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>star_pso.utils.data_block &mdash; StarPSO 0.1.5 documentation</title>
+  <title>star_pso.utils.data_block &mdash; StarPSO 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../../_static/documentation_options.js?v=938c9ccc"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -93,13 +93,11 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Number</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cache</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">Callable</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">)</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">array</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.random</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">default_rng</span><span class="p">,</span> <span class="n">Generator</span><span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">star_pso.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScalarOrArray</span>
@@ -108,16 +106,23 @@
                                       <span class="n">nb_clip_array</span><span class="p">)</span>
 
 <span class="c1"># Create a tuple to pack some inputs.</span>
-<span class="n">Params</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Params&quot;</span><span class="p">,</span>
-                    <span class="p">[</span><span class="s2">&quot;v_new&quot;</span><span class="p">,</span> <span class="s2">&quot;x_old&quot;</span><span class="p">,</span> <span class="s2">&quot;lower_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;upper_bound&quot;</span><span class="p">])</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create a tuple to pack some input parameters:</span>
-<span class="sd">    </span>
-<span class="sd">    - v_new: new velocity</span>
-<span class="sd">    - x_old: old position</span>
-<span class="sd">    - lower_bound: lower bounds for position (or velocity)</span>
-<span class="sd">    - upper_bound: upper bounds for position (or velocity)</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Params">
+<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.data_block.Params">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Params</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a tuple to pack some input parameters:</span>
+
+<span class="sd">        - v_new: new velocity</span>
+<span class="sd">        - x_old: old position</span>
+<span class="sd">        - lower_bound: lower bounds for position (or velocity)</span>
+<span class="sd">        - upper_bound: upper bounds for position (or velocity)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">v_new</span><span class="p">:</span> <span class="n">ScalarOrArray</span>
+    <span class="n">x_old</span><span class="p">:</span> <span class="n">ScalarOrArray</span>
+    <span class="n">lower_bound</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">upper_bound</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+<span class="c1"># _end_class_</span>
 
 <span class="c1"># Public interface.</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DataBlock&quot;</span><span class="p">,</span> <span class="s2">&quot;Params&quot;</span><span class="p">]</span>
@@ -143,7 +148,8 @@
 
     <span class="c1"># Object variables.</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;_btype&quot;</span><span class="p">,</span> <span class="s2">&quot;_valid_set&quot;</span><span class="p">,</span> <span class="s2">&quot;_position&quot;</span><span class="p">,</span> <span class="s2">&quot;_best_position&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;_lower_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_upper_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_copy_best&quot;</span><span class="p">)</span>
+                 <span class="s2">&quot;_lower_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_upper_bound&quot;</span><span class="p">,</span> <span class="s2">&quot;_copy_best&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;_upd_method&quot;</span><span class="p">,</span> <span class="s2">&quot;_init_method&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">position</span><span class="p">:</span> <span class="n">ScalarOrArray</span><span class="p">,</span>
@@ -208,6 +214,22 @@
 
         <span class="c1"># Get the valid set (categorical variables).</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_valid_set</span> <span class="o">=</span> <span class="n">valid_set</span>
+
+        <span class="c1"># Update methods.</span>
+        <span class="n">_upd_methods</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">BlockType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">upd_float</span><span class="p">,</span>
+                                             <span class="n">BlockType</span><span class="o">.</span><span class="n">BINARY</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">upd_binary</span><span class="p">,</span>
+                                             <span class="n">BlockType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">upd_integer</span><span class="p">,</span>
+                                             <span class="n">BlockType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">upd_categorical</span><span class="p">}</span>
+        <span class="c1"># Early bind of update method.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_upd_method</span> <span class="o">=</span> <span class="n">_upd_methods</span><span class="p">[</span><span class="n">btype</span><span class="p">]</span>
+
+        <span class="c1"># Initialization methods.</span>
+        <span class="n">_init_methods</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">BlockType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">init_float</span><span class="p">,</span>
+                                              <span class="n">BlockType</span><span class="o">.</span><span class="n">BINARY</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">init_binary</span><span class="p">,</span>
+                                              <span class="n">BlockType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">init_integer</span><span class="p">,</span>
+                                              <span class="n">BlockType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">init_categorical</span><span class="p">}</span>
+        <span class="c1"># Early bind of initialization method.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_method</span> <span class="o">=</span> <span class="n">_init_methods</span><span class="p">[</span><span class="n">btype</span><span class="p">]</span>
     <span class="c1"># _end_def_</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_copy_to_scalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Number</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -343,31 +365,12 @@
 
         <span class="c1"># Ensure there will be at least one</span>
         <span class="c1"># element with positive probability.</span>
-        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">):</span>
             <span class="n">x_new</span><span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_new</span><span class="p">))]</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="c1"># _end_if_</span>
 
         <span class="c1"># Normalize (to account for probabilities).</span>
         <span class="k">return</span> <span class="n">x_new</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span></div>
-
-    <span class="c1"># _end_def_</span>
-
-<div class="viewcode-block" id="DataBlock.update_methods">
-<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.data_block.DataBlock.update_methods">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="nd">@cache</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">update_methods</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return a dictionary with keys the method names</span>
-<span class="sd">        and their corresponding update methods as values.</span>
-
-<span class="sd">        :return: a (cached) dictionary with functions</span>
-<span class="sd">                 that correspond to the correct block types.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">BlockType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">upd_float</span><span class="p">,</span>
-                <span class="n">BlockType</span><span class="o">.</span><span class="n">BINARY</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">upd_binary</span><span class="p">,</span>
-                <span class="n">BlockType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">upd_integer</span><span class="p">,</span>
-                <span class="n">BlockType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">upd_categorical</span><span class="p">}</span></div>
 
     <span class="c1"># _end_def_</span>
 
@@ -446,25 +449,6 @@
 
     <span class="c1"># _end_def_</span>
 
-<div class="viewcode-block" id="DataBlock.init_methods">
-<a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.data_block.DataBlock.init_methods">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="nd">@cache</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">init_methods</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a dictionary with method names as keys and their</span>
-<span class="sd">        corresponding initialization methods as values.</span>
-
-<span class="sd">        :return: a (cached) dictionary with functions that</span>
-<span class="sd">                 correspond to the correct block types.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">BlockType</span><span class="o">.</span><span class="n">FLOAT</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">init_float</span><span class="p">,</span>
-                <span class="n">BlockType</span><span class="o">.</span><span class="n">BINARY</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">init_binary</span><span class="p">,</span>
-                <span class="n">BlockType</span><span class="o">.</span><span class="n">INTEGER</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">init_integer</span><span class="p">,</span>
-                <span class="n">BlockType</span><span class="o">.</span><span class="n">CATEGORICAL</span><span class="p">:</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">init_categorical</span><span class="p">}</span></div>
-
-    <span class="c1"># _end_def_</span>
-
 <div class="viewcode-block" id="DataBlock.reset_position">
 <a class="viewcode-back" href="../../../star_pso.utils.html#star_pso.utils.data_block.DataBlock.reset_position">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">reset_position</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -474,16 +458,13 @@
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Get the dictionary with the methods.</span>
-        <span class="n">method_dict</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">init_methods</span><span class="p">()</span>
-
         <span class="c1"># Differentiate between scalar and vector data block.</span>
         <span class="n">n_vars</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">)</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">)</span>
 
         <span class="c1"># Assign the function value to the new position.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="n">method_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_btype</span><span class="p">](</span><span class="n">n_vars</span><span class="o">=</span><span class="n">n_vars</span><span class="p">,</span>
-                                                  <span class="n">lower_bound</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span><span class="p">,</span>
-                                                  <span class="n">upper_bound</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_method</span><span class="p">(</span><span class="n">n_vars</span><span class="o">=</span><span class="n">n_vars</span><span class="p">,</span>
+                                           <span class="n">lower_bound</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span><span class="p">,</span>
+                                           <span class="n">upper_bound</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">)</span></div>
 
     <span class="c1"># _end_def_</span>
 
@@ -507,17 +488,14 @@
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Get the dictionary with the methods.</span>
-        <span class="n">method_dict</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="o">.</span><span class="n">update_methods</span><span class="p">()</span>
-
         <span class="c1"># Pack the parameters in a tuple.</span>
         <span class="n">params</span> <span class="o">=</span> <span class="n">Params</span><span class="p">(</span><span class="n">v_new</span><span class="o">=</span><span class="n">v_new</span><span class="p">,</span>
                         <span class="n">x_old</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">,</span>
                         <span class="n">lower_bound</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span><span class="p">,</span>
                         <span class="n">upper_bound</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">)</span>
 
-        <span class="c1"># Assign the function values to the new position.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="n">method_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_btype</span><span class="p">](</span><span class="n">params</span><span class="p">)</span>
+        <span class="c1"># Update the position with the new values.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upd_method</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
     <span class="c1"># _end_def_</span>
 
     <span class="nd">@property</span>
@@ -566,20 +544,16 @@
 
 <span class="sd">        :return: the bool outcome of a == b.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Do the comparison.</span>
-        <span class="n">condition</span> <span class="o">=</span> <span class="n">a</span> <span class="o">==</span> <span class="n">b</span>
+        <span class="c1"># Handle None explicitly.</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">b</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">a</span> <span class="ow">is</span> <span class="n">b</span>
 
-        <span class="c1"># If the result has an &#39;all&#39; method</span>
-        <span class="c1"># (e.g. numpy / pandas) then use it.</span>
-        <span class="n">all_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># Use exact NumPy array equality when either operand is ndarray.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
 
-        <span class="c1"># Quick exit in numpy.</span>
-        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">all_method</span><span class="p">):</span>
-            <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">condition</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
-
-        <span class="c1"># Otherwise fall back to standard Python.</span>
-        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span>
-                                            <span class="n">Iterable</span><span class="p">)</span> <span class="k">else</span> <span class="n">condition</span>
+        <span class="c1"># Fallback for standard scalars or simple lists / tuples.</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="p">)</span>
     <span class="c1"># _end_def_</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -601,39 +575,16 @@
             <span class="k">return</span> <span class="kc">True</span>
         <span class="c1"># _end_if_</span>
 
-        <span class="c1"># Local cache for speed.</span>
-        <span class="n">check_it</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_equality</span>
+        <span class="c1"># Local cached function for improved speed.</span>
+        <span class="n">check_equal</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_equality</span>
 
-        <span class="c1"># First check their block type.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_btype</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_btype</span><span class="p">:</span>
-
-            <span class="c1"># Check the positions.</span>
-            <span class="n">positions_are_equal</span> <span class="o">=</span> <span class="n">check_it</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">,</span>
-                                           <span class="n">other</span><span class="o">.</span><span class="n">_position</span><span class="p">)</span>
-            <span class="c1"># Check valid sets.</span>
-            <span class="n">valid_sets_are_equal</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_set</span> <span class="ow">is</span> <span class="kc">None</span>
-                                    <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_set</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_valid_set</span><span class="p">)</span>
-
-            <span class="c1"># If the bounds are not given (None) we set the conditions to True.</span>
-            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
-                <span class="c1"># Check lower bounds.</span>
-                <span class="n">lower_bounds_are_equal</span> <span class="o">=</span> <span class="n">check_it</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span><span class="p">,</span>
-                                                  <span class="n">other</span><span class="o">.</span><span class="n">_lower_bound</span><span class="p">)</span>
-                <span class="c1"># Check upper bounds.</span>
-                <span class="n">upper_bounds_are_equal</span> <span class="o">=</span> <span class="n">check_it</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">,</span>
-                                                  <span class="n">other</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">lower_bounds_are_equal</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="n">upper_bounds_are_equal</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="c1"># _end_if_</span>
-
-            <span class="c1"># Return the logical AND from all conditions.</span>
-            <span class="k">return</span> <span class="p">(</span><span class="n">positions_are_equal</span> <span class="ow">and</span> <span class="n">valid_sets_are_equal</span> <span class="ow">and</span>
-                    <span class="n">lower_bounds_are_equal</span> <span class="ow">and</span> <span class="n">upper_bounds_are_equal</span><span class="p">)</span>
-        <span class="c1"># _end_if_</span>
-
-        <span class="c1"># If you get here return False.</span>
-        <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span><span class="p">(</span>
+            <span class="n">check_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_btype</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_btype</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">check_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_valid_set</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_valid_set</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">check_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lower_bound</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_lower_bound</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">check_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_upper_bound</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">check_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">_position</span><span class="p">)</span>
+        <span class="p">)</span>
     <span class="c1"># _end_def_</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataBlock</span><span class="p">:</span>
