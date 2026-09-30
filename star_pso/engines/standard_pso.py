@@ -50,6 +50,13 @@ class StandardPSO(GenericPSO):
         # Call the super initializer with the input parameters.
         super().__init__(lower_bound=x_min, upper_bound=x_max, **kwargs)
 
+        # Update the items placeholder with the bounds range.
+        # Note that the bounds are validated (normalized) in
+        # the GenericPSO __init__() method.
+        self._items: dict[str, NDArray] = {
+            "range": self.upper_bound - self.lower_bound
+        }
+
         # Generate initial particle velocities.
         self.generate_random_velocities()
     # _end_def_
@@ -100,8 +107,8 @@ class StandardPSO(GenericPSO):
 
         :return: None.
         """
-        # Calculate the search space range per dimension.
-        space_range: NDArray = self.upper_bound - self.lower_bound
+        # Get the search space range per dimension.
+        space_range: NDArray = self._items["range"]
 
         # Generate initial particle velocities scaled by the search
         # space range. E.g.: initial velocity is bounded by +/- 10%
