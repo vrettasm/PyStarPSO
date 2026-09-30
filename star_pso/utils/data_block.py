@@ -18,6 +18,7 @@ Metadata:
 
 from __future__ import annotations
 
+from math import exp
 from copy import deepcopy
 from numbers import Number
 from typing import (Callable, NamedTuple)
