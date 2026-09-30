@@ -94,6 +94,7 @@ class StandardPSO(GenericPSO):
             low=self.lower_bound, high=self.upper_bound,
             size=(self.n_rows, self.n_cols)
         )
+
         # Assign the new positions in the swarm.
         self.swarm.set_positions(uniform_positions)
     # _end_def_
