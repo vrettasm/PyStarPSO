@@ -248,7 +248,7 @@ class DataBlock:
         :return: a new (binary) position.
         """
         # Compute the sigmoid function value.
-        threshold: float = 1.0 / (1.0 + np.exp(-params.v_new))
+        threshold: float = 1.0 / (1.0 + exp(-params.v_new))
 
         # Assign the binary value using U(0,1).
         return 1 if threshold > cls.rng.random() else 0
