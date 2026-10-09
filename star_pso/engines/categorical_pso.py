@@ -121,12 +121,12 @@ class CategoricalPSO(GenericPSO):
             # Get the current size.
             current_size = size_k[j]
 
-            # We use a list comprehension because it is faster
-            # than a for-loop when filling object-dtype arrays.
-            column_data: list[NDArray[np.float64]] = [
-                get_uniform(low=-0.5, high=0.5, size=current_size)
-                for _ in range(self.n_rows)
-            ]
+            # Draw all the random values in one call.
+            random_sample = sample_uniform(low=-0.5, high=0.5,
+                                           size=(self.n_rows*current_size))
+            # Split them for each row.
+            column_data = split_array(random_sample,
+                                      self.n_rows)
 
             # Assign the list of arrays to the object column.
             self._velocities[:, j] = column_data
