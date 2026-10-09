@@ -110,7 +110,10 @@ class CategoricalPSO(GenericPSO):
         size_k = self.size_of_sets
 
         # Cache the random function locally.
-        get_uniform = GenericPSO.rng.uniform
+        sample_uniform = GenericPSO.rng.uniform
+
+        # Cache the split function locally.
+        split_array = np.split
 
         # Generate all random vectors for this column
         # as a list of arrays.
