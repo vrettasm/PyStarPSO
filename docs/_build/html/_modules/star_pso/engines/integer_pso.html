@@ -120,6 +120,13 @@
         <span class="c1"># Call the super initializer with the input parameters.</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lower_bound</span><span class="o">=</span><span class="n">x_min</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="n">x_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
+        <span class="c1"># Update the items placeholder with the bounds range.</span>
+        <span class="c1"># Note that the bounds are validated (normalized) in</span>
+        <span class="c1"># the GenericPSO __init__() method.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;range&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span>
+        <span class="p">}</span>
+
         <span class="c1"># Generate initial particle velocities.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">generate_random_velocities</span><span class="p">()</span>
     <span class="c1"># _end_def_</span>
@@ -157,8 +164,8 @@
 
 <span class="sd">        :return: None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Calculate the search space range per dimension.</span>
-        <span class="n">space_range</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span>
+        <span class="c1"># Get the search space range per dimension.</span>
+        <span class="n">space_range</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="s2">&quot;range&quot;</span><span class="p">]</span>
 
         <span class="c1"># Generate initial particle velocities scaled by the search</span>
         <span class="c1"># space range. E.g.: initial velocity is bounded by +/- 10%</span>

@@ -199,8 +199,15 @@
         <span class="n">m_best</span> <span class="o">*=</span> <span class="n">beta_coefficient</span>
 
         <span class="c1"># Generate random signs (-1.0 or 1.0) directly.</span>
-        <span class="n">direction</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                                                     <span class="n">size</span><span class="o">=</span><span class="n">arr_shape</span><span class="p">)</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">-</span> <span class="mf">1.0</span>
+        <span class="n">direction</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="n">GenericPSO</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>
+                                                     <span class="n">size</span><span class="o">=</span><span class="n">arr_shape</span><span class="p">,</span>
+                                                     <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+        <span class="c1"># [0, 1 -&gt; 0, 2]</span>
+        <span class="n">direction</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+
+        <span class="c1"># [0, 2 -&gt; -1, 1]</span>
+        <span class="n">direction</span> <span class="o">-=</span> <span class="mi">1</span>
+
         <span class="c1"># Apply random signs to the offset.</span>
         <span class="n">m_best</span> <span class="o">*=</span> <span class="n">direction</span>
 
