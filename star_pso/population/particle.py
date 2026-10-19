@@ -192,6 +192,15 @@ class Particle:
         return new_object
     # _end_def_
 
+    def __iter__(self) -> Iterator[ScalarOrArray]:
+        """
+        Returns an iterator over the particle's position.
+
+        :return: an iterator of ScalarOrArray.
+        """
+        return iter(self._position)
+    # _end_def_
+
     def __getitem__(self, index: int) -> ScalarOrArray:
         """
         Get the item at position 'index'.
