@@ -234,7 +234,9 @@ class DataBlock:
         x_new = np.rint(params.x_old + params.v_new).astype(int)
 
         # Ensure the new position stays within bounds.
-        return nb_clip_item(x_new, params.lower_bound, params.upper_bound)
+        return nb_clip_item(x_new,
+                            params.lower_bound,
+                            params.upper_bound)
     # _end_def_
 
     @classmethod
