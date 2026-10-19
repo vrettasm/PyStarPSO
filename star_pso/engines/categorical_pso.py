@@ -123,7 +123,7 @@ class CategoricalPSO(GenericPSO):
 
             # Draw all the random values in one call.
             random_sample = sample_uniform(low=-0.5, high=0.5,
-                                           size=(self.n_rows*current_size))
+                                           size=self.n_rows*current_size)
             # Split them for each row.
             column_data = split_array(random_sample,
                                       self.n_rows)
