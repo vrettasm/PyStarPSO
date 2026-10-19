@@ -115,19 +115,15 @@ class JackOfAllTradesPSO(GenericPSO):
         # Local copy of swarm population.
         population: list = self.swarm.population
 
-        # Generate all sub-arrays using a flat list comprehension.
-        flat_velocities: list[NDArray] = [
-            get_uniform(low=-1.0, high=1.0,
-                        size=len(block.valid_set)
-                        if block.valid_set else 1)
-            for particle in population
-            for block in particle.container
-        ]
+        # Here we generate the random velocities.
+        for i, particle in enumerate(population):
+            for j, block in enumerate(particle.container):
+                # If the block is CATEGORICAL we
+                # will use it's valid set length.
+                n_vars = len(block.valid_set) if block.valid_set else 1
 
-        # Reshape the flat list into the 2D object array shape.
-        self._velocities[:] = np.array(flat_velocities,
-                                       dtype=object).reshape(self.n_rows,
-                                                             self.n_cols)
+                # Generate the velocities randomly.
+                self._velocities[i, j] = get_uniform(-1.0, +1.0, size=n_vars)
     # _end_def_
 
     def generate_random_positions(self) -> None:
