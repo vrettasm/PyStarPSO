@@ -19,6 +19,7 @@ from math import isnan
 from typing import Union
 from copy import deepcopy
 from operator import attrgetter
+from collections.abc import Iterator
 
 from numpy import array
 from numpy.typing import ArrayLike, NDArray
