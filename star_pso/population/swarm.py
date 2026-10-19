@@ -273,6 +273,15 @@ class Swarm:
         return len(self._population)
     # _end_def_
 
+    def __iter__(self) -> Iterator[SwarmParticle]:
+        """
+        Returns an iterator over the swarm's population.
+
+        :return: an iterator of SwarmParticle.
+        """
+        return iter(self._population)
+    # _end_def_
+
     def __getitem__(self, index: int) -> SwarmParticle:
         """
         Get the item at position 'index'.
