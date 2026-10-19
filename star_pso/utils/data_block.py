@@ -176,7 +176,7 @@ class DataBlock:
 
         :return: None.
         """
-        np.copyto(self._best_position, x)
+        np.copyto(dst=self._best_position, src=x)
     # _end_def_
 
     @classmethod
