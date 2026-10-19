@@ -987,11 +987,11 @@ class GenericPSO:
         print(f"Final f_optimal = {f_opt:.4f}")
     # _end_def_
 
-    def __call__(self, *args, **kwargs) -> None:
+    def __call__(self, config: Optional[RunConfig] = None) -> None:
         """
         Wrapper of the run() method.
         """
-        return self.run(*args, **kwargs)
+        return self.run(config)
     # _end_def_
 
 # _end_class_
