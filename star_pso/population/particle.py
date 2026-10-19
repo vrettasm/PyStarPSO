@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from math import inf
 from copy import deepcopy
+from collections.abc import Iterator
 
 from numpy import copyto as copy_to
 from numpy.typing import NDArray, ArrayLike
