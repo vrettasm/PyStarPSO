@@ -73,14 +73,6 @@ class JackOfAllTradesPSO(GenericPSO):
         super().__init__(lower_bound=0.0,
                          upper_bound=1.0, **kwargs)
 
-        # First we declare the velocities to be
-        # an [n_rows x n_cols] array of objects.
-        self._velocities: NDArray = np.empty(shape=(self.n_rows,
-                                                    self.n_cols),
-                                             dtype=object)
-        # Call the random velocity generator.
-        self.generate_random_velocities()
-
         # Assign the correct local sample method
         # according to the permutation mode flag.
         # Build a static map of the locations of
@@ -96,8 +88,21 @@ class JackOfAllTradesPSO(GenericPSO):
                 for i, particle in enumerate(self.swarm.population)
                 for j, block in enumerate(particle.container)
                 if block.block_t == BlockType.CATEGORICAL
+            ],
+
+            "_n_vars": [
+                len(block.valid_set) if block.valid_set else 1
+                for block in self.swarm.population[0].container
             ]
         }
+
+        # First we declare the velocities to be
+        # an [n_rows x n_cols] array of objects.
+        self._velocities: NDArray = np.empty(shape=(self.n_rows,
+                                                    self.n_cols),
+                                             dtype=object)
+        # Call the random velocity generator.
+        self.generate_random_velocities()
 
         # Set the special mode to Jack-Of-All-Trades.
         self._special_mode = SpecialMode.JACK_OF_ALL_TRADES
@@ -115,15 +120,16 @@ class JackOfAllTradesPSO(GenericPSO):
         # Local copy of swarm population.
         population: list = self.swarm.population
 
-        # Here we generate the random velocities.
-        for i, particle in enumerate(population):
-            for j, block in enumerate(particle.container):
-                # If the block is CATEGORICAL we
-                # will use it's valid set length.
-                n_vars = len(block.valid_set) if block.valid_set else 1
+        # Get the pre-estimated block sizes.
+        n_vars: list[int] = self._items["_n_vars"]
 
+        # Iterate through all population particles.
+        for i, particle in enumerate(population):
+            # Iterate through all particle blocks.
+            for j, block in enumerate(particle.container):
                 # Generate the velocities randomly.
-                self._velocities[i, j] = get_uniform(-1.0, +1.0, size=n_vars)
+                self._velocities[i, j] = get_uniform(-1.0, +1.0,
+                                                     size=n_vars[j])
     # _end_def_
 
     def generate_random_positions(self) -> None:
