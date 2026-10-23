@@ -539,6 +539,9 @@ class GenericPSO:
                 for x in positions
             )
         else:
+            # Make a local copy of the objective function and use the partial function to
+            # fix the current iteration.
+            partial_func: Callable = partial(self._objective_func, it=current_iter)
 
             # Evaluate all the particles in serial mode.
             f_evaluation = [
