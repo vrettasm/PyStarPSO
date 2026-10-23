@@ -534,8 +534,9 @@ class GenericPSO:
         if parallel_mode:
 
             # Evaluate the particles in parallel mode.
-            f_evaluation = Parallel(n_jobs=self.n_cpus, prefer=backend)(
-                delayed(partial_func)(x) for x in positions
+            f_evaluation = Parallel(n_jobs=self.n_cpus, prefer=backend, batch_size="auto")(
+                delayed(GenericPSO._dispatch_worker)(self._objective_func, x, current_iter)
+                for x in positions
             )
         else:
 
