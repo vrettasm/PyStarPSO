@@ -480,8 +480,7 @@ class GenericPSO:
         # Compute the correct type of positions.
         positions: list | NDArray = (
             self._swarm.positions_as_array()
-            if use_array
-            else self._swarm.positions_as_list()
+            if use_array else self._swarm.positions_as_list()
         )
 
         # Compute the boolean flag.
