@@ -562,7 +562,8 @@ class GenericPSO:
         fx_array: NDArray = np.empty(self.n_rows, dtype=float)
 
         # Update all particles with their new objective function values.
-        for n, (p, result) in enumerate(zip(self._swarm.population, f_evaluation)):
+        for n, (p, x_pos, result) in enumerate(zip(self._swarm.population,
+                                                   positions, f_evaluation)):
             # Extract the n-th function value.
             f_value: float = result["f_value"]
 
