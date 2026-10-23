@@ -486,8 +486,7 @@ class GenericPSO:
         # Compute the boolean flag.
         should_sample: bool = (
             mode == SpecialMode.CATEGORICAL
-            if use_array
-            else self._swarm.has_categorical
+            if use_array else self._swarm.has_categorical
         )
 
         # Check if we need a sample.
