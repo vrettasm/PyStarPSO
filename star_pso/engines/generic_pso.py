@@ -498,7 +498,7 @@ class GenericPSO:
     # _end_def_
 
     @staticmethod
-    def _dispatch_worker(func: Callable, x_position: NDArray, iteration: int):
+    def _dispatch_worker(func: Callable, x_position: NDArray, iteration: int) -> dict:
         """
         Stateless worker that executes the objective function.
 
