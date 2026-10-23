@@ -579,7 +579,7 @@ class GenericPSO:
             # Update f_max value.
             if f_value > f_max:
                 f_max = f_value
-                x_opt = positions[n]
+                x_opt = x_pos
         # _end_for_
 
         # Store the function values as ndarray.
