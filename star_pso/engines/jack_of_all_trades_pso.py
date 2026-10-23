@@ -125,8 +125,11 @@ class JackOfAllTradesPSO(GenericPSO):
 
         # Iterate through all population particles.
         for i, particle in enumerate(population):
-            # Iterate through all particle blocks.
-            for j, block in enumerate(particle.container):
+            # Get the number of blocks.
+            n_blocks: int = particle.size()
+
+            # Iterate through all blocks.
+            for j in range(n_blocks):
                 # Generate the velocities randomly.
                 self._velocities[i, j] = get_uniform(-1.0, +1.0,
                                                      size=n_vars[j])
