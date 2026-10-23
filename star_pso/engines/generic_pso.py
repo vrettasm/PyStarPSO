@@ -506,7 +506,7 @@ class GenericPSO:
         :param x_position: the position of the objective function.
         :param iteration: the iteration number.
 
-        :return: the result of the objective function.
+        :return: the result of the objective function (a dict).
         """
         return func(x_position, it=iteration)
     # _end_def_
