@@ -530,10 +530,6 @@ class GenericPSO:
         # Local copy of iteration variable.
         current_iter: int = self._iteration
 
-        # OPTIMIZATION: Extract the raw function reference.
-        raw_func = getattr(self._objective_func, "__func__",
-                           self._objective_func)
-
         # Check the 'parallel_mode' flag.
         if parallel_mode:
 
