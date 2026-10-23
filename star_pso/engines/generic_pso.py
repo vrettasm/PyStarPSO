@@ -497,6 +497,20 @@ class GenericPSO:
         return positions
     # _end_def_
 
+    @staticmethod
+    def _dispatch_worker(func: Callable, x_position: NDArray, iteration: int):
+        """
+        Stateless worker that executes the objective function.
+
+        :param func: the objective function.
+        :param x_position: the position of the objective function.
+        :param iteration: the iteration number.
+
+        :return: the result of the objective function.
+        """
+        return func(x_position, it=iteration)
+    # _end_def_
+
     def evaluate_function(self, parallel_mode: bool = False,
                           backend: str = "threads") -> tuple[float, bool]:
         """
